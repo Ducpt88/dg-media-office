@@ -299,6 +299,7 @@
     dims = { w, h };
     if (chars.length > 0) rescaleCharacters(chars, dims);
     else chars = initCharacters(dims);
+    window._officeChars = chars; // Expose for admin panel
     // Redraw background on resize
     drawBackground();
     // Clear sprite cache on resize (scale changed)

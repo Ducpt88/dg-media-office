@@ -1,5 +1,5 @@
-const CACHE_NAME = 'dg-office-v1';
-const ASSETS = ['/', '/index.html', '/css/style.css', '/js/characters.js', '/js/app.js', '/assets/office-bg.png', '/assets/icon.png'];
+const CACHE_NAME = 'dg-office-v2';
+const ASSETS = ['/', '/index.html', '/css/style.css', '/css/admin.css', '/js/characters.js', '/js/app.js', '/js/admin.js', '/assets/office-bg.png', '/assets/icon.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
