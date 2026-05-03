@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DG Media Holding — Virtual Office</title>
+  <meta name="description" content="Văn phòng ảo DG Media Holding — Theo dõi đội ngũ làm việc real-time">
+  <meta property="og:title" content="DG Media Holding — Virtual Office">
+  <meta property="og:description" content="Xem đội ngũ DG Media đang làm việc trong văn phòng ảo chibi">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/icon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Loading screen -->
+  <div id="loader">
+    <div class="loader-content">
+      <div class="loader-icon">♛</div>
+      <div class="loader-text">DG MEDIA HOLDING</div>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+      <div class="loader-sub">Đang tải văn phòng ảo...</div>
+    </div>
+  </div>
+
+  <!-- Main office -->
+  <div id="app">
+    <!-- Top bar -->
+    <header id="topbar">
+      <div class="topbar-brand">
+        <span class="topbar-crown">♛</span>
+        <span class="topbar-title">DG MEDIA HOLDING</span>
+        <span class="topbar-dot"></span>
+        <span class="topbar-subtitle">Virtual Office</span>
+      </div>
+      <div class="topbar-stats">
+        <div class="stat-chip" id="stat-workers">
+          <span class="stat-icon">👥</span>
+          <span class="stat-label">Nhân viên</span>
+          <span class="stat-value" id="worker-count">19</span>
+        </div>
+        <div class="stat-chip" id="stat-working">
+          <span class="stat-icon">💼</span>
+          <span class="stat-label">Đang làm</span>
+          <span class="stat-value" id="working-count">0</span>
+        </div>
+        <div class="stat-chip" id="stat-walking">
+          <span class="stat-icon">🚶</span>
+          <span class="stat-label">Di chuyển</span>
+          <span class="stat-value" id="walking-count">0</span>
+        </div>
+        <div class="stat-chip" id="stat-time">
+          <span class="stat-icon">🕐</span>
+          <span class="stat-value" id="clock"></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Canvas container -->
+    <div id="canvas-wrap">
+      <canvas id="office-canvas"></canvas>
+    </div>
+
+    <!-- Activity ticker -->
+    <div id="ticker">
+      <span class="ticker-label">⚡ HOẠT ĐỘNG</span>
+      <div class="ticker-scroll" id="ticker-content"></div>
+    </div>
+  </div>
+
+  <script src="js/characters.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
