@@ -13,7 +13,6 @@
   const bgCtx = bgCanvas.getContext('2d');
   const charCtx = charCanvas.getContext('2d');
   const bgImg = new Image();
-  bgImg.src = 'assets/office-bg.png';
 
   let chars = [];
   let dims = { w: 0, h: 0 };
@@ -21,7 +20,15 @@
   let bgLoaded = false;
   let bgDrawn = false;
   let lastDrawTime = 0;
+  let loaderHidden = false;
   const FRAME_INTERVAL = 42; // ═══ 24fps — smooth enough, saves 20% vs 30fps ═══
+
+  function hideLoader() {
+    if (loaderHidden) return;
+    loaderHidden = true;
+    const el = document.getElementById('loader');
+    if (el) el.classList.add('hidden');
+  }
 
   // ═══ Sprite Cache ═══
   const _spriteCache = new Map();
@@ -233,13 +240,23 @@
   bgImg.onload = function() {
     bgLoaded = true;
     drawBackground();
-    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1800);
+    setTimeout(hideLoader, 800);
   };
   bgImg.onerror = function() {
+    console.warn('[Office] BG failed');
     bgLoaded = false;
     drawBackground();
-    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 1800);
+    setTimeout(hideLoader, 500);
   };
+  // Set src AFTER handlers (prevents race condition)
+  bgImg.src = 'assets/office-bg.png';
+  // Handle already-cached images
+  if (bgImg.complete && bgImg.naturalWidth > 0) {
+    bgLoaded = true;
+    setTimeout(function() { drawBackground(); hideLoader(); }, 300);
+  }
+  // FAILSAFE: always hide after 4s
+  setTimeout(hideLoader, 4000);
 
   // ═══ Draw background ONCE ═══
   function drawBackground() {
