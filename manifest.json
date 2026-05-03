@@ -1,0 +1,14 @@
+{
+  "name": "DG Media Holding — Virtual Office",
+  "short_name": "DG Office",
+  "description": "Văn phòng ảo DG Media Holding",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a1a",
+  "theme_color": "#ffd700",
+  "orientation": "any",
+  "icons": [
+    { "src": "assets/icon.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
