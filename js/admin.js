@@ -6,8 +6,8 @@
 (function() {
   'use strict';
 
-  const ADMIN_PIN = '2024';
-  let isAdmin = localStorage.getItem('dg_admin') === 'true';
+  // PIN is SHA-256 hashed in security.js — NEVER stored in plaintext
+  let isAdmin = (window._security && window._security.isSessionValid()) || localStorage.getItem('dg_admin') === 'true';
   let selectedChar = null;
   let adminTab = 'chars'; // chars | office | settings
 
@@ -258,37 +258,56 @@
     });
   }
 
-  // ═══ Login ═══
+  // ═══ Login (uses security.js SHA-256 module) ═══
   function showLoginDialog() {
+    if (window._security && window._security.isLockedOut()) {
+      const mins = window._security.getLockoutRemaining();
+      showToast(`🔒 Đã khóa! Thử lại sau ${mins} phút`);
+      return;
+    }
     document.getElementById('login-dialog').classList.remove('hidden');
     document.getElementById('pin-input').value = '';
     document.getElementById('pin-error').classList.add('hidden');
     setTimeout(() => document.getElementById('pin-input').focus(), 100);
   }
 
-  function handleLogin() {
+  async function handleLogin() {
     const pin = document.getElementById('pin-input').value;
-    if (pin === ADMIN_PIN) {
-      localStorage.setItem('dg_admin', 'true');
-      isAdmin = true;
-      document.getElementById('login-dialog').classList.add('hidden');
-      activateAdmin();
+    if (!pin) return;
+
+    if (window._security) {
+      // ═══ Secure login with SHA-256 ═══
+      const result = await window._security.verifyPin(pin);
+      if (result.ok) {
+        isAdmin = true;
+        document.getElementById('login-dialog').classList.add('hidden');
+        activateAdmin();
+      } else if (result.locked) {
+        document.getElementById('pin-error').textContent = `🔒 Đã khóa ${result.minutes} phút!`;
+        document.getElementById('pin-error').classList.remove('hidden');
+        document.getElementById('pin-input').value = '';
+      } else {
+        document.getElementById('pin-error').textContent = `❌ Sai PIN! Còn ${result.remaining} lần thử`;
+        document.getElementById('pin-error').classList.remove('hidden');
+        document.getElementById('pin-input').value = '';
+        setTimeout(() => document.getElementById('pin-error').classList.add('hidden'), 3000);
+      }
     } else {
-      const err = document.getElementById('pin-error');
-      err.classList.remove('hidden');
-      document.getElementById('pin-input').value = '';
-      setTimeout(() => err.classList.add('hidden'), 2000);
+      // Fallback (no security module)
+      document.getElementById('pin-error').textContent = '❌ Lỗi bảo mật';
+      document.getElementById('pin-error').classList.remove('hidden');
     }
   }
 
   function handleLogout() {
+    if (window._security) window._security.logout();
     localStorage.removeItem('dg_admin');
     isAdmin = false;
     selectedChar = null;
     document.getElementById('admin-toggle-btn').classList.add('hidden');
     document.getElementById('admin-sidebar').classList.add('hidden');
     document.getElementById('admin-login-btn').style.display = '';
-    showToast('Đã đăng xuất');
+    showToast('🚪 Đã đăng xuất');
   }
 
   function activateAdmin() {
