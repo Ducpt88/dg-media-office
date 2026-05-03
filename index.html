@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <!-- Loading screen -->
   <div id="loader">
     <div class="loader-content">
       <div class="loader-icon">♛</div>
@@ -24,9 +23,7 @@
     </div>
   </div>
 
-  <!-- Main office -->
   <div id="app">
-    <!-- Top bar -->
     <header id="topbar">
       <div class="topbar-brand">
         <span class="topbar-crown">♛</span>
@@ -35,34 +32,19 @@
         <span class="topbar-subtitle">Virtual Office</span>
       </div>
       <div class="topbar-stats">
-        <div class="stat-chip" id="stat-workers">
-          <span class="stat-icon">👥</span>
-          <span class="stat-label">Nhân viên</span>
-          <span class="stat-value" id="worker-count">19</span>
-        </div>
-        <div class="stat-chip" id="stat-working">
-          <span class="stat-icon">💼</span>
-          <span class="stat-label">Đang làm</span>
-          <span class="stat-value" id="working-count">0</span>
-        </div>
-        <div class="stat-chip" id="stat-walking">
-          <span class="stat-icon">🚶</span>
-          <span class="stat-label">Di chuyển</span>
-          <span class="stat-value" id="walking-count">0</span>
-        </div>
-        <div class="stat-chip" id="stat-time">
-          <span class="stat-icon">🕐</span>
-          <span class="stat-value" id="clock"></span>
-        </div>
+        <div class="stat-chip"><span class="stat-icon">👥</span><span class="stat-label">Nhân viên</span><span class="stat-value" id="worker-count">19</span></div>
+        <div class="stat-chip"><span class="stat-icon">💼</span><span class="stat-label">Đang làm</span><span class="stat-value" id="working-count">0</span></div>
+        <div class="stat-chip"><span class="stat-icon">🚶</span><span class="stat-label">Di chuyển</span><span class="stat-value" id="walking-count">0</span></div>
+        <div class="stat-chip"><span class="stat-icon">🕐</span><span class="stat-value" id="clock"></span></div>
       </div>
     </header>
 
-    <!-- Canvas container -->
+    <!-- ═══ PERF: 2-layer canvas — background drawn ONCE, chars at 24fps ═══ -->
     <div id="canvas-wrap">
-      <canvas id="office-canvas"></canvas>
+      <canvas id="bg-canvas"></canvas>
+      <canvas id="char-canvas"></canvas>
     </div>
 
-    <!-- Activity ticker -->
     <div id="ticker">
       <span class="ticker-label">⚡ HOẠT ĐỘNG</span>
       <div class="ticker-scroll" id="ticker-content"></div>
