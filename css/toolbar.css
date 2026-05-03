@@ -1,0 +1,116 @@
+/* ═══════════════════════════════════════════════════════════
+   DG MEDIA HOLDING — Skills Map Toolbar Styles
+   Matches desktop Agent DBH app toolbar
+   ═══════════════════════════════════════════════════════════ */
+
+/* ═══ Top Toolbar ═══ */
+#skills-toolbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 6px 12px; gap: 8px;
+  background: rgba(10,15,30,0.92); backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  z-index: 15; overflow-x: auto; overflow-y: hidden;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+#skills-toolbar::-webkit-scrollbar { display: none; }
+#skills-toolbar.hidden { display: none; }
+
+.tb-left { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.tb-logo { font-size: 16px; }
+.tb-brand { font-size: 11px; font-weight: 900; color: #ffd700; letter-spacing: 1px; }
+
+.tb-center { display: flex; align-items: center; gap: 4px; flex-wrap: nowrap; }
+.tb-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+
+.tb-btn {
+  display: flex; align-items: center; gap: 4px;
+  padding: 5px 10px; border-radius: 6px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.6); font-family: 'Inter',sans-serif;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  white-space: nowrap; transition: all 0.2s;
+}
+.tb-btn:hover { background: rgba(255,255,255,0.08); color: #e8e8f0; }
+.tb-btn.active { background: rgba(0,230,118,0.12); border-color: rgba(0,230,118,0.25); color: #00e676; }
+.tb-icon { font-size: 13px; }
+.tb-icon-only { padding: 5px 8px; }
+
+/* ═══ Status Panel (left side) ═══ */
+#status-panel {
+  position: fixed; top: 100px; left: 12px; z-index: 20;
+  width: 220px; max-height: calc(100vh - 160px);
+  background: rgba(10,15,30,0.94); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06); border-radius: 14px;
+  overflow-y: auto; overflow-x: hidden;
+  box-shadow: 4px 4px 30px rgba(0,0,0,0.4);
+  transition: opacity 0.3s, transform 0.3s;
+}
+#status-panel.hidden { opacity: 0; transform: translateX(-20px); pointer-events: none; }
+
+.sp-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 11px; font-weight: 800; color: #ffd700; letter-spacing: 1px;
+}
+.sp-close { background: none; border: none; color: #666; font-size: 14px; cursor: pointer; padding: 4px; }
+.sp-close:hover { color: #ff6b6b; }
+
+.sp-section { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+.sp-label { font-size: 9px; font-weight: 800; color: rgba(255,255,255,0.25); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+
+.sp-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 0; font-size: 12px; color: rgba(255,255,255,0.5);
+}
+.sp-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.sp-dot.green { background: #00e676; box-shadow: 0 0 6px rgba(0,230,118,0.4); }
+.sp-dot.blue { background: #74b9ff; box-shadow: 0 0 6px rgba(116,185,255,0.4); }
+.sp-dot.gold { background: #ffd700; box-shadow: 0 0 6px rgba(255,215,0,0.4); }
+.sp-val { margin-left: auto; font-weight: 700; color: #e8e8f0; font-size: 13px; }
+.sp-online { color: #00e676 !important; font-size: 11px !important; }
+
+.sp-dept { display: flex; justify-content: space-between; padding: 4px 8px; border-radius: 4px; margin-bottom: 3px; font-size: 11px; color: rgba(255,255,255,0.45); background: rgba(255,255,255,0.02); }
+.sp-dept-name { font-weight: 600; }
+.sp-dept-count { font-weight: 800; color: rgba(255,215,0,0.7); }
+
+.sp-activity-list { max-height: 100px; overflow-y: auto; }
+.sp-act-item { font-size: 10px; color: rgba(255,255,255,0.35); padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+.sp-act-time { color: rgba(255,215,0,0.5); font-weight: 700; margin-right: 6px; }
+
+/* ═══ Floating Panel (gestures, etc.) ═══ */
+.floating-panel {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  z-index: 150; width: 320px; max-width: 90vw;
+  background: rgba(15,15,35,0.96); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,215,0,0.1); border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  transition: opacity 0.3s;
+}
+.floating-panel.hidden { display: none; }
+.fp-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 14px; font-weight: 700; color: #e8e8f0;
+}
+.fp-close { background: none; border: none; color: #666; font-size: 16px; cursor: pointer; }
+
+.gesture-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 16px; }
+.gest-btn {
+  padding: 14px 4px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03); color: #ccc; font-size: 22px;
+  font-family: 'Inter',sans-serif; cursor: pointer; text-align: center;
+  transition: all 0.2s; line-height: 1.3;
+}
+.gest-btn small { font-size: 9px; display: block; color: rgba(255,255,255,0.3); margin-top: 2px; }
+.gest-btn:hover { background: rgba(255,215,0,0.1); border-color: rgba(255,215,0,0.2); transform: scale(1.05); }
+.gest-btn:active { transform: scale(0.95); }
+
+/* ═══ Device-adaptive ═══ */
+.device-mobile #skills-toolbar { padding: 4px 8px; }
+.device-mobile .tb-btn { padding: 4px 7px; font-size: 10px; }
+.device-mobile .tb-brand { display: none; }
+.device-mobile #status-panel { left: 8px; width: 200px; top: 90px; }
+.device-mobile .gesture-grid { grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.device-mobile .gest-btn { padding: 10px 2px; font-size: 18px; }
+
+.device-tablet #status-panel { width: 240px; }
