@@ -118,15 +118,6 @@
         <div class="sidebar-section">
           <div class="section-label">📊 THỐNG KÊ</div>
           <div class="stats-grid" id="office-stats"></div>
-        </div>
-        <div class="sidebar-section">
-          <div class="section-label">⏰ LỊCH LÀM VIỆC</div>
-          <div class="schedule-info">
-            <div class="sched-row"><span>Ca sáng:</span><span class="sched-val">08:00 — 12:00</span></div>
-            <div class="sched-row"><span>Ca chiều:</span><span class="sched-val">13:30 — 17:30</span></div>
-            <div class="sched-row"><span>Ca tối:</span><span class="sched-val">19:00 — 22:00</span></div>
-          </div>
-        </div>
       </div>
 
       <!-- TAB: Settings -->

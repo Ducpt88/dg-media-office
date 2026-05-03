@@ -30,8 +30,6 @@
         <button class="tb-btn" id="tb-ceo-walk"><span class="tb-icon">🚶</span> CEO Đi thăm</button>
         <button class="tb-btn active" id="tb-auto"><span class="tb-icon">⚡</span> Auto ON</button>
         <button class="tb-btn" id="tb-gesture"><span class="tb-icon">🤌</span> Cử chỉ</button>
-        <button class="tb-btn" id="tb-schedule"><span class="tb-icon">📅</span> Lịch đăng bài</button>
-        <button class="tb-btn" id="tb-video"><span class="tb-icon">🎬</span> Kho Video</button>
         <button class="tb-btn" id="tb-decor"><span class="tb-icon">🎨</span> Trang trí</button>
       </div>
       <div class="tb-right">
@@ -159,7 +157,7 @@
     });
 
     // Schedule, Video, Decor → show toast (future feature)
-    ['tb-schedule','tb-video','tb-decor'].forEach(id => {
+    ['tb-decor'].forEach(id => {
       document.getElementById(id).onclick = function() {
         showToolbarToast('🔜 Tính năng đang phát triển...');
       };
