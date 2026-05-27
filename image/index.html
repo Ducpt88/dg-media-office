@@ -4,14 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DG Image Tools - Tạo thumbnail YouTube bằng AI</title>
-  <meta name="description" content="DG Image Tools hỗ trợ tạo thumbnail YouTube, ảnh marketing, GEM phân tích ảnh mẫu, tạo hàng loạt, ghép logo gốc và quản lý quota thành viên.">
+  <meta name="description" content="DG Image Tools giúp creator và team media tạo thumbnail YouTube, ảnh quảng cáo, ảnh sản phẩm và ảnh marketing nhanh hơn: nhập ý tưởng, dùng ảnh mẫu, kiểm soát chữ, giữ logo gốc và tạo hàng loạt.">
   <link rel="canonical" href="https://ducpt.com/image">
   <link rel="icon" href="/image/assets/dg-image-tools-icon.png" type="image/png">
   <style>
     :root {
       color-scheme: light;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      color: #101827;
+      color: #111827;
       background: #f5f7fb;
     }
 
@@ -20,9 +20,9 @@
     body {
       margin: 0;
       background:
-        linear-gradient(180deg, rgba(31, 122, 235, .08), transparent 340px),
-        linear-gradient(#e6edf7 1px, transparent 1px),
-        linear-gradient(90deg, #e6edf7 1px, transparent 1px),
+        linear-gradient(180deg, rgba(37, 99, 235, .08), transparent 340px),
+        linear-gradient(#e5eaf2 1px, transparent 1px),
+        linear-gradient(90deg, #e5eaf2 1px, transparent 1px),
         #f5f7fb;
       background-size: auto, 40px 40px, 40px 40px, auto;
     }
@@ -30,9 +30,9 @@
     a { color: inherit; text-decoration: none; }
 
     .page {
-      max-width: 1180px;
+      width: min(1180px, calc(100% - 32px));
       margin: 0 auto;
-      padding: 22px 18px 56px;
+      padding: 22px 0 56px;
     }
 
     .topbar {
@@ -40,11 +40,10 @@
       align-items: center;
       justify-content: space-between;
       gap: 16px;
-      min-width: 0;
       margin-bottom: 18px;
       border: 1px solid #dbe2ea;
       border-radius: 8px;
-      background: rgba(255, 255, 255, .86);
+      background: rgba(255, 255, 255, .9);
       padding: 10px 12px;
       box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
       backdrop-filter: blur(10px);
@@ -85,7 +84,7 @@
 
     .hero {
       display: grid;
-      grid-template-columns: minmax(0, 1.05fr) minmax(340px, .95fr);
+      grid-template-columns: minmax(0, 1.05fr) minmax(330px, .95fr);
       gap: 18px;
       align-items: stretch;
     }
@@ -99,9 +98,7 @@
       box-shadow: 0 18px 50px rgba(15, 23, 42, .08);
     }
 
-    .hero-copy {
-      padding: 30px;
-    }
+    .hero-copy { padding: 30px; }
 
     .eyebrow {
       display: inline-flex;
@@ -206,9 +203,7 @@
       font-weight: 700;
     }
 
-    .order-card {
-      padding: 22px;
-    }
+    .order-card { padding: 22px; }
 
     form {
       display: grid;
@@ -257,9 +252,7 @@
       margin-top: 16px;
     }
 
-    .panel {
-      padding: 22px;
-    }
+    .panel { padding: 22px; }
 
     .feature-grid {
       display: grid;
@@ -268,7 +261,7 @@
     }
 
     .feature {
-      min-height: 118px;
+      min-height: 136px;
       border: 1px solid #dbe2ea;
       border-radius: 8px;
       background: #f8fafc;
@@ -392,9 +385,7 @@
         flex-direction: column;
       }
 
-      .topbar nav {
-        flex-wrap: wrap;
-      }
+      .topbar nav { flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -405,12 +396,12 @@
         <img src="/image/assets/dg-image-tools-icon.png" alt="DG Image Tools">
         <span>
           <strong>DG Image Tools</strong>
-          <span>AI thumbnail workspace</span>
+          <span>Công cụ tạo ảnh cho YouTube và marketing</span>
         </span>
       </a>
       <nav>
         <a href="#features">Tính năng</a>
-        <a href="#agent">Agent tư vấn</a>
+        <a href="#advisor">Trợ lý tư vấn</a>
         <a href="#pricing">Bảng giá</a>
         <a href="#order">Đặt mua</a>
       </nav>
@@ -419,16 +410,16 @@
     <section class="hero">
       <div class="hero-copy">
         <span class="eyebrow">Dành cho creator, team media và kênh YouTube</span>
-        <h1>Tạo thumbnail YouTube bằng AI, đúng style và có thể bán theo quota.</h1>
-        <p class="lead">DG Image Tools kết hợp 9Router, GEM phân tích ảnh mẫu, tạo hàng loạt, kiểm soát chữ/ngôn ngữ, ghép logo gốc và quản lý thành viên trong một app desktop.</p>
+        <h1>Tạo thumbnail YouTube và ảnh marketing nhanh hơn, đúng ý hơn.</h1>
+        <p class="lead">DG Image Tools giúp bạn biến ý tưởng thành ảnh hoàn chỉnh. Bạn có thể nhập chủ đề, dùng ảnh mẫu để bám phong cách, tạo nhiều ảnh cùng lúc, chọn ảnh có chữ hoặc không chữ, chọn tiếng Việt hoặc tiếng Anh và ghép logo gốc sau khi tạo.</p>
         <div class="hero-actions">
           <a class="button" href="#order">Đặt mua ngay</a>
-          <a class="button secondary" href="#agent">Nhờ Agent gợi ý gói</a>
+          <a class="button secondary" href="#advisor">Nhờ trợ lý gợi ý</a>
         </div>
         <div class="metrics">
-          <div class="metric"><strong>100+</strong><span>ảnh/gói tháng</span></div>
-          <div class="metric"><strong>9Router</strong><span>nguồn tạo ảnh</span></div>
-          <div class="metric"><strong>GEM</strong><span>phân tích style mẫu</span></div>
+          <div class="metric"><strong>Ý tưởng</strong><span>nhập nội dung muốn tạo</span></div>
+          <div class="metric"><strong>Ảnh mẫu</strong><span>bám phong cách có sẵn</span></div>
+          <div class="metric"><strong>Hàng loạt</strong><span>tạo nhiều ảnh cùng lúc</span></div>
         </div>
       </div>
 
@@ -446,8 +437,8 @@
         <label>Số điện thoại/Zalo
           <input name="phone" required placeholder="09...">
         </label>
-        <label>Ghi chú
-          <textarea name="note" rows="3" placeholder="Tên kênh, ngách nội dung, số lượng ảnh cần tạo mỗi tháng"></textarea>
+        <label>Ghi chú nhu cầu
+          <textarea name="note" rows="3" placeholder="Tên kênh, chủ đề đang làm, số ảnh cần tạo mỗi tháng"></textarea>
         </label>
         <button type="submit">Tạo đơn và lấy mã chuyển khoản</button>
         <div id="orderStatus" class="status"></div>
@@ -456,36 +447,36 @@
 
     <div class="sections">
       <section id="features" class="panel">
-        <h2>Tính năng chính</h2>
+        <h2>App hỗ trợ tạo ảnh như thế nào?</h2>
         <div class="feature-grid">
-          <article class="feature"><small>01</small><h3>GEM theo ngách</h3><p>Phân tích ảnh mẫu, nhận diện style, gợi ý prompt cho tài chính, crypto, review, drama, giáo dục, podcast và nhiều ngách YouTube khác.</p></article>
-          <article class="feature"><small>02</small><h3>Tạo hàng loạt</h3><p>Dán danh sách prompt, tự tách mục, lưu ảnh theo bài, ghi manifest và hiển thị lỗi ngắn gọn để kiểm tra nhanh.</p></article>
-          <article class="feature"><small>03</small><h3>Logo gốc</h3><p>Không để AI vẽ lại logo. App tạo ảnh trước, sau đó ghép logo gốc đúng file để tránh méo, sai chữ hoặc sai nhận diện thương hiệu.</p></article>
-          <article class="feature"><small>04</small><h3>Kiểm soát text</h3><p>Tự nhận diện có chữ/không chữ, chọn tiếng Việt, tiếng Anh, tiếng Tây Ban Nha hoặc không dùng chữ trên ảnh.</p></article>
-          <article class="feature"><small>05</small><h3>Quản lý khách hàng</h3><p>Admin tạo tài khoản, cấp quota, giới hạn thiết bị, theo dõi ảnh đã tạo và lưu dữ liệu khách hàng có backup.</p></article>
-          <article class="feature"><small>06</small><h3>Workflow bàn giao</h3><p>Phù hợp bán app theo gói tháng, quản lý thành viên và triển khai cho khách dùng trên desktop.</p></article>
+          <article class="feature"><small>01</small><h3>Tạo ảnh từ ý tưởng</h3><p>Bạn chỉ cần nhập chủ đề video hoặc nội dung muốn làm. App sẽ gợi ý câu lệnh tạo ảnh rõ bố cục, rõ nhân vật, rõ cảm xúc và phù hợp màn hình YouTube.</p></article>
+          <article class="feature"><small>02</small><h3>Phân tích ảnh mẫu</h3><p>Khi bạn gửi một ảnh tham khảo, app đọc bố cục, màu sắc, kiểu chữ, cảm xúc và cách sắp xếp để tạo ảnh mới gần phong cách đó nhất có thể.</p></article>
+          <article class="feature"><small>03</small><h3>Tạo nhiều ảnh cùng lúc</h3><p>Dán danh sách nhiều ý tưởng, app tự tách từng mục, tạo lần lượt và lưu vào thư mục riêng. Cách này phù hợp khi cần làm nhiều video hoặc nhiều biến thể để chọn.</p></article>
+          <article class="feature"><small>04</small><h3>Kiểm soát chữ và ngôn ngữ</h3><p>Bạn chọn ảnh có chữ lớn, ít chữ hoặc không chữ. App cũng bám theo ngôn ngữ bạn muốn để hạn chế lỗi ảnh tiếng Việt lại ra tiếng Anh hoặc chữ sai ý.</p></article>
+          <article class="feature"><small>05</small><h3>Giữ logo gốc</h3><p>Logo không để AI vẽ lại. App tạo ảnh trước, sau đó ghép đúng file logo thật vào ảnh để tránh bị méo, sai chữ hoặc sai nhận diện thương hiệu.</p></article>
+          <article class="feature"><small>06</small><h3>Lưu file và báo lỗi dễ hiểu</h3><p>Ảnh sau khi tạo được lưu vào thư mục bạn chọn. Nếu có lỗi, app hiển thị lý do ngắn gọn để biết nên đổi câu lệnh, đổi kích thước hay kiểm tra kết nối.</p></article>
         </div>
       </section>
 
-      <section id="agent" class="panel agent">
+      <section id="advisor" class="panel agent">
         <div>
-          <h2>Agent tư vấn gói và nội dung</h2>
-          <p>Nhập nhanh ngách YouTube và mục tiêu sử dụng. Agent sẽ gợi ý gói phù hợp, cách ghi chú khi đặt mua và prompt mẫu để test app.</p>
-          <form id="agentForm">
+          <h2>Trợ lý tư vấn nội dung</h2>
+          <p>Nhập chủ đề kênh và mục tiêu sử dụng. Trợ lý sẽ gợi ý cách dùng app, gói phù hợp và một câu lệnh tạo ảnh mẫu để bạn test ngay.</p>
+          <form id="advisorForm">
             <label>Ngách/chủ đề kênh
-              <input id="agentNiche" placeholder="Ví dụ: tài chính crypto, review sản phẩm, giáo dục, drama">
+              <input id="advisorNiche" placeholder="Ví dụ: tài chính crypto, review sản phẩm, giáo dục, bất động sản">
             </label>
             <label>Mục tiêu
-              <select id="agentGoal">
+              <select id="advisorGoal">
                 <option value="test">Test app trước khi mua</option>
                 <option value="creator">Làm kênh cá nhân đều hằng tuần</option>
-                <option value="team">Team tạo nhiều thumbnail mỗi ngày</option>
+                <option value="team">Team tạo nhiều ảnh mỗi ngày</option>
               </select>
             </label>
             <button type="submit">Gợi ý tối ưu</button>
           </form>
         </div>
-        <div id="agentOutput" class="agent-output">Agent sẽ gợi ý gói mua, cách ghi chú và prompt test tại đây.</div>
+        <div id="advisorOutput" class="agent-output">Trợ lý sẽ gợi ý cách dùng app, ghi chú đặt mua và câu lệnh test tại đây.</div>
       </section>
 
       <section id="pricing" class="panel">
@@ -498,7 +489,7 @@
             <p>Số tiền: <strong id="payAmount"></strong></p>
             <p>Nội dung chuyển khoản: <span id="payContent" class="code"></span></p>
             <p id="bankInfo" class="muted"></p>
-            <p class="muted">Sau khi chuyển khoản, admin đối soát theo mã đơn và kích hoạt tài khoản/quota cho khách.</p>
+            <p class="muted">Sau khi chuyển khoản, admin đối soát theo mã đơn và kích hoạt tài khoản sử dụng cho khách.</p>
           </div>
         </div>
       </section>
@@ -509,9 +500,9 @@
     const API_BASE = 'https://ducpt-9router-api.onrender.com';
     const BANK = { bankId: '', accountNo: '', accountName: '' };
     const plans = [
-      { id: 'trial', name: 'Dùng thử', price: 0, quotaTotal: 10, deviceLimit: 1, label: '7 ngày', highlight: false, features: ['10 ảnh để test app', '1 thiết bị', 'Trải nghiệm GEM và auto prompt'] },
-      { id: 'monthly', name: 'Gói tháng', price: 99000, quotaTotal: 100, deviceLimit: 1, label: '1 tháng', highlight: true, features: ['100 ảnh/tháng', '1 thiết bị', 'Phù hợp creator hoặc kênh mới'] },
-      { id: 'vip', name: 'VIP', price: 199000, quotaTotal: 300, deviceLimit: 2, label: '1 tháng', highlight: false, features: ['300 ảnh/tháng', '2 thiết bị', 'Phù hợp team làm nhiều kênh'] }
+      { id: 'trial', name: 'Dùng thử', price: 0, imageTotal: 10, deviceLimit: 1, label: '7 ngày', highlight: false, features: ['Tạo thử 10 ảnh', 'Dùng trên 1 thiết bị', 'Phù hợp để kiểm tra app trước khi mua'] },
+      { id: 'monthly', name: 'Gói tháng', price: 99000, imageTotal: 100, deviceLimit: 1, label: '1 tháng', highlight: true, features: ['Tạo 100 ảnh/tháng', 'Dùng trên 1 thiết bị', 'Phù hợp creator hoặc kênh mới'] },
+      { id: 'vip', name: 'VIP', price: 199000, imageTotal: 300, deviceLimit: 2, label: '1 tháng', highlight: false, features: ['Tạo 300 ảnh/tháng', 'Dùng trên 2 thiết bị', 'Phù hợp team làm nhiều kênh'] }
     ];
     const formatVnd = (value) => Number(value || 0).toLocaleString('vi-VN') + 'đ';
     const createLocalCode = () => 'DG' + Date.now().toString(36).toUpperCase().slice(-6) + Math.floor(100 + Math.random() * 900);
@@ -521,6 +512,7 @@
       planSelect.value = id;
       document.querySelectorAll('.plan').forEach((item) => item.classList.toggle('active', item.dataset.id === id));
     };
+
     plans.forEach((plan) => {
       const option = document.createElement('option');
       option.value = plan.id;
@@ -530,31 +522,32 @@
       const card = document.createElement('article');
       card.className = 'plan' + (plan.highlight ? ' featured active' : '');
       card.dataset.id = plan.id;
-      card.innerHTML = '<h3>' + plan.name + '</h3><div class="price">' + formatVnd(plan.price) + '</div><p>' + plan.quotaTotal + ' ảnh, ' + plan.deviceLimit + ' thiết bị, ' + plan.label + '</p><ul>' + plan.features.map((item) => '<li>' + item + '</li>').join('') + '</ul>';
+      card.innerHTML = '<h3>' + plan.name + '</h3><div class="price">' + formatVnd(plan.price) + '</div><p>' + plan.imageTotal + ' ảnh, ' + plan.deviceLimit + ' thiết bị, ' + plan.label + '</p><ul>' + plan.features.map((item) => '<li>' + item + '</li>').join('') + '</ul>';
       card.addEventListener('click', () => setPlan(plan.id));
       pricing.append(card);
     });
+
     planSelect.value = plans.find((plan) => plan.highlight)?.id || plans[0].id;
     planSelect.addEventListener('change', () => setPlan(planSelect.value));
 
-    document.querySelector('#agentForm').addEventListener('submit', (event) => {
+    document.querySelector('#advisorForm').addEventListener('submit', (event) => {
       event.preventDefault();
-      const niche = document.querySelector('#agentNiche').value.trim() || 'kênh YouTube mới';
-      const goal = document.querySelector('#agentGoal').value;
+      const niche = document.querySelector('#advisorNiche').value.trim() || 'kênh YouTube mới';
+      const goal = document.querySelector('#advisorGoal').value;
       const suggestedPlan = goal === 'team' ? plans.find((plan) => plan.id === 'vip') : (goal === 'test' ? plans.find((plan) => plan.id === 'trial') : plans.find((plan) => plan.id === 'monthly'));
       setPlan(suggestedPlan.id);
-      const textMode = /cinematic|du lịch|du lich|travel|food|ẩm thực|am thuc|sản phẩm|san pham|product|beauty|fashion/i.test(niche)
-        ? 'ưu tiên ảnh sạch, ít chữ hoặc không chữ nếu prompt yêu cầu'
-        : 'nên có headline lớn, ngắn, dễ đọc trên mobile';
-      document.querySelector('#agentOutput').textContent = [
+      const textMode = /cinematic|du lịch|du lich|travel|food|ẩm thực|am thuc|sản phẩm|san pham|product|beauty|fashion|logo|poster/i.test(niche)
+        ? 'ưu tiên ảnh sạch, ít chữ hoặc không chữ nếu bạn muốn ảnh sang và dễ dùng lại'
+        : 'nên có tiêu đề lớn, ngắn, dễ đọc trên điện thoại';
+      document.querySelector('#advisorOutput').textContent = [
         'Gói phù hợp: ' + suggestedPlan.name + ' - ' + formatVnd(suggestedPlan.price),
-        'Lý do: ' + (goal === 'team' ? 'cần quota lớn và 2 thiết bị cho team.' : goal === 'test' ? 'nên test nhanh trước khi mua gói tháng.' : 'đủ quota cho creator làm đều hằng tuần.'),
+        'Lý do: ' + (goal === 'team' ? 'phù hợp khi team cần tạo nhiều ảnh và dùng trên nhiều thiết bị.' : goal === 'test' ? 'phù hợp để kiểm tra nhanh trước khi mua gói tháng.' : 'phù hợp cho creator làm nội dung đều hằng tuần.'),
         '',
-        'Ghi chú nên điền:',
-        'Kênh/chủ đề: ' + niche + '. Cần thumbnail đúng phong cách YouTube, ' + textMode + ', có thể dùng ảnh mẫu và logo gốc.',
+        'Ghi chú nên điền khi đặt mua:',
+        'Kênh/chủ đề: ' + niche + '. Cần tạo ảnh đúng phong cách YouTube, ' + textMode + ', có thể dùng ảnh mẫu và ghép logo gốc.',
         '',
-        'Prompt test mẫu:',
-        'Tạo thumbnail YouTube 16:9 về ' + niche + ', một chủ thể chính rõ ràng, bố cục CTR sạch, màu sắc nổi bật, cảm xúc mạnh, phù hợp người xem mobile.'
+        'Câu lệnh tạo ảnh mẫu:',
+        'Tạo thumbnail YouTube 16:9 về ' + niche + ', một chủ thể chính rõ ràng, bố cục sạch, màu sắc nổi bật, cảm xúc mạnh, phù hợp người xem mobile.'
       ].join('\n');
     });
 
