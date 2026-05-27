@@ -512,6 +512,10 @@
   <script>
     const API_BASE = 'https://ducpt-9router-api.onrender.com';
     const BANK = { bankId: '', accountNo: '', accountName: '' };
+    const PAYMENT_IMAGES = {
+      monthly: '/image/assets/payment-99000.svg',
+      vip: '/image/assets/payment-199000.svg'
+    };
     const plans = [
       { id: 'trial', name: 'Dùng thử', price: 0, imageTotal: 10, deviceLimit: 1, label: '7 ngày', highlight: false, features: ['Tạo thử 10 ảnh', 'Dùng trên 1 thiết bị', 'Phù hợp để kiểm tra app trước khi mua'] },
       { id: 'monthly', name: 'Gói tháng', price: 99000, imageTotal: 100, deviceLimit: 1, label: '1 tháng', highlight: true, features: ['Tạo 100 ảnh/tháng', 'Dùng trên 1 thiết bị', 'Phù hợp người làm nội dung đều đặn'] },
@@ -586,19 +590,31 @@
       } catch (error) {
         const code = createLocalCode();
         order = { code, price: selectedPlan.price, transferContent: code };
-        bank = { ...BANK, qrUrl: '' };
+        bank = {
+          ...BANK,
+          paymentRequired: selectedPlan.price > 0,
+          paymentImageUrl: PAYMENT_IMAGES[selectedPlan.id] || '',
+          qrUrl: ''
+        };
         status.textContent = 'Đã tạo mã đơn tạm thời. Nếu server đang ngủ, admin vẫn đối soát theo nội dung chuyển khoản.';
       }
-      if (!status.textContent || status.textContent === 'Đang tạo đơn...') {
-        status.textContent = 'Đã tạo đơn ' + order.code + '. Vui lòng chuyển khoản đúng nội dung.';
+      const paymentBox = document.querySelector('#paymentBox');
+      const paymentRequired = Boolean(bank.paymentRequired ?? (Number(order.price || 0) > 0));
+      if (!paymentRequired) {
+        paymentBox.classList.remove('show');
+        status.textContent = 'Đã lưu thông tin dùng thử ' + order.code + '. Gói 0đ không cần chuyển khoản.';
+        return;
       }
-      document.querySelector('#paymentBox').classList.add('show');
+      if (!status.textContent || status.textContent === 'Đang tạo đơn...') {
+        status.textContent = 'Đã tạo đơn ' + order.code + '. Vui lòng quét QR và chuyển khoản đúng nội dung.';
+      }
+      paymentBox.classList.add('show');
       document.querySelector('#payAmount').textContent = formatVnd(order.price);
       document.querySelector('#payContent').textContent = order.transferContent;
       document.querySelector('#bankInfo').textContent = bank.accountNo ? ('Ngân hàng: ' + bank.bankId + ' | STK: ' + bank.accountNo + ' | Tên: ' + bank.accountName) : 'Chưa cấu hình thông tin ngân hàng public. Vui lòng liên hệ admin để nhận STK.';
       const qr = document.querySelector('#qrImage');
-      if (bank.qrUrl) {
-        qr.src = bank.qrUrl;
+      if (bank.paymentImageUrl || bank.qrUrl) {
+        qr.src = bank.paymentImageUrl || bank.qrUrl;
         qr.hidden = false;
       } else {
         qr.hidden = true;
