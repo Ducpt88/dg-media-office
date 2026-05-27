@@ -6,58 +6,433 @@
   <title>DG Image Tools - Tạo thumbnail YouTube bằng AI</title>
   <meta name="description" content="DG Image Tools hỗ trợ tạo thumbnail YouTube, ảnh marketing, GEM phân tích ảnh mẫu, tạo hàng loạt, ghép logo gốc và quản lý quota thành viên.">
   <link rel="canonical" href="https://ducpt.com/image">
+  <link rel="icon" href="/image/assets/dg-image-tools-icon.png" type="image/png">
   <style>
-    :root { font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #111827; background: #f7f3ee; }
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #101827;
+      background: #f5f7fb;
+    }
+
     * { box-sizing: border-box; }
-    body { margin: 0; background: linear-gradient(#eadfd2 1px, transparent 1px), linear-gradient(90deg, #eadfd2 1px, transparent 1px), #f7f3ee; background-size: 40px 40px; }
-    main { max-width: 1120px; margin: 0 auto; padding: 42px 18px 56px; }
-    .hero, .band { border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; box-shadow: 0 16px 42px rgba(15,23,42,.08); }
-    .hero { display: grid; grid-template-columns: minmax(0,1.05fr) minmax(320px,.95fr); gap: 24px; padding: 28px; align-items: start; }
-    h1 { margin: 0 0 12px; font-size: 34px; line-height: 1.12; }
-    h2 { margin: 0 0 16px; font-size: 22px; }
-    h3 { margin: 0 0 8px; font-size: 17px; }
-    p { margin: 0; color: #475569; line-height: 1.55; }
-    .features { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin-top: 18px; }
-    .feature { border: 1px solid #dbe2ea; border-radius: 8px; padding: 12px; background: #f8fafc; font-weight: 700; }
-    .agent { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 14px; }
-    .agent-output { min-height: 188px; border: 1px solid #dbe2ea; border-radius: 8px; padding: 14px; background: #0f1724; color: #d8f7e7; white-space: pre-wrap; font-family: Consolas, "Liberation Mono", monospace; font-size: 13px; line-height: 1.5; }
-    .pricing { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 18px; }
-    .plan { border: 1px solid #dbe2ea; border-radius: 8px; padding: 16px; background: #fff; cursor: pointer; }
-    .plan.active, .plan.featured { border-color: #1f7aeb; box-shadow: 0 0 0 3px rgba(31,122,235,.12); }
-    .price { font-size: 26px; font-weight: 900; color: #0f172a; }
-    ul { margin: 12px 0 0; padding-left: 18px; color: #475569; }
+
+    body {
+      margin: 0;
+      background:
+        linear-gradient(180deg, rgba(31, 122, 235, .08), transparent 340px),
+        linear-gradient(#e6edf7 1px, transparent 1px),
+        linear-gradient(90deg, #e6edf7 1px, transparent 1px),
+        #f5f7fb;
+      background-size: auto, 40px 40px, 40px 40px, auto;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 22px 18px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      min-width: 0;
+      margin-bottom: 18px;
+      border: 1px solid #dbe2ea;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .86);
+      padding: 10px 12px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+      gap: 10px;
+    }
+
+    .brand img {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      box-shadow: 0 10px 24px rgba(31, 122, 235, .22);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 16px;
+      line-height: 1.15;
+    }
+
+    .brand span,
+    .topbar nav {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .topbar nav {
+      display: flex;
+      gap: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(340px, .95fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .hero-copy,
+    .order-card,
+    .panel {
+      border: 1px solid #dbe2ea;
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, .08);
+    }
+
+    .hero-copy {
+      padding: 30px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      border: 1px solid #bfdbfe;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #174ea6;
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    h1,
+    h2,
+    h3,
+    p { margin: 0; }
+
+    h1 {
+      max-width: 720px;
+      font-size: 42px;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin-bottom: 14px;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    h3 {
+      margin-bottom: 8px;
+      font-size: 17px;
+    }
+
+    p {
+      color: #475569;
+      line-height: 1.58;
+    }
+
+    .lead {
+      max-width: 700px;
+      margin-top: 14px;
+      font-size: 17px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .button,
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      border: 0;
+      border-radius: 8px;
+      padding: 0 16px;
+      background: #1f7aeb;
+      color: #ffffff;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      border: 1px solid #dbe2ea;
+      background: #ffffff;
+      color: #0f172a;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .metric {
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 12px;
+    }
+
+    .metric strong {
+      display: block;
+      color: #0f172a;
+      font-size: 22px;
+    }
+
+    .metric span {
+      color: #64748b;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .order-card {
+      padding: 22px;
+    }
+
+    form {
+      display: grid;
+      gap: 10px;
+    }
+
+    label {
+      display: grid;
+      gap: 5px;
+      color: #475569;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid #dbe2ea;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 11px 12px;
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+
+    .status {
+      min-height: 20px;
+      color: #047857;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .sections {
+      display: grid;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .feature {
+      min-height: 118px;
+      border: 1px solid #dbe2ea;
+      border-radius: 8px;
+      background: #f8fafc;
+      padding: 14px;
+    }
+
+    .feature small {
+      display: inline-flex;
+      margin-bottom: 10px;
+      color: #1f7aeb;
+      font-weight: 900;
+    }
+
+    .agent {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      gap: 14px;
+    }
+
+    .agent-output {
+      min-height: 210px;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      background: #0f1724;
+      color: #d8f7e7;
+      padding: 14px;
+      white-space: pre-wrap;
+      font-family: Consolas, "Liberation Mono", monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .plan {
+      border: 1px solid #dbe2ea;
+      border-radius: 8px;
+      background: #ffffff;
+      padding: 16px;
+      cursor: pointer;
+    }
+
+    .plan.active,
+    .plan.featured {
+      border-color: #1f7aeb;
+      box-shadow: 0 0 0 3px rgba(31, 122, 235, .12);
+    }
+
+    .price {
+      color: #0f172a;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    ul {
+      margin: 12px 0 0;
+      padding-left: 18px;
+      color: #475569;
+    }
+
     li { margin: 6px 0; }
-    form { display: grid; gap: 10px; }
-    label { display: grid; gap: 5px; color: #475569; font-size: 13px; font-weight: 700; }
-    input, textarea, select { width: 100%; min-width: 0; border: 1px solid #dbe2ea; border-radius: 8px; padding: 11px 12px; font: inherit; outline: none; background: #fff; }
-    input:focus, textarea:focus, select:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
-    button { height: 42px; border: 0; border-radius: 8px; background: #1f7aeb; color: white; font-weight: 800; cursor: pointer; }
-    .band { margin-top: 16px; padding: 22px; }
-    .payment { display: none; grid-template-columns: 180px minmax(0,1fr); gap: 16px; align-items: start; margin-top: 14px; border: 1px solid #dbeafe; border-radius: 8px; padding: 14px; background: #f8fbff; }
+
+    .payment {
+      display: none;
+      grid-template-columns: 180px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+      margin-top: 14px;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      background: #f8fbff;
+      padding: 14px;
+    }
+
     .payment.show { display: grid; }
-    .payment img { width: 180px; max-width: 100%; border-radius: 8px; background: white; }
-    .code { display: inline-flex; border: 1px dashed #1f7aeb; border-radius: 8px; padding: 7px 10px; background: white; color: #174ea6; font-weight: 900; }
-    .muted { color: #64748b; font-size: 13px; }
-    .status { min-height: 20px; color: #047857; font-weight: 800; }
-    @media (max-width: 860px) { .hero, .payment, .agent { grid-template-columns: 1fr; } .pricing, .features { grid-template-columns: 1fr; } h1 { font-size: 28px; } }
+
+    .payment img {
+      width: 180px;
+      max-width: 100%;
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    .code {
+      display: inline-flex;
+      border: 1px dashed #1f7aeb;
+      border-radius: 8px;
+      background: #ffffff;
+      color: #174ea6;
+      padding: 7px 10px;
+      font-weight: 900;
+    }
+
+    .muted {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 940px) {
+      .hero,
+      .agent,
+      .payment {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid,
+      .pricing,
+      .metrics {
+        grid-template-columns: 1fr;
+      }
+
+      h1 { font-size: 32px; }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .topbar nav {
+        flex-wrap: wrap;
+      }
+    }
   </style>
 </head>
 <body>
-  <main>
+  <main class="page">
+    <header class="topbar">
+      <a class="brand" href="/image" aria-label="DG Image Tools">
+        <img src="/image/assets/dg-image-tools-icon.png" alt="DG Image Tools">
+        <span>
+          <strong>DG Image Tools</strong>
+          <span>AI thumbnail workspace</span>
+        </span>
+      </a>
+      <nav>
+        <a href="#features">Tính năng</a>
+        <a href="#agent">Agent tư vấn</a>
+        <a href="#pricing">Bảng giá</a>
+        <a href="#order">Đặt mua</a>
+      </nav>
+    </header>
+
     <section class="hero">
-      <div>
-        <h1>DG Image Tools cho thumbnail YouTube và ảnh marketing</h1>
-        <p>Bộ công cụ tạo ảnh bằng 9Router dành cho creator, team media và người làm kênh YouTube. App hỗ trợ phân tích ảnh mẫu, tối ưu prompt theo từng ngách, tạo hàng loạt, kiểm soát chữ/ngôn ngữ, ghép logo gốc và quản lý quota thành viên.</p>
-        <div class="features">
-          <div class="feature">Tạo thumbnail cho tài chính, crypto, review, drama, giáo dục, podcast, reaction</div>
-          <div class="feature">GEM phân tích ảnh mẫu và gợi ý prompt theo style riêng</div>
-          <div class="feature">Tạo hàng loạt, lưu file, manifest và lịch sử lỗi để dễ kiểm tra</div>
-          <div class="feature">Quản lý thành viên, quota, thiết bị và dữ liệu khách hàng</div>
-          <div class="feature">Logo gốc được ghép sau, không để AI vẽ lại sai logo</div>
-          <div class="feature">Tự nhận diện có chữ/không chữ, ngôn ngữ và kích thước hợp lệ</div>
+      <div class="hero-copy">
+        <span class="eyebrow">Dành cho creator, team media và kênh YouTube</span>
+        <h1>Tạo thumbnail YouTube bằng AI, đúng style và có thể bán theo quota.</h1>
+        <p class="lead">DG Image Tools kết hợp 9Router, GEM phân tích ảnh mẫu, tạo hàng loạt, kiểm soát chữ/ngôn ngữ, ghép logo gốc và quản lý thành viên trong một app desktop.</p>
+        <div class="hero-actions">
+          <a class="button" href="#order">Đặt mua ngay</a>
+          <a class="button secondary" href="#agent">Nhờ Agent gợi ý gói</a>
+        </div>
+        <div class="metrics">
+          <div class="metric"><strong>100+</strong><span>ảnh/gói tháng</span></div>
+          <div class="metric"><strong>9Router</strong><span>nguồn tạo ảnh</span></div>
+          <div class="metric"><strong>GEM</strong><span>phân tích style mẫu</span></div>
         </div>
       </div>
-      <form id="orderForm">
+
+      <form id="orderForm" class="order-card">
         <h2>Đặt mua và nhận mã chuyển khoản</h2>
         <label>Gói sử dụng
           <select id="planSelect" name="planId"></select>
@@ -72,49 +447,64 @@
           <input name="phone" required placeholder="09...">
         </label>
         <label>Ghi chú
-          <textarea name="note" rows="3" placeholder="Nhu cầu sử dụng, tên kênh, yêu cầu riêng"></textarea>
+          <textarea name="note" rows="3" placeholder="Tên kênh, ngách nội dung, số lượng ảnh cần tạo mỗi tháng"></textarea>
         </label>
         <button type="submit">Tạo đơn và lấy mã chuyển khoản</button>
         <div id="orderStatus" class="status"></div>
       </form>
     </section>
 
-    <section class="band agent">
-      <div>
-        <h2>Agent tư vấn gói và nội dung</h2>
-        <p>Nhập nhanh ngách YouTube và mục tiêu sử dụng, agent sẽ gợi ý cách điền form đặt mua, gói phù hợp và prompt mẫu để test app.</p>
-        <form id="agentForm">
-          <label>Ngách/chủ đề kênh
-            <input id="agentNiche" placeholder="Ví dụ: tài chính crypto, review sản phẩm, giáo dục, drama">
-          </label>
-          <label>Mục tiêu
-            <select id="agentGoal">
-              <option value="test">Test app trước khi mua</option>
-              <option value="creator">Làm kênh cá nhân đều hằng tuần</option>
-              <option value="team">Team tạo nhiều thumbnail mỗi ngày</option>
-            </select>
-          </label>
-          <button type="submit">Gợi ý tối ưu</button>
-        </form>
-      </div>
-      <div id="agentOutput" class="agent-output">Agent sẽ gợi ý gói mua, cách ghi chú và prompt test tại đây.</div>
-    </section>
-
-    <section class="band">
-      <h2>Bảng giá</h2>
-      <div id="pricing" class="pricing"></div>
-      <div id="paymentBox" class="payment">
-        <img id="qrImage" alt="QR chuyển khoản" hidden>
-        <div>
-          <h2>Thông tin chuyển khoản</h2>
-          <p>Số tiền: <strong id="payAmount"></strong></p>
-          <p>Nội dung chuyển khoản: <span id="payContent" class="code"></span></p>
-          <p id="bankInfo" class="muted"></p>
-          <p class="muted">Sau khi chuyển khoản, admin đối soát theo mã đơn và kích hoạt tài khoản/quota cho khách.</p>
+    <div class="sections">
+      <section id="features" class="panel">
+        <h2>Tính năng chính</h2>
+        <div class="feature-grid">
+          <article class="feature"><small>01</small><h3>GEM theo ngách</h3><p>Phân tích ảnh mẫu, nhận diện style, gợi ý prompt cho tài chính, crypto, review, drama, giáo dục, podcast và nhiều ngách YouTube khác.</p></article>
+          <article class="feature"><small>02</small><h3>Tạo hàng loạt</h3><p>Dán danh sách prompt, tự tách mục, lưu ảnh theo bài, ghi manifest và hiển thị lỗi ngắn gọn để kiểm tra nhanh.</p></article>
+          <article class="feature"><small>03</small><h3>Logo gốc</h3><p>Không để AI vẽ lại logo. App tạo ảnh trước, sau đó ghép logo gốc đúng file để tránh méo, sai chữ hoặc sai nhận diện thương hiệu.</p></article>
+          <article class="feature"><small>04</small><h3>Kiểm soát text</h3><p>Tự nhận diện có chữ/không chữ, chọn tiếng Việt, tiếng Anh, tiếng Tây Ban Nha hoặc không dùng chữ trên ảnh.</p></article>
+          <article class="feature"><small>05</small><h3>Quản lý khách hàng</h3><p>Admin tạo tài khoản, cấp quota, giới hạn thiết bị, theo dõi ảnh đã tạo và lưu dữ liệu khách hàng có backup.</p></article>
+          <article class="feature"><small>06</small><h3>Workflow bàn giao</h3><p>Phù hợp bán app theo gói tháng, quản lý thành viên và triển khai cho khách dùng trên desktop.</p></article>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <section id="agent" class="panel agent">
+        <div>
+          <h2>Agent tư vấn gói và nội dung</h2>
+          <p>Nhập nhanh ngách YouTube và mục tiêu sử dụng. Agent sẽ gợi ý gói phù hợp, cách ghi chú khi đặt mua và prompt mẫu để test app.</p>
+          <form id="agentForm">
+            <label>Ngách/chủ đề kênh
+              <input id="agentNiche" placeholder="Ví dụ: tài chính crypto, review sản phẩm, giáo dục, drama">
+            </label>
+            <label>Mục tiêu
+              <select id="agentGoal">
+                <option value="test">Test app trước khi mua</option>
+                <option value="creator">Làm kênh cá nhân đều hằng tuần</option>
+                <option value="team">Team tạo nhiều thumbnail mỗi ngày</option>
+              </select>
+            </label>
+            <button type="submit">Gợi ý tối ưu</button>
+          </form>
+        </div>
+        <div id="agentOutput" class="agent-output">Agent sẽ gợi ý gói mua, cách ghi chú và prompt test tại đây.</div>
+      </section>
+
+      <section id="pricing" class="panel">
+        <h2>Bảng giá</h2>
+        <div id="pricingCards" class="pricing"></div>
+        <div id="paymentBox" class="payment">
+          <img id="qrImage" alt="QR chuyển khoản" hidden>
+          <div>
+            <h2>Thông tin chuyển khoản</h2>
+            <p>Số tiền: <strong id="payAmount"></strong></p>
+            <p>Nội dung chuyển khoản: <span id="payContent" class="code"></span></p>
+            <p id="bankInfo" class="muted"></p>
+            <p class="muted">Sau khi chuyển khoản, admin đối soát theo mã đơn và kích hoạt tài khoản/quota cho khách.</p>
+          </div>
+        </div>
+      </section>
+    </div>
   </main>
+
   <script>
     const API_BASE = 'https://ducpt-9router-api.onrender.com';
     const BANK = { bankId: '', accountNo: '', accountName: '' };
@@ -126,7 +516,7 @@
     const formatVnd = (value) => Number(value || 0).toLocaleString('vi-VN') + 'đ';
     const createLocalCode = () => 'DG' + Date.now().toString(36).toUpperCase().slice(-6) + Math.floor(100 + Math.random() * 900);
     const planSelect = document.querySelector('#planSelect');
-    const pricing = document.querySelector('#pricing');
+    const pricing = document.querySelector('#pricingCards');
     const setPlan = (id) => {
       planSelect.value = id;
       document.querySelectorAll('.plan').forEach((item) => item.classList.toggle('active', item.dataset.id === id));
@@ -136,6 +526,7 @@
       option.value = plan.id;
       option.textContent = plan.name + ' - ' + formatVnd(plan.price);
       planSelect.append(option);
+
       const card = document.createElement('article');
       card.className = 'plan' + (plan.highlight ? ' featured active' : '');
       card.dataset.id = plan.id;
@@ -145,6 +536,7 @@
     });
     planSelect.value = plans.find((plan) => plan.highlight)?.id || plans[0].id;
     planSelect.addEventListener('change', () => setPlan(planSelect.value));
+
     document.querySelector('#agentForm').addEventListener('submit', (event) => {
       event.preventDefault();
       const niche = document.querySelector('#agentNiche').value.trim() || 'kênh YouTube mới';
@@ -165,6 +557,7 @@
         'Tạo thumbnail YouTube 16:9 về ' + niche + ', một chủ thể chính rõ ràng, bố cục CTR sạch, màu sắc nổi bật, cảm xúc mạnh, phù hợp người xem mobile.'
       ].join('\n');
     });
+
     document.querySelector('#orderForm').addEventListener('submit', async (event) => {
       event.preventDefault();
       const status = document.querySelector('#orderStatus');
