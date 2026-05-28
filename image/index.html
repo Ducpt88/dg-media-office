@@ -229,7 +229,7 @@
     .category-card {
       position: relative;
       overflow: hidden;
-      min-height: 104px;
+      min-height: 126px;
       border: 1px solid #dbe4ef;
       border-radius: var(--radius);
       background: #fff;
@@ -278,7 +278,7 @@
     }
 
     .category-check {
-      display: inline-flex;
+      display: none;
       align-items: center;
       justify-content: center;
       width: 20px;
@@ -291,14 +291,19 @@
     }
 
     .category-card h3 {
-      max-width: 118px;
-      margin: 11px 0 8px;
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      z-index: 1;
+      margin: 0;
       font-size: 18px;
-      line-height: 1.02;
+      line-height: 1.04;
       text-transform: uppercase;
     }
 
     .category-card p {
+      display: none;
       color: rgba(255, 255, 255, .82);
       font-size: 11px;
       line-height: 1.35;
@@ -329,13 +334,14 @@
 
     .category-preview {
       display: grid;
-      grid-template-columns: 142px 1fr;
-      gap: 12px;
-      align-items: center;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: stretch;
       margin-top: 12px;
       border: 1px solid #c7d7fe;
       border-radius: var(--radius);
-      background: #edf5ff;
+      overflow: hidden;
+      background: #0f172a;
       padding: 10px;
     }
 
@@ -343,7 +349,7 @@
       position: relative;
       overflow: hidden;
       display: block;
-      min-height: 84px;
+      min-height: 180px;
       border-radius: var(--radius);
       background: linear-gradient(135deg, #101828, #1463ff);
     }
@@ -352,7 +358,7 @@
       display: block;
       width: 100%;
       height: 100%;
-      min-height: 84px;
+      min-height: 180px;
       object-fit: cover;
     }
 
@@ -369,21 +375,18 @@
     }
 
     .category-preview strong {
-      display: block;
-      margin-bottom: 3px;
-      font-size: 13px;
+      display: none;
     }
 
     .category-preview p {
+      display: none;
       color: #475467;
       font-size: 12px;
       line-height: 1.45;
     }
 
     .category-preview-note {
-      display: block;
-      margin-top: 6px;
-      color: #0b45c4;
+      display: none;
       font-size: 11px;
       font-weight: 900;
     }
@@ -1259,64 +1262,64 @@
         <div class="category-switcher" aria-label="Các thể loại thumbnail app có thể tạo">
           <div class="category-switcher-head">
             <div>
-              <strong>Chọn thể loại thumbnail muốn tạo</strong>
-              <span>Tự chạy sáng từng mẫu, hoặc bấm để xem đúng nhu cầu</span>
+              <strong>Các ngách YouTube app có thể làm</strong>
+              <span>Tự chuyển từng ngách, hoặc bấm vào ảnh để xem mẫu phù hợp</span>
             </div>
             <span id="categoryCounter">01 / 06</span>
           </div>
           <div class="category-grid" id="categoryGrid">
-            <label class="category-card active" data-title="Thumbnail YouTube chữ lớn" data-desc="Tạo bố cục chữ lớn, tương phản mạnh, dễ đọc trên điện thoại." data-icon="YT">
+            <label class="category-card active" data-title="Review công nghệ" data-desc="Thumbnail cho video review app, AI, thiết bị, phần mềm và công cụ làm việc." data-icon="AI">
               <input type="radio" name="thumbCategory" checked>
-              <img class="category-photo" src="assets/real-youtube.jpg" alt="">
+              <img class="category-photo" src="assets/niche-tech-review.jpg" alt="">
               <span class="category-check">✓</span>
-              <h3>YouTube chữ lớn</h3>
+              <h3>Review công nghệ</h3>
               <p>Hook mạnh, dễ bấm</p>
             </label>
-            <label class="category-card" data-title="Ảnh sản phẩm bán hàng" data-desc="Làm ảnh sản phẩm nổi bật hơn cho bài đăng, quảng cáo và trang bán hàng." data-icon="SP">
+            <label class="category-card" data-title="Gaming" data-desc="Thumbnail game có nhân vật, hành động, cảm xúc mạnh và chữ ngắn dễ đọc." data-icon="GM">
               <input type="radio" name="thumbCategory">
-              <img class="category-photo" src="assets/real-product.jpg" alt="">
+              <img class="category-photo" src="assets/niche-gaming.jpg" alt="">
               <span class="category-check">✓</span>
-              <h3>Ảnh sản phẩm</h3>
+              <h3>Gaming</h3>
               <p>Sạch, rõ lợi ích</p>
             </label>
-            <label class="category-card" data-title="Ảnh marketing chiến dịch" data-desc="Tạo ảnh truyền thông cho ưu đãi, tuyển dụng, chiến dịch và nội dung social." data-icon="MK">
+            <label class="category-card" data-title="Tài chính kinh doanh" data-desc="Thumbnail về kiếm tiền, đầu tư, kinh doanh, case study và phân tích số liệu." data-icon="TC">
               <input type="radio" name="thumbCategory">
-              <img class="category-photo" src="assets/real-marketing.jpg" alt="">
+              <img class="category-photo" src="assets/niche-finance.jpg" alt="">
               <span class="category-check">✓</span>
-              <h3>Marketing</h3>
+              <h3>Tài chính</h3>
               <p>Thông điệp nổi bật</p>
             </label>
-            <label class="category-card" data-title="Thumbnail không chữ" data-desc="Tạo ảnh sạch, tập trung vào chủ thể, phù hợp nội dung cần cảm giác cao cấp." data-icon="NO">
+            <label class="category-card" data-title="Giáo dục hướng dẫn" data-desc="Thumbnail cho video dạy học, tutorial, hướng dẫn phần mềm và chia sẻ kiến thức." data-icon="ED">
               <input type="radio" name="thumbCategory">
-              <img class="category-photo" src="assets/real-clean.jpg" alt="">
+              <img class="category-photo" src="assets/niche-education.jpg" alt="">
               <span class="category-check">✓</span>
-              <h3>Không chữ</h3>
+              <h3>Giáo dục</h3>
               <p>Dễ dùng lại</p>
             </label>
-            <label class="category-card" data-title="Ảnh giữ logo gốc" data-desc="Tạo nền và bố cục trước, sau đó ghép logo thật để tránh méo hoặc sai nhận diện." data-icon="LG">
+            <label class="category-card" data-title="Ẩm thực đời sống" data-desc="Thumbnail món ăn, vlog đời sống, review quán và nội dung gần gũi hằng ngày." data-icon="FD">
               <input type="radio" name="thumbCategory">
-              <img class="category-photo" src="assets/real-logo.jpg" alt="">
+              <img class="category-photo" src="assets/niche-food.jpg" alt="">
               <span class="category-check">✓</span>
-              <h3>Logo chuẩn</h3>
+              <h3>Ẩm thực</h3>
               <p>Không bị AI vẽ sai</p>
             </label>
-            <label class="category-card" data-title="Ảnh Shorts/Reels" data-desc="Gợi ý ảnh dọc cho video ngắn, story, reel và nội dung social-first." data-icon="9:16">
+            <label class="category-card" data-title="Du lịch vlog" data-desc="Thumbnail cho vlog, khám phá địa điểm, trải nghiệm cá nhân và video kể chuyện." data-icon="VL">
               <input type="radio" name="thumbCategory">
-              <img class="category-photo" src="assets/real-shorts.jpg" alt="">
+              <img class="category-photo" src="assets/niche-travel.jpg" alt="">
               <span class="category-check">✓</span>
-              <h3>Shorts Reels</h3>
+              <h3>Du lịch vlog</h3>
               <p>Tối ưu khung dọc</p>
             </label>
           </div>
           <div class="category-preview">
             <div class="category-preview-art">
-              <img id="categoryPreviewPhoto" src="assets/real-youtube.jpg" alt="Ảnh thực tế cho thumbnail YouTube chữ lớn">
-              <span id="categoryPreviewIcon">YT</span>
+              <img id="categoryPreviewPhoto" src="assets/niche-tech-review.jpg" alt="Ảnh thực tế cho ngách review công nghệ">
+              <span id="categoryPreviewIcon">AI</span>
             </div>
             <div>
-              <strong id="categoryPreviewTitle">Thumbnail YouTube chữ lớn</strong>
-              <p id="categoryPreviewDesc">Tạo bố cục chữ lớn, tương phản mạnh, dễ đọc trên điện thoại.</p>
-              <span class="category-preview-note">Ảnh minh họa đổi theo tab tự động hoặc khi bấm chọn.</span>
+              <strong id="categoryPreviewTitle">Review công nghệ</strong>
+              <p id="categoryPreviewDesc">Thumbnail cho video review app, AI, thiết bị, phần mềm và công cụ làm việc.</p>
+              <span class="category-preview-note">Ảnh ngách YouTube tự đổi theo tab hoặc khi bấm chọn.</span>
             </div>
           </div>
         </div>
