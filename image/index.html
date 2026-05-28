@@ -249,23 +249,24 @@
       background: linear-gradient(135deg, #0f172a, #1463ff);
     }
 
-    .category-card:nth-child(2)::before { background: linear-gradient(135deg, #4c0519, #f97316); }
-    .category-card:nth-child(3)::before { background: linear-gradient(135deg, #064e3b, #14b8a6); }
-    .category-card:nth-child(4)::before { background: linear-gradient(135deg, #2e1065, #a855f7); }
-    .category-card:nth-child(5)::before { background: linear-gradient(135deg, #172554, #06b6d4); }
-    .category-card:nth-child(6)::before { background: linear-gradient(135deg, #3b1d06, #f59e0b); }
-
     .category-card::after {
       content: "";
       position: absolute;
-      right: -22px;
-      bottom: -26px;
+      inset: 0;
       z-index: -1;
-      width: 86px;
-      height: 86px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .24);
+      background: linear-gradient(180deg, rgba(10, 18, 32, .18), rgba(10, 18, 32, .82));
       transition: transform .25s ease, opacity .25s ease;
+    }
+
+    .category-photo {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform .35s ease;
     }
 
     .category-card input {
@@ -318,14 +319,18 @@
 
     .category-card.active::after,
     .category-card:has(input:checked)::after {
-      opacity: .42;
-      transform: scale(1.18);
+      opacity: .68;
+    }
+
+    .category-card.active .category-photo,
+    .category-card:has(input:checked) .category-photo {
+      transform: scale(1.08);
     }
 
     .category-preview {
       display: grid;
-      grid-template-columns: 82px 1fr;
-      gap: 10px;
+      grid-template-columns: 142px 1fr;
+      gap: 12px;
       align-items: center;
       margin-top: 12px;
       border: 1px solid #c7d7fe;
@@ -335,13 +340,31 @@
     }
 
     .category-preview-art {
-      display: grid;
-      place-items: center;
-      min-height: 52px;
+      position: relative;
+      overflow: hidden;
+      display: block;
+      min-height: 84px;
       border-radius: var(--radius);
       background: linear-gradient(135deg, #101828, #1463ff);
+    }
+
+    .category-preview-art img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 84px;
+      object-fit: cover;
+    }
+
+    .category-preview-art span {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      border-radius: 999px;
+      background: rgba(16, 24, 40, .8);
       color: #fff;
-      font-size: 22px;
+      padding: 4px 7px;
+      font-size: 11px;
       font-weight: 950;
     }
 
@@ -355,6 +378,14 @@
       color: #475467;
       font-size: 12px;
       line-height: 1.45;
+    }
+
+    .category-preview-note {
+      display: block;
+      margin-top: 6px;
+      color: #0b45c4;
+      font-size: 11px;
+      font-weight: 900;
     }
 
     .hero-stage {
@@ -484,19 +515,19 @@
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .18);
     }
 
-    .thumb:nth-child(2) { background: linear-gradient(135deg, #49111c, #f97316); }
-    .thumb:nth-child(3) { background: linear-gradient(135deg, #052e2b, #14b8a6); }
-    .thumb:nth-child(4) { background: linear-gradient(135deg, #271044, #a855f7); }
+    .thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     .thumb::after {
       content: "";
       position: absolute;
-      right: -20px;
-      bottom: -30px;
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, .24);
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8, 13, 24, .1), rgba(8, 13, 24, .84));
     }
 
     .thumb strong {
@@ -651,6 +682,15 @@
       background: #fff;
       padding: 18px;
       box-shadow: 0 12px 36px rgba(16, 24, 40, .06);
+    }
+
+    .feature-photo {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      margin-bottom: 14px;
+      border-radius: var(--radius);
+      object-fit: cover;
     }
 
     .feature small {
@@ -1227,46 +1267,56 @@
           <div class="category-grid" id="categoryGrid">
             <label class="category-card active" data-title="Thumbnail YouTube chữ lớn" data-desc="Tạo bố cục chữ lớn, tương phản mạnh, dễ đọc trên điện thoại." data-icon="YT">
               <input type="radio" name="thumbCategory" checked>
+              <img class="category-photo" src="assets/real-youtube.jpg" alt="">
               <span class="category-check">✓</span>
               <h3>YouTube chữ lớn</h3>
               <p>Hook mạnh, dễ bấm</p>
             </label>
             <label class="category-card" data-title="Ảnh sản phẩm bán hàng" data-desc="Làm ảnh sản phẩm nổi bật hơn cho bài đăng, quảng cáo và trang bán hàng." data-icon="SP">
               <input type="radio" name="thumbCategory">
+              <img class="category-photo" src="assets/real-product.jpg" alt="">
               <span class="category-check">✓</span>
               <h3>Ảnh sản phẩm</h3>
               <p>Sạch, rõ lợi ích</p>
             </label>
             <label class="category-card" data-title="Ảnh marketing chiến dịch" data-desc="Tạo ảnh truyền thông cho ưu đãi, tuyển dụng, chiến dịch và nội dung social." data-icon="MK">
               <input type="radio" name="thumbCategory">
+              <img class="category-photo" src="assets/real-marketing.jpg" alt="">
               <span class="category-check">✓</span>
               <h3>Marketing</h3>
               <p>Thông điệp nổi bật</p>
             </label>
             <label class="category-card" data-title="Thumbnail không chữ" data-desc="Tạo ảnh sạch, tập trung vào chủ thể, phù hợp nội dung cần cảm giác cao cấp." data-icon="NO">
               <input type="radio" name="thumbCategory">
+              <img class="category-photo" src="assets/real-clean.jpg" alt="">
               <span class="category-check">✓</span>
               <h3>Không chữ</h3>
               <p>Dễ dùng lại</p>
             </label>
             <label class="category-card" data-title="Ảnh giữ logo gốc" data-desc="Tạo nền và bố cục trước, sau đó ghép logo thật để tránh méo hoặc sai nhận diện." data-icon="LG">
               <input type="radio" name="thumbCategory">
+              <img class="category-photo" src="assets/real-logo.jpg" alt="">
               <span class="category-check">✓</span>
               <h3>Logo chuẩn</h3>
               <p>Không bị AI vẽ sai</p>
             </label>
             <label class="category-card" data-title="Ảnh Shorts/Reels" data-desc="Gợi ý ảnh dọc cho video ngắn, story, reel và nội dung social-first." data-icon="9:16">
               <input type="radio" name="thumbCategory">
+              <img class="category-photo" src="assets/real-shorts.jpg" alt="">
               <span class="category-check">✓</span>
               <h3>Shorts Reels</h3>
               <p>Tối ưu khung dọc</p>
             </label>
           </div>
           <div class="category-preview">
-            <div id="categoryPreviewIcon" class="category-preview-art">YT</div>
+            <div class="category-preview-art">
+              <img id="categoryPreviewPhoto" src="assets/real-youtube.jpg" alt="Ảnh thực tế cho thumbnail YouTube chữ lớn">
+              <span id="categoryPreviewIcon">YT</span>
+            </div>
             <div>
               <strong id="categoryPreviewTitle">Thumbnail YouTube chữ lớn</strong>
               <p id="categoryPreviewDesc">Tạo bố cục chữ lớn, tương phản mạnh, dễ đọc trên điện thoại.</p>
+              <span class="category-preview-note">Ảnh minh họa đổi theo tab tự động hoặc khi bấm chọn.</span>
             </div>
           </div>
         </div>
@@ -1292,10 +1342,10 @@
                 <p>Thumbnail 16:9 cho video review công cụ AI, chủ thể rõ, chữ lớn tiếng Việt, màu nổi bật, tương phản mạnh, dễ đọc trên điện thoại.</p>
               </div>
               <div class="thumb-grid">
-                <div class="thumb"><strong>AI tăng tốc</strong><span>Text lớn</span></div>
-                <div class="thumb"><strong>Đừng làm thủ công</strong><span>Hook mạnh</span></div>
-                <div class="thumb"><strong>Ảnh bán hàng</strong><span>Marketing</span></div>
-                <div class="thumb"><strong>Logo chuẩn</strong><span>Không méo</span></div>
+                <div class="thumb"><img src="assets/real-youtube.jpg" alt=""><strong>AI tăng tốc</strong><span>Text lớn</span></div>
+                <div class="thumb"><img src="assets/real-clean.jpg" alt=""><strong>Đừng làm thủ công</strong><span>Hook mạnh</span></div>
+                <div class="thumb"><img src="assets/real-product.jpg" alt=""><strong>Ảnh bán hàng</strong><span>Marketing</span></div>
+                <div class="thumb"><img src="assets/real-logo.jpg" alt=""><strong>Logo chuẩn</strong><span>Không méo</span></div>
               </div>
             </div>
           </div>
@@ -1411,12 +1461,12 @@
         <p>Tập trung vào các vấn đề creator thường gặp: mất thời gian viết prompt, chữ sai, logo méo, khó giữ phong cách và phải tạo nhiều phiên bản.</p>
       </div>
       <div class="feature-grid">
-        <article class="feature"><small>01</small><h3>Tạo ảnh từ ý tưởng</h3><p>Nhập nhu cầu bằng ngôn ngữ tự nhiên, app hỗ trợ biến thành câu lệnh rõ bố cục, cảm xúc, chủ thể và tỉ lệ phù hợp.</p></article>
-        <article class="feature"><small>02</small><h3>Bám phong cách ảnh mẫu</h3><p>Dùng ảnh tham khảo để giữ cảm giác màu sắc, bố cục, kiểu chữ và tinh thần thị giác cho từng kênh hoặc chiến dịch.</p></article>
-        <article class="feature"><small>03</small><h3>Tạo hàng loạt để chọn</h3><p>Dán nhiều ý tưởng, tạo nhiều biến thể và lưu theo thư mục để team chọn nhanh thay vì làm thủ công từng ảnh.</p></article>
-        <article class="feature"><small>04</small><h3>Kiểm soát chữ tiếng Việt</h3><p>Chọn ảnh có chữ lớn, ít chữ hoặc không chữ để hạn chế lỗi chữ và phù hợp từng loại nội dung.</p></article>
-        <article class="feature"><small>05</small><h3>Giữ logo gốc</h3><p>Logo không để AI vẽ lại. App tạo ảnh trước rồi ghép file logo thật để tránh méo chữ và sai nhận diện.</p></article>
-        <article class="feature"><small>06</small><h3>Dễ dùng cho team</h3><p>Phù hợp creator cá nhân, team media, kênh YouTube ra video đều và nhóm cần nhiều ảnh marketing mỗi ngày.</p></article>
+        <article class="feature"><img class="feature-photo" src="assets/real-youtube.jpg" alt=""><small>01</small><h3>Tạo ảnh từ ý tưởng</h3><p>Nhập nhu cầu bằng ngôn ngữ tự nhiên, app hỗ trợ biến thành câu lệnh rõ bố cục, cảm xúc, chủ thể và tỉ lệ phù hợp.</p></article>
+        <article class="feature"><img class="feature-photo" src="assets/real-clean.jpg" alt=""><small>02</small><h3>Bám phong cách ảnh mẫu</h3><p>Dùng ảnh tham khảo để giữ cảm giác màu sắc, bố cục, kiểu chữ và tinh thần thị giác cho từng kênh hoặc chiến dịch.</p></article>
+        <article class="feature"><img class="feature-photo" src="assets/real-marketing.jpg" alt=""><small>03</small><h3>Tạo hàng loạt để chọn</h3><p>Dán nhiều ý tưởng, tạo nhiều biến thể và lưu theo thư mục để team chọn nhanh thay vì làm thủ công từng ảnh.</p></article>
+        <article class="feature"><img class="feature-photo" src="assets/real-product.jpg" alt=""><small>04</small><h3>Kiểm soát chữ tiếng Việt</h3><p>Chọn ảnh có chữ lớn, ít chữ hoặc không chữ để hạn chế lỗi chữ và phù hợp từng loại nội dung.</p></article>
+        <article class="feature"><img class="feature-photo" src="assets/real-logo.jpg" alt=""><small>05</small><h3>Giữ logo gốc</h3><p>Logo không để AI vẽ lại. App tạo ảnh trước rồi ghép file logo thật để tránh méo chữ và sai nhận diện.</p></article>
+        <article class="feature"><img class="feature-photo" src="assets/real-shorts.jpg" alt=""><small>06</small><h3>Dễ dùng cho team</h3><p>Phù hợp creator cá nhân, team media, kênh YouTube ra video đều và nhóm cần nhiều ảnh marketing mỗi ngày.</p></article>
       </div>
     </section>
 
@@ -1494,10 +1544,13 @@
         card.querySelector('input').checked = isActive;
       });
       const activeCard = categoryCards[categoryIndex];
+      const activePhoto = activeCard.querySelector('.category-photo');
       document.querySelector('#categoryCounter').textContent = String(categoryIndex + 1).padStart(2, '0') + ' / ' + String(categoryCards.length).padStart(2, '0');
       document.querySelector('#categoryPreviewIcon').textContent = activeCard.dataset.icon;
       document.querySelector('#categoryPreviewTitle').textContent = activeCard.dataset.title;
       document.querySelector('#categoryPreviewDesc').textContent = activeCard.dataset.desc;
+      document.querySelector('#categoryPreviewPhoto').src = activePhoto.src;
+      document.querySelector('#categoryPreviewPhoto').alt = 'Ảnh thực tế cho ' + activeCard.dataset.title;
       if (shouldPause) restartCategoryTimer(6500);
     }
 
