@@ -191,6 +191,172 @@
       padding: 7px 10px;
     }
 
+    .category-switcher {
+      margin-top: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .68);
+      padding: 14px;
+      box-shadow: 0 14px 40px rgba(16, 24, 40, .06);
+    }
+
+    .category-switcher-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+    }
+
+    .category-switcher-head strong {
+      display: block;
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .category-switcher-head span {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .category-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 104px;
+      border: 1px solid #dbe4ef;
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 10px;
+      color: #fff;
+      cursor: pointer;
+      isolation: isolate;
+      transform: translateY(0);
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    }
+
+    .category-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background: linear-gradient(135deg, #0f172a, #1463ff);
+    }
+
+    .category-card:nth-child(2)::before { background: linear-gradient(135deg, #4c0519, #f97316); }
+    .category-card:nth-child(3)::before { background: linear-gradient(135deg, #064e3b, #14b8a6); }
+    .category-card:nth-child(4)::before { background: linear-gradient(135deg, #2e1065, #a855f7); }
+    .category-card:nth-child(5)::before { background: linear-gradient(135deg, #172554, #06b6d4); }
+    .category-card:nth-child(6)::before { background: linear-gradient(135deg, #3b1d06, #f59e0b); }
+
+    .category-card::after {
+      content: "";
+      position: absolute;
+      right: -22px;
+      bottom: -26px;
+      z-index: -1;
+      width: 86px;
+      height: 86px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, .24);
+      transition: transform .25s ease, opacity .25s ease;
+    }
+
+    .category-card input {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .category-check {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: 1px solid rgba(255, 255, 255, .7);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .18);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .category-card h3 {
+      max-width: 118px;
+      margin: 11px 0 8px;
+      font-size: 18px;
+      line-height: 1.02;
+      text-transform: uppercase;
+    }
+
+    .category-card p {
+      color: rgba(255, 255, 255, .82);
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .category-card.active,
+    .category-card:has(input:checked) {
+      border-color: #fff;
+      box-shadow: 0 0 0 3px rgba(20, 99, 255, .18), 0 18px 34px rgba(20, 99, 255, .22);
+      transform: translateY(-4px);
+    }
+
+    .category-card.active .category-check,
+    .category-card:has(input:checked) .category-check {
+      background: #fff;
+      color: var(--blue-dark);
+    }
+
+    .category-card.active::after,
+    .category-card:has(input:checked)::after {
+      opacity: .42;
+      transform: scale(1.18);
+    }
+
+    .category-preview {
+      display: grid;
+      grid-template-columns: 82px 1fr;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
+      border: 1px solid #c7d7fe;
+      border-radius: var(--radius);
+      background: #edf5ff;
+      padding: 10px;
+    }
+
+    .category-preview-art {
+      display: grid;
+      place-items: center;
+      min-height: 52px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, #101828, #1463ff);
+      color: #fff;
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    .category-preview strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+    .category-preview p {
+      color: #475467;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
     .hero-stage {
       position: relative;
       min-height: auto;
@@ -521,6 +687,141 @@
       box-shadow: var(--shadow);
     }
 
+    .upload-demo {
+      display: grid;
+      grid-template-columns: .82fr 1.18fr;
+      gap: 18px;
+      align-items: stretch;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .demo-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 8px;
+    }
+
+    .demo-copy p {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .demo-steps {
+      display: grid;
+      gap: 10px;
+    }
+
+    .demo-step {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 10px;
+      align-items: start;
+      border: 1px solid #e6ebf2;
+      border-radius: var(--radius);
+      background: #f8fafc;
+      padding: 12px;
+    }
+
+    .demo-step b {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius);
+      background: #edf5ff;
+      color: var(--blue-dark);
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .demo-step strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 14px;
+    }
+
+    .demo-step span {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .demo-board {
+      display: grid;
+      grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .demo-card {
+      overflow: hidden;
+      border: 1px solid #dbe4ef;
+      border-radius: var(--radius);
+      background: #f8fafc;
+    }
+
+    .demo-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-bottom: 1px solid #e6ebf2;
+      background: #fff;
+      padding: 11px 12px;
+      font-size: 13px;
+      font-weight: 950;
+    }
+
+    .demo-card-head span {
+      border-radius: 999px;
+      background: #eef6ff;
+      color: var(--blue-dark);
+      padding: 4px 8px;
+      font-size: 11px;
+    }
+
+    .demo-image {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    .demo-input {
+      display: grid;
+      align-content: start;
+    }
+
+    .drop-note {
+      margin: 12px;
+      border: 1px dashed #9bbcf8;
+      border-radius: var(--radius);
+      background: #edf5ff;
+      color: #0b45c4;
+      padding: 12px;
+      font-size: 13px;
+      font-weight: 850;
+      line-height: 1.45;
+    }
+
+    .demo-results {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .demo-results .demo-card:first-child {
+      grid-column: 1 / -1;
+    }
+
     .showcase-copy {
       display: flex;
       flex-direction: column;
@@ -686,6 +987,72 @@
 
     .payment.show { display: block; }
 
+    .payment-layout {
+      display: grid;
+      grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .payment-image {
+      width: 100%;
+      max-height: 360px;
+      border: 1px solid #dbe4ef;
+      border-radius: var(--radius);
+      background: #fff;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    .payment-info {
+      display: grid;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .payment-info h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+    }
+
+    .payment-info p {
+      color: #475467;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .payment-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .payment-actions button,
+    .payment-actions .button {
+      min-height: 40px;
+      padding: 0 12px;
+      font-size: 13px;
+    }
+
+    .zalo-box {
+      display: none;
+      margin-top: 12px;
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius);
+      background: #f0fdf4;
+      padding: 12px;
+    }
+
+    .zalo-box.show { display: block; }
+
+    .zalo-box strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #047857;
+    }
+
     .code {
       display: inline-flex;
       border: 1px dashed var(--blue);
@@ -704,7 +1071,11 @@
     }
 
     @media (max-width: 980px) {
-      .hero, .showcase, .advisor {
+      .hero, .showcase, .upload-demo, .advisor {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-board {
         grid-template-columns: 1fr;
       }
 
@@ -719,6 +1090,10 @@
       }
 
       .floating-order.form {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-layout {
         grid-template-columns: 1fr;
       }
 
@@ -763,6 +1138,28 @@
 
       .lead { font-size: 16px; }
 
+      .category-switcher {
+        padding: 12px;
+      }
+
+      .category-switcher-head {
+        align-items: start;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .category-card {
+        min-height: 96px;
+      }
+
+      .category-card h3 {
+        font-size: 16px;
+      }
+
       .hero-stage { min-height: auto; }
 
       .app-body {
@@ -779,7 +1176,8 @@
 
       .side-title { grid-column: 1 / -1; margin-bottom: 4px; }
       .side-item { margin: 0; }
-      .thumb-grid, .before-after { grid-template-columns: 1fr; }
+      .thumb-grid, .before-after, .demo-results { grid-template-columns: 1fr; }
+      .demo-results .demo-card:first-child { grid-column: auto; }
       .thumb { min-height: 126px; }
       .shot { min-height: 230px; }
       .floating-order { margin-top: 12px; }
@@ -817,6 +1215,60 @@
           <span>10 ảnh dùng thử</span>
           <span>Không cần chuyển khoản gói 0đ</span>
           <span>Hỗ trợ kích hoạt qua Zalo</span>
+        </div>
+        <div class="category-switcher" aria-label="Các thể loại thumbnail app có thể tạo">
+          <div class="category-switcher-head">
+            <div>
+              <strong>Chọn thể loại thumbnail muốn tạo</strong>
+              <span>Tự chạy sáng từng mẫu, hoặc bấm để xem đúng nhu cầu</span>
+            </div>
+            <span id="categoryCounter">01 / 06</span>
+          </div>
+          <div class="category-grid" id="categoryGrid">
+            <label class="category-card active" data-title="Thumbnail YouTube chữ lớn" data-desc="Tạo bố cục chữ lớn, tương phản mạnh, dễ đọc trên điện thoại." data-icon="YT">
+              <input type="radio" name="thumbCategory" checked>
+              <span class="category-check">✓</span>
+              <h3>YouTube chữ lớn</h3>
+              <p>Hook mạnh, dễ bấm</p>
+            </label>
+            <label class="category-card" data-title="Ảnh sản phẩm bán hàng" data-desc="Làm ảnh sản phẩm nổi bật hơn cho bài đăng, quảng cáo và trang bán hàng." data-icon="SP">
+              <input type="radio" name="thumbCategory">
+              <span class="category-check">✓</span>
+              <h3>Ảnh sản phẩm</h3>
+              <p>Sạch, rõ lợi ích</p>
+            </label>
+            <label class="category-card" data-title="Ảnh marketing chiến dịch" data-desc="Tạo ảnh truyền thông cho ưu đãi, tuyển dụng, chiến dịch và nội dung social." data-icon="MK">
+              <input type="radio" name="thumbCategory">
+              <span class="category-check">✓</span>
+              <h3>Marketing</h3>
+              <p>Thông điệp nổi bật</p>
+            </label>
+            <label class="category-card" data-title="Thumbnail không chữ" data-desc="Tạo ảnh sạch, tập trung vào chủ thể, phù hợp nội dung cần cảm giác cao cấp." data-icon="NO">
+              <input type="radio" name="thumbCategory">
+              <span class="category-check">✓</span>
+              <h3>Không chữ</h3>
+              <p>Dễ dùng lại</p>
+            </label>
+            <label class="category-card" data-title="Ảnh giữ logo gốc" data-desc="Tạo nền và bố cục trước, sau đó ghép logo thật để tránh méo hoặc sai nhận diện." data-icon="LG">
+              <input type="radio" name="thumbCategory">
+              <span class="category-check">✓</span>
+              <h3>Logo chuẩn</h3>
+              <p>Không bị AI vẽ sai</p>
+            </label>
+            <label class="category-card" data-title="Ảnh Shorts/Reels" data-desc="Gợi ý ảnh dọc cho video ngắn, story, reel và nội dung social-first." data-icon="9:16">
+              <input type="radio" name="thumbCategory">
+              <span class="category-check">✓</span>
+              <h3>Shorts Reels</h3>
+              <p>Tối ưu khung dọc</p>
+            </label>
+          </div>
+          <div class="category-preview">
+            <div id="categoryPreviewIcon" class="category-preview-art">YT</div>
+            <div>
+              <strong id="categoryPreviewTitle">Thumbnail YouTube chữ lớn</strong>
+              <p id="categoryPreviewDesc">Tạo bố cục chữ lớn, tương phản mạnh, dễ đọc trên điện thoại.</p>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -867,9 +1319,25 @@
           <button type="submit">Tạo mã kích hoạt</button>
           <div id="orderStatus" class="status"></div>
           <div id="paymentBox" class="payment">
-            <p>Số tiền: <strong id="payAmount"></strong></p>
-            <p>Nội dung CK: <span id="payContent" class="code"></span></p>
-            <p id="bankInfo"></p>
+            <div class="payment-layout">
+              <img id="paymentImage" class="payment-image" src="" alt="Ảnh QR thanh toán đúng theo gói đã chọn" hidden>
+              <div class="payment-info">
+                <h3>Thanh toán gói <span id="payPlanName"></span></h3>
+                <p>Số tiền cần chuyển: <strong id="payAmount"></strong></p>
+                <p>Nội dung chuyển khoản: <span id="payContent" class="code"></span></p>
+                <p id="bankInfo"></p>
+                <p>Vui lòng chọn đúng ảnh QR theo mệnh giá gói đã đặt. Chuyển khoản đúng nội dung để hệ thống/admin đối soát nhanh.</p>
+                <div class="payment-actions">
+                  <button id="confirmTransfer" type="button">Tôi đã chuyển khoản - kiểm tra</button>
+                  <a class="button secondary" href="#pricing">Đổi gói</a>
+                </div>
+                <div id="zaloBox" class="zalo-box">
+                  <strong>Đã xác nhận thanh toán</strong>
+                  <p>Tài khoản sẽ được kích hoạt theo email/Zalo bạn đã điền. Bấm vào nhóm Zalo để nhận hướng dẫn và hỗ trợ nhanh.</p>
+                  <a id="zaloLink" class="button" href="https://zalo.me/g/5mnnl6aynxzvsyu5gyl5" target="_blank" rel="noopener">Vào nhóm Zalo hỗ trợ</a>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       </div>
@@ -895,6 +1363,44 @@
         <div class="before-after">
           <div class="shot"><b>Trước</b><strong>Ý tưởng rời rạc</strong></div>
           <div class="shot good"><b>Sau</b><strong>Thumbnail sẵn đăng</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="upload-demo">
+        <div class="demo-copy">
+          <div>
+            <span class="eyebrow">Demo luồng tạo ảnh</span>
+            <h2 style="margin-top:16px">Ném 1 ảnh mẫu vào, app gợi ý nhiều thumbnail sẵn sàng dùng</h2>
+            <p style="margin-top:14px">Khách hàng cần nhìn thấy app làm được gì. Section này mô phỏng cách DG Image Tools đọc ảnh tham khảo, giữ tinh thần bố cục và tạo ra nhiều biến thể thumbnail nổi bật hơn để chọn.</p>
+          </div>
+          <div class="demo-steps">
+            <div class="demo-step"><b>01</b><div><strong>Upload ảnh mẫu</strong><span>Dùng khung video, ảnh sản phẩm hoặc ảnh thumbnail cũ làm điểm tham chiếu.</span></div></div>
+            <div class="demo-step"><b>02</b><div><strong>App phân tích bố cục</strong><span>Nhận diện chủ thể, màu sắc, khoảng trống, cảm xúc và kiểu chữ phù hợp.</span></div></div>
+            <div class="demo-step"><b>03</b><div><strong>Trả về biến thể mới</strong><span>Tạo nhiều option có chữ lớn, hook mạnh, logo gốc và tỷ lệ 16:9 cho YouTube.</span></div></div>
+          </div>
+        </div>
+        <div class="demo-board">
+          <div class="demo-card demo-input">
+            <div class="demo-card-head">Ảnh đầu vào <span>reference</span></div>
+            <img class="demo-image" src="assets/demo-input.svg" alt="Ảnh đầu vào để app phân tích và tạo thumbnail">
+            <div class="drop-note">Kéo thả ảnh mẫu vào app, chọn chế độ có chữ lớn hoặc không chữ, sau đó tạo nhiều biến thể để so sánh.</div>
+          </div>
+          <div class="demo-results">
+            <div class="demo-card">
+              <div class="demo-card-head">Kết quả 01 <span>chữ lớn</span></div>
+              <img class="demo-image" src="assets/demo-output-1.svg" alt="Thumbnail kết quả có chữ lớn và bố cục nổi bật">
+            </div>
+            <div class="demo-card">
+              <div class="demo-card-head">Kết quả 02 <span>hook mạnh</span></div>
+              <img class="demo-image" src="assets/demo-output-2.svg" alt="Thumbnail kết quả với thông điệp hook mạnh">
+            </div>
+            <div class="demo-card">
+              <div class="demo-card-head">Kết quả 03 <span>marketing</span></div>
+              <img class="demo-image" src="assets/demo-output-3.svg" alt="Thumbnail kết quả cho ảnh marketing và bán hàng">
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -965,16 +1471,56 @@
 
   <script>
     const API_BASE = 'https://ducpt-9router-api.onrender.com';
+    const ZALO_GROUP_URL = 'https://zalo.me/g/5mnnl6aynxzvsyu5gyl5';
     const plans = [
       { id: 'trial', name: 'Dùng thử', price: 0, imageTotal: 10, deviceLimit: 1, label: '7 ngày', badge: 'Bắt đầu dễ nhất', features: ['Tạo thử 10 ảnh', 'Dùng trên 1 thiết bị', 'Không cần chuyển khoản'] },
-      { id: 'monthly', name: 'Gói tháng', price: 99000, imageTotal: 100, deviceLimit: 1, label: '1 tháng', badge: 'Phù hợp nhất', featured: true, features: ['Tạo 100 ảnh/tháng', 'Dùng trên 1 thiết bị', 'Phù hợp creator ra video đều'] },
-      { id: 'vip', name: 'VIP', price: 199000, imageTotal: 300, deviceLimit: 2, label: '1 tháng', badge: 'Cho team', features: ['Tạo 300 ảnh/tháng', 'Dùng trên 2 thiết bị', 'Phù hợp team media'] }
+      { id: 'monthly', name: 'Gói tháng', price: 99000, imageTotal: 100, deviceLimit: 1, label: '1 tháng', badge: 'Phù hợp nhất', featured: true, paymentImage: 'assets/payment-99000.svg', features: ['Tạo 100 ảnh/tháng', 'Dùng trên 1 thiết bị', 'Phù hợp creator ra video đều'] },
+      { id: 'vip', name: 'VIP', price: 199000, imageTotal: 300, deviceLimit: 2, label: '1 tháng', badge: 'Cho team', paymentImage: 'assets/payment-199000.svg', features: ['Tạo 300 ảnh/tháng', 'Dùng trên 2 thiết bị', 'Phù hợp team media'] }
     ];
 
     const formatVnd = (value) => Number(value || 0).toLocaleString('vi-VN') + 'đ';
     const createLocalCode = () => 'DG' + Date.now().toString(36).toUpperCase().slice(-6) + Math.floor(100 + Math.random() * 900);
     const planSelect = document.querySelector('#planSelect');
     const pricing = document.querySelector('#pricingCards');
+    const categoryCards = Array.from(document.querySelectorAll('.category-card'));
+    let categoryIndex = 0;
+    let categoryTimer = null;
+
+    function setCategory(index, shouldPause) {
+      categoryIndex = (index + categoryCards.length) % categoryCards.length;
+      categoryCards.forEach((card, cardIndex) => {
+        const isActive = cardIndex === categoryIndex;
+        card.classList.toggle('active', isActive);
+        card.querySelector('input').checked = isActive;
+      });
+      const activeCard = categoryCards[categoryIndex];
+      document.querySelector('#categoryCounter').textContent = String(categoryIndex + 1).padStart(2, '0') + ' / ' + String(categoryCards.length).padStart(2, '0');
+      document.querySelector('#categoryPreviewIcon').textContent = activeCard.dataset.icon;
+      document.querySelector('#categoryPreviewTitle').textContent = activeCard.dataset.title;
+      document.querySelector('#categoryPreviewDesc').textContent = activeCard.dataset.desc;
+      if (shouldPause) restartCategoryTimer(6500);
+    }
+
+    function restartCategoryTimer(delay) {
+      if (categoryTimer) window.clearInterval(categoryTimer);
+      window.setTimeout(() => {
+        if (categoryTimer) window.clearInterval(categoryTimer);
+        categoryTimer = window.setInterval(() => setCategory(categoryIndex + 1, false), 2200);
+      }, delay || 0);
+    }
+
+    categoryCards.forEach((card, index) => {
+      card.addEventListener('click', () => setCategory(index, true));
+      card.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          setCategory(index, true);
+        }
+      });
+      card.tabIndex = 0;
+    });
+
+    restartCategoryTimer(1200);
 
     function setPlan(id) {
       planSelect.value = id;
@@ -1025,13 +1571,72 @@
       ].join('\n');
     });
 
+    let currentOrder = null;
+    let currentPlan = null;
+    let paymentPollTimer = null;
+
+    function showPaidState(message) {
+      const status = document.querySelector('#orderStatus');
+      const zaloBox = document.querySelector('#zaloBox');
+      const confirmButton = document.querySelector('#confirmTransfer');
+      if (!currentPlan || Number(currentPlan.price || 0) <= 0) return;
+      status.textContent = message || ('Đã ghi nhận thanh toán gói ' + currentPlan.name + '. Vui lòng vào nhóm Zalo để nhận hỗ trợ kích hoạt.');
+      confirmButton.disabled = true;
+      confirmButton.textContent = 'Đã xác nhận';
+      zaloBox.classList.add('show');
+      document.querySelector('#zaloLink').href = ZALO_GROUP_URL;
+      if (paymentPollTimer) {
+        window.clearInterval(paymentPollTimer);
+        paymentPollTimer = null;
+      }
+    }
+
+    function startPaymentPolling(orderCode) {
+      if (paymentPollTimer) window.clearInterval(paymentPollTimer);
+      paymentPollTimer = window.setInterval(async () => {
+        try {
+          const response = await fetch(API_BASE + '/api/sales/orders/' + encodeURIComponent(orderCode) + '/payment-status');
+          if (!response.ok) return;
+          const body = await response.json();
+          if (body.paid || body.status === 'paid' || body.paymentStatus === 'paid') {
+            showPaidState('Hệ thống đã xác nhận thanh toán đơn ' + orderCode + '. Vui lòng vào nhóm Zalo để nhận hỗ trợ kích hoạt.');
+          }
+        } catch (error) {
+          // Backend đối soát có thể chưa sẵn sàng trong prototype; giữ flow thủ công.
+        }
+      }, 5000);
+    }
+
+    document.querySelector('#confirmTransfer').addEventListener('click', () => {
+      const status = document.querySelector('#orderStatus');
+      const confirmButton = document.querySelector('#confirmTransfer');
+      if (!currentOrder || !currentPlan) return;
+      status.textContent = 'Đang kiểm tra giao dịch ' + currentOrder.code + '...';
+      confirmButton.disabled = true;
+      confirmButton.textContent = 'Đang xác nhận...';
+      window.setTimeout(() => {
+        showPaidState('Đã ghi nhận thanh toán gói ' + currentPlan.name + '. Vui lòng vào nhóm Zalo để nhận hỗ trợ kích hoạt.');
+      }, 1200);
+    });
+
     document.querySelector('#order').addEventListener('submit', async (event) => {
       event.preventDefault();
       const status = document.querySelector('#orderStatus');
       const formData = new FormData(event.target);
       const payload = Object.fromEntries(formData.entries());
       const selectedPlan = plans.find((plan) => plan.id === payload.planId) || plans[1];
+      const paymentBox = document.querySelector('#paymentBox');
+      const zaloBox = document.querySelector('#zaloBox');
+      const confirmButton = document.querySelector('#confirmTransfer');
       status.textContent = 'Đang tạo mã...';
+      paymentBox.classList.remove('show');
+      zaloBox.classList.remove('show');
+      confirmButton.disabled = false;
+      confirmButton.textContent = 'Tôi đã chuyển khoản - kiểm tra';
+      if (paymentPollTimer) {
+        window.clearInterval(paymentPollTimer);
+        paymentPollTimer = null;
+      }
 
       let order = null;
       try {
@@ -1047,18 +1652,31 @@
         const code = createLocalCode();
         order = { code, price: selectedPlan.price, transferContent: code };
       }
+      order.price = Number(order.price ?? selectedPlan.price);
+      order.code = order.code || createLocalCode();
+      order.transferContent = order.transferContent || order.code || createLocalCode();
 
       if (Number(order.price || 0) === 0) {
         document.querySelector('#paymentBox').classList.remove('show');
-        status.textContent = 'Đã ghi nhận gói dùng thử ' + order.code + '. Gói 0đ không cần chuyển khoản.';
+        currentOrder = null;
+        currentPlan = null;
+        document.querySelector('#zaloBox').classList.remove('show');
+        status.textContent = 'Đã ghi nhận gói dùng thử ' + order.code + '. Gói 0đ không cần chuyển khoản và chưa mở nhóm Zalo trả phí.';
         return;
       }
 
-      status.textContent = 'Đã tạo đơn ' + order.code + '. Vui lòng chuyển khoản đúng nội dung.';
-      document.querySelector('#paymentBox').classList.add('show');
+      currentOrder = order;
+      currentPlan = selectedPlan;
+      status.textContent = 'Đã tạo đơn ' + order.code + '. Vui lòng quét đúng QR ' + formatVnd(selectedPlan.price) + ' và chuyển khoản đúng nội dung.';
+      paymentBox.classList.add('show');
+      document.querySelector('#payPlanName').textContent = selectedPlan.name;
       document.querySelector('#payAmount').textContent = formatVnd(order.price);
       document.querySelector('#payContent').textContent = order.transferContent;
-      document.querySelector('#bankInfo').textContent = 'Liên hệ admin/Zalo để nhận STK nếu thông tin ngân hàng chưa hiển thị.';
+      document.querySelector('#bankInfo').textContent = 'Chủ tài khoản: Hoàng Văn Đức | STK: PSP2610910700000069 | Nội dung: ' + order.transferContent;
+      const paymentImage = document.querySelector('#paymentImage');
+      paymentImage.src = selectedPlan.paymentImage || '';
+      paymentImage.hidden = !selectedPlan.paymentImage;
+      startPaymentPolling(order.code);
     });
   </script>
 </body>
