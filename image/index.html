@@ -1716,7 +1716,7 @@
       if (order && order.customerEmailSentAt) {
         return fallback;
       }
-      return 'Hệ thống đã tạo tài khoản nhưng email hướng dẫn chưa gửi tự động. Vui lòng vào nhóm Zalo để admin hỗ trợ gửi lại tài khoản và hướng dẫn.';
+      return 'Tài khoản đã được tạo. Email hướng dẫn đang được gửi tự động, vui lòng kiểm tra hộp thư đến sau ít phút.';
     }
 
     function showTrialRegisteredState(order) {
@@ -1725,7 +1725,7 @@
       status.innerHTML = '<strong>Cảm ơn bạn đã đăng ký dùng thử DG Image Tools.</strong>'
         + 'Tài khoản dùng thử của bạn đã được tạo với mã đăng ký <b class="code">' + order.code + '</b>. '
         + 'Vui lòng kiểm tra email đã đăng ký để nhận hướng dẫn cài đặt, thông tin đăng nhập app và thời hạn sử dụng.'
-        + '<span>Nếu không thấy email trong hộp thư đến, hãy kiểm tra mục Spam/Quảng cáo hoặc nhắn Zalo để được hỗ trợ gửi lại.</span>';
+        + '<span>Nếu không thấy email trong hộp thư đến sau vài phút, hãy kiểm tra mục Spam/Quảng cáo hoặc phản hồi lại email hỗ trợ.</span>';
     }
 
     function showPaidTransferState(order, plan) {
@@ -1810,8 +1810,16 @@
       const paymentBox = document.querySelector('#paymentBox');
       const zaloBox = document.querySelector('#zaloBox');
       const confirmButton = document.querySelector('#confirmTransfer');
+      const submitButton = event.submitter || event.target.querySelector('button[type="submit"]');
+      const originalSubmitText = submitButton ? submitButton.textContent : '';
       status.className = 'status';
-      status.textContent = 'Đang tạo mã...';
+      status.textContent = Number(selectedPlan.price || 0) === 0
+        ? 'Đang tạo tài khoản dùng thử và gửi email hướng dẫn...'
+        : 'Đang tạo mã chuyển khoản...';
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Đang xử lý...';
+      }
       clearPaymentState({ clearStatus: false });
 
       let order = null;
@@ -1826,7 +1834,15 @@
         order = body.order;
       } catch (error) {
         status.textContent = 'Chưa tạo được tài khoản/đơn hàng tự động. Vui lòng thử lại hoặc liên hệ Zalo để được hỗ trợ.';
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.textContent = originalSubmitText;
+        }
         return;
+      }
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = originalSubmitText;
       }
       order.price = Number(order.price ?? selectedPlan.price);
       order.code = order.code || createLocalCode();
