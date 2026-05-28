@@ -1582,11 +1582,34 @@
 
     restartCategoryTimer(1200);
 
+    function clearPaymentState({ clearStatus = true } = {}) {
+      const paymentBox = document.querySelector('#paymentBox');
+      const zaloBox = document.querySelector('#zaloBox');
+      const paymentImage = document.querySelector('#paymentImage');
+      const confirmButton = document.querySelector('#confirmTransfer');
+      paymentBox.classList.remove('show');
+      zaloBox.classList.remove('show');
+      paymentImage.src = '';
+      paymentImage.hidden = true;
+      confirmButton.disabled = false;
+      confirmButton.textContent = 'Tôi đã chuyển khoản - kiểm tra';
+      currentOrder = null;
+      currentPlan = null;
+      if (paymentPollTimer) {
+        window.clearInterval(paymentPollTimer);
+        paymentPollTimer = null;
+      }
+      if (clearStatus) {
+        document.querySelector('#orderStatus').textContent = '';
+      }
+    }
+
     function setPlan(id) {
       planSelect.value = id;
       document.querySelectorAll('.plan').forEach((item) => {
         item.classList.toggle('featured', item.dataset.id === id || item.dataset.featured === 'true');
       });
+      clearPaymentState();
     }
 
     plans.forEach((plan) => {
@@ -1711,14 +1734,7 @@
       const zaloBox = document.querySelector('#zaloBox');
       const confirmButton = document.querySelector('#confirmTransfer');
       status.textContent = 'Đang tạo mã...';
-      paymentBox.classList.remove('show');
-      zaloBox.classList.remove('show');
-      confirmButton.disabled = false;
-      confirmButton.textContent = 'Tôi đã chuyển khoản - kiểm tra';
-      if (paymentPollTimer) {
-        window.clearInterval(paymentPollTimer);
-        paymentPollTimer = null;
-      }
+      clearPaymentState({ clearStatus: false });
 
       let order = null;
       try {
@@ -1739,10 +1755,7 @@
       order.transferContent = order.transferContent || order.code || createLocalCode();
 
       if (Number(order.price || 0) === 0) {
-        document.querySelector('#paymentBox').classList.remove('show');
-        currentOrder = null;
-        currentPlan = null;
-        document.querySelector('#zaloBox').classList.remove('show');
+        clearPaymentState({ clearStatus: false });
         status.textContent = getActivationMessage(order, 'Đã tạo tài khoản dùng thử ' + order.code + '. Vui lòng kiểm tra email để nhận link hướng dẫn, tài khoản app và thời hạn dùng thử.');
         return;
       }
