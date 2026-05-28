@@ -1515,15 +1515,27 @@
 
   <script>
     const API_BASE = 'https://ducpt-9router-api.onrender.com';
+    const SEPAY_BANK_CODE = 'VPBank';
+    const SEPAY_ACCOUNT_NO = 'PSP2610910700000069';
+    const SEPAY_ACCOUNT_NAME = 'Hoang Van Duc';
     const ZALO_GROUP_URL = 'https://zalo.me/g/5mnnl6aynxzvsyu5gyl5';
     const plans = [
       { id: 'trial', name: 'Dùng thử', price: 0, imageTotal: 10, deviceLimit: 1, label: '7 ngày', badge: 'Bắt đầu dễ nhất', features: ['Tạo thử 10 ảnh', 'Dùng trên 1 thiết bị', 'Không cần chuyển khoản'] },
-      { id: 'monthly', name: 'Gói tháng', price: 99000, imageTotal: 100, deviceLimit: 1, label: '1 tháng', badge: 'Phù hợp nhất', featured: true, paymentImage: 'assets/payment-99000.svg', features: ['Tạo 100 ảnh/tháng', 'Dùng trên 1 thiết bị', 'Phù hợp creator ra video đều'] },
-      { id: 'vip', name: 'VIP', price: 199000, imageTotal: 300, deviceLimit: 2, label: '1 tháng', badge: 'Cho team', paymentImage: 'assets/payment-199000.svg', features: ['Tạo 300 ảnh/tháng', 'Dùng trên 2 thiết bị', 'Phù hợp team media'] }
+      { id: 'monthly', name: 'Gói tháng', price: 99000, imageTotal: 100, deviceLimit: 1, label: '1 tháng', badge: 'Phù hợp nhất', featured: true, features: ['Tạo 100 ảnh/tháng', 'Dùng trên 1 thiết bị', 'Phù hợp creator ra video đều'] },
+      { id: 'vip', name: 'VIP', price: 199000, imageTotal: 300, deviceLimit: 2, label: '1 tháng', badge: 'Cho team', features: ['Tạo 300 ảnh/tháng', 'Dùng trên 2 thiết bị', 'Phù hợp team media'] }
     ];
 
     const formatVnd = (value) => Number(value || 0).toLocaleString('vi-VN') + 'đ';
     const createLocalCode = () => 'DG' + Date.now().toString(36).toUpperCase().slice(-6) + Math.floor(100 + Math.random() * 900);
+    const buildSepayQrUrl = (amount, transferContent) => {
+      const params = new URLSearchParams({
+        acc: SEPAY_ACCOUNT_NO,
+        bank: SEPAY_BANK_CODE,
+        amount: String(Math.round(Number(amount || 0))),
+        des: transferContent
+      });
+      return 'https://qr.sepay.vn/img?' + params.toString();
+    };
     const planSelect = document.querySelector('#planSelect');
     const pricing = document.querySelector('#pricingCards');
     const categoryCards = Array.from(document.querySelectorAll('.category-card'));
@@ -1654,17 +1666,32 @@
       }, 5000);
     }
 
-    document.querySelector('#confirmTransfer').addEventListener('click', () => {
+    async function checkPaymentNow() {
       const status = document.querySelector('#orderStatus');
       const confirmButton = document.querySelector('#confirmTransfer');
       if (!currentOrder || !currentPlan) return;
-      status.textContent = 'Đang kiểm tra giao dịch ' + currentOrder.code + '...';
+      status.textContent = 'Dang kiem tra giao dich ' + currentOrder.code + '...';
       confirmButton.disabled = true;
-      confirmButton.textContent = 'Đang xác nhận...';
-      window.setTimeout(() => {
-        showPaidState('Đã ghi nhận thanh toán gói ' + currentPlan.name + '. Vui lòng vào nhóm Zalo để nhận hỗ trợ kích hoạt.');
-      }, 1200);
-    });
+      confirmButton.textContent = 'Dang xac nhan...';
+      try {
+        const response = await fetch(API_BASE + '/api/sales/orders/' + encodeURIComponent(currentOrder.code) + '/payment-status');
+        const body = response.ok ? await response.json() : {};
+        if (body.paid || body.status === 'paid' || body.paymentStatus === 'paid') {
+          showPaidState('He thong da xac nhan thanh toan don ' + currentOrder.code + '. Vui long vao nhom Zalo de nhan ho tro kich hoat.');
+          return;
+        }
+        status.textContent = 'Chua thay giao dich khop ma ' + currentOrder.transferContent + '. Neu vua chuyen khoan, vui long cho 1-2 phut roi kiem tra lai.';
+      } catch (error) {
+        status.textContent = 'Chua kiem tra duoc tu dong. Vui long cho hoac lien he Zalo de admin doi soat ma ' + currentOrder.transferContent + '.';
+      } finally {
+        if (!document.querySelector('#zaloBox').classList.contains('show')) {
+          confirmButton.disabled = false;
+          confirmButton.textContent = 'Toi da chuyen khoan - kiem tra';
+        }
+      }
+    }
+
+    document.querySelector('#confirmTransfer').addEventListener('click', checkPaymentNow);
 
     document.querySelector('#order').addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -1719,10 +1746,10 @@
       document.querySelector('#payPlanName').textContent = selectedPlan.name;
       document.querySelector('#payAmount').textContent = formatVnd(order.price);
       document.querySelector('#payContent').textContent = order.transferContent;
-      document.querySelector('#bankInfo').textContent = 'Chủ tài khoản: Hoàng Văn Đức | STK: PSP2610910700000069 | Nội dung: ' + order.transferContent;
+      document.querySelector('#bankInfo').textContent = 'Chu tai khoan: Hoang Van Duc | STK: ' + SEPAY_ACCOUNT_NO + ' | Noi dung: ' + order.transferContent;
       const paymentImage = document.querySelector('#paymentImage');
-      paymentImage.src = selectedPlan.paymentImage || '';
-      paymentImage.hidden = !selectedPlan.paymentImage;
+      paymentImage.src = buildSepayQrUrl(order.price, order.transferContent);
+      paymentImage.hidden = false;
       startPaymentPolling(order.code);
     });
   </script>
