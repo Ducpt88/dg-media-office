@@ -1105,6 +1105,32 @@
       font-weight: 900;
     }
 
+    .status.success-notice {
+      border: 1px solid #bbf7d0;
+      border-radius: var(--radius);
+      background: #f0fdf4;
+      color: #065f46;
+      padding: 14px;
+      font-weight: 800;
+      line-height: 1.55;
+    }
+
+    .status.success-notice strong {
+      display: block;
+      margin-bottom: 5px;
+      color: #047857;
+      font-size: 16px;
+      line-height: 1.25;
+    }
+
+    .status.success-notice span {
+      display: block;
+      margin-top: 7px;
+      color: #475467;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
     @media (max-width: 980px) {
       .hero, .showcase, .upload-demo, .advisor {
         grid-template-columns: 1fr;
@@ -1600,7 +1626,9 @@
         paymentPollTimer = null;
       }
       if (clearStatus) {
-        document.querySelector('#orderStatus').textContent = '';
+        const status = document.querySelector('#orderStatus');
+        status.className = 'status';
+        status.textContent = '';
       }
     }
 
@@ -1665,10 +1693,20 @@
       return 'Hệ thống đã tạo tài khoản nhưng email hướng dẫn chưa gửi tự động. Vui lòng vào nhóm Zalo để admin hỗ trợ gửi lại tài khoản và hướng dẫn.';
     }
 
+    function showTrialRegisteredState(order) {
+      const status = document.querySelector('#orderStatus');
+      status.className = 'status success-notice';
+      status.innerHTML = '<strong>Cảm ơn bạn đã đăng ký dùng thử DG Image Tools.</strong>'
+        + 'Tài khoản dùng thử của bạn đã được tạo với mã đăng ký <b class="code">' + order.code + '</b>. '
+        + 'Vui lòng kiểm tra email đã đăng ký để nhận hướng dẫn cài đặt, thông tin đăng nhập app và thời hạn sử dụng.'
+        + '<span>Nếu không thấy email trong hộp thư đến, hãy kiểm tra mục Spam/Quảng cáo hoặc nhắn Zalo để được hỗ trợ gửi lại.</span>';
+    }
+
     function showPaidState(message, order) {
       const status = document.querySelector('#orderStatus');
       const zaloBox = document.querySelector('#zaloBox');
       const confirmButton = document.querySelector('#confirmTransfer');
+      status.className = 'status';
       if (!currentPlan || Number(currentPlan.price || 0) <= 0) return;
       status.textContent = getActivationMessage(order, message || ('Đã ghi nhận thanh toán gói ' + currentPlan.name + '. Hãy vào nhóm Zalo trước, rồi kiểm tra email để lấy hướng dẫn và tài khoản app.'));
       confirmButton.disabled = true;
@@ -1701,6 +1739,7 @@
       const status = document.querySelector('#orderStatus');
       const confirmButton = document.querySelector('#confirmTransfer');
       if (!currentOrder || !currentPlan) return;
+      status.className = 'status';
       status.textContent = 'Dang kiem tra giao dich ' + currentOrder.code + '...';
       confirmButton.disabled = true;
       confirmButton.textContent = 'Dang xac nhan...';
@@ -1733,6 +1772,7 @@
       const paymentBox = document.querySelector('#paymentBox');
       const zaloBox = document.querySelector('#zaloBox');
       const confirmButton = document.querySelector('#confirmTransfer');
+      status.className = 'status';
       status.textContent = 'Đang tạo mã...';
       clearPaymentState({ clearStatus: false });
 
@@ -1756,12 +1796,13 @@
 
       if (Number(order.price || 0) === 0) {
         clearPaymentState({ clearStatus: false });
-        status.textContent = getActivationMessage(order, 'Đã tạo tài khoản dùng thử ' + order.code + '. Vui lòng kiểm tra email để nhận link hướng dẫn, tài khoản app và thời hạn dùng thử.');
+        showTrialRegisteredState(order);
         return;
       }
 
       currentOrder = order;
       currentPlan = selectedPlan;
+      status.className = 'status';
       status.textContent = 'Đã tạo đơn ' + order.code + '. Vui lòng quét đúng QR ' + formatVnd(selectedPlan.price) + ' và chuyển khoản đúng nội dung.';
       paymentBox.classList.add('show');
       document.querySelector('#payPlanName').textContent = selectedPlan.name;
