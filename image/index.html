@@ -1635,12 +1635,19 @@
     let currentPlan = null;
     let paymentPollTimer = null;
 
-    function showPaidState(message) {
+    function getActivationMessage(order, fallback) {
+      if (order && order.customerEmailSentAt) {
+        return fallback;
+      }
+      return 'Hệ thống đã tạo tài khoản nhưng email hướng dẫn chưa gửi tự động. Vui lòng vào nhóm Zalo để admin hỗ trợ gửi lại tài khoản và hướng dẫn.';
+    }
+
+    function showPaidState(message, order) {
       const status = document.querySelector('#orderStatus');
       const zaloBox = document.querySelector('#zaloBox');
       const confirmButton = document.querySelector('#confirmTransfer');
       if (!currentPlan || Number(currentPlan.price || 0) <= 0) return;
-      status.textContent = message || ('Đã ghi nhận thanh toán gói ' + currentPlan.name + '. Vui lòng vào nhóm Zalo để nhận hỗ trợ kích hoạt.');
+      status.textContent = getActivationMessage(order, message || ('Đã ghi nhận thanh toán gói ' + currentPlan.name + '. Hãy vào nhóm Zalo trước, rồi kiểm tra email để lấy hướng dẫn và tài khoản app.'));
       confirmButton.disabled = true;
       confirmButton.textContent = 'Đã xác nhận';
       zaloBox.classList.add('show');
@@ -1659,7 +1666,7 @@
           if (!response.ok) return;
           const body = await response.json();
           if (body.paid || body.status === 'paid' || body.paymentStatus === 'paid') {
-            showPaidState('Hệ thống đã xác nhận thanh toán đơn ' + orderCode + '. Hãy vào nhóm Zalo trước, rồi kiểm tra email để lấy hướng dẫn và tài khoản app.');
+            showPaidState('Hệ thống đã xác nhận thanh toán đơn ' + orderCode + '. Hãy vào nhóm Zalo trước, rồi kiểm tra email để lấy hướng dẫn và tài khoản app.', body.order);
           }
         } catch (error) {
           // Backend đối soát có thể chưa sẵn sàng trong prototype; giữ flow thủ công.
@@ -1678,7 +1685,7 @@
         const response = await fetch(API_BASE + '/api/sales/orders/' + encodeURIComponent(currentOrder.code) + '/payment-status');
         const body = response.ok ? await response.json() : {};
         if (body.paid || body.status === 'paid' || body.paymentStatus === 'paid') {
-          showPaidState('He thong da xac nhan thanh toan don ' + currentOrder.code + '. Hay vao nhom Zalo truoc, roi kiem tra email de lay huong dan va tai khoan app.');
+          showPaidState('He thong da xac nhan thanh toan don ' + currentOrder.code + '. Hay vao nhom Zalo truoc, roi kiem tra email de lay huong dan va tai khoan app.', body.order);
           return;
         }
         status.textContent = 'Chua thay giao dich khop ma ' + currentOrder.transferContent + '. Neu vua chuyen khoan, vui long cho 1-2 phut roi kiem tra lai.';
@@ -1736,7 +1743,7 @@
         currentOrder = null;
         currentPlan = null;
         document.querySelector('#zaloBox').classList.remove('show');
-        status.textContent = 'Đã tạo tài khoản dùng thử ' + order.code + '. Vui lòng kiểm tra email để nhận link hướng dẫn, tài khoản app và thời hạn dùng thử.';
+        status.textContent = getActivationMessage(order, 'Đã tạo tài khoản dùng thử ' + order.code + '. Vui lòng kiểm tra email để nhận link hướng dẫn, tài khoản app và thời hạn dùng thử.');
         return;
       }
 
