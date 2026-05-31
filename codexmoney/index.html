@@ -3,85 +3,1295 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex,nofollow">
-    <title>Codex Money</title>
-    <style>
-      :root { color-scheme: dark; --bg: #0b1020; --panel: #151b2e; --line: #29324a; --text: #eef3ff; --muted: #9aa7bf; --green: #35d07f; --blue: #60a5fa; --amber: #f4b740; }
-      * { box-sizing: border-box; }
-      body { margin: 0; font-family: Inter, Segoe UI, Arial, sans-serif; background: var(--bg); color: var(--text); }
-      header { padding: 28px clamp(18px, 4vw, 48px) 18px; border-bottom: 1px solid var(--line); }
-      h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 44px); letter-spacing: 0; }
-      main { padding: 24px clamp(18px, 4vw, 48px) 48px; }
-      .muted { color: var(--muted); }
-      .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
-      .metric, .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
-      .metric { padding: 16px; }
-      .metric strong { display: block; font-size: 28px; margin-bottom: 4px; }
-      .toolbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin: 10px 0 14px; }
-      .card { padding: 16px; margin-bottom: 12px; }
-      .card h2 { margin: 0 0 8px; font-size: 18px; }
-      .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
-      .chip { padding: 5px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 13px; }
-      .status { color: var(--green); border-color: rgba(53, 208, 127, .45); }
-      a { color: var(--blue); }
-      table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-      th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
-      th { color: var(--muted); font-weight: 600; }
-      tr:last-child td { border-bottom: 0; }
-      @media (max-width: 850px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } table { display: block; overflow-x: auto; } }
-      @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .toolbar { display: block; } }
-    </style>
+    <title>Codex Job Status</title>
+    <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <header>
-      <h1>Codex Money</h1>
-      <div class="muted" id="updated">Đang tải dữ liệu...</div>
-    </header>
-    <main>
-      <section class="grid" id="metrics"></section>
-      <div class="toolbar">
-        <h2>Client Projects</h2>
-        <span class="muted">Dữ liệu được xuất trực tiếp từ workspace Codex Money</span>
-      </div>
-      <section id="projects"></section>
-      <div class="toolbar">
-        <h2>Job Group</h2>
-      </div>
-      <div id="jobTable"></div>
-    </main>
-    <script>
-      const money = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
-      function esc(value) {
-        return String(value ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-      }
-      fetch("./data.json?ts=" + Date.now(), { cache: "no-store" })
-        .then(r => r.json())
-        .then(data => {
-          document.getElementById("updated").textContent = `Cập nhật: ${data.updatedAt}`;
-          document.getElementById("metrics").innerHTML = [
-            ["Jobs", data.metrics.jobs],
-            ["Client Projects", data.metrics.clientProjects],
-            ["Completed", data.metrics.completedProjects],
-            ["Automation Runs", data.metrics.automationRuns]
-          ].map(([label, value]) => `<div class="metric"><strong>${esc(value)}</strong><span class="muted">${esc(label)}</span></div>`).join("");
-          document.getElementById("projects").innerHTML = data.clientProjects.map(project => `
-            <article class="card">
-              <h2>${esc(project.title)}</h2>
-              <div class="meta">
-                <span class="chip">${esc(project.date)}</span>
-                <span class="chip">${esc(project.platform)}</span>
-                <span class="chip status">${esc(project.status)}</span>
-                <span class="chip">Bid: ${esc(project.bidSent)}</span>
-                <span class="chip">${esc(project.deliveryTime)}</span>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true">💸</span>
+          <div>
+            <strong>Job Status</strong>
+            <span>Read-only monitor</span>
+          </div>
+        </div>
+        <nav class="nav-list" aria-label="Main navigation">
+          <button class="nav-item active" data-view="overview">📊 Overview</button>
+          <button class="nav-item" data-view="jobs">🐙 Jobs GitHub</button>
+          <button class="nav-item" data-view="schedules">📅 Schedules</button>
+          <button class="nav-item" data-view="rss">🌐 Trends RSS</button>
+          <button class="nav-item" data-view="threads">🧵 Threads Search</button>
+          <button class="nav-item" data-view="facebook">📘 Facebook Trend</button>
+          <button class="nav-item" data-view="youtube">▶️ YouTube Trend</button>
+          <button class="nav-item" data-view="interest">📈 Chủ đề quan tâm</button>
+          <button class="nav-item" data-view="settings">⚙️ Settings</button>
+        </nav>
+        <div class="sidebar-footer">
+          <span>Project root</span>
+          <button id="openRoot" class="text-button">Open folder</button>
+        </div>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">🖥️ Local status viewer</p>
+            <h1>Codex Job Status</h1>
+          </div>
+          <div class="topbar-actions">
+            <span id="lastSync" class="muted">Waiting for data</span>
+            <button id="refreshBtn" class="primary-button">🔄 Refresh</button>
+          </div>
+        </header>
+
+        <div class="workspace-body">
+          <div class="content-column">
+        <section id="overview" class="view active">
+          <div class="stat-strip" id="statStrip"></div>
+          
+          <div class="charts-row">
+            <section class="panel chart-panel">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>📊 Phân bố công việc</h2>
+                  <p>Tỷ lệ trạng thái của các Jobs đang giám sát</p>
+                </div>
               </div>
-              <p class="muted">${esc(project.notes || project.workComplete || "")}</p>
-              <a href="${esc(project.url)}" target="_blank" rel="noreferrer">Mở project</a>
-            </article>
-          `).join("");
-          const rows = data.jobGroup.map(row => `<tr><td>${esc(row.date)}</td><td>${esc(row.jobId)}</td><td>${esc(row.title)}</td><td>${esc(row.bidSent)}</td><td>${esc(row.deliveryTime)}</td><td>${esc(row.status)}</td></tr>`).join("");
-          document.getElementById("jobTable").innerHTML = `<table><thead><tr><th>Date</th><th>Job ID</th><th>Job title</th><th>Bid sent</th><th>Delivery</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
-        })
-        .catch(() => { document.getElementById("updated").textContent = "Không tải được dữ liệu."; });
-    </script>
+              <div class="chart-content">
+                <div class="donut-chart-wrapper">
+                  <svg id="statusDonutChart" viewBox="0 0 200 200" width="100%" height="100%">
+                    <!-- Các cung donut được thêm bằng JS -->
+                  </svg>
+                  <div class="donut-center-text">
+                    <strong id="donutTotalCount">0</strong>
+                    <span>Jobs</span>
+                  </div>
+                </div>
+                <div id="statusChartLegend" class="chart-legend">
+                  <!-- Chú thích được thêm bằng JS -->
+                </div>
+              </div>
+            </section>
+
+            <section class="panel chart-panel" style="position: relative;">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>💵 Dự toán ngân sách</h2>
+                  <p>Tổng ngân sách (USD) ước tính theo trạng thái</p>
+                </div>
+              </div>
+              <div class="chart-content" style="flex-direction: column; align-items: stretch; justify-content: flex-end; gap: 8px;">
+                <div class="bar-chart-wrapper" style="flex-grow: 1; position: relative;">
+                  <svg id="budgetBarChart" viewBox="0 0 400 180" width="100%" height="100%" style="overflow: visible;">
+                    <!-- Đường kẻ và cột biểu đồ được thêm bằng JS -->
+                  </svg>
+                </div>
+                <div id="budgetChartLegend" class="chart-legend horizontal">
+                  <!-- Chú thích cột -->
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="section-grid">
+            <section class="panel wide">
+              <div class="section-head">
+                <div>
+                <h2>🧭 Job status pipeline</h2>
+                <p>Đọc trạng thái từ results, job workspace, monitor log và ledger do Codex/CLI tạo.</p>
+                </div>
+                <button class="secondary-button" data-view-link="jobs">🧰 Review jobs</button>
+              </div>
+              <div class="pipeline" id="pipeline"></div>
+            </section>
+            <section class="panel">
+              <div class="section-head compact-head">
+                <h2>🏆 Top candidates</h2>
+              </div>
+              <div id="topCandidates" class="candidate-list"></div>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="section-head">
+              <div>
+                <h2>📋 Project manager state</h2>
+                <p>Đọc nhanh các file `.manager/` sau mỗi vòng làm việc.</p>
+              </div>
+            </div>
+            <div id="managerState" class="file-grid"></div>
+          </section>
+        </section>
+
+        <section id="managerFileModal" class="agent-modal" aria-hidden="true">
+          <div class="agent-modal-backdrop" data-manager-file-close></div>
+          <div class="agent-modal-panel manager-file-panel" role="dialog" aria-modal="true" aria-labelledby="managerFileTitle">
+            <header class="agent-modal-header manager-file-header">
+              <div>
+                <span class="inspector-kicker" id="managerFilePath">.manager/...</span>
+                <h2 id="managerFileTitle">Manager file</h2>
+              </div>
+              <div class="manager-file-actions">
+                <button id="managerFileOpenPath" class="secondary-button" type="button">Open file</button>
+                <button id="closeManagerFileModal" class="secondary-button icon-button" type="button" data-manager-file-close aria-label="Close Manager File Preview">×</button>
+              </div>
+            </header>
+            <div id="managerFileBody" class="agent-messages manager-file-body"></div>
+          </div>
+        </section>
+
+
+
+        <section id="jobDetailModal" class="agent-modal" aria-hidden="true">
+          <div class="agent-modal-backdrop" data-job-close></div>
+          <div class="agent-modal-panel" role="dialog" aria-modal="true" aria-labelledby="jobDetailTitle" style="width: min(1000px, calc(100vw - 56px));">
+            <header class="agent-modal-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 14px; margin-bottom: 18px;">
+              <div>
+                <span class="inspector-kicker" id="jobDetailPath">jobs/...</span>
+                <h2 id="jobDetailTitle" style="margin: 4px 0 0; font-size: 22px; font-weight: 900;">Job Title</h2>
+              </div>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <span id="jobDetailStatus" class="job-state prepared" style="margin: 0;">Prepared</span>
+                <button id="closeJobModal" class="secondary-button icon-button" type="button" data-job-close aria-label="Close Job Details">×</button>
+              </div>
+            </header>
+            <div class="agent-shell" style="min-height: min(600px, calc(100vh - 200px)); grid-template-columns: minmax(0, 1fr) 280px; gap: 16px;">
+              <section class="agent-main" style="min-height: 0; display: flex; flex-direction: column;">
+                <div class="skill-shelf" style="padding: 10px; margin-bottom: 12px; justify-content: flex-start; gap: 8px;">
+                  <button class="skill-chip active" type="button" data-job-tab="overview">📝 Overview</button>
+                  <button class="skill-chip" type="button" data-job-tab="work_plan">📖 Work Plan</button>
+                  <button class="skill-chip" type="button" data-job-tab="bid">✉️ Bid Draft</button>
+                  <button class="skill-chip" type="button" data-job-tab="checklist">📋 Checklist</button>
+                  <button class="skill-chip" type="button" data-job-tab="activity">🪵 Activity Log</button>
+                </div>
+                <div id="jobDetailBody" class="agent-messages" style="max-height: calc(100vh - 350px); min-height: 400px; background: var(--surface); padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); overflow-y: auto; white-space: normal;">
+                  <!-- Dynamic content rendered here -->
+                </div>
+              </section>
+              <aside class="agent-side" style="position: static; display: flex; flex-direction: column; gap: 12px;">
+                <section class="inspector-card" style="padding: 12px;">
+                  <div class="inspector-head" style="margin-bottom: 8px;">
+                    <span class="inspector-kicker">Qualify</span>
+                    <strong>Score details</strong>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 12px;">
+                    <div id="jobDetailScore" class="score-pill high" style="width: 48px; height: 48px; font-size: 20px; display: grid; place-items: center; border-radius: var(--radius);">100</div>
+                    <div>
+                      <strong id="jobDetailBudget" style="font-size: 16px; font-weight: 900;">USD 100</strong>
+                      <p id="jobDetailSource" class="muted" style="margin: 2px 0 0; font-size: 12px;">GitHub</p>
+                    </div>
+                  </div>
+                  <div id="jobDetailSignals" style="font-size: 13px; display: grid; gap: 6px;"></div>
+                </section>
+                <section class="inspector-card" style="padding: 12px;">
+                  <div class="inspector-head" style="margin-bottom: 8px;">
+                    <span class="inspector-kicker">Actions</span>
+                    <strong>Tool bridge</strong>
+                  </div>
+                  <div class="quick-actions" id="jobDetailActions" style="gap: 8px;"></div>
+                </section>
+                <section class="inspector-card" style="padding: 12px;" id="jobDetailFilesCard">
+                  <div class="inspector-head" style="margin-bottom: 8px;">
+                    <span class="inspector-kicker">Files</span>
+                    <strong>Workspace files</strong>
+                  </div>
+                  <ul id="jobDetailFiles" style="margin: 0; padding: 0 0 0 16px; font-size: 13px; display: grid; gap: 4px;"></ul>
+                </section>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section id="agentChatModal" class="agent-modal" aria-hidden="true">
+          <div class="agent-modal-backdrop" data-agent-close></div>
+          <div class="agent-modal-panel" role="dialog" aria-modal="true" aria-labelledby="agentChatTitle">
+          <div class="agent-shell">
+            <section class="agent-main">
+              <div class="section-head agent-head">
+                <div>
+                  <h2 id="agentChatTitle">🤖 Agent Chat</h2>
+                  <p>Chat điều khiển app bằng tool nội bộ, skill workflow và OpenAI-compatible provider.</p>
+                </div>
+                <div class="agent-actions">
+                  <span id="agentRunState" class="state-badge idle">Idle</span>
+                  <button id="copyAgentSession" class="secondary-button" type="button">Copy session</button>
+                  <button id="newAgentSession" class="secondary-button" type="button">New</button>
+                  <button id="closeAgentModal" class="secondary-button icon-button" type="button" data-agent-close aria-label="Close Agent Chat">×</button>
+                </div>
+              </div>
+
+              <div class="skill-shelf" aria-label="Suggested agent skills">
+                <div>
+                  <span class="inspector-kicker">Supported skills</span>
+                  <div id="agentSkillChips" class="skill-chips"></div>
+                </div>
+                <button class="secondary-button" type="button" data-view-link="settings">Skill library</button>
+              </div>
+
+              <div class="context-meter">
+                <div>
+                  <strong>Context</strong>
+                  <span id="agentContextText">0 / 24000 estimated tokens</span>
+                </div>
+                <progress id="agentContextBar" value="0" max="100"></progress>
+              </div>
+
+              <div id="agentMessages" class="agent-messages" aria-live="polite"></div>
+
+              <form id="agentComposer" class="agent-composer">
+                <textarea id="agentInput" rows="2" placeholder="Nhập yêu cầu. Enter để gửi, Shift+Enter để xuống dòng."></textarea>
+                <button id="sendAgentBtn" class="primary-button" type="submit">Send</button>
+              </form>
+            </section>
+
+            <aside class="agent-side">
+              <section class="inspector-card">
+                <div class="inspector-head">
+                  <div>
+                    <span class="inspector-kicker">Thinking</span>
+                    <strong>Agent steps</strong>
+                  </div>
+                  <button id="agentThinkingToggle" class="text-button" type="button">Open</button>
+                </div>
+                <details id="agentThinking" open>
+                  <summary>Show execution trace</summary>
+                  <ol id="agentSteps" class="agent-steps"></ol>
+                </details>
+              </section>
+
+              <section class="inspector-card">
+                <div class="inspector-head">
+                  <span class="inspector-kicker">Tools</span>
+                  <strong>Calls and results</strong>
+                </div>
+                <div id="agentToolTrace" class="tool-trace"></div>
+              </section>
+            </aside>
+          </div>
+          </div>
+        </section>
+
+        <section id="jobs" class="view">
+          <div class="section-head">
+            <div>
+              <h2>🐙 Jobs GitHub</h2>
+              <p>Quản lý và vận hành quy trình săn bounty GitHub: tìm kiếm kết quả, chuẩn bị workspace, chạy monitor và theo dõi số dư thanh toán.</p>
+            </div>
+          </div>
+
+          <div class="skill-shelf" style="padding: 10px; margin-bottom: 16px; justify-content: flex-start; gap: 8px;">
+            <button class="skill-chip active" type="button" data-jobs-github-tab="jobs">🧰 Jobs</button>
+            <button class="skill-chip" type="button" data-jobs-github-tab="results">🔎 Results</button>
+            <button class="skill-chip" type="button" data-jobs-github-tab="commands">▶️ Commands</button>
+            <button class="skill-chip" type="button" data-jobs-github-tab="monitors">📡 Monitors</button>
+            <button class="skill-chip" type="button" data-jobs-github-tab="ledger">💵 Ledger</button>
+          </div>
+
+          <!-- Sub-Panel: Jobs -->
+          <div id="jobsSubPanel" class="jobs-github-subpanel">
+            <div class="data-toolbar" aria-label="Job filters">
+              <label>Search
+                <input id="jobsSearch" type="search" data-filter-scope="jobs" data-filter-key="query" placeholder="Title, path, source, URL">
+              </label>
+              <label>Status
+                <select id="jobsStatus" data-filter-scope="jobs" data-filter-key="status">
+                  <option value="all">All statuses</option>
+                  <option value="prepared">Prepared</option>
+                  <option value="doing">Doing</option>
+                  <option value="local_done">Local done</option>
+                  <option value="pending_review">Pending review</option>
+                  <option value="pending_reward">Pending reward</option>
+                  <option value="rewarded">Rewarded</option>
+                </select>
+              </label>
+              <label>Signal
+                <select id="jobsSignal" data-filter-scope="jobs" data-filter-key="signal">
+                  <option value="all">All signals</option>
+                  <option value="claimed">Claimed</option>
+                  <option value="approved">Approved</option>
+                  <option value="rewarded">Rewarded</option>
+                  <option value="attention">Needs attention</option>
+                  <option value="marked">Marked</option>
+                  <option value="watching">Watching</option>
+                  <option value="new_comment">New comment</option>
+                  <option value="no_monitor">No monitor</option>
+                </select>
+              </label>
+              <label>Sort
+                <select id="jobsSort" data-filter-scope="jobs" data-filter-key="sort">
+                  <option value="modified_desc">Newest updated</option>
+                  <option value="status_asc">Status</option>
+                  <option value="budget_desc">Highest budget</option>
+                  <option value="score_desc">Best score</option>
+                  <option value="title_asc">Title A-Z</option>
+                </select>
+              </label>
+              <label>Page size
+                <select id="jobsPageSize" data-filter-scope="jobs" data-filter-key="pageSize">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <button class="secondary-button" type="button" data-reset-filters="jobs">Reset</button>
+            </div>
+            <div id="jobsList" class="job-list"></div>
+            <div id="jobsPager" class="pager"></div>
+          </div>
+
+          <!-- Sub-Panel: Results -->
+          <div id="resultsSubPanel" class="jobs-github-subpanel" style="display: none;">
+            <div class="data-toolbar" aria-label="Results filters">
+              <label>Search
+                <input id="resultsSearch" type="search" data-filter-scope="results" data-filter-key="query" placeholder="Title, repo, file, reason">
+              </label>
+              <label>Source
+                <select id="resultsSource" data-filter-scope="results" data-filter-key="source">
+                  <option value="all">All sources</option>
+                  <option value="github">GitHub</option>
+                  <option value="reddit">Reddit</option>
+                  <option value="manual">Manual</option>
+                </select>
+              </label>
+              <label>Min score
+                <input id="resultsMinScore" type="number" min="0" max="100" step="5" data-filter-scope="results" data-filter-key="minScore" value="0">
+              </label>
+              <label>Sort
+                <select id="resultsSort" data-filter-scope="results" data-filter-key="sort">
+                  <option value="modified_desc">Newest file</option>
+                  <option value="score_desc">Best score</option>
+                  <option value="budget_desc">Highest budget</option>
+                  <option value="count_desc">Most candidates</option>
+                  <option value="path_asc">Path A-Z</option>
+                </select>
+              </label>
+              <label>Page size
+                <select id="resultsPageSize" data-filter-scope="results" data-filter-key="pageSize">
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                </select>
+              </label>
+              <button class="secondary-button" type="button" data-reset-filters="results">Reset</button>
+            </div>
+            <div id="resultsList" class="result-list"></div>
+            <div id="resultsPager" class="pager"></div>
+          </div>
+
+          <!-- Sub-Panel: Commands -->
+          <div id="commandsSubPanel" class="jobs-github-subpanel" style="display: none;">
+            <div class="command-grid">
+              <form id="searchCommandForm" class="panel command-panel">
+                <div class="section-head compact-head">
+                  <h3>🔍 Search</h3>
+                </div>
+                <label>🌐 Source
+                  <select id="commandSearchSource">
+                    <option value="github">GitHub</option>
+                    <option value="reddit">Reddit</option>
+                    <option value="all">All</option>
+                  </select>
+                </label>
+                <label>💬 Query
+                  <input id="commandSearchQuery" type="text" value='is:issue is:open (bounty OR "cash reward" OR "paid task" OR compensation OR algora OR issuehunt)'>
+                </label>
+                <label>📌 Topics
+                  <input id="commandSearchTopics" type="text" value="default" placeholder="default or python,react,docs,ai">
+                </label>
+                <div class="command-presets">
+                  <button class="secondary-button" type="button" data-topic-preset="Search" data-preset-value="default" data-tooltip="Thiết lập các chủ đề tìm kiếm mặc định">📋 Default</button>
+                  <button class="secondary-button" type="button" data-topic-preset="Search" data-preset-value="python,react,docs,ai,security" data-tooltip="Thiết lập chủ đề Web, AI & Security">🌐 Web + AI</button>
+                  <button class="secondary-button" type="button" data-clear-repos="Search" data-tooltip="Xóa danh sách Repository hạt giống để quét toàn GitHub">🐙 All GitHub</button>
+                </div>
+                <label>🌱 Seed repos
+                  <input id="commandSearchRepos" type="text" placeholder="owner/repo, other/repo">
+                </label>
+                <label>🚫 Exclude repos
+                  <input id="commandSearchExcludeRepos" type="text" value="orchestration-agent/AgentOrchestration" placeholder="owner/repo, other/repo">
+                </label>
+                <div class="command-row">
+                  <label>🔢 Limit
+                    <input id="commandSearchLimit" type="number" min="1" max="100" value="10">
+                  </label>
+                  <label>🏆 Min score
+                    <input id="commandSearchMinScore" type="number" min="0" max="100" value="0">
+                  </label>
+                  <label>⚡ Per query
+                    <input id="commandSearchPerQueryLimit" type="number" min="0" max="100" value="0">
+                  </label>
+                </div>
+                <label>📂 Output JSON
+                  <input id="commandSearchOut" type="text" value="results/current/money_results.json">
+                </label>
+                <button class="primary-button" type="submit" data-tooltip="Khởi chạy tiến trình tìm kiếm Bounty theo bộ lọc trên">🔍 Run Search</button>
+              </form>
+
+              <form id="huntCommandForm" class="panel command-panel">
+                <div class="section-head compact-head">
+                  <h3>🏹 Hunt</h3>
+                </div>
+                <label>🌐 Source
+                  <select id="commandHuntSource">
+                    <option value="github">GitHub</option>
+                    <option value="reddit">Reddit</option>
+                    <option value="all">All</option>
+                  </select>
+                </label>
+                <label>💬 Query
+                  <input id="commandHuntQuery" type="text" value='is:issue is:open (bounty OR "cash reward" OR "paid task" OR compensation OR algora OR issuehunt)'>
+                </label>
+                <label>📌 Topics
+                  <input id="commandHuntTopics" type="text" value="default" placeholder="default or python,react,docs,ai">
+                </label>
+                <div class="command-presets">
+                  <button class="secondary-button" type="button" data-topic-preset="Hunt" data-preset-value="default" data-tooltip="Thiết lập các chủ đề tìm kiếm mặc định">📋 Default</button>
+                  <button class="secondary-button" type="button" data-topic-preset="Hunt" data-preset-value="python,react,docs,ai,security" data-tooltip="Thiết lập chủ đề Web, AI & Security">🌐 Web + AI</button>
+                  <button class="secondary-button" type="button" data-clear-repos="Hunt" data-tooltip="Xóa danh sách Repository hạt giống để quét toàn GitHub">🐙 All GitHub</button>
+                </div>
+                <label>🌱 Seed repos
+                  <input id="commandHuntRepos" type="text" placeholder="owner/repo, other/repo">
+                </label>
+                <label>🚫 Exclude repos
+                  <input id="commandHuntExcludeRepos" type="text" value="orchestration-agent/AgentOrchestration" placeholder="owner/repo, other/repo">
+                </label>
+                <div class="command-row">
+                  <label>🔢 Limit
+                    <input id="commandHuntLimit" type="number" min="1" max="100" value="10">
+                  </label>
+                  <label>🏆 Min score
+                    <input id="commandHuntMinScore" type="number" min="0" max="100" value="55">
+                  </label>
+                  <label>⚡ Per query
+                    <input id="commandHuntPerQueryLimit" type="number" min="0" max="100" value="0">
+                  </label>
+                </div>
+                <label>📂 Output JSON
+                  <input id="commandHuntOut" type="text" value="results/current/money_results.json">
+                </label>
+                <button class="primary-button" type="submit" data-tooltip="Bắt đầu săn lùng Bounty nâng cao với tiêu chuẩn khắt khe">🏹 Run Hunt</button>
+              </form>
+
+              <form id="prepareCommandForm" class="panel command-panel">
+                <div class="section-head compact-head">
+                  <h3>⚙️ Prepare</h3>
+                </div>
+                <label>📂 Results file
+                  <input id="commandPrepareResultPath" type="text" value="results/current/money_results.json">
+                </label>
+                <label>🔢 Candidate index
+                  <input id="commandPrepareIndex" type="number" min="1" value="1">
+                </label>
+                <button class="primary-button" type="submit" data-tooltip="Thiết lập và khởi tạo thư mục làm việc cục bộ (jobs/) cho Candidate được chọn">⚙️ Prepare Job</button>
+              </form>
+
+              <section class="panel command-panel">
+                <div class="section-head compact-head">
+                  <h3>💵 Ledger</h3>
+                </div>
+                <p class="muted">Tổng hợp file thanh toán thực tế <code>payments.csv</code> và tự động refresh số liệu doanh thu trên Dashboard.</p>
+                <button id="ledgerCommandButton" class="primary-button" type="button" data-tooltip="Khởi chạy tiến trình tổng hợp số liệu thu nhập của Ledger">💵 Run Ledger</button>
+              </section>
+
+              <form id="monitorOneShotForm" class="panel command-panel wide-command">
+                <div class="section-head compact-head">
+                  <h3>📡 Monitor one-shot</h3>
+                </div>
+                <label>🐙 Repository
+                  <input id="commandMonitorRepo" type="text" placeholder="owner/repo">
+                </label>
+                <div class="command-row">
+                  <label>🔌 Pull Request
+                    <input id="commandMonitorPr" type="number" min="1" placeholder="1495">
+                  </label>
+                  <label>📌 Issue
+                    <input id="commandMonitorIssue" type="number" min="1" placeholder="1402">
+                  </label>
+                </div>
+                <label>🧰 Job workspace
+                  <input id="commandMonitorJobDir" type="text" placeholder="jobs/...">
+                </label>
+                <label>🔗 Algora claim URL
+                  <input id="commandMonitorClaimUrl" type="url" placeholder="https://algora.io/claims/...">
+                </label>
+                <button class="primary-button" type="submit" data-tooltip="Kiểm tra ngay lập tức trạng thái phê duyệt PR và thanh toán của Task này">📡 Run Monitor</button>
+              </form>
+            </div>
+
+            <section class="panel command-output-panel" style="margin-top: 16px;">
+              <div class="section-head compact-head">
+                <h3>📟 Latest command output</h3>
+                <button id="copyCommandOutput" class="secondary-button" type="button">Copy</button>
+              </div>
+              <div class="progress-container" id="commandProgressContainer" style="display: none;">
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; font-weight: 700; color: var(--muted);">
+                  <span id="commandProgressLabel">Executing...</span>
+                  <span id="commandProgressText">0%</span>
+                </div>
+                <div class="progress-bar-bg" style="width: 100%; height: 6px; background: var(--surface-container-high); border-radius: 999px; overflow: hidden;">
+                  <div id="commandProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), #818cf8); transition: width 0.3s ease; border-radius: 999px;"></div>
+                </div>
+              </div>
+              <pre id="commandOutput" class="command-output">No command has run in this session.</pre>
+            </section>
+
+            <!-- Panel hiển thị danh sách kết quả tìm kiếm nóng hổi -->
+            <section class="panel command-results-panel" id="commandResultsPanel" style="display: none; margin-top: 16px;">
+              <!-- Tabs Sub-navigation -->
+              <div class="results-tabs" id="commandResultsTabs">
+                <button class="tab-btn active" data-results-tab="search">🔍 Search Results (<span id="commandSearchTabCount">0</span>)</button>
+                <button class="tab-btn" data-results-tab="hunt">🏹 Hunt Results (<span id="commandHuntTabCount">0</span>)</button>
+                <button class="tab-btn" data-results-tab="prepare">⚙️ Prepared Job</button>
+                <button class="tab-btn" data-results-tab="monitor">📡 Monitor Status</button>
+              </div>
+
+              <!-- Tab Contents -->
+              <div class="results-tab-content active" id="resultsTabContent_search">
+                <div id="commandSearchList" class="candidate-list"></div>
+              </div>
+              <div class="results-tab-content" id="resultsTabContent_hunt">
+                <div id="commandHuntList" class="candidate-list"></div>
+              </div>
+              <div class="results-tab-content" id="resultsTabContent_prepare">
+                <div id="commandPrepareDetails" class="job-list"></div>
+              </div>
+              <div class="results-tab-content" id="resultsTabContent_monitor">
+                <div id="commandMonitorDetails" class="job-list"></div>
+              </div>
+            </section>
+          </div>
+
+          <!-- Sub-Panel: Monitors -->
+          <div id="monitorsSubPanel" class="jobs-github-subpanel" style="display: none;">
+            <div class="section-head" style="margin-bottom: 12px; border: 0; padding: 0; display: flex; justify-content: flex-end;">
+              <div class="topbar-actions">
+                <button id="checkAllGithubInbox" class="secondary-button" type="button" style="min-height: 34px;">Check GitHub inbox</button>
+                <button id="runAllMonitors" class="primary-button" type="button" style="min-height: 34px;">Run all monitors</button>
+              </div>
+            </div>
+            <div class="data-toolbar" aria-label="Monitor filters">
+              <label>Search
+                <input id="monitorsSearch" type="search" data-filter-scope="monitors" data-filter-key="query" placeholder="Repo, PR, issue, title">
+              </label>
+              <label>Status
+                <select id="monitorsStatus" data-filter-scope="monitors" data-filter-key="status">
+                  <option value="all">All monitored jobs</option>
+                  <option value="doing">Doing</option>
+                  <option value="local_done">Local done</option>
+                  <option value="pending_review">Pending review</option>
+                  <option value="pending_reward">Pending reward</option>
+                  <option value="rewarded">Rewarded</option>
+                  <option value="attention">Needs attention</option>
+                </select>
+              </label>
+              <label>Sort
+                <select id="monitorsSort" data-filter-scope="monitors" data-filter-key="sort">
+                  <option value="checked_desc">Last checked</option>
+                  <option value="status_asc">Status</option>
+                  <option value="attention_desc">Attention first</option>
+                  <option value="title_asc">Title A-Z</option>
+                </select>
+              </label>
+              <label>Page size
+                <select id="monitorsPageSize" data-filter-scope="monitors" data-filter-key="pageSize">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <button class="secondary-button" type="button" data-reset-filters="monitors">Reset</button>
+            </div>
+            <div id="monitorList" class="monitor-list"></div>
+            <div id="monitorsPager" class="pager"></div>
+          </div>
+
+          <!-- Sub-Panel: Ledger -->
+          <div id="ledgerSubPanel" class="jobs-github-subpanel" style="display: none;">
+            <div class="data-toolbar" aria-label="Ledger filters">
+              <label>Search
+                <input id="ledgerSearch" type="search" data-filter-scope="ledger" data-filter-key="query" placeholder="Job, notes, currency">
+              </label>
+              <label>Status
+                <select id="ledgerStatus" data-filter-scope="ledger" data-filter-key="status">
+                  <option value="all">All statuses</option>
+                  <option value="paid">Paid</option>
+                  <option value="received">Received</option>
+                  <option value="complete">Complete</option>
+                  <option value="pending">Pending</option>
+                </select>
+              </label>
+              <label>Sort
+                <select id="ledgerSort" data-filter-scope="ledger" data-filter-key="sort">
+                  <option value="date_desc">Newest date</option>
+                  <option value="amount_desc">Highest amount</option>
+                  <option value="status_asc">Status</option>
+                  <option value="job_asc">Job A-Z</option>
+                </select>
+              </label>
+              <label>Page size
+                <select id="ledgerPageSize" data-filter-scope="ledger" data-filter-key="pageSize">
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </label>
+              <button class="secondary-button" type="button" data-reset-filters="ledger">Reset</button>
+            </div>
+            <div id="ledgerView" class="ledger-view"></div>
+            <div id="ledgerPager" class="pager"></div>
+          </div>
+        </section>
+
+        <section id="rss" class="view">
+          <div class="section-head">
+            <div>
+              <h2>🌐 Global Daily Trends</h2>
+              <p>Khám phá xu hướng tìm kiếm hằng ngày của Google Trends và các bài báo liên quan theo thời gian thực.</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="refreshTrendsBtn" class="primary-button" type="button">🔄 Tải lại xu hướng</button>
+            </div>
+          </div>
+          
+          <div class="data-toolbar" aria-label="Trends filters">
+            <label>Quốc gia
+              <select id="trendsGeo">
+                <option value="VN">Việt Nam (VN)</option>
+                <option value="US">Hoa Kỳ (US)</option>
+                <option value="CA">Canada (CA)</option>
+                <option value="MX">Mexico (MX)</option>
+                <option value="BR">Brazil (BR)</option>
+                <option value="AR">Argentina (AR)</option>
+                <option value="JP">Nhật Bản (JP)</option>
+                <option value="KR">Hàn Quốc (KR)</option>
+                <option value="IN">Ấn Độ (IN)</option>
+                <option value="ID">Indonesia (ID)</option>
+                <option value="TH">Thái Lan (TH)</option>
+                <option value="MY">Malaysia (MY)</option>
+                <option value="PH">Philippines (PH)</option>
+                <option value="GB">Vương Quốc Anh (GB)</option>
+                <option value="DE">Đức (DE)</option>
+                <option value="FR">Pháp (FR)</option>
+                <option value="IT">Ý (IT)</option>
+                <option value="ES">Tây Ban Nha (ES)</option>
+                <option value="NL">Hà Lan (NL)</option>
+                <option value="SE">Thụy Điển (SE)</option>
+                <option value="AU">Úc (AU)</option>
+                <option value="SG">Singapore (SG)</option>
+                <option value="AE">UAE (AE)</option>
+                <option value="SA">Saudi Arabia (SA)</option>
+                <option value="TR">Thổ Nhĩ Kỳ (TR)</option>
+                <option value="ZA">Nam Phi (ZA)</option>
+              </select>
+            </label>
+            <label>Chủ đề
+              <select id="trendsTopic">
+                <option value="all">Tất cả chủ đề</option>
+                <option value="sports">⚽ Thể thao</option>
+                <option value="entertainment">🎬 Giải trí</option>
+                <option value="tech">💻 Công nghệ & Khoa học</option>
+                <option value="finance">📈 Kinh doanh & Tài chính</option>
+                <option value="news">📰 Thời sự & Chính trị</option>
+                <option value="health">🩺 Y tế & Sức khỏe</option>
+                <option value="other">🌐 Khác</option>
+              </select>
+            </label>
+            <label>Tìm từ khóa
+              <input id="trendsQuery" type="search" placeholder="Từ khóa, mô tả, tin tức...">
+            </label>
+            <label>Lượng tìm kiếm tối thiểu
+              <select id="trendsMinTraffic">
+                <option value="0">Tất cả lượng traffic</option>
+                <option value="50000">>= 50,000+ tìm kiếm</option>
+                <option value="100000">>= 100,000+ tìm kiếm</option>
+                <option value="200000">>= 200,000+ tìm kiếm</option>
+                <option value="500000">>= 500,000+ tìm kiếm</option>
+              </select>
+            </label>
+            <button id="resetTrendsFiltersBtn" class="secondary-button" type="button">Reset</button>
+          </div>
+
+          <div class="charts-row" id="trendsChartRow" style="display: none; margin-bottom: 20px;">
+            <section class="panel chart-panel" style="grid-column: 1 / -1; min-height: 240px;">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>🔥 Thống kê lượng tìm kiếm xu hướng hàng đầu</h2>
+                  <p>So sánh số lượt tìm kiếm của các từ khóa đang dẫn đầu xu hướng ngày hôm nay</p>
+                </div>
+              </div>
+              <div class="chart-content" style="padding: 10px; min-height: 180px; align-items: stretch; justify-content: stretch;">
+                <div style="flex-grow: 1; position: relative;">
+                  <svg id="trendsBarChart" viewBox="0 0 800 180" width="100%" height="100%" style="overflow: visible;">
+                    <!-- SVG Bars generated by JS -->
+                  </svg>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div id="trendsList" class="launch-agents-grid"></div>
+          <div class="load-more-row">
+            <button id="loadMoreTrendsBtn" class="secondary-button" type="button">⬇️ Load more RSS</button>
+          </div>
+        </section>
+
+        <section id="threads" class="view">
+          <div class="section-head">
+            <div>
+              <h2>🧵 Threads Daily Search</h2>
+              <p>Tìm top 10 post công khai trên Threads Search và gửi báo cáo về Telegram.</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="openThreadsSearchBtn" class="secondary-button" type="button">🔗 Mở Threads</button>
+              <button id="sendThreadsTelegramBtn" class="primary-button" type="button">📨 Gửi Telegram</button>
+            </div>
+          </div>
+
+          <div class="data-toolbar" aria-label="Threads filters">
+            <label>Scope
+              <select id="threadsCountry">
+                <option value="">Global</option>
+                <option value="vn">Việt Nam</option>
+                <option value="us">United States</option>
+                <option value="ca">Canada</option>
+                <option value="mx">Mexico</option>
+                <option value="jp">Japan</option>
+                <option value="kr">South Korea</option>
+                <option value="sg">Singapore</option>
+                <option value="th">Thailand</option>
+                <option value="id">Indonesia</option>
+                <option value="ph">Philippines</option>
+                <option value="my">Malaysia</option>
+                <option value="in">India</option>
+                <option value="gb">United Kingdom</option>
+                <option value="de">Germany</option>
+                <option value="fr">France</option>
+                <option value="it">Italy</option>
+                <option value="es">Spain</option>
+                <option value="nl">Netherlands</option>
+                <option value="se">Sweden</option>
+                <option value="br">Brazil</option>
+                <option value="au">Australia</option>
+                <option value="ae">United Arab Emirates</option>
+                <option value="sa">Saudi Arabia</option>
+                <option value="tr">Turkey</option>
+                <option value="za">South Africa</option>
+              </select>
+            </label>
+            <label>Query
+              <input id="threadsQuery" type="search" value="AI" placeholder="AI, crypto, startup...">
+            </label>
+            <label>Limit
+              <select id="threadsLimit">
+                <option value="10">Top 10</option>
+                <option value="5">Top 5</option>
+                <option value="20">Top 20</option>
+              </select>
+            </label>
+            <button id="refreshThreadsBtn" class="primary-button" type="button">🔄 Tải top thread</button>
+          </div>
+
+          <div id="threadsStatus" class="muted" style="margin-bottom: 12px;">Chưa tải dữ liệu Threads.</div>
+          <div class="charts-row" id="threadsChartRow" style="display: none; margin-bottom: 20px;">
+            <section class="panel chart-panel" style="grid-column: 1 / -1; min-height: 240px;">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>🔥 Thống kê lượng tìm kiếm xu hướng hàng đầu</h2>
+                  <p>So sánh độ tương tác của các thread đang nổi bật theo lượt thích</p>
+                </div>
+              </div>
+              <div class="chart-content" style="padding: 10px; min-height: 180px; align-items: stretch; justify-content: stretch;">
+                <div style="flex-grow: 1; position: relative;">
+                  <svg id="threadsBarChart" viewBox="0 0 800 180" width="100%" height="100%" style="overflow: visible;">
+                    <!-- SVG Bars generated by JS -->
+                  </svg>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div id="threadsList" class="launch-agents-grid"></div>
+          <div class="load-more-row">
+            <button id="loadMoreThreadsBtn" class="secondary-button" type="button">⬇️ Load more Threads</button>
+          </div>
+        </section>
+
+        <section id="facebook" class="view">
+          <div class="section-head">
+            <div>
+              <h2>📘 Facebook Trend Watch</h2>
+              <p>Xem bài viết mới từ các page/group Facebook đã chỉ định. Nếu Facebook chặn public timeline, app sẽ báo cần cookie đăng nhập.</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="openFacebookSourceBtn" class="secondary-button" type="button">🔗 Mở nguồn</button>
+              <button id="refreshFacebookBtn" class="primary-button" type="button">🔄 Tải bài mới</button>
+            </div>
+          </div>
+
+          <div class="data-toolbar" aria-label="Facebook trend filters">
+            <label>Nguồn
+              <select id="facebookSource">
+                <option value="all">Tất cả nguồn</option>
+                <option value="https://www.facebook.com/AIDAILYONE">AI Daily</option>
+                <option value="https://www.facebook.com/groups/antigravityvn">antigravityvn</option>
+                <option value="https://www.facebook.com/groups/852586990732832/">Group 852586990732832</option>
+                <option value="https://www.facebook.com/groups/763209466258917/">Group 763209466258917</option>
+              </select>
+            </label>
+            <label>Sort
+              <select id="facebookSort">
+                <option value="newest">Mới nhất</option>
+                <option value="engagement">Tương tác cao</option>
+              </select>
+            </label>
+            <label>Limit mỗi nguồn
+              <select id="facebookLimit">
+                <option value="5">5 bài</option>
+                <option value="10">10 bài</option>
+                <option value="20">20 bài</option>
+              </select>
+            </label>
+            <label>Tìm trong nội dung
+              <input id="facebookQuery" type="search" placeholder="AI, sản phẩm, tool...">
+            </label>
+          </div>
+
+          <div id="facebookStatus" class="muted" style="margin-bottom: 12px;">Chưa tải dữ liệu Facebook.</div>
+          <div id="facebookSourceList" class="facebook-source-list"></div>
+          <div id="facebookList" class="launch-agents-grid facebook-grid"></div>
+        </section>
+
+        <section id="interest" class="view">
+          <div class="section-head">
+            <div>
+              <h2>📈 Chủ đề quan tâm</h2>
+              <p>Phân tích RSS và Threads đã lưu hằng ngày để tìm mức độ quan tâm, cơ hội kiếm tiền và xu hướng tương lai.</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="archiveTrendsNowBtn" class="secondary-button" type="button">💾 Lưu dữ liệu hôm nay</button>
+              <button id="refreshInterestBtn" class="primary-button" type="button">🔄 Phân tích lại</button>
+            </div>
+          </div>
+
+          <div class="data-toolbar" aria-label="Interest topic filters">
+            <label>Khoảng thời gian
+              <select id="interestPeriod">
+                <option value="24h" selected>24h</option>
+                <option value="7d">7D</option>
+                <option value="30d">30D</option>
+                <option value="1y">1 năm</option>
+                <option value="over1y">&gt; 1 năm</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="interestStatus" class="muted" style="margin-bottom: 12px;">Chưa phân tích dữ liệu lưu trữ.</div>
+          <div class="charts-row interest-charts">
+            <section class="panel chart-panel">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>📊 Nguồn dữ liệu</h2>
+                  <p>Tỷ trọng tín hiệu từ RSS và Threads.</p>
+                </div>
+              </div>
+              <div class="chart-content">
+                <div class="donut-chart-wrapper">
+                  <svg id="interestSourceDonut" viewBox="0 0 200 200" width="100%" height="100%"></svg>
+                  <div class="donut-center-text">
+                    <strong id="interestRecordCount">0</strong>
+                    <span>records</span>
+                  </div>
+                </div>
+                <div id="interestSourceLegend" class="chart-legend"></div>
+              </div>
+            </section>
+            <section class="panel chart-panel">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>🔥 Interest score</h2>
+                  <p>Top chủ đề theo mức độ quan tâm.</p>
+                </div>
+              </div>
+              <div class="chart-content"><svg id="interestScoreChart" viewBox="0 0 400 180" width="100%" height="100%"></svg></div>
+            </section>
+            <section class="panel chart-panel">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>💵 Money score</h2>
+                  <p>Chủ đề có khả năng kiếm tiền cao.</p>
+                </div>
+              </div>
+              <div class="chart-content"><svg id="interestMoneyChart" viewBox="0 0 400 180" width="100%" height="100%"></svg></div>
+            </section>
+            <section class="panel chart-panel">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>🔮 Forecast score</h2>
+                  <p>Dự báo chủ đề có thể tăng tiếp.</p>
+                </div>
+              </div>
+              <div class="chart-content"><svg id="interestForecastChart" viewBox="0 0 400 180" width="100%" height="100%"></svg></div>
+            </section>
+          </div>
+
+          <div class="section-grid">
+            <section class="panel wide">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>🔥 Chủ đề người dùng quan tâm nhất</h2>
+                  <p>Xếp hạng bằng traffic RSS, likes Threads, tần suất và độ mới.</p>
+                </div>
+              </div>
+              <div id="interestTopList" class="topic-list"></div>
+            </section>
+            <section class="panel">
+              <div class="section-head compact-head">
+                <div>
+                  <h2>💵 Có thể kiếm tiền</h2>
+                  <p>Chủ đề có tín hiệu thương mại hoặc nhu cầu chi trả.</p>
+                </div>
+              </div>
+              <div id="interestMoneyList" class="topic-list compact"></div>
+            </section>
+          </div>
+          <section class="panel">
+            <div class="section-head compact-head">
+              <div>
+                <h2>🔮 Dự đoán xu hướng tương lai</h2>
+                <p>Dựa trên score gần đây so với dữ liệu cũ trong cùng khoảng thời gian.</p>
+              </div>
+            </div>
+            <div id="interestForecastList" class="topic-list"></div>
+          </section>
+        </section>
+
+        <section id="youtube" class="view">
+          <div class="section-head">
+            <div>
+              <h2>▶️ YouTube Trend Lab</h2>
+              <p>Lấy title và thumbnail video đang nổi theo region/query, rồi phân tích hook tâm lý học và công thức title/thumbnail.</p>
+            </div>
+            <div class="topbar-actions">
+              <button id="refreshYoutubeBtn" class="primary-button" type="button">🔄 Tải trend YouTube</button>
+            </div>
+          </div>
+
+          <div class="data-toolbar" aria-label="YouTube trend filters">
+            <label>Region
+              <select id="youtubeRegion">
+                <option value="VN">Việt Nam</option>
+                <option value="US">United States</option>
+                <option value="CA">Canada</option>
+                <option value="MX">Mexico</option>
+                <option value="BR">Brazil</option>
+                <option value="AR">Argentina</option>
+                <option value="GB">United Kingdom</option>
+                <option value="FR">France</option>
+                <option value="DE">Germany</option>
+                <option value="IT">Italy</option>
+                <option value="ES">Spain</option>
+                <option value="NL">Netherlands</option>
+                <option value="SE">Sweden</option>
+                <option value="JP">Japan</option>
+                <option value="KR">South Korea</option>
+                <option value="SG">Singapore</option>
+                <option value="TH">Thailand</option>
+                <option value="ID">Indonesia</option>
+                <option value="PH">Philippines</option>
+                <option value="MY">Malaysia</option>
+                <option value="IN">India</option>
+                <option value="AU">Australia</option>
+                <option value="AE">United Arab Emirates</option>
+                <option value="SA">Saudi Arabia</option>
+                <option value="TR">Turkey</option>
+                <option value="ZA">South Africa</option>
+              </select>
+            </label>
+            <label>Thời gian
+              <select id="youtubePeriod">
+                <option value="24h" selected>24h</option>
+                <option value="7d">7D</option>
+                <option value="30d">30D</option>
+                <option value="1y">1 năm</option>
+                <option value="over1y">&gt; 1 năm</option>
+                <option value="all">Tất cả</option>
+              </select>
+            </label>
+            <label>Chủ đề
+              <select id="youtubeTopic">
+                <option value="all">Trend tổng hợp</option>
+                <option value="popular">Nhiều chủ đề hot</option>
+                <option value="ai">AI & Công nghệ</option>
+                <option value="finance">Tài chính & Crypto</option>
+                <option value="business">Kinh doanh & Kiếm tiền</option>
+                <option value="entertainment">Giải trí & Showbiz</option>
+                <option value="sports">Thể thao</option>
+                <option value="beauty">Beauty & Thời trang</option>
+                <option value="education">Giáo dục & Kỹ năng</option>
+                <option value="health">Sức khỏe & Fitness</option>
+                <option value="travel">Du lịch & Ăn uống</option>
+                <option value="realestate">Bất động sản</option>
+                <option value="parenting">Gia đình & Nuôi dạy con</option>
+                <option value="gaming">Gaming & Esports</option>
+                <option value="news">Tin tức & Xã hội</option>
+              </select>
+            </label>
+            <label>Query
+              <input id="youtubeQuery" type="search" placeholder="Để trống để dùng query trending mặc định">
+            </label>
+            <label>Sắp xếp
+              <select id="youtubeSort">
+                <option value="trend">Trend mặc định</option>
+                <option value="overall">Điểm tổng cao nhất</option>
+                <option value="title">Title tốt nhất</option>
+                <option value="thumbnail">Thumbnail tốt nhất</option>
+                <option value="psychology">Tâm lý học mạnh nhất</option>
+                <option value="views">Nhiều view nhất</option>
+                <option value="newest">Mới nhất</option>
+              </select>
+            </label>
+            <label>Điểm tối thiểu
+              <select id="youtubeMinScore">
+                <option value="0">Tất cả</option>
+                <option value="50">50+</option>
+                <option value="60">60+</option>
+                <option value="70">70+</option>
+                <option value="80">80+</option>
+              </select>
+            </label>
+            <label>Limit
+              <select id="youtubeLimit">
+                <option value="12">Top 12</option>
+                <option value="8">Top 8</option>
+                <option value="20">Top 20</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="youtubeStatus" class="muted" style="margin-bottom: 12px;">Chưa tải YouTube trend.</div>
+          <div id="youtubeList" class="youtube-grid"></div>
+        </section>
+
+        <section id="schedules" class="view">
+          <div class="section-head">
+            <div>
+              <h2>📅 Scheduled Tasks</h2>
+              <p>Giám sát và kiểm tra các launchd agent tự động chạy tìm kiếm bounty, gửi tin nhắn Telegram, và theo dõi PR.</p>
+            </div>
+          </div>
+          <div class="data-toolbar" aria-label="Schedules filters">
+            <label>Search
+              <input id="schedulesSearch" type="search" data-filter-scope="schedules" data-filter-key="query" placeholder="Tên agent, script, repo, hoặc log file">
+            </label>
+            <label>Type
+              <select id="schedulesType" data-filter-scope="schedules" data-filter-key="type">
+                <option value="all">All schedules</option>
+                <option value="interval">Interval (Lặp lại)</option>
+                <option value="calendar">Calendar (Hằng ngày)</option>
+                <option value="monitor">Monitor (Giám sát PR)</option>
+              </select>
+            </label>
+            <button class="secondary-button" type="button" data-reset-filters="schedules">Reset</button>
+          </div>
+          <div id="schedulesList" class="schedule-grid"></div>
+          <div id="schedulesPager" class="pager"></div>
+        </section>
+
+
+
+        <section id="settings" class="view">
+          <div class="section-head">
+            <div>
+              <h2>⚙️ Agent settings</h2>
+              <p>Cấu hình provider, context memory, search, Codex CLI bridge và skill library.</p>
+            </div>
+            <button id="reloadAgentSettings" class="secondary-button" type="button">Reload</button>
+          </div>
+
+          <div class="settings-grid">
+            <section class="panel">
+              <div class="section-head compact-head">
+                <h2>Provider</h2>
+                <span id="providerStatus" class="state-badge idle">Unknown</span>
+              </div>
+              <form id="agentSettingsForm" class="form-stack">
+                <label>OpenAI-compatible base URL
+                  <input id="agentBaseUrl" type="url" placeholder="https://your-provider.example/v1">
+                </label>
+                <label>Model
+                  <input id="agentModel" type="text" placeholder="provider-model-name">
+                </label>
+                <label>API key
+                  <input id="agentApiKey" type="password" placeholder="Leave blank to keep existing key">
+                  <span id="agentApiKeyHint" class="field-hint">Không hiển thị hoặc log API key raw.</span>
+                </label>
+                <div class="form-row">
+                  <label>Context limit
+                    <input id="agentContextLimit" type="number" min="4000" step="1000">
+                  </label>
+                  <label>Max loops
+                    <input id="agentMaxLoops" type="number" min="1" max="12">
+                  </label>
+                </div>
+                <div class="form-row">
+                  <label>Tool calls / round
+                    <input id="agentMaxToolCalls" type="number" min="1" max="8">
+                  </label>
+                  <label>Codex timeout ms
+                    <input id="codexCliTimeout" type="number" min="30000" step="30000">
+                  </label>
+                </div>
+                <label class="check-row"><input id="agentEnableSearch" type="checkbox"> Enable agent search</label>
+                <label class="check-row"><input id="agentAutoCreateSkills" type="checkbox"> Auto-create missing workflow skills into my-skills</label>
+                <label class="check-row"><input id="codexCliEnabled" type="checkbox"> Enable Codex CLI bridge</label>
+                <label>Codex CLI command
+                  <input id="codexCliCommand" type="text" placeholder="codex">
+                </label>
+                <div class="settings-actions">
+                  <button class="primary-button" type="submit">Save settings</button>
+                  <button id="clearAgentApiKey" class="secondary-button" type="button">Clear API key</button>
+                </div>
+              </form>
+            </section>
+
+            <section class="panel">
+              <div class="section-head compact-head">
+                <h2>Skill library</h2>
+                <button id="refreshSkills" class="secondary-button" type="button">Refresh</button>
+              </div>
+              <div class="data-toolbar" aria-label="Skills filters" style="grid-template-columns: 1fr auto; margin-bottom: 12px; padding: 8px 12px;">
+                <label style="font-size: 11px;">Search
+                  <input id="skillsSearch" type="search" data-filter-scope="skills" data-filter-key="query" placeholder="Search by command, title, tools, or description..." style="min-height: 32px;">
+                </label>
+                <button class="secondary-button" type="button" data-reset-filters="skills" style="min-height: 32px; padding: 0 12px;">Reset</button>
+              </div>
+              <div id="skillLibrary" class="skill-library"></div>
+              <div id="skillsPager" class="pager" style="margin-top: 12px;"></div>
+            </section>
+
+            <section class="panel">
+              <div class="section-head compact-head">
+                <h2>Create skill</h2>
+              </div>
+              <form id="createSkillForm" class="form-stack">
+                <label>Command
+                  <input id="newSkillCommand" type="text" placeholder="/my-review-results">
+                </label>
+                <label>Goal
+                  <textarea id="newSkillGoal" rows="3" placeholder="Mục tiêu workflow"></textarea>
+                </label>
+                <label>Allowed tools
+                  <input id="newSkillTools" type="text" placeholder="dashboard_status, list_results">
+                </label>
+                <label>Output format
+                  <textarea id="newSkillOutput" rows="3" placeholder="Acceptance/output format"></textarea>
+                </label>
+                <button class="primary-button" type="submit">Create skill</button>
+              </form>
+            </section>
+          </div>
+
+          <section class="panel references-panel" style="margin-top: 16px;">
+            <div class="section-head compact-head" style="margin-bottom: 12px;">
+              <h2>📚 References</h2>
+              <p class="muted" style="margin: 4px 0 0; font-size: 13px;">Tài liệu phân tích trong `refer/` dùng để vận hành và mở rộng app.</p>
+            </div>
+            <div class="data-toolbar" aria-label="Reference filters" style="margin-top: 12px; margin-bottom: 16px;">
+              <label>Search
+                <input id="referencesSearch" type="search" data-filter-scope="references" data-filter-key="query" placeholder="Filename or preview">
+              </label>
+              <label>Sort
+                <select id="referencesSort" data-filter-scope="references" data-filter-key="sort">
+                  <option value="path_asc">Path A-Z</option>
+                  <option value="title_asc">Title A-Z</option>
+                </select>
+              </label>
+              <label>Page size
+                <select id="referencesPageSize" data-filter-scope="references" data-filter-key="pageSize">
+                  <option value="12">12</option>
+                  <option value="24">24</option>
+                  <option value="48">48</option>
+                </select>
+              </label>
+              <button class="secondary-button" type="button" data-reset-filters="references">Reset</button>
+            </div>
+            <div id="referencesList" class="file-grid"></div>
+            <div id="referencesPager" class="pager"></div>
+          </section>
+        </section>
+
+        <section id="logDrawer" class="log-drawer" aria-live="polite">
+          <header class="log-drawer-head">
+            <div>
+              <h2>🧾 Activity log</h2>
+              <p>Theo dõi refresh, chuyển màn hình và trạng thái đọc dữ liệu trong phiên hiện tại.</p>
+            </div>
+            <div class="log-actions">
+              <span id="logStatus" class="status-label">Idle</span>
+              <button id="clearActivity" class="secondary-button" type="button">Clear log</button>
+              <button id="toggleLogs" class="secondary-button" type="button" aria-expanded="true">Collapse</button>
+            </div>
+          </header>
+          <div id="logDrawerBody" class="log-drawer-body">
+            <div id="runTracker" class="run-tracker"></div>
+            <div class="log-grid">
+              <section class="log-column">
+                <h3>🪵 Session events</h3>
+                <ol id="activityLog" class="activity-log"></ol>
+              </section>
+              <section class="log-column">
+                <h3>📟 Latest snapshot</h3>
+                <pre id="latestSnapshotOutput" class="terminal compact-terminal">No snapshot loaded yet.</pre>
+              </section>
+            </div>
+          </div>
+        </section>
+          </div>
+
+          <aside class="inspector" aria-label="Workflow inspector">
+            <section class="inspector-card">
+              <div class="inspector-head">
+                <span class="inspector-kicker">Workflow</span>
+                <strong id="inspectorActiveView">Overview</strong>
+              </div>
+              <div id="inspectorStatus" class="inspector-status"></div>
+            </section>
+
+            <section class="inspector-card">
+              <div class="inspector-head">
+                <span class="inspector-kicker">Health</span>
+                <strong>Project signals</strong>
+              </div>
+              <div id="inspectorHealth" class="mini-metrics"></div>
+            </section>
+
+            <section class="inspector-card">
+              <div class="inspector-head">
+                <span class="inspector-kicker">Next actions</span>
+                <strong>Status queue</strong>
+              </div>
+              <div class="quick-actions">
+                <button class="secondary-button" type="button" data-view-link="results">Review results</button>
+                <button class="secondary-button" type="button" data-view-link="jobs">Open jobs</button>
+                <button class="secondary-button" type="button" data-view-link="monitors">Check monitors</button>
+              </div>
+            </section>
+
+            <section class="inspector-card">
+              <div class="inspector-head">
+                <span class="inspector-kicker">Latest event</span>
+                <strong>Session trace</strong>
+              </div>
+              <div id="inspectorLatestEvent" class="latest-event">No events yet.</div>
+            </section>
+          </aside>
+        </div>
+      </main>
+      <button id="agentFab" class="agent-fab" type="button" aria-label="Open Agent Chat" aria-controls="agentChatModal" aria-expanded="false">
+        <span aria-hidden="true">🤖</span>
+        <strong>Agent Chat</strong>
+      </button>
+    </div>
+    <div id="chartTooltip" class="chart-tooltip"></div>
+    <script src="./web-bridge.js"></script>
+    <script src="./renderer.js"></script>
   </body>
 </html>
