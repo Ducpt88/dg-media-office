@@ -3369,7 +3369,12 @@ function renderCommandOutput() {
 }
 
 function addLog(type, title, detail = "") {
-  const entry = { type, title, detail, time: timeLabel() };
+  const entry = {
+    type,
+    title: cleanMojibakeText(title),
+    detail: cleanMojibakeText(detail),
+    time: timeLabel()
+  };
   state.activityLog.unshift(entry);
   state.activityLog = state.activityLog.slice(0, 80);
   renderActivityLog();
