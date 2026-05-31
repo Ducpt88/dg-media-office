@@ -521,7 +521,10 @@ const staticUiText = {
     overviewPipelineDesc: "Doc trang thai tu results, job workspace, monitor log va ledger do Codex/CLI tao.",
     overviewTopTitle: "Top candidates",
     overviewManagerTitle: "Project manager state",
-    overviewManagerDesc: "Doc nhanh cac file .manager/ sau moi vong lam viec."
+    overviewManagerDesc: "Doc nhanh cac file .manager/ sau moi vong lam viec.",
+    jobsTitle: "Jobs GitHub",
+    jobsDesc: "Quan ly va van hanh quy trinh san bounty: ket qua tim kiem, workspace, monitor va so du thanh toan.",
+    jobsTabs: ["Jobs", "Results", "Commands", "Monitors", "Ledger"]
   },
   en: {
     overviewDistributionTitle: "Job distribution",
@@ -532,7 +535,10 @@ const staticUiText = {
     overviewPipelineDesc: "Reads status from results, job workspaces, monitor logs, and ledger files created by Codex/CLI.",
     overviewTopTitle: "Top candidates",
     overviewManagerTitle: "Project manager state",
-    overviewManagerDesc: "Quick view of .manager/ files after each work cycle."
+    overviewManagerDesc: "Quick view of .manager/ files after each work cycle.",
+    jobsTitle: "Jobs GitHub",
+    jobsDesc: "Manage the bounty workflow: search results, workspaces, monitors, and payment ledger.",
+    jobsTabs: ["Jobs", "Results", "Commands", "Monitors", "Ledger"]
   }
 };
 
@@ -688,6 +694,16 @@ function applyStaticUiText() {
     if (title) title.textContent = text.overviewManagerTitle;
     if (desc) desc.textContent = text.overviewManagerDesc;
   }
+  const jobsHead = $("#jobs > .section-head");
+  if (jobsHead) {
+    const title = jobsHead.querySelector("h2");
+    const desc = jobsHead.querySelector("p");
+    if (title) title.textContent = text.jobsTitle;
+    if (desc) desc.textContent = text.jobsDesc;
+  }
+  $$("[data-jobs-github-tab]").forEach((button, index) => {
+    if (text.jobsTabs[index]) button.textContent = text.jobsTabs[index];
+  });
 }
 
 function applyLanguage() {
