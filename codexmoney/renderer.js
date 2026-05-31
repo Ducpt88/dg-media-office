@@ -451,6 +451,61 @@ phraseTranslations.en = Object.fromEntries(
   Object.entries(phraseTranslations.vi).map(([en, vi]) => [vi, en])
 );
 
+translations.vi = {
+  brandTitle: "Trang thai job",
+  brandSubtitle: "Theo doi cuc bo",
+  nav: {
+    overview: "Tong quan",
+    jobs: "Jobs GitHub",
+    schedules: "Lich chay",
+    rss: "Xu huong RSS",
+    threads: "Tim Threads",
+    facebook: "Facebook Trend",
+    youtube: "YouTube Trend",
+    interest: "Chu de quan tam",
+    settings: "Cai dat"
+  },
+  topbarEyebrow: "Bang trang thai local",
+  topbarTitle: "Codex Job Status",
+  waiting: "Dang cho du lieu",
+  refresh: "Lam moi",
+  openFolder: "Mo thu muc",
+  projectRoot: "Thu muc du an",
+  reading: "Dang doc",
+  idle: "San sang",
+  snapshot: "Snapshot",
+  verify: "Kiem tra",
+  noEvents: "Chua co su kien phien.",
+  latestNoEvents: "Chua co su kien.",
+  synced: "Da dong bo",
+  logExpand: "Mo rong",
+  logCollapse: "Thu gon",
+  inspector: {
+    workflow: "Quy trinh",
+    health: "Suc khoe",
+    projectSignals: "Tin hieu du an",
+    nextActions: "Viec tiep theo",
+    statusQueue: "Hang doi trang thai",
+    latestEvent: "Su kien moi nhat",
+    sessionTrace: "Dau vet phien"
+  },
+  metrics: {
+    results: "Ket qua",
+    jobs: "Jobs",
+    attention: "Can chu y",
+    monitors: "Monitors"
+  },
+  actions: {
+    reviewResults: "Xem ket qua",
+    openJobs: "Mo jobs",
+    checkMonitors: "Kiem tra monitors"
+  }
+};
+exactTextTranslations.vi = {};
+exactTextTranslations.en = {};
+phraseTranslations.vi = {};
+phraseTranslations.en = {};
+
 function t(path) {
   return path.split(".").reduce((value, key) => value && value[key], translations[state.language]) || path;
 }
