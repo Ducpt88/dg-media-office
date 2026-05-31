@@ -555,7 +555,11 @@ function plainAscii(value) {
 function cleanMojibakeText(value) {
   const text = String(value || "");
   if (!mojibakePattern.test(text)) return text;
-  const cleaned = plainAscii(text)
+  const ascii = text
+    .split(/\s+/)
+    .filter((token) => token && !/[^\x20-\x7E]/.test(token))
+    .join(" ");
+  const cleaned = plainAscii(ascii)
     .replace(/\bA\b/g, "")
     .replace(/\s+/g, " ")
     .trim();
@@ -798,6 +802,15 @@ const viewLabels = {
   interest: "ChÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â§ ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â»ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â quan tÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢m",
   settings: "Settings"
 };
+
+runtimeSteps.splice(0, runtimeSteps.length,
+  { key: "load", icon: "LD", label: "Load data" },
+  { key: "render", icon: "UI", label: "Render UI" },
+  { key: "snapshot", icon: "SS", label: "Snapshot" },
+  { key: "verify", icon: "OK", label: "Verify output" }
+);
+
+viewLabels.interest = "Interest Topics";
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
