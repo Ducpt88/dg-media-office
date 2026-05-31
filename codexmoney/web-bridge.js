@@ -4,7 +4,8 @@
   async function loadSnapshot() {
     const response = await fetch("./dashboard.json?ts=" + Date.now(), { cache: "no-store" });
     if (!response.ok) throw new Error(`Cannot load dashboard snapshot: ${response.status}`);
-    cachedDashboard = await response.json();
+    const payload = await response.json();
+    cachedDashboard = payload && payload.data ? payload.data : payload;
     return cachedDashboard;
   }
   function readOnly() {
