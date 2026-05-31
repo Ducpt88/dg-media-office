@@ -501,6 +501,82 @@ translations.vi = {
     checkMonitors: "Kiem tra monitors"
   }
 };
+
+Object.assign(statusEmojiLabels, {
+  prepared: "Prepared",
+  doing: "Doing",
+  local_done: "Local done",
+  pending_review: "In review",
+  pending_reward: "Payout pending",
+  rewarded: "Paid"
+});
+
+const staticUiText = {
+  vi: {
+    overviewDistributionTitle: "Phan bo cong viec",
+    overviewDistributionDesc: "Ty le trang thai cua cac Jobs dang giam sat",
+    overviewBudgetTitle: "Du toan ngan sach",
+    overviewBudgetDesc: "Tong ngan sach uoc tinh theo trang thai",
+    overviewPipelineTitle: "Job status pipeline",
+    overviewPipelineDesc: "Doc trang thai tu results, job workspace, monitor log va ledger do Codex/CLI tao.",
+    overviewTopTitle: "Top candidates",
+    overviewManagerTitle: "Project manager state",
+    overviewManagerDesc: "Doc nhanh cac file .manager/ sau moi vong lam viec."
+  },
+  en: {
+    overviewDistributionTitle: "Job distribution",
+    overviewDistributionDesc: "Status ratio for monitored jobs",
+    overviewBudgetTitle: "Budget estimate",
+    overviewBudgetDesc: "Estimated total budget by status",
+    overviewPipelineTitle: "Job status pipeline",
+    overviewPipelineDesc: "Reads status from results, job workspaces, monitor logs, and ledger files created by Codex/CLI.",
+    overviewTopTitle: "Top candidates",
+    overviewManagerTitle: "Project manager state",
+    overviewManagerDesc: "Quick view of .manager/ files after each work cycle."
+  }
+};
+
+const mojibakePattern = /[ÃÂÆƒâ€šðŸÄá»]/;
+
+function plainAscii(value) {
+  return String(value || "")
+    .replace(/[^	\n\r\x20-\x7E]/g, " ")
+    .replace(/\s+/g, " ")
+    .replace(/\s+([,.:;!?])/g, "$1")
+    .trim();
+}
+
+function cleanMojibakeText(value) {
+  const text = String(value || "");
+  if (!mojibakePattern.test(text)) return text;
+  const cleaned = plainAscii(text)
+    .replace(/\bA\b/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return cleaned || "";
+}
+
+function sanitizeVisibleText(root = document.body) {
+  if (!root) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (shouldSkipI18nNode(node)) return NodeFilter.FILTER_REJECT;
+      return node.nodeValue && mojibakePattern.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+    }
+  });
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach((node) => {
+    node.nodeValue = cleanMojibakeText(node.nodeValue);
+  });
+  $$('[title], [aria-label], [data-tooltip], input[placeholder], textarea[placeholder]').forEach((el) => {
+    if (el.closest("script, style, code, pre, [data-i18n-skip]")) return;
+    ["title", "aria-label", "data-tooltip", "placeholder"].forEach((attr) => {
+      if (!el.hasAttribute(attr)) return;
+      el.setAttribute(attr, cleanMojibakeText(el.getAttribute(attr)));
+    });
+  });
+}
 exactTextTranslations.vi = {};
 exactTextTranslations.en = {};
 phraseTranslations.vi = {};
@@ -578,6 +654,42 @@ function ensureLanguageSwitch() {
   actions.prepend(switcher);
 }
 
+function applyStaticUiText() {
+  const text = staticUiText[state.language] || staticUiText.en;
+  const chartPanels = $$("#overview .chart-panel");
+  if (chartPanels[0]) {
+    const title = chartPanels[0].querySelector("h2");
+    const desc = chartPanels[0].querySelector("p");
+    if (title) title.textContent = text.overviewDistributionTitle;
+    if (desc) desc.textContent = text.overviewDistributionDesc;
+  }
+  if (chartPanels[1]) {
+    const title = chartPanels[1].querySelector("h2");
+    const desc = chartPanels[1].querySelector("p");
+    if (title) title.textContent = text.overviewBudgetTitle;
+    if (desc) desc.textContent = text.overviewBudgetDesc;
+  }
+  const pipelinePanel = $("#pipeline") && $("#pipeline").closest(".panel");
+  if (pipelinePanel) {
+    const title = pipelinePanel.querySelector("h2");
+    const desc = pipelinePanel.querySelector("p");
+    if (title) title.textContent = text.overviewPipelineTitle;
+    if (desc) desc.textContent = text.overviewPipelineDesc;
+  }
+  const topCandidatesPanel = $("#topCandidates") && $("#topCandidates").closest(".panel");
+  if (topCandidatesPanel) {
+    const title = topCandidatesPanel.querySelector("h2");
+    if (title) title.textContent = text.overviewTopTitle;
+  }
+  const managerPanel = $("#managerState") && $("#managerState").closest(".panel");
+  if (managerPanel) {
+    const title = managerPanel.querySelector("h2");
+    const desc = managerPanel.querySelector("p");
+    if (title) title.textContent = text.overviewManagerTitle;
+    if (desc) desc.textContent = text.overviewManagerDesc;
+  }
+}
+
 function applyLanguage() {
   ensureLanguageSwitch();
   document.documentElement.lang = state.language;
@@ -607,9 +719,11 @@ function applyLanguage() {
   if (!state.dashboard) setText("#lastSync", t("waiting"));
   const logToggle = $("#toggleLogs");
   if (logToggle) logToggle.textContent = state.logDrawerCollapsed ? t("logExpand") : t("logCollapse");
+  applyStaticUiText();
   renderInspector();
   renderActivityLog();
   localizeDom();
+  sanitizeVisibleText();
 }
 
 function setLanguage(language) {
@@ -633,6 +747,17 @@ const pipelineSteps = [
   { key: "monitor", icon: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¡", label: "Monitor", detail: "PR/issue approval vÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â  payout signals" },
   { key: "ledger", icon: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âµ", label: "Ledger", detail: "Ghi nhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­n payment ÃƒÆ’Ã†â€™ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¹Ã…â€œÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â£ nhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚ÂºÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â­n" }
 ];
+
+pipelineSteps.splice(0, pipelineSteps.length,
+  { key: "query", icon: "01", label: "Query", detail: "GitHub, Reddit, Freelancer, or batch search input" },
+  { key: "candidate", icon: "02", label: "Candidate", detail: "Normalize each item into a candidate record" },
+  { key: "score", icon: "03", label: "Score", detail: "Rank by budget, positive signals, and red flags" },
+  { key: "results", icon: "04", label: "Results", detail: "Write JSON files into results/" },
+  { key: "workspace", icon: "05", label: "Workspace", detail: "Prepare jobs/<task>/ workspace" },
+  { key: "gates", icon: "06", label: "Approval gates", detail: "Review scope, payment, and safety before work" },
+  { key: "monitor", icon: "07", label: "Monitor", detail: "Track approval, messages, and payout signals" },
+  { key: "ledger", icon: "08", label: "Ledger", detail: "Record payment and final status" }
+);
 
 const runtimeSteps = [
   { key: "load", icon: "ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¥", label: "Load data" },
@@ -3576,6 +3701,7 @@ function renderDashboard(data) {
   applyLanguage();
   renderInspector();
   localizeDom();
+  sanitizeVisibleText();
 }
 
 async function refresh() {
