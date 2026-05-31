@@ -1,51 +1,58 @@
 const statusEmojiLabels = {
-  prepared: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‹Å“ Prepared",
-  doing: "ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ Doing",
-  local_done: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Local Done",
-  pending_review: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½ In Review",
-  pending_reward: "ÃƒÂ¢Ã‚ÂÃ‚Â³ Payout Pending",
-  rewarded: "ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Â° Paid"
+  prepared: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¹Ã…â€œ Prepared",
+  doing: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ Doing",
+  local_done: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ Local Done",
+  pending_review: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã‚Â½ In Review",
+  pending_reward: "ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³ Payout Pending",
+  rewarded: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° Paid"
 };
 
 const localizedStatusLabels = {
   vi: {
-    prepared: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‹Å“ Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ chuÃƒÂ¡Ã‚ÂºÃ‚Â©n bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹",
-    doing: "ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ Ãƒâ€žÃ‚Âang lÃƒÆ’Ã‚Â m",
-    local_done: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ HoÃƒÆ’Ã‚Â n tÃƒÂ¡Ã‚ÂºÃ‚Â¥t local",
-    pending_review: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½ Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
-    pending_reward: "ÃƒÂ¢Ã‚ÂÃ‚Â³ ChÃƒÂ¡Ã‚Â»Ã‚Â thanh toÃƒÆ’Ã‚Â¡n",
-    rewarded: "ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Â° Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ thanh toÃƒÆ’Ã‚Â¡n"
+    prepared: "\u25cb Da chuan bi",
+    doing: "\u25b6 Dang lam",
+    local_done: "\u25a3 Hoan tat local",
+    pending_review: "\u2315 Dang cho duyet",
+    pending_reward: "\u23f3 Cho thanh toan",
+    rewarded: "\u2713 Da thanh toan"
   },
-  en: statusEmojiLabels
+  en: {
+    prepared: "Idle",
+    doing: "Doing",
+    local_done: "Local done",
+    pending_review: "In review",
+    pending_reward: "Payout pending",
+    rewarded: "Paid"
+  }
 };
 
 const projectText = {
   vi: {
-    unknown: "khÃƒÆ’Ã‚Â´ng rÃƒÆ’Ã‚Âµ",
-    manual: "thÃƒÂ¡Ã‚Â»Ã‚Â§ cÃƒÆ’Ã‚Â´ng",
-    age: "tuÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i",
-    score: "Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã†â€™m",
-    time: "thÃƒÂ¡Ã‚Â»Ã‚Âi gian",
-    noMonitor: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ monitor",
+    unknown: "khong ro",
+    manual: "thu cong",
+    age: "tuoi",
+    score: "diem",
+    time: "thoi gian",
+    noMonitor: "Chua co monitor",
     claim: "claim",
-    approved: "Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
-    rewarded: "Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ trÃƒÂ¡Ã‚ÂºÃ‚Â£",
-    marked: "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
-    watching: "Ãƒâ€žÃ‚Âang theo dÃƒÆ’Ã‚Âµi",
-    inboxComment: "BÃƒÆ’Ã‚Â¬nh luÃƒÂ¡Ã‚ÂºÃ‚Â­n GitHub inbox",
-    monitorComment: "BÃƒÆ’Ã‚Â¬nh luÃƒÂ¡Ã‚ÂºÃ‚Â­n monitor",
-    approvalGates: "cÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
+    approved: "da duyet",
+    rewarded: "da tra",
+    marked: "Danh dau",
+    watching: "Dang theo doi",
+    inboxComment: "Binh luan GitHub inbox",
+    monitorComment: "Binh luan monitor",
+    approvalGates: "cong duyet",
     files: "file",
     issue: "Issue",
-    checkAgain: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
-    checkInbox: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox",
-    unmark: "BÃƒÂ¡Ã‚Â»Ã‚Â Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
-    mark: "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
-    unwatch: "BÃƒÂ¡Ã‚Â»Ã‚Â theo dÃƒÆ’Ã‚Âµi",
-    watch: "Theo dÃƒÆ’Ã‚Âµi",
-    openFolder: "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
-    noJobs: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ workspace trong jobs/.",
-    rewardedFallback: "Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ thanh toÃƒÆ’Ã‚Â¡n"
+    checkAgain: "Kiem tra lai",
+    checkInbox: "Kiem tra inbox",
+    unmark: "Bo danh dau",
+    mark: "Danh dau",
+    unwatch: "Bo theo doi",
+    watch: "Theo doi",
+    openFolder: "Mo thu muc",
+    noJobs: "Chua co workspace trong jobs/.",
+    rewardedFallback: "da thanh toan"
   },
   en: {
     unknown: "unknown",
@@ -132,52 +139,52 @@ const state = {
 const translations = {
   vi: {
     brandTitle: "Job Status",
-    brandSubtitle: "Theo dÃƒÆ’Ã‚Âµi cÃƒÂ¡Ã‚Â»Ã‚Â¥c bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢",
+    brandSubtitle: "Theo dÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµi cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢",
     nav: {
-      overview: "TÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng quan",
+      overview: "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ng quan",
       jobs: "Jobs GitHub",
-      schedules: "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch chÃƒÂ¡Ã‚ÂºÃ‚Â¡y",
-      rss: "Xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng RSS",
-      threads: "TÃƒÆ’Ã‚Â¬m Threads",
+      schedules: "LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ch chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y",
+      rss: "Xu hÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºng RSS",
+      threads: "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m Threads",
       facebook: "Facebook Trend",
       youtube: "YouTube Trend",
-      interest: "ChÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â quan tÃƒÆ’Ã‚Â¢m",
-      settings: "CÃƒÆ’Ã‚Â i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t"
+      interest: "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â quan tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢m",
+      settings: "CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·t"
     },
-    topbarEyebrow: "BÃƒÂ¡Ã‚ÂºÃ‚Â£ng trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i local",
+    topbarEyebrow: "BÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ng trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i local",
     topbarTitle: "Codex Job Status",
-    waiting: "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
-    refresh: "LÃƒÆ’Ã‚Â m mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
-    openFolder: "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
-    projectRoot: "ThÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
-    reading: "Ãƒâ€žÃ‚Âang Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc",
-    idle: "SÃƒÂ¡Ã‚ÂºÃ‚Âµn sÃƒÆ’Ã‚Â ng",
+    waiting: "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u",
+    refresh: "LÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â m mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi",
+    openFolder: "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c",
+    projectRoot: "ThÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n",
+    reading: "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc",
+    idle: "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Âµn sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng",
     snapshot: "Snapshot",
-    verify: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra",
-    noEvents: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n phiÃƒÆ’Ã‚Âªn.",
-    latestNoEvents: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n.",
-    synced: "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ng bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢",
-    logExpand: "MÃƒÂ¡Ã‚Â»Ã…Â¸ rÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng",
-    logCollapse: "Thu gÃƒÂ¡Ã‚Â»Ã‚Ân",
+    verify: "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra",
+    noEvents: "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n phiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn.",
+    latestNoEvents: "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n.",
+    synced: "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œng bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢",
+    logExpand: "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ rÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng",
+    logCollapse: "Thu gÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân",
     inspector: {
-      workflow: "Quy trÃƒÆ’Ã‚Â¬nh",
-      health: "SÃƒÂ¡Ã‚Â»Ã‚Â©c khÃƒÂ¡Ã‚Â»Ã‚Âe",
-      projectSignals: "TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
-      nextActions: "ViÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡c tiÃƒÂ¡Ã‚ÂºÃ‚Â¿p theo",
-      statusQueue: "HÃƒÆ’Ã‚Â ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â£i trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
-      latestEvent: "SÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-      sessionTrace: "DÃƒÂ¡Ã‚ÂºÃ‚Â¥u vÃƒÂ¡Ã‚ÂºÃ‚Â¿t phiÃƒÆ’Ã‚Âªn"
+      workflow: "Quy trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬nh",
+      health: "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©c khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âe",
+      projectSignals: "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n",
+      nextActions: "ViÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡c tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿p theo",
+      statusQueue: "HÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£i trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i",
+      latestEvent: "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+      sessionTrace: "DÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥u vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t phiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn"
     },
     metrics: {
-      results: "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
+      results: "KÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
       jobs: "Jobs",
-      attention: "CÃƒÂ¡Ã‚ÂºÃ‚Â§n chÃƒÆ’Ã‚Âº ÃƒÆ’Ã‚Â½",
+      attention: "CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âº ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½",
       monitors: "Monitors"
     },
     actions: {
-      reviewResults: "Xem kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
-      openJobs: "MÃƒÂ¡Ã‚Â»Ã…Â¸ jobs",
-      checkMonitors: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra monitors"
+      reviewResults: "Xem kÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
+      openJobs: "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ jobs",
+      checkMonitors: "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra monitors"
     }
   },
   en: {
@@ -234,179 +241,179 @@ const translations = {
 
 const exactTextTranslations = {
   vi: {
-    "Job Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i job",
-    "Read-only monitor": "Theo dÃƒÆ’Ã‚Âµi cÃƒÂ¡Ã‚Â»Ã‚Â¥c bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢",
-    "Codex Job Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i job Codex",
-    "Local status viewer": "BÃƒÂ¡Ã‚ÂºÃ‚Â£ng trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i local",
-    "Waiting for data": "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
-    "Project root": "ThÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
-    "Open folder": "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
-    "Overview": "TÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng quan",
+    "Job Status": "TrÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i job",
+    "Read-only monitor": "Theo dÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµi cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢",
+    "Codex Job Status": "TrÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i job Codex",
+    "Local status viewer": "BÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ng trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i local",
+    "Waiting for data": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u",
+    "Project root": "ThÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n",
+    "Open folder": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c",
+    "Overview": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ng quan",
     "Jobs GitHub": "Jobs GitHub",
-    "Schedules": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch chÃƒÂ¡Ã‚ÂºÃ‚Â¡y",
-    "Trends RSS": "Xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng RSS",
-    "Threads Search": "TÃƒÆ’Ã‚Â¬m Threads",
+    "Schedules": "LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ch chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y",
+    "Trends RSS": "Xu hÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºng RSS",
+    "Threads Search": "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m Threads",
     "Facebook Trend": "Facebook Trend",
     "YouTube Trend": "YouTube Trend",
-    "Settings": "CÃƒÆ’Ã‚Â i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t",
-    "Manager file": "File quÃƒÂ¡Ã‚ÂºÃ‚Â£n lÃƒÆ’Ã‚Â½",
-    "Open file": "MÃƒÂ¡Ã‚Â»Ã…Â¸ file",
-    "Job Title": "TiÃƒÆ’Ã‚Âªu Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â job",
-    "Prepared": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ chuÃƒÂ¡Ã‚ÂºÃ‚Â©n bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹",
-    "Doing": "Ãƒâ€žÃ‚Âang lÃƒÆ’Ã‚Â m",
-    "Local done": "HoÃƒÆ’Ã‚Â n tÃƒÂ¡Ã‚ÂºÃ‚Â¥t local",
-    "Pending review": "ChÃƒÂ¡Ã‚Â»Ã‚Â review",
-    "Pending reward": "ChÃƒÂ¡Ã‚Â»Ã‚Â thÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng",
-    "Rewarded": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ nhÃƒÂ¡Ã‚ÂºÃ‚Â­n thÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng",
-    "Paid": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ trÃƒÂ¡Ã‚ÂºÃ‚Â£",
-    "Received": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ nhÃƒÂ¡Ã‚ÂºÃ‚Â­n",
-    "Complete": "HoÃƒÆ’Ã‚Â n tÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Pending": "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â",
-    "Qualify": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â¡nh giÃƒÆ’Ã‚Â¡",
-    "Score details": "Chi tiÃƒÂ¡Ã‚ÂºÃ‚Â¿t Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã†â€™m",
-    "Actions": "Thao tÃƒÆ’Ã‚Â¡c",
-    "Tool bridge": "CÃƒÂ¡Ã‚ÂºÃ‚Â§u nÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi tool",
+    "Settings": "CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·t",
+    "Manager file": "File quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£n lÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½",
+    "Open file": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ file",
+    "Job Title": "TiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªu ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â job",
+    "Prepared": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ chuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â©n bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹",
+    "Doing": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang lÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â m",
+    "Local done": "HoÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t local",
+    "Pending review": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â review",
+    "Pending reward": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ng",
+    "Rewarded": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­n thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ng",
+    "Paid": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
+    "Received": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­n",
+    "Complete": "HoÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Pending": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â",
+    "Qualify": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡nh giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡",
+    "Score details": "Chi tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“iÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m",
+    "Actions": "Thao tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c",
+    "Tool bridge": "CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u nÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“i tool",
     "Files": "File",
     "Workspace files": "File workspace",
-    "Idle": "SÃƒÂ¡Ã‚ÂºÃ‚Âµn sÃƒÆ’Ã‚Â ng",
-    "Copy session": "Sao chÃƒÆ’Ã‚Â©p phiÃƒÆ’Ã‚Âªn",
-    "New": "TÃƒÂ¡Ã‚ÂºÃ‚Â¡o mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
-    "Supported skills": "Skill hÃƒÂ¡Ã‚Â»Ã¢â‚¬â€ trÃƒÂ¡Ã‚Â»Ã‚Â£",
-    "Skill library": "ThÃƒâ€ Ã‚Â° viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n skill",
-    "Context": "NgÃƒÂ¡Ã‚Â»Ã‚Â¯ cÃƒÂ¡Ã‚ÂºÃ‚Â£nh",
-    "Send": "GÃƒÂ¡Ã‚Â»Ã‚Â­i",
-    "Thinking": "Ãƒâ€žÃ‚Âang suy nghÃƒâ€žÃ‚Â©",
-    "Agent steps": "CÃƒÆ’Ã‚Â¡c bÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc agent",
-    "Open": "MÃƒÂ¡Ã‚Â»Ã…Â¸",
-    "Close": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â³ng",
-    "Show execution trace": "HiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n dÃƒÂ¡Ã‚ÂºÃ‚Â¥u vÃƒÂ¡Ã‚ÂºÃ‚Â¿t thÃƒÂ¡Ã‚Â»Ã‚Â±c thi",
-    "Tools": "CÃƒÆ’Ã‚Â´ng cÃƒÂ¡Ã‚Â»Ã‚Â¥",
-    "Calls and results": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh gÃƒÂ¡Ã‚Â»Ã‚Âi vÃƒÆ’Ã‚Â  kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
+    "Idle": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Âµn sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng",
+    "Copy session": "Sao chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©p phiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn",
+    "New": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi",
+    "Supported skills": "Skill hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£",
+    "Skill library": "ThÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° viÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n skill",
+    "Context": "NgÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£nh",
+    "Send": "GÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­i",
+    "Thinking": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang suy nghÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Â©",
+    "Agent steps": "CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c bÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºc agent",
+    "Open": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸",
+    "Close": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ng",
+    "Show execution trace": "HiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥u vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â±c thi",
+    "Tools": "CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥",
+    "Calls and results": "LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh gÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âi vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  kÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
     "Jobs": "Jobs",
-    "Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
-    "Commands": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh",
+    "Results": "KÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
+    "Commands": "LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh",
     "Monitors": "Monitors",
-    "Ledger": "SÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ tiÃƒÂ¡Ã‚Â»Ã‚Ân",
-    "Search": "TÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
-    "Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
-    "Signal": "TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
-    "Sort": "SÃƒÂ¡Ã‚ÂºÃ‚Â¯p xÃƒÂ¡Ã‚ÂºÃ‚Â¿p",
-    "Page size": "CÃƒÂ¡Ã‚Â»Ã‚Â¡ trang",
-    "Source": "NguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n",
-    "Query": "Truy vÃƒÂ¡Ã‚ÂºÃ‚Â¥n",
-    "Limit": "GiÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi hÃƒÂ¡Ã‚ÂºÃ‚Â¡n",
-    "Output JSON": "File JSON Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u ra",
-    "Results file": "File kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
-    "Copy": "Sao chÃƒÆ’Ã‚Â©p",
-    "Executing...": "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚ÂºÃ‚Â¡y...",
-    "Check GitHub inbox": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox GitHub",
-    "Run all monitors": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y tÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ monitors",
-    "All statuses": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
-    "All signals": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
-    "All sources": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n",
-    "All monitored jobs": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ job Ãƒâ€žÃ¢â‚¬Ëœang monitor",
-    "Claimed": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ claim",
-    "Approved": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
-    "Needs attention": "CÃƒÂ¡Ã‚ÂºÃ‚Â§n chÃƒÆ’Ã‚Âº ÃƒÆ’Ã‚Â½",
-    "Marked": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
-    "Watching": "Ãƒâ€žÃ‚Âang theo dÃƒÆ’Ã‚Âµi",
-    "New comment": "BÃƒÆ’Ã‚Â¬nh luÃƒÂ¡Ã‚ÂºÃ‚Â­n mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
-    "No monitor": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ monitor",
-    "Newest updated": "CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Newest file": "File mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Newest date": "NgÃƒÆ’Ã‚Â y mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Last checked": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra gÃƒÂ¡Ã‚ÂºÃ‚Â§n nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Attention first": "Ãƒâ€ Ã‚Â¯u tiÃƒÆ’Ã‚Âªn cÃƒÂ¡Ã‚ÂºÃ‚Â§n chÃƒÆ’Ã‚Âº ÃƒÆ’Ã‚Â½",
-    "Highest budget": "NgÃƒÆ’Ã‚Â¢n sÃƒÆ’Ã‚Â¡ch cao nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Highest amount": "SÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ tiÃƒÂ¡Ã‚Â»Ã‚Ân cao nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Best score": "Ãƒâ€žÃ‚ÂiÃƒÂ¡Ã‚Â»Ã†â€™m tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœt nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Most candidates": "NhiÃƒÂ¡Ã‚Â»Ã‚Âu candidate nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Title A-Z": "TiÃƒÆ’Ã‚Âªu Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â A-Z",
-    "Path A-Z": "Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng dÃƒÂ¡Ã‚ÂºÃ‚Â«n A-Z",
+    "Ledger": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân",
+    "Search": "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m",
+    "Status": "TrÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i",
+    "Signal": "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u",
+    "Sort": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¯p xÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿p",
+    "Page size": "CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¡ trang",
+    "Source": "NguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn",
+    "Query": "Truy vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n",
+    "Limit": "GiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡n",
+    "Output JSON": "File JSON ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u ra",
+    "Results file": "File kÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
+    "Copy": "Sao chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©p",
+    "Executing...": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y...",
+    "Check GitHub inbox": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra inbox GitHub",
+    "Run all monitors": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ monitors",
+    "All statuses": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i",
+    "All signals": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u",
+    "All sources": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ nguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn",
+    "All monitored jobs": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ job ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ang monitor",
+    "Claimed": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ claim",
+    "Approved": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ duyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡t",
+    "Needs attention": "CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âº ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½",
+    "Marked": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡nh dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥u",
+    "Watching": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang theo dÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµi",
+    "New comment": "BÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬nh luÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­n mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi",
+    "No monitor": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ monitor",
+    "Newest updated": "CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Newest file": "File mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Newest date": "NgÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Last checked": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra gÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Attention first": "ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¯u tiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âº ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½",
+    "Highest budget": "NgÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch cao nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Highest amount": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân cao nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Best score": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“t nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Most candidates": "NhiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âu candidate nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Title A-Z": "TiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªu ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â A-Z",
+    "Path A-Z": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âng dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â«n A-Z",
     "Job A-Z": "Job A-Z",
-    "Manual": "ThÃƒÂ¡Ã‚Â»Ã‚Â§ cÃƒÆ’Ã‚Â´ng",
-    "All": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£",
-    "Default": "MÃƒÂ¡Ã‚ÂºÃ‚Â·c Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh",
-    "All GitHub": "ToÃƒÆ’Ã‚Â n GitHub",
-    "Run Search": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
-    "Run Hunt": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y sÃƒâ€žÃ†â€™n job",
-    "Run Ledger": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y sÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ tiÃƒÂ¡Ã‚Â»Ã‚Ân",
-    "Run Monitor": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y monitor",
-    "Search Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
-    "Hunt Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ sÃƒâ€žÃ†â€™n job",
-    "Monitor Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i monitor",
-    "Region": "Khu vÃƒÂ¡Ã‚Â»Ã‚Â±c",
-    "Reload": "TÃƒÂ¡Ã‚ÂºÃ‚Â£i lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
+    "Manual": "ThÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng",
+    "All": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
+    "Default": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹nh",
+    "All GitHub": "ToÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n GitHub",
+    "Run Search": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m",
+    "Run Hunt": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y sÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢n job",
+    "Run Ledger": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân",
+    "Run Monitor": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y monitor",
+    "Search Results": "KÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m",
+    "Hunt Results": "KÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ sÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢n job",
+    "Monitor Status": "TrÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i monitor",
+    "Region": "Khu vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â±c",
+    "Reload": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i",
     "Provider": "Provider",
-    "Unknown": "ChÃƒâ€ Ã‚Â°a biÃƒÂ¡Ã‚ÂºÃ‚Â¿t",
-    "OpenAI-compatible base URL": "Base URL tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng thÃƒÆ’Ã‚Â­ch OpenAI",
+    "Unknown": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a biÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t",
+    "OpenAI-compatible base URL": "Base URL tÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch OpenAI",
     "Model": "Model",
     "API key": "API key",
-    "Context limit": "GiÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi hÃƒÂ¡Ã‚ÂºÃ‚Â¡n ngÃƒÂ¡Ã‚Â»Ã‚Â¯ cÃƒÂ¡Ã‚ÂºÃ‚Â£nh",
-    "Max loops": "SÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ vÃƒÆ’Ã‚Â²ng tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Ãƒâ€žÃ¢â‚¬Ëœa",
-    "Tool calls / round": "Tool call mÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i vÃƒÆ’Ã‚Â²ng",
+    "Context limit": "GiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡n ngÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£nh",
+    "Max loops": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²ng tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“a",
+    "Tool calls / round": "Tool call mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âi vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²ng",
     "Codex timeout ms": "Timeout Codex ms",
-    "Enable agent search": "BÃƒÂ¡Ã‚ÂºÃ‚Â­t tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m cho agent",
-    "Auto-create missing workflow skills into my-skills": "TÃƒÂ¡Ã‚Â»Ã‚Â± tÃƒÂ¡Ã‚ÂºÃ‚Â¡o workflow skill cÃƒÆ’Ã‚Â²n thiÃƒÂ¡Ã‚ÂºÃ‚Â¿u vÃƒÆ’Ã‚Â o my-skills",
-    "Enable Codex CLI bridge": "BÃƒÂ¡Ã‚ÂºÃ‚Â­t cÃƒÂ¡Ã‚ÂºÃ‚Â§u nÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Codex CLI",
-    "Codex CLI command": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh Codex CLI",
-    "Save settings": "LÃƒâ€ Ã‚Â°u cÃƒÆ’Ã‚Â i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t",
-    "Clear API key": "XÃƒÆ’Ã‚Â³a API key",
-    "Refresh": "LÃƒÆ’Ã‚Â m mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
-    "Reset": "Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚ÂºÃ‚Â·t lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
-    "Clear log": "XÃƒÆ’Ã‚Â³a log",
-    "Collapse": "Thu gÃƒÂ¡Ã‚Â»Ã‚Ân",
-    "Expand": "MÃƒÂ¡Ã‚Â»Ã…Â¸ rÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng",
-    "Activity log": "NhÃƒÂ¡Ã‚ÂºÃ‚Â­t kÃƒÆ’Ã‚Â½ hoÃƒÂ¡Ã‚ÂºÃ‚Â¡t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng",
-    "Session events": "SÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n phiÃƒÆ’Ã‚Âªn",
-    "Latest snapshot": "Snapshot mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Create skill": "TÃƒÂ¡Ã‚ÂºÃ‚Â¡o skill",
-    "Command": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh",
-    "Goal": "MÃƒÂ¡Ã‚Â»Ã‚Â¥c tiÃƒÆ’Ã‚Âªu",
-    "Allowed tools": "Tool Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c phÃƒÆ’Ã‚Â©p",
-    "Output format": "Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh dÃƒÂ¡Ã‚ÂºÃ‚Â¡ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u ra",
-    "References": "TÃƒÆ’Ã‚Â i liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o",
-    "Filename or preview": "TÃƒÆ’Ã‚Âªn file hoÃƒÂ¡Ã‚ÂºÃ‚Â·c xem trÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc",
-    "Workflow": "Quy trÃƒÆ’Ã‚Â¬nh",
-    "Health": "SÃƒÂ¡Ã‚Â»Ã‚Â©c khÃƒÂ¡Ã‚Â»Ã‚Âe",
-    "Project signals": "TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
-    "Next actions": "ViÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡c tiÃƒÂ¡Ã‚ÂºÃ‚Â¿p theo",
-    "Status queue": "HÃƒÆ’Ã‚Â ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â£i trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
-    "Latest event": "SÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
-    "Session trace": "DÃƒÂ¡Ã‚ÂºÃ‚Â¥u vÃƒÂ¡Ã‚ÂºÃ‚Â¿t phiÃƒÆ’Ã‚Âªn",
-    "Review results": "Xem kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
-    "Open jobs": "MÃƒÂ¡Ã‚Â»Ã…Â¸ jobs",
-    "Check monitors": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra monitors",
-    "No events yet.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n.",
-    "No snapshot loaded yet.": "ChÃƒâ€ Ã‚Â°a tÃƒÂ¡Ã‚ÂºÃ‚Â£i snapshot.",
-    "No command has run in this session.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ lÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh nÃƒÆ’Ã‚Â o chÃƒÂ¡Ã‚ÂºÃ‚Â¡y trong phiÃƒÆ’Ã‚Âªn nÃƒÆ’Ã‚Â y.",
-    "No session events yet.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n phiÃƒÆ’Ã‚Âªn.",
-    "No files in workspace": "KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ file trong workspace",
-    "No active tracking signals": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u theo dÃƒÆ’Ã‚Âµi",
-    "No overview data available": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng quan",
-    "No red flags detected": "KhÃƒÆ’Ã‚Â´ng phÃƒÆ’Ã‚Â¡t hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n cÃƒÂ¡Ã‚ÂºÃ‚Â£nh bÃƒÆ’Ã‚Â¡o Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â",
-    "No explicit positive signals listed": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u tÃƒÆ’Ã‚Â­ch cÃƒÂ¡Ã‚Â»Ã‚Â±c rÃƒÆ’Ã‚Âµ rÃƒÆ’Ã‚Â ng",
-    "No description.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ mÃƒÆ’Ã‚Â´ tÃƒÂ¡Ã‚ÂºÃ‚Â£.",
-    "No work_plan.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y work_plan.md trong workspace.",
-    "No bid.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y bid.md trong workspace.",
-    "No delivery_checklist.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y delivery_checklist.md trong workspace.",
-    "No activity_log.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y activity_log.md trong workspace.",
-    "Open in VS Code": "MÃƒÂ¡Ã‚Â»Ã…Â¸ trong VS Code",
-    "Open on GitHub": "MÃƒÂ¡Ã‚Â»Ã…Â¸ trÃƒÆ’Ã‚Âªn GitHub",
-    "Check monitor": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra monitor",
-    "Check again": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
-    "Check inbox": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox",
-    "Open JSON": "MÃƒÂ¡Ã‚Â»Ã…Â¸ JSON",
-    "Open plist": "MÃƒÂ¡Ã‚Â»Ã…Â¸ plist",
-    "Open job": "MÃƒÂ¡Ã‚Â»Ã…Â¸ job",
-    "Open Stdout": "MÃƒÂ¡Ã‚Â»Ã…Â¸ Stdout",
-    "Open Stderr": "MÃƒÂ¡Ã‚Â»Ã…Â¸ Stderr",
+    "Enable agent search": "BÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m cho agent",
+    "Auto-create missing workflow skills into my-skills": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o workflow skill cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²n thiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿u vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o my-skills",
+    "Enable Codex CLI bridge": "BÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u nÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“i Codex CLI",
+    "Codex CLI command": "LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh Codex CLI",
+    "Save settings": "LÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·t",
+    "Clear API key": "XÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³a API key",
+    "Refresh": "LÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â m mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi",
+    "Reset": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·t lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i",
+    "Clear log": "XÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³a log",
+    "Collapse": "Thu gÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân",
+    "Expand": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ rÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng",
+    "Activity log": "NhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t kÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½ hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡t ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng",
+    "Session events": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n phiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn",
+    "Latest snapshot": "Snapshot mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Create skill": "TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o skill",
+    "Command": "LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh",
+    "Goal": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c tiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªu",
+    "Allowed tools": "Tool ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£c phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©p",
+    "Output format": "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹nh dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u ra",
+    "References": "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u tham khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£o",
+    "Filename or preview": "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn file hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c xem trÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºc",
+    "Workflow": "Quy trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬nh",
+    "Health": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©c khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âe",
+    "Project signals": "TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n",
+    "Next actions": "ViÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡c tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿p theo",
+    "Status queue": "HÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£i trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i",
+    "Latest event": "SÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t",
+    "Session trace": "DÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥u vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t phiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn",
+    "Review results": "Xem kÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£",
+    "Open jobs": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ jobs",
+    "Check monitors": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra monitors",
+    "No events yet.": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n.",
+    "No snapshot loaded yet.": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i snapshot.",
+    "No command has run in this session.": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y trong phiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y.",
+    "No session events yet.": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n phiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn.",
+    "No files in workspace": "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ file trong workspace",
+    "No active tracking signals": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u theo dÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµi",
+    "No overview data available": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ng quan",
+    "No red flags detected": "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡t hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£nh bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡o ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â",
+    "No explicit positive signals listed": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â±c rÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµ rÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng",
+    "No description.": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£.",
+    "No work_plan.md found in workspace.": "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y work_plan.md trong workspace.",
+    "No bid.md found in workspace.": "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y bid.md trong workspace.",
+    "No delivery_checklist.md found in workspace.": "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y delivery_checklist.md trong workspace.",
+    "No activity_log.md found in workspace.": "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y activity_log.md trong workspace.",
+    "Open in VS Code": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ trong VS Code",
+    "Open on GitHub": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn GitHub",
+    "Check monitor": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra monitor",
+    "Check again": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i",
+    "Check inbox": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra inbox",
+    "Open JSON": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ JSON",
+    "Open plist": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ plist",
+    "Open job": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ job",
+    "Open Stdout": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ Stdout",
+    "Open Stderr": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ Stderr",
     "Agent Chat": "Agent Chat",
-    "You": "BÃƒÂ¡Ã‚ÂºÃ‚Â¡n",
+    "You": "BÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡n",
     "Agent": "Agent",
-    "No agent steps yet.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ bÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc agent.",
-    "Copy tool trace": "Sao chÃƒÆ’Ã‚Â©p trace tool",
-    "No skills loaded": "ChÃƒâ€ Ã‚Â°a tÃƒÂ¡Ã‚ÂºÃ‚Â£i skill"
+    "No agent steps yet.": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ bÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºc agent.",
+    "Copy tool trace": "Sao chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â©p trace tool",
+    "No skills loaded": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i skill"
   },
   en: {}
 };
@@ -417,22 +424,22 @@ exactTextTranslations.en = Object.fromEntries(
 
 const phraseTranslations = {
   vi: {
-    "Search Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
-    "Hunt Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ sÃƒâ€žÃ†â€™n job",
-    "Monitor Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i monitor",
-    "Open folder": "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
-    "Open file": "MÃƒÂ¡Ã‚Â»Ã…Â¸ file",
-    "Open job": "MÃƒÂ¡Ã‚Â»Ã…Â¸ job",
-    "Check inbox": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox",
-    "Check again": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
-    "Check now": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra ngay",
-    "Pending review": "ChÃƒÂ¡Ã‚Â»Ã‚Â review",
-    "Rewarded today": "ThÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng hÃƒÆ’Ã‚Â´m nay",
+    "Search Results": "KÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m",
+    "Hunt Results": "KÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£ sÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢n job",
+    "Monitor Status": "TrÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i monitor",
+    "Open folder": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c",
+    "Open file": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ file",
+    "Open job": "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ job",
+    "Check inbox": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra inbox",
+    "Check again": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i",
+    "Check now": "KiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra ngay",
+    "Pending review": "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â review",
+    "Rewarded today": "ThÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ng hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´m nay",
     "Jobs by repo": "Jobs theo repo",
     "LaunchAgents": "LaunchAgents",
-    "No monitor": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ monitor",
-    "No content": "KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ nÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢i dung",
-    "Global Agent": "Agent toÃƒÆ’Ã‚Â n cÃƒÂ¡Ã‚Â»Ã‚Â¥c",
+    "No monitor": "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ monitor",
+    "No content": "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ nÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢i dung",
+    "Global Agent": "Agent toÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c",
     "Monitor Agent": "Monitor Agent",
     "Calendar Agent": "Calendar Agent",
     "Interval Agent": "Interval Agent"
@@ -562,21 +569,21 @@ function setLanguage(language) {
 }
 
 const pipelineSteps = [
-  { key: "query", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½", label: "Query", detail: "GitHub, Reddit hoÃƒÂ¡Ã‚ÂºÃ‚Â·c batch mÃƒÂ¡Ã‚Â»Ã…Â¸ rÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng" },
-  { key: "candidate", icon: "ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â²", label: "Candidate", detail: "Normalize thÃƒÆ’Ã‚Â nh dataclass Candidate" },
-  { key: "score", icon: "ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬Â ", label: "Score", detail: "Budget, positive signals, red flags" },
-  { key: "results", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦", label: "Results", detail: "Ghi JSON vÃƒÆ’Ã‚Â o results/" },
-  { key: "workspace", icon: "ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â°", label: "Workspace", detail: "Prepare jobs/<task>/" },
-  { key: "gates", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â", label: "Approval gates", detail: "DuyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t scope, payment, safety" },
-  { key: "monitor", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡", label: "Monitor", detail: "PR/issue approval vÃƒÆ’Ã‚Â  payout signals" },
-  { key: "ledger", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ", label: "Ledger", detail: "Ghi nhÃƒÂ¡Ã‚ÂºÃ‚Â­n payment Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ nhÃƒÂ¡Ã‚ÂºÃ‚Â­n" }
+  { key: "query", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¦Ã‚Â½", label: "Query", detail: "GitHub, Reddit hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c batch mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ rÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng" },
+  { key: "candidate", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â²", label: "Candidate", detail: "Normalize thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â nh dataclass Candidate" },
+  { key: "score", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ", label: "Score", detail: "Budget, positive signals, red flags" },
+  { key: "results", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦", label: "Results", detail: "Ghi JSON vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o results/" },
+  { key: "workspace", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â°", label: "Workspace", detail: "Prepare jobs/<task>/" },
+  { key: "gates", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒâ€šÃ‚Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â", label: "Approval gates", detail: "DuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡t scope, payment, safety" },
+  { key: "monitor", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¡", label: "Monitor", detail: "PR/issue approval vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  payout signals" },
+  { key: "ledger", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Âµ", label: "Ledger", detail: "Ghi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­n payment ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­n" }
 ];
 
 const runtimeSteps = [
-  { key: "load", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¥", label: "Load data" },
-  { key: "render", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬â€œÃ‚Â¥ÃƒÂ¯Ã‚Â¸Ã‚Â", label: "Render UI" },
-  { key: "snapshot", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â ", label: "Snapshot" },
-  { key: "verify", icon: "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦", label: "Verify output" }
+  { key: "load", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¥", label: "Load data" },
+  { key: "render", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¥ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â", label: "Render UI" },
+  { key: "snapshot", icon: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â ", label: "Snapshot" },
+  { key: "verify", icon: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦", label: "Verify output" }
 ];
 
 const viewLabels = {
@@ -592,7 +599,7 @@ const viewLabels = {
   threads: "Threads Search",
   facebook: "Facebook Trend",
   youtube: "YouTube Trend",
-  interest: "ChÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â quan tÃƒÆ’Ã‚Â¢m",
+  interest: "ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â quan tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢m",
   settings: "Settings"
 };
 
@@ -942,7 +949,7 @@ async function openJobModal(jobPath) {
   $("#jobDetailTitle").textContent = job ? job.title : jobPath.split("/").pop();
   
   const statusEl = $("#jobDetailStatus");
-  statusEl.textContent = job ? (statusEmojiLabels[job.status.key] || job.status.label) : "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‹Å“ Prepared";
+  statusEl.textContent = job ? (statusEmojiLabels[job.status.key] || job.status.label) : "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€¹Ã…â€œ Prepared";
   statusEl.className = `job-state ${job ? job.status.key : "prepared"}`;
   
   const scoreEl = $("#jobDetailScore");
@@ -950,7 +957,7 @@ async function openJobModal(jobPath) {
   scoreEl.className = `score-pill ${scoreClass(job ? job.score : 0)}`;
   
   $("#jobDetailBudget").textContent = job ? job.budgetLabel : "unknown";
-  $("#jobDetailSource").textContent = job ? `${job.source} Ãƒâ€šÃ‚Â· age: ${job.duration ? job.duration.label : "n/a"}` : "manual";
+  $("#jobDetailSource").textContent = job ? `${job.source} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· age: ${job.duration ? job.duration.label : "n/a"}` : "manual";
   
   if (job) {
     jobDetailState.files = job.files || [];
@@ -1012,8 +1019,8 @@ function renderJobActions() {
   }
   
   el.innerHTML = `
-    <button class="primary-button" type="button" id="jobDetailOpenVSCodeBtn">ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» Open in VS Code</button>
-    ${job.url ? `<button class="secondary-button" type="button" data-open-url="${escapeHtml(job.url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ Open on GitHub</button>` : ""}
+    <button class="primary-button" type="button" id="jobDetailOpenVSCodeBtn">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â» Open in VS Code</button>
+    ${job.url ? `<button class="secondary-button" type="button" data-open-url="${escapeHtml(job.url)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Open on GitHub</button>` : ""}
     ${job.hasMonitor ? `<button class="secondary-button" type="button" data-run-monitor="${escapeHtml(job.path)}">Check monitor</button>` : ""}
     ${job.hasMonitor ? `<button class="secondary-button" type="button" data-check-github-inbox="${escapeHtml(job.path)}">Check GitHub inbox</button>` : ""}
   `;
@@ -1062,11 +1069,11 @@ async function selectJobTab(tabName) {
     }
     
     const redFlags = job.redFlags && job.redFlags.length 
-      ? job.redFlags.map(f => `<li style="color: var(--error); font-weight: 700;">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â ${escapeHtml(f)}</li>`).join("") 
-      : `<li>ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ No red flags detected</li>`;
+      ? job.redFlags.map(f => `<li style="color: var(--error); font-weight: 700;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ${escapeHtml(f)}</li>`).join("") 
+      : `<li>ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ No red flags detected</li>`;
       
     const reasons = job.reasons && job.reasons.length
-      ? job.reasons.map(r => `<li>ÃƒÂ¢Ã…â€œÃ‚Â¨ ${escapeHtml(r)}</li>`).join("")
+      ? job.reasons.map(r => `<li>ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ ${escapeHtml(r)}</li>`).join("")
       : `<li>No explicit positive signals listed</li>`;
       
     let monitorHtml = "";
@@ -1074,7 +1081,7 @@ async function selectJobTab(tabName) {
       const checkedAt = job.approval && job.approval.checkedAt ? formatDate(job.approval.checkedAt) : "n/a";
       monitorHtml = `
         <div style="margin-top: 18px; padding: 12px; background: var(--surface-container); border: 1px solid var(--line); border-radius: var(--radius);">
-          <strong style="display:block; margin-bottom: 6px;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ Monitor Status</strong>
+          <strong style="display:block; margin-bottom: 6px;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¡ Monitor Status</strong>
           <p style="margin: 0; font-size: 13px;">Checked at: ${checkedAt}</p>
           <pre style="margin: 6px 0 0; background: var(--bg); padding: 8px; border-radius: 4px; overflow: auto; font-size: 12px;"><code>${escapeHtml(job.latestMonitorLine || "No logs captured yet")}</code></pre>
         </div>
@@ -1084,16 +1091,16 @@ async function selectJobTab(tabName) {
     body.innerHTML = `
       <div style="display: grid; gap: 16px; white-space: normal;">
         <div>
-          <h3 style="margin-top:0;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â Description</h3>
+          <h3 style="margin-top:0;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â Description</h3>
           <p style="line-height: 1.6; white-space: pre-wrap;">${job.description ? escapeHtml(job.description) : "No description."}</p>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div>
-            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">ÃƒÂ¢Ã…â€œÃ‚Â¨ Positive Signals</h3>
+            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¨ Positive Signals</h3>
             <ul style="padding-left: 20px; display: grid; gap: 6px;">${reasons}</ul>
           </div>
           <div>
-            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Risk Signals</h3>
+            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Risk Signals</h3>
             <ul style="padding-left: 20px; display: grid; gap: 6px;">${redFlags}</ul>
           </div>
         </div>
@@ -1230,14 +1237,14 @@ function renderStats(data) {
   const totals = Object.entries(data.ledger.totals || {}).map(([currency, amount]) => `${currency} ${Number(amount).toLocaleString("en-US")}`).join(", ") || "0";
   const jobSummary = data.stats.jobSummary || {};
   $("#statStrip").innerHTML = [
-    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Result files", data.stats.resultFiles, `${data.stats.resultCandidates} candidates`, "goto-results"),
-    metric("ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â° Jobs", data.stats.jobs, `${jobSummary.doing || 0} doing Ãƒâ€šÃ‚Â· ${jobSummary.localDone || 0} local done Ãƒâ€šÃ‚Â· ${jobSummary.repoCount || 0} repos`, "goto-jobs"),
-    metric("ÃƒÂ¢Ã‚ÂÃ‚Â³ Pending reward", jobSummary.pendingReward || 0, `${moneySummary(jobSummary.pendingRewardByCurrency)} expected`, "goto-jobs-pending-reward"),
-    metric("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Rewarded today", moneySummary(jobSummary.rewardedTodayByCurrency), `${jobSummary.rewardedTodayJobs || 0} job(s)`, "goto-ledger-paid"),
-    metric("ÃƒÂ¢Ã‚ÂÃ‚Â±ÃƒÂ¯Ã‚Â¸Ã‚Â Avg completion", jobSummary.avgCompletionLabel || "n/a", "approved/rewarded jobs", "goto-jobs-rewarded"),
-    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ Monitors", data.stats.launchAgents, `${data.stats.monitoredJobs} active Ãƒâ€šÃ‚Â· ${data.stats.attentionJobs} attention`, "goto-monitors"),
-    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…â€™ Tracking", data.stats.markedJobs || 0, `${data.stats.watchingJobs || 0} watching Ãƒâ€šÃ‚Â· ${data.stats.inboxCommentJobs || 0} inbox comments`, "goto-jobs-tracking"),
-    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ Ledger", totals, `${data.stats.ledgerRows} rows`, "goto-ledger")
+    metric("ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¦ Result files", data.stats.resultFiles, `${data.stats.resultCandidates} candidates`, "goto-results"),
+    metric("ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â° Jobs", data.stats.jobs, `${jobSummary.doing || 0} doing ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${jobSummary.localDone || 0} local done ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${jobSummary.repoCount || 0} repos`, "goto-jobs"),
+    metric("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³ Pending reward", jobSummary.pendingReward || 0, `${moneySummary(jobSummary.pendingRewardByCurrency)} expected`, "goto-jobs-pending-reward"),
+    metric("ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã¢â‚¬Å“ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ Rewarded today", moneySummary(jobSummary.rewardedTodayByCurrency), `${jobSummary.rewardedTodayJobs || 0} job(s)`, "goto-ledger-paid"),
+    metric("ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â±ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Avg completion", jobSummary.avgCompletionLabel || "n/a", "approved/rewarded jobs", "goto-jobs-rewarded"),
+    metric("ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â¡ Monitors", data.stats.launchAgents, `${data.stats.monitoredJobs} active ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${data.stats.attentionJobs} attention`, "goto-monitors"),
+    metric("ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã¢â‚¬â„¢ Tracking", data.stats.markedJobs || 0, `${data.stats.watchingJobs || 0} watching ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${data.stats.inboxCommentJobs || 0} inbox comments`, "goto-jobs-tracking"),
+    metric("ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Âµ Ledger", totals, `${data.stats.ledgerRows} rows`, "goto-ledger")
   ].join("");
 }
 
@@ -1270,17 +1277,17 @@ function scoreClass(score) {
 
 function candidateRow(candidate) {
   const flags = candidate.redFlags.length ? candidate.redFlags.join(", ") : "No red flags";
-  const searchMeta = [candidate.searchTopic ? `topic ${candidate.searchTopic}` : "", candidate.searchRepo ? `repo ${candidate.searchRepo}` : ""].filter(Boolean).join(" Ãƒâ€šÃ‚Â· ");
+  const searchMeta = [candidate.searchTopic ? `topic ${candidate.searchTopic}` : "", candidate.searchRepo ? `repo ${candidate.searchRepo}` : ""].filter(Boolean).join(" ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ");
   return `
     <article class="candidate-row">
       <div class="score-pill ${scoreClass(candidate.score)}">${candidate.score}</div>
       <div class="row-main">
         <strong title="${escapeHtml(candidate.title)}">${escapeHtml(candidate.title)}</strong>
-        <p>${escapeHtml(candidate.sourceFile || candidate.source)} Ãƒâ€šÃ‚Â· ${escapeHtml(candidate.budgetLabel)} Ãƒâ€šÃ‚Â· ${escapeHtml(flags)}</p>
+        <p>${escapeHtml(candidate.sourceFile || candidate.source)} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(candidate.budgetLabel)} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(flags)}</p>
         ${searchMeta ? `<p>${escapeHtml(searchMeta)}</p>` : ""}
       </div>
       <div class="row-actions">
-        ${candidate.url ? `<button class="text-button" data-open-url="${escapeHtml(candidate.url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ Open</button>` : ""}
+        ${candidate.url ? `<button class="text-button" data-open-url="${escapeHtml(candidate.url)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â Open</button>` : ""}
       </div>
     </article>
   `;
@@ -1289,7 +1296,7 @@ function candidateRow(candidate) {
 function renderTopCandidates(data) {
   $("#topCandidates").innerHTML = data.topCandidates.length
     ? data.topCandidates.map(candidateRow).join("")
-    : `<p class="empty">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ candidate. ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y Codex/CLI Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â¡o results rÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“i refresh mÃƒÆ’Ã‚Â n hÃƒÆ’Ã‚Â¬nh nÃƒÆ’Ã‚Â y.</p>`;
+    : `<p class="empty">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ candidate. ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y Codex/CLI ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o results rÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œi refresh mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬nh nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y.</p>`;
 }
 
 function renderManagerState(data) {
@@ -1330,16 +1337,16 @@ function renderResults(data) {
       <summary>
         <div>
           <strong>${escapeHtml(result.path)}</strong>
-          <p>${result.filteredCandidates.length}/${result.count} candidates Ãƒâ€šÃ‚Â· updated ${escapeHtml(formatDate(result.modifiedAt))}</p>
+          <p>${result.filteredCandidates.length}/${result.count} candidates ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· updated ${escapeHtml(formatDate(result.modifiedAt))}</p>
         </div>
-        <span class="button-look" data-open-path="${escapeHtml(result.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Open JSON</span>
+        <span class="button-look" data-open-path="${escapeHtml(result.path)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ Open JSON</span>
       </summary>
       <div class="candidate-list">
-        ${result.filteredCandidates.length ? result.filteredCandidates.slice(0, 8).map(candidateRow).join("") : `<p class="empty">File nÃƒÆ’Ã‚Â y chÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ candidate hÃƒÂ¡Ã‚Â»Ã‚Â£p lÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡.</p>`}
+        ${result.filteredCandidates.length ? result.filteredCandidates.slice(0, 8).map(candidateRow).join("") : `<p class="empty">File nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y chÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ candidate hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£p lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡.</p>`}
       </div>
     </details>
   `).join("");
-  $("#resultsList").innerHTML = resultHtml || `<p class="empty">KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y JSON trong results/.</p>`;
+  $("#resultsList").innerHTML = resultHtml || `<p class="empty">KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y JSON trong results/.</p>`;
   setPager("results", pageData);
 }
 
@@ -1349,11 +1356,12 @@ function jobCard(job) {
   const status = job.status || { key: "prepared", label: "Prepared" };
   const langText = projectText[state.language] || projectText.en;
   const statusLabel = (localizedStatusLabels[state.language] || statusEmojiLabels)[status.key] || status.label;
-  const repoLabel = job.repo || job.source || langText.unknown;
-  const budgetLabel = job.budgetLabel || langText.unknown;
+  const repoLabel = job.repo && job.repo !== "unknown" ? job.repo : (job.source || langText.unknown);
+  const bidLabel = job.localStatus && job.localStatus.bid_amount ? `${job.localStatus.bid_currency || job.currency || ""} ${job.localStatus.bid_amount}`.trim() : "";
+  const budgetLabel = bidLabel || job.budgetLabel || langText.unknown;
   const ageLabel = job.duration && job.duration.label ? job.duration.label : "n/a";
   const signalText = job.hasMonitor
-    ? `${langText.claim}=${Boolean(job.signals.claimed)} Â· ${langText.approved}=${Boolean(job.signals.approved)} Â· ${langText.rewarded}=${Boolean(job.signals.rewarded)}`
+    ? `${langText.claim}=${Boolean(job.signals.claimed)} Ã‚Â· ${langText.approved}=${Boolean(job.signals.approved)} Ã‚Â· ${langText.rewarded}=${Boolean(job.signals.rewarded)}`
     : langText.noMonitor;
   const marked = Boolean(job.tracking && job.tracking.marked);
   const watching = Boolean(job.tracking && job.tracking.watching);
@@ -1368,12 +1376,12 @@ function jobCard(job) {
           <span class="status-dot ${rewarded ? "done" : needsAttention || inboxNew || monitorNew ? "attention" : watching ? "watching" : job.hasMonitor ? "watching" : "idle"}"></span>
           <div>
             <strong>${escapeHtml(job.title)}</strong>
-            <p>${escapeHtml(repoLabel)} Ã‚Â· ${escapeHtml(budgetLabel)} Ã‚Â· ${escapeHtml(langText.age)} ${escapeHtml(ageLabel)} Ã‚Â· ${escapeHtml(langText.score)} ${job.score}</p>
+            <p>${escapeHtml(repoLabel)} Ãƒâ€šÃ‚Â· ${escapeHtml(budgetLabel)} Ãƒâ€šÃ‚Â· ${escapeHtml(langText.age)} ${escapeHtml(ageLabel)} Ãƒâ€šÃ‚Â· ${escapeHtml(langText.score)} ${job.score}</p>
           </div>
         </div>
         <div class="job-header-right">
           <span class="job-state ${escapeHtml(status.key)}">${escapeHtml(statusLabel)}</span>
-          <button class="job-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²"}</button>
+          <button class="job-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼" : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²"}</button>
         </div>
       </header>
 
@@ -1391,12 +1399,12 @@ function jobCard(job) {
         </div>
         
         <div class="job-actions">
-          ${job.url ? `<button class="text-button" data-open-url="${escapeHtml(job.url)}">Ã°Å¸â€â€” ${escapeHtml(langText.issue)}</button>` : ""}
+          ${job.url ? `<button class="text-button" data-open-url="${escapeHtml(job.url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ ${escapeHtml(langText.issue)}</button>` : ""}
           ${job.hasMonitor ? `<button class="secondary-button" data-run-monitor="${escapeHtml(job.path)}">${escapeHtml(langText.checkAgain)}</button>` : ""}
           ${job.hasMonitor ? `<button class="secondary-button" data-check-github-inbox="${escapeHtml(job.path)}">${escapeHtml(langText.checkInbox)}</button>` : ""}
           <button class="secondary-button" data-toggle-tracking="${escapeHtml(job.path)}" data-tracking-field="marked">${escapeHtml(marked ? langText.unmark : langText.mark)}</button>
           <button class="secondary-button" data-toggle-tracking="${escapeHtml(job.path)}" data-tracking-field="watching">${escapeHtml(watching ? langText.unwatch : langText.watch)}</button>
-          <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">Ã°Å¸â€œâ€š ${escapeHtml(langText.openFolder)}</button>
+          <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ ${escapeHtml(langText.openFolder)}</button>
         </div>
       </div>
     </article>
@@ -1480,7 +1488,7 @@ function renderMonitors(data) {
       <article class="launch-agent-card" data-label="${escapeHtml(agent.label)}">
         <div class="agent-card-header">
           <div class="agent-card-title-area">
-            <span class="agent-card-avatar">ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬</span>
+            <span class="agent-card-avatar">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬</span>
             <div class="agent-card-title-meta">
               <strong>${escapeHtml(agent.repo || "Global Agent")}</strong>
               <code class="agent-card-plist" title="${escapeHtml(agent.label)}">${escapeHtml(agent.label)}</code>
@@ -1493,23 +1501,23 @@ function renderMonitors(data) {
         <div class="agent-card-body">
           <div class="agent-card-meta-row">
             <span class="agent-meta-badge timing">
-              <span class="badge-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã¢â‚¬â„¢</span> Every ${formattedInterval} (${agent.interval}s)
+              <span class="badge-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢</span> Every ${formattedInterval} (${agent.interval}s)
             </span>
             ${agent.pr ? `
               <span class="agent-meta-badge pr">
-                <span class="badge-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â€šÂ¬</span> PR #${escapeHtml(agent.pr)}
+                <span class="badge-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬</span> PR #${escapeHtml(agent.pr)}
               </span>
             ` : ""}
             ${agent.issue ? `
               <span class="agent-meta-badge issue">
-                <span class="badge-icon">ÃƒÂ°Ã…Â¸Ã‚ÂÃ…Â¾</span> Issue #${escapeHtml(agent.issue)}
+                <span class="badge-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚ÂÃƒâ€¦Ã‚Â¾</span> Issue #${escapeHtml(agent.issue)}
               </span>
             ` : ""}
           </div>
         </div>
         <div class="agent-card-footer">
-          <button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.path)}" title="Open plist file">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾ Open plist</button>
-          ${agent.jobDir ? `<button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.jobDir)}" title="Open job workspace directory">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Open job</button>` : ""}
+          <button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.path)}" title="Open plist file">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ Open plist</button>
+          ${agent.jobDir ? `<button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.jobDir)}" title="Open job workspace directory">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ Open job</button>` : ""}
         </div>
       </article>
     `;
@@ -1527,20 +1535,20 @@ function renderMonitors(data) {
           </div>
           <div class="monitor-header-right">
             <span class="job-state ${escapeHtml(statusKey)}">${escapeHtml(statusEmojiLabels[statusKey] || (job.status && job.status.label))}</span>
-            <button class="monitor-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²"}</button>
+            <button class="monitor-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼" : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²"}</button>
           </div>
         </header>
 
         <div class="monitor-row-body">
           <div class="monitor-details">
             <p><strong>Log:</strong> ${escapeHtml(job.latestMonitorLine || "No monitor log line yet")}</p>
-            <p><strong>Signals:</strong> ${escapeHtml(`claim=${Boolean(job.signals.claimed)} Ãƒâ€šÃ‚Â· approved=${Boolean(job.signals.approved)} Ãƒâ€šÃ‚Â· rewarded=${Boolean(job.signals.rewarded)}`)}</p>
-            ${job.githubInbox && job.githubInbox.checkedAt ? `<p><strong>GitHub Inbox:</strong> ${escapeHtml(`${job.githubInbox.matched ? job.githubInbox.reason || "matched" : "no matching notification"} Ãƒâ€šÃ‚Â· ${job.githubInbox.latestUpdatedAt || "no update"}`)}</p>` : ""}
+            <p><strong>Signals:</strong> ${escapeHtml(`claim=${Boolean(job.signals.claimed)} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· approved=${Boolean(job.signals.approved)} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· rewarded=${Boolean(job.signals.rewarded)}`)}</p>
+            ${job.githubInbox && job.githubInbox.checkedAt ? `<p><strong>GitHub Inbox:</strong> ${escapeHtml(`${job.githubInbox.matched ? job.githubInbox.reason || "matched" : "no matching notification"} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${job.githubInbox.latestUpdatedAt || "no update"}`)}</p>` : ""}
           </div>
           <div class="job-actions">
             <button class="secondary-button" data-run-monitor="${escapeHtml(job.path)}">Check now</button>
             <button class="secondary-button" data-check-github-inbox="${escapeHtml(job.path)}">Check inbox</button>
-            <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Open job</button>
+            <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ Open job</button>
           </div>
         </div>
       </article>
@@ -1548,7 +1556,7 @@ function renderMonitors(data) {
   }).join("");
 
   $("#monitorList").innerHTML = `
-    <h3>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  Reward workflow</h3>
+    <h3>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â  Reward workflow</h3>
     <div class="monitor-summary">
       ${metric("Doing", jobSummary.doing || 0, "monitor active", "goto-jobs-doing")}
       ${metric("Local done", jobSummary.localDone || 0, "awaiting external action", "goto-jobs-local-done")}
@@ -1556,22 +1564,22 @@ function renderMonitors(data) {
       ${metric("Pending reward", jobSummary.pendingReward || 0, "approved, not paid", "goto-jobs-pending-reward")}
       ${metric("Rewarded today", moneySummary(jobSummary.rewardedTodayByCurrency), `${jobSummary.rewardedTodayJobs || 0} job(s)`, "goto-ledger-paid")}
     </div>
-    <h3>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â® Jobs by repo</h3>
+    <h3>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â® Jobs by repo</h3>
     <div class="repo-summary">
       ${(jobSummary.repoSummary || []).map((repo) => `
         <article class="repo-row">
           <strong>${escapeHtml(repo.repo)}</strong>
           <span>${repo.total} jobs</span>
-          <small>${repo.doing} doing Ãƒâ€šÃ‚Â· ${repo.localDone || 0} local done Ãƒâ€šÃ‚Â· ${repo.pendingReview} review Ãƒâ€šÃ‚Â· ${repo.pendingReward} reward Ãƒâ€šÃ‚Â· ${repo.rewarded} paid</small>
+          <small>${repo.doing} doing ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${repo.localDone || 0} local done ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${repo.pendingReview} review ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${repo.pendingReward} reward ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${repo.rewarded} paid</small>
         </article>
-      `).join("") || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ repo summary.</p>`}
+      `).join("") || `<p class="empty">KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ repo summary.</p>`}
     </div>
-    <h3>ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ LaunchAgents</h3>
+    <h3>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ LaunchAgents</h3>
     <div class="launch-agents-grid">
-      ${launchHtml || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ launchd plist.</p>`}
+      ${launchHtml || `<p class="empty">KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ launchd plist.</p>`}
     </div>
-    <h3>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â Job monitor status</h3>
-    ${jobHtml || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ job monitor status.</p>`}
+    <h3>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â Job monitor status</h3>
+    ${jobHtml || `<p class="empty">KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ job monitor status.</p>`}
   `;
   setPager("monitors", pageData);
 }
@@ -1609,7 +1617,7 @@ function renderLedger(data) {
     <div class="stat-strip compact">${totalHtml}</div>
     <table>
       <thead><tr><th>Date</th><th>Job</th><th>Amount</th><th>Status</th><th>Notes</th></tr></thead>
-      <tbody>${rows || `<tr><td colspan="5">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ payment row.</td></tr>`}</tbody>
+      <tbody>${rows || `<tr><td colspan="5">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ payment row.</td></tr>`}</tbody>
     </table>
   `;
   setPager("ledger", pageData);
@@ -1626,21 +1634,21 @@ function renderReferences(data) {
       <span class="file-state ok">md</span>
       <strong>${escapeHtml(file.path)}</strong>
       <p>${escapeHtml(file.preview || file.title)}</p>
-      <button class="text-button" data-open-path="${escapeHtml(file.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬â€œ Open</button>
+      <button class="text-button" data-open-path="${escapeHtml(file.path)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“ Open</button>
     </article>
-  `).join("") || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ reference khÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºp filter.</p>`;
+  `).join("") || `<p class="empty">KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ reference khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºp filter.</p>`;
   setPager("references", pageData);
 }
 
 function getTrendCategory(item) {
   const text = `${item.title} ${item.description || ""} ${item.news ? item.news.map(n => n.title + " " + (n.snippet || "")).join(" ") : ""}`.toLowerCase();
   
-  const sports = ["vs", "cup", "trÃƒÂ¡Ã‚ÂºÃ‚Â­n", "bÃƒÆ’Ã‚Â³ng Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¡", "soccer", "football", "tennis", "nba", "euro", "world cup", "fifa", "ngoÃƒÂ¡Ã‚ÂºÃ‚Â¡i hÃƒÂ¡Ã‚ÂºÃ‚Â¡ng", "cÃƒÂ¡Ã‚ÂºÃ‚Â§u thÃƒÂ¡Ã‚Â»Ã‚Â§", "v-league", "real madrid", "barcelona", "chelsea", "arsenal", "liverpool", "manchester", "mu ", "mc ", "clb", "vÃƒÆ’Ã‚Â´ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch", "bÃƒÆ’Ã‚Â n thÃƒÂ¡Ã‚ÂºÃ‚Â¯ng", "gold cup", "athlete", "championship", "tournament", "olympics", "racing", "f1", "vÃƒÆ’Ã‚Âµ sÃƒâ€žÃ‚Â©", "mma", "ufc", "bÃƒÆ’Ã‚Â³ng rÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢", "bÃƒÆ’Ã‚Â³ng chuyÃƒÂ¡Ã‚Â»Ã‚Ân", "athletics", "sea games"];
-  const entertainment = ["phim", "movie", "show", "drama", "diÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¦n viÃƒÆ’Ã‚Âªn", "ca sÃƒâ€žÃ‚Â©", "album", " mv ", "music", "nhÃƒÂ¡Ã‚ÂºÃ‚Â¡c", "concert", "blackpink", "bts", "rap", "netflix", "rÃƒÂ¡Ã‚ÂºÃ‚Â¡p", "oscars", "oscar", "kpop", "vpop", "showbiz", "hoÃƒÆ’Ã‚Â ng gia", "tÃƒÂ¡Ã‚ÂºÃ‚Â­p ", "tÃƒÂ¡Ã‚ÂºÃ‚Â­p bÃƒÆ’Ã‚Â³ng", "rap viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t", "sao viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t", "trÃƒÂ¡Ã‚ÂºÃ‚Â¥n thÃƒÆ’Ã‚Â nh", "sÃƒâ€ Ã‚Â¡n tÃƒÆ’Ã‚Â¹ng", "cinema", "hÃƒÆ’Ã‚Â¡t", "nghÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡ sÃƒâ€žÃ‚Â©", "tÃƒÂ¡Ã‚ÂºÃ‚Â­p phim", "trailer", "actor", "actress", "singer", "song", "celeb"];
-  const tech = ["apple", "google", "microsoft", "openai", "chatgpt", " ai ", "ios", "android", "iphone", "samsung", "xiaomi", "oppo", "smartphone", "Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n thoÃƒÂ¡Ã‚ÂºÃ‚Â¡i", "laptop", "macbook", "chipset", "nvidia", "intel", "amd", "space", "nasa", "vÃƒâ€¦Ã‚Â© trÃƒÂ¡Ã‚Â»Ã‚Â¥", "tÃƒÆ’Ã‚Âªn lÃƒÂ¡Ã‚Â»Ã‚Â­a", "game", "gaming", "playstation", "xbox", "nintendo", "steam", "update", "windows", "software", "phÃƒÂ¡Ã‚ÂºÃ‚Â§n mÃƒÂ¡Ã‚Â»Ã‚Âm", "app ", "technology", "khoa hÃƒÂ¡Ã‚Â»Ã‚Âc", "robot", "cyber", "hack", "an ninh mÃƒÂ¡Ã‚ÂºÃ‚Â¡ng"];
-  const finance = ["vÃƒÆ’Ã‚Â ng", "gold", " usd", "chÃƒÂ¡Ã‚Â»Ã‚Â©ng khoÃƒÆ’Ã‚Â¡n", "cÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ phiÃƒÂ¡Ã‚ÂºÃ‚Â¿u", "bitcoin", "crypto", "ngÃƒÆ’Ã‚Â¢n hÃƒÆ’Ã‚Â ng", "tÃƒÂ¡Ã‚Â»Ã‚Â· giÃƒÆ’Ã‚Â¡", "lÃƒÆ’Ã‚Â£i suÃƒÂ¡Ã‚ÂºÃ‚Â¥t", "giÃƒÆ’Ã‚Â¡ xÃƒâ€žÃ†â€™ng", "bÃƒÂ¡Ã‚ÂºÃ‚Â¥t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng sÃƒÂ¡Ã‚ÂºÃ‚Â£n", "bÃƒâ€žÃ¢â‚¬Ëœs", "doanh nghiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡p", "kinh tÃƒÂ¡Ã‚ÂºÃ‚Â¿", "finance", "stock", "shares", "invest", "fed ", "lÃƒÂ¡Ã‚ÂºÃ‚Â¡m phÃƒÆ’Ã‚Â¡t", "inflation", "doanh thu", "triÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â´", "bÃƒÂ¡Ã‚ÂºÃ‚Â£n ÃƒÆ’Ã‚Â¡n", "thuÃƒÂ¡Ã‚ÂºÃ‚Â¿", "oil ", "market"];
-  const news = ["bÃƒÆ’Ã‚Â£o", "lÃƒâ€¦Ã‚Â©", "thÃƒÂ¡Ã‚Â»Ã‚Âi tiÃƒÂ¡Ã‚ÂºÃ‚Â¿t", "mÃƒâ€ Ã‚Â°a", "nÃƒÂ¡Ã‚ÂºÃ‚Â¯ng nÃƒÆ’Ã‚Â³ng", "tÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng thÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœng", "bÃƒÂ¡Ã‚ÂºÃ‚Â§u cÃƒÂ¡Ã‚Â»Ã‚Â­", "hÃƒÂ¡Ã‚Â»Ã‚Âp", "chÃƒÆ’Ã‚Â­nh phÃƒÂ¡Ã‚Â»Ã‚Â§", "quÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc hÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢i", "tai nÃƒÂ¡Ã‚ÂºÃ‚Â¡n", "chÃƒÆ’Ã‚Â¡y", "hÃƒÂ¡Ã‚Â»Ã‚Âa hoÃƒÂ¡Ã‚ÂºÃ‚Â¡n", "cÃƒÆ’Ã‚Â´ng an", "Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã‚Âu tra", "phÃƒÆ’Ã‚Â¡t biÃƒÂ¡Ã‚Â»Ã†â€™u", "thÃƒÂ¡Ã‚Â»Ã‚Â§ tÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng", "bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ bÃƒÂ¡Ã‚ÂºÃ‚Â¯t", "khÃƒÂ¡Ã‚Â»Ã…Â¸i tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ", "vi phÃƒÂ¡Ã‚ÂºÃ‚Â¡m", "xÃƒÂ¡Ã‚Â»Ã‚Â­ phÃƒÂ¡Ã‚ÂºÃ‚Â¡t", "phÃƒÂ¡Ã‚ÂºÃ‚Â¡t ", "tÃƒÆ’Ã‚Â²a ÃƒÆ’Ã‚Â¡n", "kÃƒÂ¡Ã‚ÂºÃ‚Â¿t ÃƒÆ’Ã‚Â¡n", "chiÃƒÂ¡Ã‚ÂºÃ‚Â¿n tranh", "xung Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t", "quÃƒÆ’Ã‚Â¢n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢i", "tÃƒÂ¡Ã‚ÂºÃ‚Â¥n cÃƒÆ’Ã‚Â´ng", "nÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ ", "earthquake", "Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¥t", "tsunami", "sÃƒÆ’Ã‚Â³ng thÃƒÂ¡Ã‚ÂºÃ‚Â§n", "tornado", "lÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc xoÃƒÆ’Ã‚Â¡y", "flood", "typhoon", "hurricane", "president", "election", "parliament", "government", "minister", "police", "arrest", "investigate", "court", "trial"];
-  const health = ["dÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh", "covid", "vaccine", "thuÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc", "bÃƒÆ’Ã‚Â¡c sÃƒâ€žÃ‚Â©", "bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n", "giÃƒÂ¡Ã‚ÂºÃ‚Â£m cÃƒÆ’Ã‚Â¢n", "sÃƒÂ¡Ã‚Â»Ã‚Â©c khÃƒÂ¡Ã‚Â»Ã‚Âe", "triÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u chÃƒÂ¡Ã‚Â»Ã‚Â©ng", "bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh ", "virus", "vi khuÃƒÂ¡Ã‚ÂºÃ‚Â©n", "y tÃƒÂ¡Ã‚ÂºÃ‚Â¿", "sÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœt ", "ung thÃƒâ€ Ã‚Â°", "Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t quÃƒÂ¡Ã‚Â»Ã‚Âµ", "health", "disease", "medical", "doctor", "hospital", "symptom", "cancer", "stroke"];
+  const sports = ["vs", "cup", "trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­n", "bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ng ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡", "soccer", "football", "tennis", "nba", "euro", "world cup", "fifa", "ngoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng", "cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§", "v-league", "real madrid", "barcelona", "chelsea", "arsenal", "liverpool", "manchester", "mu ", "mc ", "clb", "vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ch", "bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¯ng", "gold cup", "athlete", "championship", "tournament", "olympics", "racing", "f1", "vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµ sÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Â©", "mma", "ufc", "bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ng rÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢", "bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ng chuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân", "athletics", "sea games"];
+  const entertainment = ["phim", "movie", "show", "drama", "diÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦n viÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn", "ca sÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Â©", "album", " mv ", "music", "nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡c", "concert", "blackpink", "bts", "rap", "netflix", "rÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡p", "oscars", "oscar", "kpop", "vpop", "showbiz", "hoÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng gia", "tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p ", "tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ng", "rap viÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡t", "sao viÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡t", "trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â nh", "sÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡n tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ng", "cinema", "hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡t", "nghÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ sÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Â©", "tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p phim", "trailer", "actor", "actress", "singer", "song", "celeb"];
+  const tech = ["apple", "google", "microsoft", "openai", "chatgpt", " ai ", "ios", "android", "iphone", "samsung", "xiaomi", "oppo", "smartphone", "ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“iÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n thoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i", "laptop", "macbook", "chipset", "nvidia", "intel", "amd", "space", "nasa", "vÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â© trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥", "tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­a", "game", "gaming", "playstation", "xbox", "nintendo", "steam", "update", "windows", "software", "phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âm", "app ", "technology", "khoa hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc", "robot", "cyber", "hack", "an ninh mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng"];
+  const finance = ["vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng", "gold", " usd", "chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©ng khoÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n", "cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ phiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿u", "bitcoin", "crypto", "ngÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â ng", "tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â· giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡", "lÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£i suÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t", "giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ xÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢ng", "bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£n", "bÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“s", "doanh nghiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡p", "kinh tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿", "finance", "stock", "shares", "invest", "fed ", "lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡m phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡t", "inflation", "doanh thu", "triÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´", "bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£n ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n", "thuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿", "oil ", "market"];
+  const news = ["bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£o", "lÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â©", "thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âi tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t", "mÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a", "nÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¯ng nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ng", "tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ng", "bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­", "hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âp", "chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nh phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§", "quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“c hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢i", "tai nÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡n", "chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡y", "hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âa hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡n", "cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng an", "ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“iÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âu tra", "phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡t biÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢u", "thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ tÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºng", "bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¯t", "khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸i tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“", "vi phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡m", "xÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­ phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡t", "phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡t ", "tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²a ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n", "kÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n", "chiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿n tranh", "xung ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t", "quÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢i", "tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng", "nÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ ", "earthquake", "ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t", "tsunami", "sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n", "tornado", "lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“c xoÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡y", "flood", "typhoon", "hurricane", "president", "election", "parliament", "government", "minister", "police", "arrest", "investigate", "court", "trial"];
+  const health = ["dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ch bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh", "covid", "vaccine", "thuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“c", "bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c sÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Â©", "bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh viÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡n", "giÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£m cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n", "sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©c khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âe", "triÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©ng", "bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh ", "virus", "vi khuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â©n", "y tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿", "sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“t ", "ung thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°", "ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âµ", "health", "disease", "medical", "doctor", "hospital", "symptom", "cancer", "stroke"];
 
   if (sports.some(w => text.includes(w))) return "sports";
   if (entertainment.some(w => text.includes(w))) return "entertainment";
@@ -1665,7 +1673,7 @@ async function fetchAndRenderTrends(force = false) {
   const topicSelect = $("#trendsTopic");
   const topic = topicSelect ? topicSelect.value : "all";
   
-  $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng...</h3><p>Ãƒâ€žÃ‚Âang lÃƒÂ¡Ã‚ÂºÃ‚Â¥y dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u RSS tÃƒÂ¡Ã‚Â»Ã‚Â« Google Trends (${geo})...</p></div>`;
+  $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³</span><h3>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i xu hÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºng...</h3><p>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u RSS tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« Google Trends (${geo})...</p></div>`;
   const chartRow = $("#trendsChartRow");
   if (chartRow) chartRow.style.display = "none";
 
@@ -1699,7 +1707,7 @@ async function fetchAndRenderTrends(force = false) {
     
     addLog("success", `Google Trends Loaded`, `Successfully parsed ${filtered.length}/${state.trends.length} daily trends for ${geo}`);
   } catch (err) {
-    $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng</h3><p>${escapeHtml(err.message)}</p></div>`;
+    $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span><h3>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i xu hÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºng</h3><p>${escapeHtml(err.message)}</p></div>`;
     updateLoadMoreButton("trends", 0, 0);
     addLog("error", `Failed to fetch trends`, err.message);
   }
@@ -1711,8 +1719,8 @@ function updateLoadMoreButton(scope, total, visible) {
   const remaining = Math.max(0, Number(total || 0) - Number(visible || 0));
   button.style.display = remaining > 0 ? "inline-flex" : "none";
   button.textContent = remaining > 0
-    ? `ÃƒÂ¢Ã‚Â¬Ã¢â‚¬Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Load more (${remaining} cÃƒÆ’Ã‚Â²n lÃƒÂ¡Ã‚ÂºÃ‚Â¡i)`
-    : "ÃƒÂ¢Ã‚Â¬Ã¢â‚¬Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Load more";
+    ? `ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Load more (${remaining} cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²n lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i)`
+    : "ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Load more";
 }
 
 function resetTrendsVisibleCount() {
@@ -1729,25 +1737,25 @@ function renderTrendsList(trends) {
   if (!container) return;
   
   if (!trends || !trends.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng nÃƒÆ’Ã‚Â o</h3><p>ThÃƒÂ¡Ã‚Â»Ã‚Â­ Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã‚Âu chÃƒÂ¡Ã‚Â»Ã¢â‚¬Â°nh bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ lÃƒÂ¡Ã‚Â»Ã‚Âc tÃƒÂ¡Ã‚Â»Ã‚Â« khÃƒÆ’Ã‚Â³a hoÃƒÂ¡Ã‚ÂºÃ‚Â·c quÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc gia khÃƒÆ’Ã‚Â¡c.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â</span><h3>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y xu hÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºng nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o</h3><p>ThÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“iÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âu chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°nh bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³a hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“c gia khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c.</p></div>`;
     return;
   }
 
   const topicLabels = {
-    sports: "ÃƒÂ¢Ã…Â¡Ã‚Â½ ThÃƒÂ¡Ã‚Â»Ã†â€™ thao",
-    entertainment: "ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¬ GiÃƒÂ¡Ã‚ÂºÃ‚Â£i trÃƒÆ’Ã‚Â­",
-    tech: "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» CÃƒÆ’Ã‚Â´ng nghÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡",
-    finance: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‹â€  TÃƒÆ’Ã‚Â i chÃƒÆ’Ã‚Â­nh",
-    news: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â° ThÃƒÂ¡Ã‚Â»Ã‚Âi sÃƒÂ¡Ã‚Â»Ã‚Â±",
-    health: "ÃƒÂ°Ã…Â¸Ã‚Â©Ã‚Âº Y tÃƒÂ¡Ã‚ÂºÃ‚Â¿",
-    other: "ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â KhÃƒÆ’Ã‚Â¡c"
+    sports: "ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â½ ThÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ thao",
+    entertainment: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½Ãƒâ€šÃ‚Â¬ GiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­",
+    tech: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â» CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng nghÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡",
+    finance: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¹Ã¢â‚¬Â  TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nh",
+    news: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â° ThÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âi sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â±",
+    health: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â©Ãƒâ€šÃ‚Âº Y tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿",
+    other: "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã¢â‚¬â„¢Ãƒâ€šÃ‚Â KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c"
   };
   
   container.innerHTML = trends.map((item, index) => {
     let newsHtml = "";
     if (item.news && item.news.length) {
       newsHtml = `
-        <div class="trend-news-title">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â° Tin tÃƒÂ¡Ã‚Â»Ã‚Â©c liÃƒÆ’Ã‚Âªn quan</div>
+        <div class="trend-news-title">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â° Tin tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©c liÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn quan</div>
         <ul class="trend-news-list">
           ${item.news.slice(0, 3).map(n => `
             <li class="trend-news-item">
@@ -1775,7 +1783,7 @@ function renderTrendsList(trends) {
               <strong class="trend-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</strong>
               ${topicBadge}
             </div>
-            <span class="trend-traffic">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ ${escapeHtml(item.traffic)} searches</span>
+            <span class="trend-traffic">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ ${escapeHtml(item.traffic)} searches</span>
           </div>
         </div>
         <div class="trend-body">
@@ -1783,7 +1791,7 @@ function renderTrendsList(trends) {
           ${newsHtml}
         </div>
         <div class="trend-footer">
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(exploreUrl)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ KhÃƒÆ’Ã‚Â¡m phÃƒÆ’Ã‚Â¡ chi tiÃƒÂ¡Ã‚ÂºÃ‚Â¿t</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(exploreUrl)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡m phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ chi tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿t</button>
         </div>
       </article>
     `;
@@ -1871,7 +1879,7 @@ function renderTrendsChart(trends) {
         height="${barH}" 
         fill="url(#trendBarGrad)" 
         rx="4" 
-        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ LÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m: ${escapeHtml(item.trafficLabel)}" 
+        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ LÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m: ${escapeHtml(item.trafficLabel)}" 
         style="transition: all 0.3s; cursor: pointer;" 
       />
     `;
@@ -1922,10 +1930,10 @@ async function fetchAndRenderThreads(force = false) {
   }
 
   const scopeLabel = request.countryLabel || "Global";
-  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i Threads...</h3><p>Ãƒâ€žÃ‚Âang Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc Threads Search scope ${escapeHtml(scopeLabel)} cho query "${escapeHtml(request.query)}".</p></div>`;
+  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³</span><h3>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i Threads...</h3><p>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc Threads Search scope ${escapeHtml(scopeLabel)} cho query "${escapeHtml(request.query)}".</p></div>`;
   const chartRow = $("#threadsChartRow");
   if (chartRow) chartRow.style.display = "none";
-  if (status) status.textContent = `Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${request.limit} post tÃƒÂ¡Ã‚Â»Ã‚Â« Threads Search...`;
+  if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i ${request.limit} post tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« Threads Search...`;
 
   try {
     addLog("refresh", "Fetching Threads Search", `query=${request.query}, limit=${request.limit}`);
@@ -1935,12 +1943,12 @@ async function fetchAndRenderThreads(force = false) {
     renderThreadsChart(state.threads);
     renderThreadsList(state.threads);
     const queries = data && Array.isArray(data.queries) ? data.queries.join(", ") : request.query;
-    if (status) status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${state.threads.length}/${request.limit} post cho scope ${scopeLabel}. Queries: ${queries}`;
+    if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i ${state.threads.length}/${request.limit} post cho scope ${scopeLabel}. Queries: ${queries}`;
     updateThreadsLoadMoreButton(state.threads.length >= request.limit);
     addLog("success", "Threads Search loaded", `Parsed ${state.threads.length} post(s).`);
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i Threads</h3><p>${escapeHtml(err.message)}</p></div>`;
-    if (status) status.textContent = "KhÃƒÆ’Ã‚Â´ng tÃƒÂ¡Ã‚ÂºÃ‚Â£i Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c Threads Search.";
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span><h3>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i Threads</h3><p>${escapeHtml(err.message)}</p></div>`;
+    if (status) status.textContent = "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£c Threads Search.";
     if (chartRow) chartRow.style.display = "none";
     updateThreadsLoadMoreButton(false);
     addLog("error", "Failed to fetch Threads", err.message);
@@ -1951,7 +1959,7 @@ function updateThreadsLoadMoreButton(canLoadMore) {
   const button = $("#loadMoreThreadsBtn");
   if (!button) return;
   button.style.display = canLoadMore ? "inline-flex" : "none";
-  button.textContent = `ÃƒÂ¢Ã‚Â¬Ã¢â‚¬Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Load more Threads (${Number(state.threadsVisibleCount || 10) + 10})`;
+  button.textContent = `ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Load more Threads (${Number(state.threadsVisibleCount || 10) + 10})`;
 }
 
 function loadMoreThreads() {
@@ -2025,7 +2033,7 @@ function renderThreadsChart(items) {
         height="${barH}"
         fill="url(#threadsBarGrad)"
         rx="4"
-        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â Likes: ${item.value.toLocaleString()}<br>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¬ Replies: ${item.replies.toLocaleString()}<br>Query: ${escapeHtml(item.query)}"
+        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Likes: ${item.value.toLocaleString()}<br>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¬ Replies: ${item.replies.toLocaleString()}<br>Query: ${escapeHtml(item.query)}"
         style="transition: all 0.3s; cursor: pointer;"
       />
       <text
@@ -2046,7 +2054,7 @@ function renderThreadsList(items) {
   if (!container) return;
 
   if (!items || !items.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ thread phÃƒÆ’Ã‚Â¹ hÃƒÂ¡Ã‚Â»Ã‚Â£p</h3><p>ThÃƒÂ¡Ã‚Â»Ã‚Â­ query khÃƒÆ’Ã‚Â¡c hoÃƒÂ¡Ã‚ÂºÃ‚Â·c kiÃƒÂ¡Ã‚Â»Ã†â€™m tra Threads cÃƒÆ’Ã‚Â³ Ãƒâ€žÃ¢â‚¬Ëœang yÃƒÆ’Ã‚Âªu cÃƒÂ¡Ã‚ÂºÃ‚Â§u Ãƒâ€žÃ¢â‚¬ËœÃƒâ€žÃ†â€™ng nhÃƒÂ¡Ã‚ÂºÃ‚Â­p hay khÃƒÆ’Ã‚Â´ng.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â</span><h3>ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ thread phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£p</h3><p>ThÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­ query khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m tra Threads cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ang yÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªu cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢ng nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p hay khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng.</p></div>`;
     return;
   }
 
@@ -2055,8 +2063,8 @@ function renderThreadsList(items) {
     const preview = text.length > 260 ? `${text.slice(0, 257).trim()}...` : text;
     const takenAt = item.taken_at ? formatDate(item.taken_at) : "n/a";
     const thumbnail = item.thumbnail
-      ? `<img class="trend-img threads-thumb" src="${escapeHtml(item.thumbnail)}" alt="${escapeHtml(item.username || "Threads")} thumbnail" onerror="this.outerHTML='<div class=&quot;trend-img threads-thumb placeholder&quot; aria-hidden=&quot;true&quot;>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âµ</div>'">`
-      : `<div class="trend-img threads-thumb placeholder" aria-hidden="true">ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âµ</div>`;
+      ? `<img class="trend-img threads-thumb" src="${escapeHtml(item.thumbnail)}" alt="${escapeHtml(item.username || "Threads")} thumbnail" onerror="this.outerHTML='<div class=&quot;trend-img threads-thumb placeholder&quot; aria-hidden=&quot;true&quot;>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âµ</div>'">`
+      : `<div class="trend-img threads-thumb placeholder" aria-hidden="true">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Âµ</div>`;
     return `
       <article class="trend-card threads-card">
         <div class="trend-header">
@@ -2066,14 +2074,14 @@ function renderThreadsList(items) {
               <strong class="trend-title">#${index + 1} @${escapeHtml(item.username || "unknown")}</strong>
               <span class="trend-topic-badge topic-tech">${escapeHtml(item.full_name || "Threads")}</span>
             </div>
-            <span class="trend-traffic">ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â ${Number(item.like_count || 0).toLocaleString()} likes Ãƒâ€šÃ‚Â· ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¬ ${Number(item.reply_count || 0).toLocaleString()} replies Ãƒâ€šÃ‚Â· query: ${escapeHtml(item.source_query || "n/a")} Ãƒâ€šÃ‚Â· ${escapeHtml(takenAt)}</span>
+            <span class="trend-traffic">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ${Number(item.like_count || 0).toLocaleString()} likes ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â¬ ${Number(item.reply_count || 0).toLocaleString()} replies ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· query: ${escapeHtml(item.source_query || "n/a")} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(takenAt)}</span>
           </div>
         </div>
         <div class="trend-body">
           <p class="trend-desc">${escapeHtml(preview)}</p>
         </div>
         <div class="trend-footer">
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ MÃƒÂ¡Ã‚Â»Ã…Â¸ thread</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ thread</button>
         </div>
       </article>
     `;
@@ -2085,13 +2093,13 @@ async function sendThreadsTelegram() {
   const status = $("#threadsStatus");
   const request = getThreadsRequest();
   if (button) button.disabled = true;
-  if (status) status.textContent = `Ãƒâ€žÃ‚Âang gÃƒÂ¡Ã‚Â»Ã‚Â­i bÃƒÆ’Ã‚Â¡o cÃƒÆ’Ã‚Â¡o Threads "${request.query}" vÃƒÂ¡Ã‚Â»Ã‚Â Telegram...`;
+  if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang gÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­i bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡o cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡o Threads "${request.query}" vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â Telegram...`;
   try {
     const result = await window.moneyDesk.sendThreadsReport(request);
-    if (status) status.textContent = "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ gÃƒÂ¡Ã‚Â»Ã‚Â­i bÃƒÆ’Ã‚Â¡o cÃƒÆ’Ã‚Â¡o Threads vÃƒÂ¡Ã‚Â»Ã‚Â Telegram.";
+    if (status) status.textContent = "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ gÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­i bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡o cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡o Threads vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â Telegram.";
     addLog("success", "Sent Threads Telegram report", result.stdout || "Telegram message sent.");
   } catch (err) {
-    if (status) status.textContent = `GÃƒÂ¡Ã‚Â»Ã‚Â­i Telegram thÃƒÂ¡Ã‚ÂºÃ‚Â¥t bÃƒÂ¡Ã‚ÂºÃ‚Â¡i: ${err.message}`;
+    if (status) status.textContent = `GÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­i Telegram thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i: ${err.message}`;
     addLog("error", "Threads Telegram failed", err.message);
   } finally {
     if (button) button.disabled = false;
@@ -2131,9 +2139,9 @@ async function fetchAndRenderFacebook(force = false) {
     return;
   }
 
-  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i Facebook...</h3><p>Ãƒâ€žÃ‚Âang Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc ${request.sourceList.length} nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n page/group Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ chÃƒÂ¡Ã‚Â»Ã¢â‚¬Â° Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh.</p></div>`;
+  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³</span><h3>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i Facebook...</h3><p>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc ${request.sourceList.length} nguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn page/group ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹nh.</p></div>`;
   if (sourceList) sourceList.innerHTML = "";
-  if (status) status.textContent = `Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Ãƒâ€žÃ¢â‚¬Ëœa ${request.limit} bÃƒÆ’Ã‚Â i mÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n...`;
+  if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“a ${request.limit} bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âi nguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn...`;
 
   try {
     addLog("refresh", "Fetching Facebook trends", `${request.sourceList.length} source(s), limit=${request.limit}`);
@@ -2148,12 +2156,12 @@ async function fetchAndRenderFacebook(force = false) {
     renderFacebookList(state.facebook.items || [], request.query);
     const blocked = (state.facebook.sources || []).filter(source => source.login_required).length;
     if (status) {
-      status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${(state.facebook.items || []).length} bÃƒÆ’Ã‚Â i. ${blocked ? `${blocked} nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n cÃƒÂ¡Ã‚ÂºÃ‚Â§n cookie Ãƒâ€žÃ¢â‚¬ËœÃƒâ€žÃ†â€™ng nhÃƒÂ¡Ã‚ÂºÃ‚Â­p Facebook.` : "CÃƒÆ’Ã‚Â¡c nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n public Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc xong."}`;
+      status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i ${(state.facebook.items || []).length} bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i. ${blocked ? `${blocked} nguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n cookie ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢ng nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p Facebook.` : "CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c nguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn public ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc xong."}`;
     }
     addLog("success", "Facebook trends loaded", `${(state.facebook.items || []).length} post(s), blocked=${blocked}`);
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i Facebook</h3><p>${escapeHtml(err.message)}</p></div>`;
-    if (status) status.textContent = "KhÃƒÆ’Ã‚Â´ng tÃƒÂ¡Ã‚ÂºÃ‚Â£i Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c Facebook trends.";
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span><h3>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i Facebook</h3><p>${escapeHtml(err.message)}</p></div>`;
+    if (status) status.textContent = "KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£c Facebook trends.";
     addLog("error", "Failed to fetch Facebook trends", err.message);
   }
 }
@@ -2168,7 +2176,7 @@ function renderFacebookSources(sources) {
   container.innerHTML = sources.map((source) => {
     const count = Array.isArray(source.items) ? source.items.length : 0;
     const stateClass = count ? "ok" : source.login_required ? "blocked" : "empty";
-    const stateLabel = count ? `${count} bÃƒÆ’Ã‚Â i` : source.login_required ? "CÃƒÂ¡Ã‚ÂºÃ‚Â§n cookie" : "ChÃƒâ€ Ã‚Â°a thÃƒÂ¡Ã‚ÂºÃ‚Â¥y bÃƒÆ’Ã‚Â i public";
+    const stateLabel = count ? `${count} bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i` : source.login_required ? "CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n cookie" : "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i public";
     return `
       <button class="facebook-source-chip ${stateClass}" type="button" data-open-url="${escapeHtml(source.source_url)}" title="${escapeHtml(source.error || source.source_url)}">
         <strong>${escapeHtml(source.source || "Facebook")}</strong>
@@ -2187,7 +2195,7 @@ function renderFacebookList(items, query = "") {
   });
 
   if (!filtered.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ bÃƒÆ’Ã‚Â i Facebook phÃƒÆ’Ã‚Â¹ hÃƒÂ¡Ã‚Â»Ã‚Â£p</h3><p>Facebook cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ Ãƒâ€žÃ¢â‚¬Ëœang yÃƒÆ’Ã‚Âªu cÃƒÂ¡Ã‚ÂºÃ‚Â§u Ãƒâ€žÃ¢â‚¬ËœÃƒâ€žÃ†â€™ng nhÃƒÂ¡Ã‚ÂºÃ‚Â­p. CÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t FACEBOOK_COOKIE trong .env Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ fetch cÃƒÆ’Ã‚Â¡c nhÃƒÆ’Ã‚Â³m bÃƒÂ¡Ã‚ÂºÃ‚Â¡n cÃƒÆ’Ã‚Â³ quyÃƒÂ¡Ã‚Â»Ã‚Ân xem.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â</span><h3>ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i Facebook phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£p</h3><p>Facebook cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ang yÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªu cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢ng nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p. CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·t FACEBOOK_COOKIE trong .env ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ fetch cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c nhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³m bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡n cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ quyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân xem.</p></div>`;
     return;
   }
 
@@ -2210,8 +2218,8 @@ function renderFacebookList(items, query = "") {
           <p class="trend-desc">${escapeHtml(preview)}</p>
         </div>
         <div class="trend-footer">
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url || item.source_url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ MÃƒÂ¡Ã‚Â»Ã…Â¸ bÃƒÆ’Ã‚Â i</button>
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.source_url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‹Å“ MÃƒÂ¡Ã‚Â»Ã…Â¸ nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url || item.source_url)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â i</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.source_url)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¹Ã…â€œ MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ nguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn</button>
         </div>
       </article>
     `;
@@ -2240,18 +2248,18 @@ async function fetchAndRenderYouTube(force = false) {
     renderYouTubeList(state.youtube);
     return;
   }
-  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend...</h3><p>Ãƒâ€žÃ‚Âang lÃƒÂ¡Ã‚ÂºÃ‚Â¥y title vÃƒÆ’Ã‚Â  thumbnail tÃƒÂ¡Ã‚Â»Ã‚Â« YouTube.</p></div>`;
-  if (status) status.textContent = `Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend region=${request.region}, chÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â=${request.topic}, thÃƒÂ¡Ã‚Â»Ã‚Âi gian=${request.period}...`;
+  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â³</span><h3>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i YouTube trend...</h3><p>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y title vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  thumbnail tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« YouTube.</p></div>`;
+  if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i YouTube trend region=${request.region}, chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â=${request.topic}, thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âi gian=${request.period}...`;
   try {
     const data = await window.moneyDesk.fetchYouTubeTrends(request);
     state.youtube = data.items || [];
     state.youtubeKey = cacheKey;
     renderYouTubeList(state.youtube);
-    if (status) status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${state.youtube.length} video trong ${data.period || request.period}. ChÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â: ${data.topic || request.topic}. Query: ${data.query || request.query || "default"}`;
+    if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i ${state.youtube.length} video trong ${data.period || request.period}. ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â: ${data.topic || request.topic}. Query: ${data.query || request.query || "default"}`;
     addLog("success", "Loaded YouTube trends", `${state.youtube.length} video(s), region=${request.region}, topic=${request.topic}, period=${request.period}`);
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend</h3><p>${escapeHtml(err.message)}</p></div>`;
-    if (status) status.textContent = `KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend: ${err.message}`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span><h3>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i YouTube trend</h3><p>${escapeHtml(err.message)}</p></div>`;
+    if (status) status.textContent = `KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£i YouTube trend: ${err.message}`;
     addLog("error", "YouTube trend failed", err.message);
   }
 }
@@ -2260,7 +2268,7 @@ function renderYouTubeList(items) {
   const container = $("#youtubeList");
   if (!container) return;
   if (!items.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â­</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ video</h3><p>ThÃƒÂ¡Ã‚Â»Ã‚Â­ region hoÃƒÂ¡Ã‚ÂºÃ‚Â·c query khÃƒÆ’Ã‚Â¡c.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â­</span><h3>ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ video</h3><p>ThÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­ region hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c query khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c.</p></div>`;
     return;
   }
   container.innerHTML = items.map((item, index) => {
@@ -2272,9 +2280,9 @@ function renderYouTubeList(items) {
       const word = keyword.keyword || "";
       const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(word)}`;
       return `
-        <button class="youtube-keyword-chip ${escapeHtml(keyword.type || "secondary")}" type="button" data-open-url="${escapeHtml(url)}" title="${escapeHtml(keyword.reason || "MÃƒÂ¡Ã‚Â»Ã…Â¸ keyword trÃƒÆ’Ã‚Âªn YouTube")}">
+        <button class="youtube-keyword-chip ${escapeHtml(keyword.type || "secondary")}" type="button" data-open-url="${escapeHtml(url)}" title="${escapeHtml(keyword.reason || "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ keyword trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn YouTube")}">
           <strong>${escapeHtml(word)}</strong>
-          <span>${Number(keyword.predicted_volume || 0).toLocaleString()} Ãƒâ€šÃ‚Â· ${escapeHtml(keyword.volume_label || "n/a")}</span>
+          <span>${Number(keyword.predicted_volume || 0).toLocaleString()} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(keyword.volume_label || "n/a")}</span>
         </button>
       `;
     };
@@ -2290,8 +2298,8 @@ function renderYouTubeList(items) {
     const colorSwatches = (analysis.color_palette || []).map(color => `
       <div class="youtube-color-swatch">
         <span style="background:${escapeHtml(color.hex || "#94a3b8")}"></span>
-        <strong>${escapeHtml(color.color || "mÃƒÆ’Ã‚Â u")}</strong>
-        <small>${escapeHtml(color.role || "")} Ãƒâ€šÃ‚Â· ${Math.round(Number(color.share || 0) * 100)}%</small>
+        <strong>${escapeHtml(color.color || "mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u")}</strong>
+        <small>${escapeHtml(color.role || "")} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${Math.round(Number(color.share || 0) * 100)}%</small>
         <em>${escapeHtml(color.emotion || "")}</em>
       </div>
     `).join("");
@@ -2304,7 +2312,7 @@ function renderYouTubeList(items) {
       </span>
     `).join("");
     const channelRefs = (analysis.niche_reference_channels || []).map(ref => `
-      <button class="youtube-channel-ref" type="button" data-open-url="${escapeHtml(ref.url || "")}" title="${escapeHtml(ref.reason || "MÃƒÂ¡Ã‚Â»Ã…Â¸ YouTube")}">
+      <button class="youtube-channel-ref" type="button" data-open-url="${escapeHtml(ref.url || "")}" title="${escapeHtml(ref.reason || "MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ YouTube")}">
         <strong>${escapeHtml(ref.label || "Channel")}</strong>
         <span>${escapeHtml(ref.reason || "")}</span>
       </button>
@@ -2319,10 +2327,10 @@ function renderYouTubeList(items) {
           <div class="youtube-rank">#${index + 1}</div>
           <h3><button class="youtube-title-button" type="button" data-open-url="${escapeHtml(item.url)}">${escapeHtml(item.title)}</button></h3>
           <div class="youtube-score-strip">
-            <span class="overall">Overall ${Number(analysis.overall_score || 0)}/100 Ãƒâ€šÃ‚Â· ${escapeHtml(analysis.score_label || "")}</span>
+            <span class="overall">Overall ${Number(analysis.overall_score || 0)}/100 ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(analysis.score_label || "")}</span>
             <span>Title ${Number(analysis.title_score || 0)}</span>
             <span>Thumbnail ${Number(analysis.thumbnail_score || 0)}</span>
-            <span>TÃƒÆ’Ã‚Â¢m lÃƒÆ’Ã‚Â½ ${Number(analysis.psychology_score || 0)}</span>
+            <span>TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢m lÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½ ${Number(analysis.psychology_score || 0)}</span>
           </div>
           <div class="youtube-meta">
             <span>${escapeHtml(item.channel || "Unknown channel")}</span>
@@ -2331,78 +2339,78 @@ function renderYouTubeList(items) {
           </div>
           <div class="youtube-hooks">${hooks}</div>
           <div class="youtube-analysis">
-            <strong>TÃƒÂ¡Ã‚Â»Ã‚Â« cÃƒÂ¡Ã‚ÂºÃ‚Â§n ghi nhÃƒÂ¡Ã‚Â»Ã¢â‚¬Âº</strong>
-            <div class="youtube-memory-row">${memorableTerms || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ highlight.</span>"}</div>
+            <strong>TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n ghi nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âº</strong>
+            <div class="youtube-memory-row">${memorableTerms || "<span class=\"muted\">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ highlight.</span>"}</div>
             <p>${escapeHtml(item.analysis?.memory_note || "")}</p>
             <strong>Title formula</strong>
             <p>${escapeHtml(item.analysis?.title_formula || "")}</p>
             <strong>Thumbnail formula</strong>
             <p>${escapeHtml(item.analysis?.thumbnail_formula || "")}</p>
-            <strong>ChÃƒÂ¡Ã‚Â»Ã‚Â§ thÃƒÂ¡Ã‚Â»Ã†â€™ trong thumbnail</strong>
+            <strong>ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ trong thumbnail</strong>
             <div class="youtube-subjects">${thumbSubjects}</div>
             <p>${escapeHtml(item.analysis?.subject_reason || "")}</p>
-            <strong>CÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã‚Â©c chÃƒÂ¡Ã‚Â»Ã‚Â§ thÃƒÂ¡Ã‚Â»Ã†â€™</strong>
+            <strong>CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©c chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢</strong>
             <p>${escapeHtml(item.analysis?.subject_formula || "")}</p>
-            <strong>VÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ trÃƒÆ’Ã‚Â­ & bÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ cÃƒÂ¡Ã‚Â»Ã‚Â¥c</strong>
+            <strong>VÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ & bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c</strong>
             <p>${escapeHtml(item.analysis?.placement_reason || "")}</p>
-            <strong>MÃƒÆ’Ã‚Â u sÃƒÂ¡Ã‚ÂºÃ‚Â¯c & tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng phÃƒÂ¡Ã‚ÂºÃ‚Â£n</strong>
+            <strong>MÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¯c & tÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡ng phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£n</strong>
             <p>${escapeHtml(item.analysis?.color_strategy || "")}</p>
-            <div class="youtube-color-grid">${colorSwatches || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c palette mÃƒÆ’Ã‚Â u.</span>"}</div>
-            <strong>CÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã‚Â©c phÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi mÃƒÆ’Ã‚Â u</strong>
+            <div class="youtube-color-grid">${colorSwatches || "<span class=\"muted\">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£c palette mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u.</span>"}</div>
+            <strong>CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©c phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“i mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u</strong>
             <p>${escapeHtml(item.analysis?.color_formula || "")}</p>
-            <strong>VÃƒÆ’Ã‚Â¬ sao dÃƒÆ’Ã‚Â¹ng mÃƒÆ’Ã‚Â u Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â³</strong>
+            <strong>VÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬ sao dÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ng mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³</strong>
             <p>${escapeHtml(item.analysis?.color_formula_reason || "")}</p>
-            <strong>CÃƒÂ¡Ã‚ÂºÃ‚Â£m giÃƒÆ’Ã‚Â¡c mÃƒÆ’Ã‚Â u tÃƒÂ¡Ã‚ÂºÃ‚Â¡o ra</strong>
+            <strong>CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£m giÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o ra</strong>
             <p>${escapeHtml(item.analysis?.color_emotional_effect || "")}</p>
-            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ khiÃƒÂ¡Ã‚ÂºÃ‚Â¿n mÃƒÆ’Ã‚Â u tÃƒÂ¡Ã‚ÂºÃ‚Â¡o sÃƒÂ¡Ã‚Â»Ã‚Â± thu hÃƒÆ’Ã‚Âºt</strong>
+            <strong>YÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ khiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿n mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± thu hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºt</strong>
             <ul class="youtube-product-list">${colorAttractionFactors}</ul>
-            <strong>CÃƒÆ’Ã‚Â¡ch ÃƒÆ’Ã‚Â¡p dÃƒÂ¡Ã‚Â»Ã‚Â¥ng lÃƒÂ¡Ã‚ÂºÃ‚Â¡i palette nÃƒÆ’Ã‚Â y</strong>
+            <strong>CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡p dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥ng lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i palette nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y</strong>
             <ol class="youtube-step-list">${colorReuseSteps}</ol>
-            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ tÃƒÂ¡Ã‚ÂºÃ‚Â¡o sÃƒÂ¡Ã‚Â»Ã‚Â± thu hÃƒÆ’Ã‚Âºt</strong>
+            <strong>YÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± thu hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºt</strong>
             <ul class="youtube-attraction-list">${attractionFactors}</ul>
-            <strong>Keyword chÃƒÆ’Ã‚Â­nh</strong>
-            <div class="youtube-keyword-row primary">${primaryKeywords || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u keyword chÃƒÆ’Ã‚Â­nh.</span>"}</div>
-            <strong>Keyword phÃƒÂ¡Ã‚Â»Ã‚Â¥</strong>
-            <div class="youtube-keyword-row">${secondaryKeywords || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u keyword phÃƒÂ¡Ã‚Â»Ã‚Â¥.</span>"}</div>
+            <strong>Keyword chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nh</strong>
+            <div class="youtube-keyword-row primary">${primaryKeywords || "<span class=\"muted\">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u keyword chÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nh.</span>"}</div>
+            <strong>Keyword phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥</strong>
+            <div class="youtube-keyword-row">${secondaryKeywords || "<span class=\"muted\">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u keyword phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥.</span>"}</div>
             <p>${escapeHtml(item.analysis?.keyword_note || "")}</p>
-            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ vÃƒâ€žÃ†â€™n hÃƒÆ’Ã‚Â³a</strong>
+            <strong>YÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ vÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€ Ã¢â‚¬â„¢n hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³a</strong>
             <p>${escapeHtml(item.analysis?.cultural_factor || "")}</p>
-            <strong>Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ tuÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i quan tÃƒÆ’Ã‚Â¢m</strong>
+            <strong>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ tuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢i quan tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢m</strong>
             <p>${escapeHtml(item.analysis?.age_interest || "")}</p>
-            <strong>QuÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc gia quan tÃƒÆ’Ã‚Â¢m</strong>
-            <div class="youtube-country-row">${countriesInterest || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u quÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc gia.</span>"}</div>
-            <strong>TÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡p khÃƒÆ’Ã‚Â¡ch hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¿n</strong>
+            <strong>QuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“c gia quan tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢m</strong>
+            <div class="youtube-country-row">${countriesInterest || "<span class=\"muted\">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u quÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“c gia.</span>"}</div>
+            <strong>TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡p khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch hÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºng ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿n</strong>
             <p>${escapeHtml(item.analysis?.target_customer || "")}</p>
-            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ marketing</strong>
+            <strong>YÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ marketing</strong>
             <p>${escapeHtml(item.analysis?.marketing_angle || "")}</p>
-            <strong>Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã‚Â xuÃƒÂ¡Ã‚ÂºÃ‚Â¥t bÃƒÆ’Ã‚Â¡n sÃƒÂ¡Ã‚ÂºÃ‚Â£n phÃƒÂ¡Ã‚ÂºÃ‚Â©m</strong>
+            <strong>ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â xuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£n phÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â©m</strong>
             <ul class="youtube-product-list">${productSuggestions}</ul>
             <p>${escapeHtml(item.analysis?.audience_note || "")}</p>
-            <strong>CÃƒÆ’Ã‚Â¡ch kÃƒÆ’Ã‚Âªnh cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m tiÃƒÂ¡Ã‚Â»Ã‚Ân tÃƒÂ¡Ã‚Â»Ã‚Â« video</strong>
+            <strong>CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch kÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªnh cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« video</strong>
             <p>${escapeHtml(item.analysis?.creator_revenue_read || "")}</p>
             <ul class="youtube-product-list">${creatorMonetization}</ul>
-            <strong>BÃƒÆ’Ã‚Â­ mÃƒÂ¡Ã‚ÂºÃ‚Â­t/insight ÃƒÆ’Ã‚Â­t thÃƒÂ¡Ã‚ÂºÃ‚Â¥y</strong>
+            <strong>BÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t/insight ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­t thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y</strong>
             <ul class="youtube-product-list">${hiddenInsights}</ul>
-            <strong>HÃƒÂ¡Ã‚Â»Ã‚Â cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o tÃƒÂ¡Ã‚Â»Ã‚Â« Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¢u</strong>
-            <div class="youtube-source-row">${referenceSources || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o.</span>"}</div>
-            <strong>ÃƒÆ’Ã‚Â tÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ bÃƒÂ¡Ã‚ÂºÃ‚Â¯t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u tÃƒÂ¡Ã‚Â»Ã‚Â« Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¢u</strong>
+            <strong>HÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tham khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£o tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢u</strong>
+            <div class="youtube-source-row">${referenceSources || "<span class=\"muted\">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u nguÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œn tham khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£o.</span>"}</div>
+            <strong>ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â tÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¯t ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢u</strong>
             <p>${escapeHtml(item.analysis?.idea_origin || "")}</p>
             <p>${escapeHtml(item.analysis?.creator_strategy_note || "")}</p>
-            <strong>CÃƒÆ’Ã‚Â³ nÃƒÆ’Ã‚Âªn lÃƒÆ’Ã‚Â m ngÃƒÆ’Ã‚Â¡ch nÃƒÆ’Ã‚Â y khÃƒÆ’Ã‚Â´ng?</strong>
+            <strong>CÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn lÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â m ngÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng?</strong>
             <div class="youtube-niche-verdict">
               <span>${Number(item.analysis?.niche_score || 0)}/100</span>
-              <strong>${escapeHtml(item.analysis?.niche_verdict || "ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u")}</strong>
+              <strong>${escapeHtml(item.analysis?.niche_verdict || "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u")}</strong>
             </div>
             <ul class="youtube-product-list">${nicheReasons}</ul>
-            <strong>BÃƒÂ¡Ã‚ÂºÃ‚Â¯t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u tÃƒÂ¡Ã‚Â»Ã‚Â« Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¢u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ lÃƒÆ’Ã‚Â m ngÃƒÆ’Ã‚Â¡ch nÃƒÆ’Ã‚Â y</strong>
+            <strong>BÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¯t ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ lÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â m ngÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y</strong>
             <ol class="youtube-step-list">${nicheSteps}</ol>
-            <strong>KÃƒÆ’Ã‚Âªnh liÃƒÆ’Ã‚Âªn quan Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o</strong>
-            <div class="youtube-channel-grid">${channelRefs || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u kÃƒÆ’Ã‚Âªnh tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o.</span>"}</div>
+            <strong>KÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªnh liÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn quan ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tham khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£o</strong>
+            <div class="youtube-channel-grid">${channelRefs || "<span class=\"muted\">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â§ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u kÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªnh tham khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â£o.</span>"}</div>
             <strong>Deep thumbnail formula</strong>
             <p>${escapeHtml(item.analysis?.thumbnail_deep_formula || "")}</p>
-            <strong>TÃƒÆ’Ã‚Â¢m lÃƒÆ’Ã‚Â½ hÃƒÂ¡Ã‚Â»Ã‚Âc</strong>
+            <strong>TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢m lÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½ hÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc</strong>
             <p>${escapeHtml(item.analysis?.title_note || "")}</p>
-            <strong>LÃƒÆ’Ã‚Â½ do chÃƒÂ¡Ã‚ÂºÃ‚Â¥m Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã†â€™m</strong>
+            <strong>LÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½ do chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥m ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“iÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢m</strong>
             <p>${escapeHtml(item.analysis?.score_reason || "")}</p>
           </div>
         </div>
@@ -2414,18 +2422,18 @@ function renderYouTubeList(items) {
 async function fetchAndRenderInterest() {
   const status = $("#interestStatus");
   const period = $("#interestPeriod")?.value || "24h";
-  if (status) status.textContent = `Ãƒâ€žÃ‚Âang phÃƒÆ’Ã‚Â¢n tÃƒÆ’Ã‚Â­ch dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ lÃƒâ€ Ã‚Â°u trong ${period}...`;
+  if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ lÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u trong ${period}...`;
   try {
     const data = await window.moneyDesk.analyzeTrendArchive({ period });
     state.interest = data;
     renderInterest(data);
-    if (status) status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ phÃƒÆ’Ã‚Â¢n tÃƒÆ’Ã‚Â­ch ${data.records} record tÃƒÂ¡Ã‚Â»Ã‚Â« ${data.files} file lÃƒâ€ Ã‚Â°u trÃƒÂ¡Ã‚Â»Ã‚Â¯. CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t: ${formatDate(data.generatedAt)}`;
+    if (status) status.textContent = `ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch ${data.records} record tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« ${data.files} file lÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯. CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t: ${formatDate(data.generatedAt)}`;
     addLog("success", "Analyzed trend archive", `${data.records} records, period=${period}`);
   } catch (err) {
-    if (status) status.textContent = `KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ phÃƒÆ’Ã‚Â¢n tÃƒÆ’Ã‚Â­ch dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u: ${err.message}`;
+    if (status) status.textContent = `KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u: ${err.message}`;
     ["#interestTopList", "#interestMoneyList", "#interestForecastList"].forEach((selector) => {
       const el = $(selector);
-      if (el) el.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u</h3><p>${escapeHtml(err.message)}</p></div>`;
+      if (el) el.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span><h3>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u</h3><p>${escapeHtml(err.message)}</p></div>`;
     });
     addLog("error", "Trend archive analysis failed", err.message);
   }
@@ -2457,7 +2465,7 @@ function renderInterestSourceDonut(data) {
   if (count) count.textContent = String(data.records || total || 0);
   if (!total) {
     svg.innerHTML = "";
-    legend.innerHTML = `<span class="muted">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u.</span>`;
+    legend.innerHTML = `<span class="muted">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u.</span>`;
     return;
   }
   const radius = 78;
@@ -2466,8 +2474,8 @@ function renderInterestSourceDonut(data) {
   const threadsLength = circumference - rssLength;
   svg.innerHTML = `
     <circle cx="100" cy="100" r="${radius}" fill="none" stroke="var(--surface-container)" stroke-width="22" />
-    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#f97316" stroke-width="22" stroke-dasharray="${rssLength} ${circumference - rssLength}" stroke-dashoffset="0" transform="rotate(-90 100 100)" data-interest-source="rss" data-tooltip="<strong>RSS</strong><br>${rss} tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u" tabindex="0" role="button" />
-    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#4f46e5" stroke-width="22" stroke-dasharray="${threadsLength} ${circumference - threadsLength}" stroke-dashoffset="${-rssLength}" transform="rotate(-90 100 100)" data-interest-source="threads" data-tooltip="<strong>Threads</strong><br>${threads} tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u" tabindex="0" role="button" />
+    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#f97316" stroke-width="22" stroke-dasharray="${rssLength} ${circumference - rssLength}" stroke-dashoffset="0" transform="rotate(-90 100 100)" data-interest-source="rss" data-tooltip="<strong>RSS</strong><br>${rss} tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u" tabindex="0" role="button" />
+    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#4f46e5" stroke-width="22" stroke-dasharray="${threadsLength} ${circumference - threadsLength}" stroke-dashoffset="${-rssLength}" transform="rotate(-90 100 100)" data-interest-source="threads" data-tooltip="<strong>Threads</strong><br>${threads} tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u" tabindex="0" role="button" />
   `;
   legend.innerHTML = [
     `<div class="legend-item"><span class="legend-color" style="background:#f97316"></span><span>RSS</span><span class="legend-val">${rss}</span></div>`,
@@ -2484,7 +2492,7 @@ function renderInterestBarChart(selector, topics, key, gradient, label) {
     frequency: topic.frequency || 0
   })).filter(item => item.value > 0);
   if (!items.length) {
-    svg.innerHTML = `<text x="200" y="95" text-anchor="middle" class="chart-axis-text">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u</text>`;
+    svg.innerHTML = `<text x="200" y="95" text-anchor="middle" class="chart-axis-text">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u</text>`;
     return;
   }
   const width = 400;
@@ -2520,7 +2528,7 @@ function renderInterestBarChart(selector, topics, key, gradient, label) {
     const y = height - paddingBottom - barH;
     const short = item.topic.length > 10 ? `${item.topic.slice(0, 8)}...` : item.topic;
     html += `
-      <rect class="chart-bar clickable-chart-bar" x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="url(#${gradId})" data-interest-topic="${escapeHtml(item.topic)}" data-tooltip="<strong>${escapeHtml(item.topic)}</strong><br>${label}: ${item.value.toLocaleString()}<br>TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u: ${item.frequency}" tabindex="0" role="button" />
+      <rect class="chart-bar clickable-chart-bar" x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="url(#${gradId})" data-interest-topic="${escapeHtml(item.topic)}" data-tooltip="<strong>${escapeHtml(item.topic)}</strong><br>${label}: ${item.value.toLocaleString()}<br>TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u: ${item.frequency}" tabindex="0" role="button" />
       <text class="chart-axis-text" x="${x + barW / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(short)}</text>
     `;
   });
@@ -2531,16 +2539,16 @@ function renderTopicList(selector, topics, mode) {
   const container = $(selector);
   if (!container) return;
   if (!topics.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â­</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u lÃƒâ€ Ã‚Â°u</h3><p>BÃƒÂ¡Ã‚ÂºÃ‚Â¥m ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œLÃƒâ€ Ã‚Â°u dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u hÃƒÆ’Ã‚Â´m nayÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â¡o snapshot RSS vÃƒÆ’Ã‚Â  Threads Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u tiÃƒÆ’Ã‚Âªn.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€šÃ‚Â­</span><h3>ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u lÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u</h3><p>BÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥m ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“LÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´m nayÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o snapshot RSS vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  Threads ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u tiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn.</p></div>`;
     return;
   }
   container.innerHTML = topics.map((topic, index) => {
     const score = mode === "money" ? topic.monetization.score : mode === "forecast" ? topic.forecastScore : topic.interestScore;
-    const label = mode === "money" ? topic.monetization.label : mode === "forecast" ? `Growth ${Math.round(topic.growth * 100)}%` : `${topic.frequency} tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u`;
+    const label = mode === "money" ? topic.monetization.label : mode === "forecast" ? `Growth ${Math.round(topic.growth * 100)}%` : `${topic.frequency} tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­n hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u`;
     const examples = (topic.examples || []).slice(0, 2).map(example => `
       <li>
         ${example.url ? `<a href="#" data-open-url="${escapeHtml(example.url)}">${escapeHtml(example.title)}</a>` : escapeHtml(example.title)}
-        <span>${escapeHtml(example.source)} Ãƒâ€šÃ‚Â· ${escapeHtml(formatDate(example.date))}</span>
+        <span>${escapeHtml(example.source)} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(formatDate(example.date))}</span>
       </li>
     `).join("");
     const ideas = topic.monetization && topic.monetization.ideas ? topic.monetization.ideas.slice(0, 2).join(" ") : "";
@@ -2556,8 +2564,8 @@ function renderTopicList(selector, topics, mode) {
             <span>Score ${Number(score || 0).toLocaleString()}</span>
             <span>RSS ${Number(topic.rssCount || 0)}</span>
             <span>Threads ${Number(topic.threadsCount || 0)}</span>
-            <span>ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â ${Number(topic.totalLikes || 0).toLocaleString()}</span>
-            <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ ${Number(topic.totalTraffic || 0).toLocaleString()}</span>
+            <span>ÃƒÆ’Ã‚Â¢Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â ${Number(topic.totalLikes || 0).toLocaleString()}</span>
+            <span>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒâ€šÃ‚Â¥ ${Number(topic.totalTraffic || 0).toLocaleString()}</span>
           </div>
           <div class="topic-keywords">${(topic.keywords || []).map(word => `<span>${escapeHtml(word)}</span>`).join("")}</div>
           ${ideas ? `<p class="topic-ideas">${escapeHtml(ideas)}</p>` : ""}
@@ -2600,13 +2608,13 @@ async function archiveTrendsNow() {
   const button = $("#archiveTrendsNowBtn");
   const status = $("#interestStatus");
   if (button) button.disabled = true;
-  if (status) status.textContent = "Ãƒâ€žÃ‚Âang lÃƒâ€ Ã‚Â°u snapshot RSS vÃƒÆ’Ã‚Â  Threads hÃƒÆ’Ã‚Â´m nay...";
+  if (status) status.textContent = "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Âang lÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u snapshot RSS vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  Threads hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´m nay...";
   try {
     const result = await window.moneyDesk.runTrendArchive();
-    if (status) status.textContent = result.stdout || "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ lÃƒâ€ Ã‚Â°u dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u hÃƒÆ’Ã‚Â´m nay.";
+    if (status) status.textContent = result.stdout || "ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£ lÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´m nay.";
     await fetchAndRenderInterest();
   } catch (err) {
-    if (status) status.textContent = `LÃƒâ€ Ã‚Â°u dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u thÃƒÂ¡Ã‚ÂºÃ‚Â¥t bÃƒÂ¡Ã‚ÂºÃ‚Â¡i: ${err.message}`;
+    if (status) status.textContent = `LÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°u dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥t bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i: ${err.message}`;
   } finally {
     if (button) button.disabled = false;
   }
@@ -2638,25 +2646,25 @@ function renderSchedules(data) {
 
   const html = pageData.items.map((agent) => {
     const triggerText = agent.calendar 
-      ? `ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦ ${agent.calendar}` 
+      ? `ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ ${agent.calendar}` 
       : agent.interval 
-        ? `ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã¢â‚¬â„¢ LÃƒÂ¡Ã‚ÂºÃ‚Â·p lÃƒÂ¡Ã‚ÂºÃ‚Â¡i mÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i ${agent.interval < 3600 ? `${agent.interval / 60} phÃƒÆ’Ã‚Âºt` : `${agent.interval / 3600} giÃƒÂ¡Ã‚Â»Ã‚Â`}` 
-        : "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y mÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t lÃƒÂ¡Ã‚ÂºÃ‚Â§n / KhÃƒÆ’Ã‚Â´ng rÃƒÆ’Ã‚Âµ trigger";
+        ? `ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·p lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âi ${agent.interval < 3600 ? `${agent.interval / 60} phÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºt` : `${agent.interval / 3600} giÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â`}` 
+        : "ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾ ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§n / KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng rÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âµ trigger";
     const fullCommand = agent.args && agent.args.length ? agent.args.join(" ") : `python3 ${agent.script || agent.label}`;
     
     let logHtml = "";
     if (agent.outPath || agent.errPath) {
       logHtml = `
         <div class="schedule-logs-section">
-          <strong>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â¾ NhÃƒÂ¡Ã‚ÂºÃ‚Â­t kÃƒÆ’Ã‚Â½ thÃƒÂ¡Ã‚Â»Ã‚Â±c thi (Logs)</strong>
+          <strong>ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€šÃ‚Â§Ãƒâ€šÃ‚Â¾ NhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t kÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â½ thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â±c thi (Logs)</strong>
           <div class="schedule-log-items">
             ${agent.outPath ? `
               <div class="log-file-item">
                 <div class="log-file-meta">
-                  <span class="file-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾</span>
+                  <span class="file-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾</span>
                   <div>
                     <strong>Stdout log</strong>
-                    <span class="muted">${agent.outSize ? `${(agent.outSize / 1024).toFixed(2)} KB` : "TrÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœng"} Ãƒâ€šÃ‚Â· CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t: ${agent.outModified ? formatDate(agent.outModified) : "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³"}</span>
+                    <span class="muted">${agent.outSize ? `${(agent.outSize / 1024).toFixed(2)} KB` : "TrÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ng"} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t: ${agent.outModified ? formatDate(agent.outModified) : "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³"}</span>
                   </div>
                 </div>
                 <button class="secondary-button" data-open-path="${escapeHtml(agent.outPath)}">Open Stdout</button>
@@ -2665,10 +2673,10 @@ function renderSchedules(data) {
             ${agent.errPath ? `
               <div class="log-file-item">
                 <div class="log-file-meta">
-                  <span class="file-icon err">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span>
+                  <span class="file-icon err">ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â</span>
                   <div>
                     <strong>Stderr log</strong>
-                    <span class="muted">${agent.errSize ? `${(agent.errSize / 1024).toFixed(2)} KB` : "TrÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœng"} Ãƒâ€šÃ‚Â· CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t: ${agent.errModified ? formatDate(agent.errModified) : "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³"}</span>
+                    <span class="muted">${agent.errSize ? `${(agent.errSize / 1024).toFixed(2)} KB` : "TrÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ng"} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t: ${agent.errModified ? formatDate(agent.errModified) : "ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³"}</span>
                   </div>
                 </div>
                 <button class="secondary-button" data-open-path="${escapeHtml(agent.errPath)}">Open Stderr</button>
@@ -2696,7 +2704,7 @@ function renderSchedules(data) {
           </div>
           <div class="schedule-header-right">
             <span class="schedule-type-badge ${badgeClass}">${badgeLabel}</span>
-            <button class="schedule-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²"}</button>
+            <button class="schedule-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼" : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²"}</button>
           </div>
         </header>
 
@@ -2715,13 +2723,13 @@ function renderSchedules(data) {
             ${agent.pr ? `
               <div class="meta-item">
                 <span class="meta-label">PR / Issue</span>
-                <strong class="meta-value">PR #${escapeHtml(agent.pr)} Ãƒâ€šÃ‚Â· Issue #${escapeHtml(agent.issue)}</strong>
+                <strong class="meta-value">PR #${escapeHtml(agent.pr)} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· Issue #${escapeHtml(agent.issue)}</strong>
               </div>
             ` : ""}
           </div>
 
           <div class="schedule-command-box">
-            <span class="meta-label">LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh thÃƒÂ¡Ã‚Â»Ã‚Â±c thi</span>
+            <span class="meta-label">LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â±c thi</span>
             <pre class="terminal compact-terminal"><code>${escapeHtml(fullCommand)}</code></pre>
           </div>
 
@@ -2729,8 +2737,8 @@ function renderSchedules(data) {
         </div>
 
         <footer class="schedule-card-footer">
-          <button class="secondary-button icon-button-left" data-open-path="${escapeHtml(agent.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Xem file .plist</button>
-          ${agent.jobDir ? `<button class="secondary-button" data-open-path="${escapeHtml(agent.jobDir)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c Job</button>` : ""}
+          <button class="secondary-button icon-button-left" data-open-path="${escapeHtml(agent.path)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ Xem file .plist</button>
+          ${agent.jobDir ? `<button class="secondary-button" data-open-path="${escapeHtml(agent.jobDir)}">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡ MÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c Job</button>` : ""}
         </footer>
       </article>
     `;
@@ -2738,9 +2746,9 @@ function renderSchedules(data) {
 
   $("#schedulesList").innerHTML = html || `
     <div class="empty-state">
-      <span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦</span>
-      <h3>KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y Schedule nÃƒÆ’Ã‚Â o</h3>
-      <p>KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y LaunchAgent nÃƒÆ’Ã‚Â o khÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºp vÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi tÃƒÂ¡Ã‚Â»Ã‚Â« khÃƒÆ’Ã‚Â³a tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m hoÃƒÂ¡Ã‚ÂºÃ‚Â·c bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ lÃƒÂ¡Ã‚Â»Ã‚Âc.</p>
+      <span class="empty-icon">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦</span>
+      <h3>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y Schedule nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o</h3>
+      <p>KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y LaunchAgent nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o khÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºp vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â« khÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³a tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m kiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿m hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc.</p>
     </div>
   `;
   setPager("schedules", pageData);
@@ -2797,8 +2805,8 @@ function renderAgentMessages() {
   $("#agentMessages").innerHTML = messageHtml || thinkingHtml
     ? `${messageHtml}${thinkingHtml}`
     : `<div class="chat-empty">
-        <strong>Agent Chat chÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ message.</strong>
-        <p>DÃƒÆ’Ã‚Â¹ng ngÃƒÆ’Ã‚Â´n ngÃƒÂ¡Ã‚Â»Ã‚Â¯ tÃƒÂ¡Ã‚Â»Ã‚Â± nhiÃƒÆ’Ã‚Âªn hoÃƒÂ¡Ã‚ÂºÃ‚Â·c thÃƒÂ¡Ã‚Â»Ã‚Â­ skill nhÃƒâ€ Ã‚Â° <code>/tool-runtime-status</code>, <code>/tool-provider-check</code>, <code>/tool-release-qa</code>.</p>
+        <strong>Agent Chat chÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ message.</strong>
+        <p>DÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¹ng ngÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´n ngÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¯ tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± nhiÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â·c thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â­ skill nhÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â° <code>/tool-runtime-status</code>, <code>/tool-provider-check</code>, <code>/tool-release-qa</code>.</p>
       </div>`;
   const box = $("#agentMessages");
   box.scrollTop = box.scrollHeight;
@@ -2819,7 +2827,7 @@ function renderAgentThinkingMessage() {
         <span class="thinking-dot"></span>
         <span>
           <strong>Thinking...</strong>
-          <small>${escapeHtml(latest.title || "Preparing")}${latest.detail ? ` Ãƒâ€šÃ‚Â· ${escapeHtml(latest.detail)}` : ""}</small>
+          <small>${escapeHtml(latest.title || "Preparing")}${latest.detail ? ` ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(latest.detail)}` : ""}</small>
         </span>
       </button>
     </article>
@@ -2850,7 +2858,7 @@ function renderAgentTrace() {
   $("#agentSteps").innerHTML = state.agent.events.length
     ? state.agent.events.map((event, index) => `
       <li class="${escapeHtml(event.type)}">
-        <span>${String(index + 1).padStart(2, "0")} Ãƒâ€šÃ‚Â· ${escapeHtml(new Date(event.time).toLocaleTimeString())} Ãƒâ€šÃ‚Â· ${escapeHtml(event.type)}</span>
+        <span>${String(index + 1).padStart(2, "0")} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(new Date(event.time).toLocaleTimeString())} ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${escapeHtml(event.type)}</span>
         <strong>${escapeHtml(event.title)}</strong>
         ${event.detail ? `<p>${escapeHtml(event.detail)}</p>` : ""}
       </li>
@@ -2876,7 +2884,7 @@ function renderAgentTrace() {
         <button class="text-button" type="button" data-copy-tool="${index}">Copy tool trace</button>
       </details>
     `).join("")
-    : `<p class="empty">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ tool call trong session nÃƒÆ’Ã‚Â y.</p>`;
+    : `<p class="empty">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ tool call trong session nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â y.</p>`;
 }
 
 function renderAgentContext() {
@@ -2885,7 +2893,7 @@ function renderAgentContext() {
   const limit = (state.agent.context && state.agent.context.limit) || (state.agent.config && state.agent.config.contextLimit) || 24000;
   const method = state.agent.context && state.agent.context.tokenMethod ? state.agent.context.tokenMethod : "local estimate";
   const value = Math.min(100, Math.round((backendTokens / Math.max(limit, 1)) * 100));
-  $("#agentContextText").textContent = `${backendTokens.toLocaleString("en-US")} / ${Number(limit).toLocaleString("en-US")} tokens Ãƒâ€šÃ‚Â· ${method}`;
+  $("#agentContextText").textContent = `${backendTokens.toLocaleString("en-US")} / ${Number(limit).toLocaleString("en-US")} tokens ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${method}`;
   $("#agentContextBar").value = value;
 }
 
@@ -2929,7 +2937,7 @@ function renderAgentSkills() {
         </article>
       `).join("")}
     </div>
-  `).join("") || `<p class="empty">KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y skill nÃƒÆ’Ã‚Â o.</p>`;
+  `).join("") || `<p class="empty">KhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬m thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥y skill nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o.</p>`;
 
   setPager("skills", pageData);
 }
@@ -3013,7 +3021,7 @@ async function sendAgentMessage() {
     }
     addLog(result.ok ? "success" : "error", result.ok ? "Agent response completed" : "Agent response failed", result.error || `${state.agent.toolResults.length} tool call(s).`);
   } catch (error) {
-    state.agent.messages.push({ role: "assistant", content: `LÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i Agent Chat: ${error.message}`, time: timeLabel() });
+    state.agent.messages.push({ role: "assistant", content: `LÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Âi Agent Chat: ${error.message}`, time: timeLabel() });
     state.agent.events.push({ type: "error", title: "IPC error", detail: error.message, time: new Date().toISOString() });
   } finally {
     state.agent.running = false;
@@ -3070,7 +3078,7 @@ function getEventClickAttrs(entry) {
   if (typeof entry.detail === "string") {
     const trimmed = entry.detail.trim();
     if (trimmed.startsWith(".manager/")) {
-      return `data-manager-preview-path="${escapeHtml(trimmed)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ xem trÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc: ${escapeHtml(trimmed)}"`;
+      return `data-manager-preview-path="${escapeHtml(trimmed)}" class="clickable" title="NhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ xem trÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºc: ${escapeHtml(trimmed)}"`;
     }
     if (trimmed.startsWith("jobs/") || trimmed.startsWith("results/") || trimmed.startsWith("launchd/") || trimmed.endsWith(".plist") || trimmed.endsWith(".json") || trimmed.endsWith(".md")) {
       path = trimmed;
@@ -3084,7 +3092,7 @@ function getEventClickAttrs(entry) {
   }
 
   if (path) {
-    return `data-open-path="${escapeHtml(path)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ mÃƒÂ¡Ã‚Â»Ã…Â¸: ${escapeHtml(path)}"`;
+    return `data-open-path="${escapeHtml(path)}" class="clickable" title="NhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸: ${escapeHtml(path)}"`;
   }
 
   // Handle views and navigation
@@ -3093,7 +3101,7 @@ function getEventClickAttrs(entry) {
     if (match) {
       const viewName = match[1].toLowerCase();
       const targetView = viewName === "references" ? "settings" : viewName;
-      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
+      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="NhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ chuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢n sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
     }
   }
   if (entry.type === "navigate" && typeof entry.title === "string") {
@@ -3101,11 +3109,11 @@ function getEventClickAttrs(entry) {
     if (match) {
       const viewName = match[1].toLowerCase();
       const targetView = viewName === "references" ? "settings" : viewName;
-      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
+      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="NhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ chuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢n sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
     }
   }
   if (entry.type === "command" || (typeof entry.title === "string" && (entry.title.includes("finished") || entry.title.includes("failed")))) {
-    return `data-view-link="commands" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¿n tab Commands"`;
+    return `data-view-link="commands" class="clickable" title="NhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ chuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿n tab Commands"`;
   }
 
   return "";
@@ -3226,7 +3234,7 @@ function renderDashboardCharts(data) {
   const jobs = data.jobs || [];
   const totalJobs = jobs.length;
   
-  // TÃƒÆ’Ã‚Â­nh toÃƒÆ’Ã‚Â¡n sÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng theo trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i
+  // TÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­nh toÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡n sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ lÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£ng theo trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i
   const counts = {};
   chartStatuses.forEach(s => counts[s.key] = 0);
   jobs.forEach(job => {
@@ -3238,7 +3246,7 @@ function renderDashboardCharts(data) {
     }
   });
 
-  // 1. VÃƒÂ¡Ã‚ÂºÃ‚Â½ biÃƒÂ¡Ã‚Â»Ã†â€™u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ Donut
+  // 1. VÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â½ biÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ Donut
   const svgDonut = $("#statusDonutChart");
   const legendDonut = $("#statusChartLegend");
   const centerTotal = $("#donutTotalCount");
@@ -3247,7 +3255,7 @@ function renderDashboardCharts(data) {
 
   if (totalJobs === 0) {
     if (svgDonut) svgDonut.innerHTML = `<circle cx="100" cy="100" r="70" fill="none" stroke="var(--line)" stroke-width="12" />`;
-    if (legendDonut) legendDonut.innerHTML = `<div class="muted" style="padding: 10px;">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ job nÃƒÆ’Ã‚Â o Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c tÃƒÂ¡Ã‚ÂºÃ‚Â¡o</div>`;
+    if (legendDonut) legendDonut.innerHTML = `<div class="muted" style="padding: 10px;">ChÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°a cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â³ job nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£c tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡o</div>`;
   } else {
     let currentAngle = 0;
     const r = 70;
@@ -3255,7 +3263,7 @@ function renderDashboardCharts(data) {
     let donutHtml = "";
     let legendHtml = "";
 
-    // VÃƒÂ¡Ã‚ÂºÃ‚Â½ cung nÃƒÂ¡Ã‚Â»Ã‚Ân trÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc
+    // VÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â½ cung nÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân trÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºc
     donutHtml += `<circle cx="100" cy="100" r="${r}" fill="none" stroke="var(--surface-container-high)" stroke-width="22" />`;
 
     chartStatuses.forEach((status) => {
@@ -3301,7 +3309,7 @@ function renderDashboardCharts(data) {
     if (legendDonut) legendDonut.innerHTML = legendHtml;
   }
 
-  // 2. VÃƒÂ¡Ã‚ÂºÃ‚Â½ biÃƒÂ¡Ã‚Â»Ã†â€™u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ CÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t cho NgÃƒÆ’Ã‚Â¢n sÃƒÆ’Ã‚Â¡ch
+  // 2. VÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â½ biÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t cho NgÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch
   const budgetSums = {};
   chartStatuses.forEach(s => budgetSums[s.key] = 0);
   jobs.forEach(job => {
@@ -3318,7 +3326,7 @@ function renderDashboardCharts(data) {
   const legendBar = $("#budgetChartLegend");
   const maxBudget = Math.max(...Object.values(budgetSums), 100);
 
-  // KÃƒÆ’Ã‚Â­ch thÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc biÃƒÂ¡Ã‚Â»Ã†â€™u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ cÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t
+  // KÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch thÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºc biÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢u ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t
   const width = 400;
   const height = 180;
   const paddingLeft = 45;
@@ -3332,24 +3340,24 @@ function renderDashboardCharts(data) {
   let barHtml = "";
   let barLegendHtml = "";
 
-  // Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi trÃƒÂ¡Ã‚Â»Ã‚Â¥c Y vÃƒÆ’Ã‚Â  sÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u
+  // ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âng lÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c Y vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  sÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ liÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u
   const gridLevels = 3;
   for (let i = 0; i <= gridLevels; i++) {
     const yVal = Math.round((maxBudget / gridLevels) * i);
     const yPos = height - paddingBottom - (chartH / gridLevels) * i;
     
-    // Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng ngang
+    // ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âng ngang
     barHtml += `<line class="chart-grid-line" x1="${paddingLeft}" y1="${yPos}" x2="${width - paddingRight}" y2="${yPos}" />`;
     // Label
     barHtml += `<text class="chart-axis-text" x="${paddingLeft - 8}" y="${yPos + 3}" text-anchor="end">$${yVal >= 1000 ? (yVal/1000).toFixed(1) + 'k' : yVal}</text>`;
   }
 
-  // VÃƒÂ¡Ã‚ÂºÃ‚Â½ cÃƒÆ’Ã‚Â¡c CÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t
+  // VÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â½ cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t
   const barCount = chartStatuses.length;
   const gap = 12;
   const barW = (chartW - (gap * (barCount - 1))) / barCount;
 
-  // ThÃƒÆ’Ã‚Âªm Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh nghÃƒâ€žÃ‚Â©a Gradient mÃƒÆ’Ã‚Â u chuyÃƒÂ¡Ã‚Â»Ã†â€™n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i cao cÃƒÂ¡Ã‚ÂºÃ‚Â¥p
+  // ThÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªm ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹nh nghÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚Â©a Gradient mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â u chuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢i cao cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥p
   let defs = "<defs>";
   chartStatuses.forEach(status => {
     defs += `
@@ -3368,7 +3376,7 @@ function renderDashboardCharts(data) {
     const x = paddingLeft + idx * (barW + gap);
     const y = height - paddingBottom - barH;
 
-    // Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng vÃƒÂ¡Ã‚ÂºÃ‚Â½ cÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t bo trÃƒÆ’Ã‚Â²n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u
+    // ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âng vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â½ cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t bo trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â²n ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â§u
     const path = barH > 4 
       ? `M ${x},${y + 4} a 4,4 0 0 1 4,-4 h ${barW - 8} a 4,4 0 0 1 4,4 v ${barH - 4} h ${-barW} Z`
       : `M ${x},${height - paddingBottom} h ${barW} v ${-Math.max(barH, 1)} h ${-barW} Z`;
@@ -3384,9 +3392,9 @@ function renderDashboardCharts(data) {
       />
     `;
 
-    // NhÃƒÆ’Ã‚Â£n trÃƒÂ¡Ã‚Â»Ã‚Â¥c X ÃƒÂ¡Ã‚Â»Ã…Â¸ dÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi cÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t
+    // NhÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â£n trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â¥c X ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸ dÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Âºi cÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t
     const labelX = x + barW / 2;
-    const shortLabel = status.label.split(" ")[0]; // e.g. "Reward" thay vÃƒÆ’Ã‚Â¬ "Reward Pending"
+    const shortLabel = status.label.split(" ")[0]; // e.g. "Reward" thay vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬ "Reward Pending"
     barHtml += `<text class="chart-axis-text" x="${labelX}" y="${height - 8}" text-anchor="middle">${shortLabel}</text>`;
 
     barLegendHtml += `
@@ -3400,7 +3408,7 @@ function renderDashboardCharts(data) {
   if (svgBar) svgBar.innerHTML = barHtml;
   if (legendBar) legendBar.innerHTML = barLegendHtml;
 
-  // KhÃƒÂ¡Ã‚Â»Ã…Â¸i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng cÃƒÆ’Ã‚Â¡c hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u ÃƒÂ¡Ã‚Â»Ã‚Â©ng di chuÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t vÃƒÆ’Ã‚Â  tooltip
+  // KhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸i ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c hiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡u ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©ng di chuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  tooltip
   setupChartInteractivity();
 }
 
@@ -3421,7 +3429,7 @@ function setupChartInteractivity() {
     tooltip.style.transform = "translateY(4px)";
   };
 
-  // TÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng tÃƒÆ’Ã‚Â¡c donut chart
+  // TÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c donut chart
   $$(".donut-segment").forEach(slice => {
     const update = (e) => {
       const label = slice.dataset.statusLabel;
@@ -3440,12 +3448,12 @@ function setupChartInteractivity() {
     });
   });
 
-  // TÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng tÃƒÆ’Ã‚Â¡c bar chart
+  // TÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c bar chart
   $$(".chart-bar").forEach(bar => {
     const update = (e) => {
       const label = bar.dataset.statusLabel;
       const budget = Number(bar.dataset.budget);
-      showTooltip(`<strong>NgÃƒÆ’Ã‚Â¢n sÃƒÆ’Ã‚Â¡ch ${label}</strong><br/>$${budget.toLocaleString("en-US")} USD`, bar, e.clientX, e.clientY);
+      showTooltip(`<strong>NgÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢n sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch ${label}</strong><br/>$${budget.toLocaleString("en-US")} USD`, bar, e.clientX, e.clientY);
     };
 
     bar.addEventListener("mouseenter", update);
@@ -3458,7 +3466,7 @@ function setupChartInteractivity() {
     });
   });
 
-  // TÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng tÃƒÆ’Ã‚Â¡c click vÃƒÆ’Ã‚Â o Legend Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n view vÃƒÆ’Ã‚Â  lÃƒÂ¡Ã‚Â»Ã‚Âc
+  // TÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡ng tÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡c click vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o Legend ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢ chuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢n view vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âc
   $$("[data-status-filter]").forEach(item => {
     item.addEventListener("click", () => {
       const statusKey = item.dataset.statusFilter;
@@ -3468,19 +3476,19 @@ function setupChartInteractivity() {
 }
 
 function navigateToStatusFilter(statusKey) {
-  // 1. ChuyÃƒÂ¡Ã‚Â»Ã†â€™n sang mÃƒÆ’Ã‚Â n hÃƒÆ’Ã‚Â¬nh Jobs
+  // 1. ChuyÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢n sang mÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬nh Jobs
   setView("jobs");
 
-  // 2. ChÃƒÂ¡Ã‚Â»Ã‚Ân trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng ÃƒÂ¡Ã‚Â»Ã‚Â©ng trÃƒÆ’Ã‚Âªn filter dropdown
+  // 2. ChÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Ân trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i tÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡ng ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©ng trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âªn filter dropdown
   const selectStatus = $("#jobsStatus");
   if (selectStatus) {
     selectStatus.value = statusKey;
     
-    // 3. CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t state filter
+    // 3. CÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p nhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­t state filter
     state.filters.jobs.status = statusKey;
     state.filters.jobs.page = 1;
     
-    // 4. Render lÃƒÂ¡Ã‚ÂºÃ‚Â¡i danh sÃƒÆ’Ã‚Â¡ch
+    // 4. Render lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i danh sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡ch
     renderJobs(state.dashboard);
   }
 }
@@ -3525,7 +3533,7 @@ async function refresh() {
     renderDashboard(data);
     setStep("load", "done");
     setStep("verify", "done");
-    addLog("success", "Status refreshed", `${data.stats.resultFiles} result files Ãƒâ€šÃ‚Â· ${data.stats.jobs} jobs Ãƒâ€šÃ‚Â· ${data.stats.launchAgents} monitors.`);
+    addLog("success", "Status refreshed", `${data.stats.resultFiles} result files ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${data.stats.jobs} jobs ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${data.stats.launchAgents} monitors.`);
   } catch (error) {
     state.latestSnapshotOutput = `Failed to load status: ${error.message}`;
     setStep("load", "error");
@@ -3556,7 +3564,7 @@ async function runAllMonitors() {
   addLog("monitor", "Running all monitors", "Checking every monitored job workspace.");
   try {
     const result = await window.moneyDesk.runAllMonitors();
-    addLog(result.failed ? "error" : "success", "All monitors finished", `${result.ok}/${result.total} passed Ãƒâ€šÃ‚Â· ${result.failed} failed`);
+    addLog(result.failed ? "error" : "success", "All monitors finished", `${result.ok}/${result.total} passed ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${result.failed} failed`);
     await refresh();
   } catch (error) {
     addLog("error", "Run all monitors failed", error.message);
@@ -3607,7 +3615,7 @@ async function checkAllGithubInboxes() {
     addLog(
       result.failed ? "error" : "success",
       "GitHub inbox check finished",
-      `${result.ok}/${result.total} passed Ãƒâ€šÃ‚Â· ${result.newComments || 0} new comment notification(s)`
+      `${result.ok}/${result.total} passed ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â· ${result.newComments || 0} new comment notification(s)`
     );
     await refresh();
   } catch (error) {
@@ -3648,7 +3656,7 @@ async function runMoneyCommand(label, runner) {
     resultsPanel.style.display = "none";
   }
   
-  // HiÃƒÂ¡Ã‚Â»Ã†â€™n thÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i loading cho nÃƒÆ’Ã‚Âºt bÃƒÂ¡Ã‚ÂºÃ‚Â¥m kÃƒÆ’Ã‚Â­ch hoÃƒÂ¡Ã‚ÂºÃ‚Â¡t
+  // HiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€ Ã¢â‚¬â„¢n thÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ trÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡i loading cho nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Âºt bÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¥m kÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch hoÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡t
   const btnSelector = commandButtonSelectors[label];
   const btn = btnSelector ? $(btnSelector) : null;
   let originalBtnHtml = "";
@@ -3658,7 +3666,7 @@ async function runMoneyCommand(label, runner) {
     btn.innerHTML = `<span class="spinner"></span> Running...`;
   }
 
-  // KhÃƒÂ¡Ã‚Â»Ã…Â¸i chÃƒÂ¡Ã‚ÂºÃ‚Â¡y thanh tiÃƒÂ¡Ã‚ÂºÃ‚Â¿n trÃƒÆ’Ã‚Â¬nh smooth simulated progress bar
+  // KhÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€¦Ã‚Â¸i chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y thanh tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿n trÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¬nh smooth simulated progress bar
   const progressContainer = $("#commandProgressContainer");
   const progressBar = $("#commandProgressBar");
   const progressText = $("#commandProgressText");
@@ -3668,7 +3676,7 @@ async function runMoneyCommand(label, runner) {
   let progressInterval = null;
 
   if (progressContainer && progressBar && progressText && progressLabel) {
-    progressLabel.innerHTML = `ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â Running <strong>${label}</strong>...`;
+    progressLabel.innerHTML = `ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â Running <strong>${label}</strong>...`;
     progressText.textContent = "0%";
     progressBar.style.width = "0%";
     progressBar.style.background = "linear-gradient(90deg, var(--primary), #818cf8)";
@@ -3705,14 +3713,14 @@ async function runMoneyCommand(label, runner) {
       progressText.textContent = "100%";
       progressBar.style.width = "100%";
       progressBar.style.background = "linear-gradient(90deg, var(--success), #34d399)";
-      progressLabel.innerHTML = `ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Â° <strong>${label} completed successfully!</strong>`;
+      progressLabel.innerHTML = `ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¦Ã‚Â½ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â° <strong>${label} completed successfully!</strong>`;
     }
 
     state.latestCommandOutput = formatCommandResult(result);
     addLog("success", `${label} finished`, result.stdout || result.command);
     await refresh();
 
-    // TÃƒÂ¡Ã‚Â»Ã‚Â± Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng render vÃƒÆ’Ã‚Â  active sub-tab tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng thÃƒÆ’Ã‚Â­ch dÃƒÂ¡Ã‚Â»Ã‚Â±a vÃƒÆ’Ã‚Â o loÃƒÂ¡Ã‚ÂºÃ‚Â¡i lÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh chÃƒÂ¡Ã‚ÂºÃ‚Â¡y thÃƒÆ’Ã‚Â nh cÃƒÆ’Ã‚Â´ng
+    // TÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â± ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ng render vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â  active sub-tab tÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â¡ng thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â­ch dÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â±a vÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â o loÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡i lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡nh chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y thÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â nh cÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â´ng
     if (["search", "hunt", "prepare", "monitor one-shot"].includes(label) && state.dashboard) {
       let isPanelVisible = false;
       
@@ -3733,7 +3741,7 @@ async function runMoneyCommand(label, runner) {
           isPanelVisible = true;
         }
       } else if (label === "prepare") {
-        const latestJob = state.dashboard.jobs[0]; // jobs Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c sort desc theo modifiedAt/createdAt
+        const latestJob = state.dashboard.jobs[0]; // jobs ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã¢â‚¬Â Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â£c sort desc theo modifiedAt/createdAt
         const prepareDetailsEl = $("#commandPrepareDetails");
         
         if (latestJob && prepareDetailsEl) {
@@ -3748,11 +3756,11 @@ async function runMoneyCommand(label, runner) {
         
         if (targetJob && monitorDetailsEl) {
           monitorDetailsEl.innerHTML = `
-            <div style="margin-bottom: 12px; font-weight: 700; color: var(--muted); font-size: 13px;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Job Status Checked:</div>
+            <div style="margin-bottom: 12px; font-weight: 700; color: var(--muted); font-size: 13px;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ Job Status Checked:</div>
             ${jobCard(targetJob)}
             ${targetJob.latestMonitorLine ? `
               <div style="margin-top: 14px;">
-                <div style="font-weight: 700; color: var(--muted); font-size: 12px; margin-bottom: 6px; text-transform: uppercase;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â¸ Latest Monitor Log:</div>
+                <div style="font-weight: 700; color: var(--muted); font-size: 12px; margin-bottom: 6px; text-transform: uppercase;">ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒâ€¦Ã‚Â¸ Latest Monitor Log:</div>
                 <pre class="command-output" style="min-height: auto; max-height: 160px; padding: 12px; font-size: 11px;">${escapeHtml(targetJob.latestMonitorLine)}</pre>
               </div>
             ` : ""}
@@ -3777,7 +3785,7 @@ async function runMoneyCommand(label, runner) {
     if (progressText && progressBar && progressLabel) {
       progressBar.style.background = "var(--rose)";
       progressText.textContent = "Error";
-      progressLabel.innerHTML = `ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>${label} failed!</strong>`;
+      progressLabel.innerHTML = `ÃƒÆ’Ã‚Â¢Ãƒâ€¦Ã‚Â¡Ãƒâ€šÃ‚Â ÃƒÆ’Ã‚Â¯Ãƒâ€šÃ‚Â¸Ãƒâ€šÃ‚Â <strong>${label} failed!</strong>`;
     }
 
     const result = error.result || null;
@@ -4267,7 +4275,7 @@ function wireEvents() {
         throw new Error("Claim URL must be a valid Algora claim URL (e.g. 'https://algora.io/claims/abc').");
       }
 
-      // NÃƒÂ¡Ã‚ÂºÃ‚Â¿u pass qua mÃƒÂ¡Ã‚Â»Ã‚Âi validation, tiÃƒÂ¡Ã‚ÂºÃ‚Â¿n hÃƒÆ’Ã‚Â nh chÃƒÂ¡Ã‚ÂºÃ‚Â¡y IPC an toÃƒÆ’Ã‚Â n
+      // NÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿u pass qua mÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Âi validation, tiÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¿n hÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â nh chÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡y IPC an toÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â n
       return window.moneyDesk.runMonitorOneShot({ repo, pr, issue, jobDir, claimUrl });
     });
   });
@@ -4355,7 +4363,7 @@ function wireEvents() {
       globalTooltip.style.opacity = "1";
       globalTooltip.style.transform = "translateY(0)";
       
-      // Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh vÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ tooltip bÃƒÆ’Ã‚Â¡m sÃƒÆ’Ã‚Â¡t toÃƒÂ¡Ã‚ÂºÃ‚Â¡ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ chuÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t ngay lÃƒÂ¡Ã‚ÂºÃ‚Â­p tÃƒÂ¡Ã‚Â»Ã‚Â©c
+      // ÃƒÆ’Ã¢â‚¬Å¾Ãƒâ€šÃ‚ÂÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹nh vÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¹ tooltip bÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡m sÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¡t toÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â¡ ÃƒÆ’Ã¢â‚¬Å¾ÃƒÂ¢Ã¢â€šÂ¬Ã‹Å“ÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢ chuÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢t ngay lÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚ÂºÃƒâ€šÃ‚Â­p tÃƒÆ’Ã‚Â¡Ãƒâ€šÃ‚Â»Ãƒâ€šÃ‚Â©c
       const x = e.clientX + 15;
       const y = e.clientY - 20;
       globalTooltip.style.left = `${x}px`;
@@ -4407,7 +4415,7 @@ function wireEvents() {
         state.collapsedSchedules[label] = state.collapsedSchedules[label] === false ? true : false;
         card.classList.toggle("collapsed", state.collapsedSchedules[label]);
         const caret = card.querySelector(".schedule-toggle-btn");
-        if (caret) caret.textContent = state.collapsedSchedules[label] ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²";
+        if (caret) caret.textContent = state.collapsedSchedules[label] ? "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼" : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²";
         return;
       }
     }
@@ -4421,7 +4429,7 @@ function wireEvents() {
         state.collapsedJobs[path] = state.collapsedJobs[path] === false ? true : false;
         card.classList.toggle("collapsed", state.collapsedJobs[path]);
         const caret = card.querySelector(".job-toggle-btn");
-        if (caret) caret.textContent = state.collapsedJobs[path] ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²";
+        if (caret) caret.textContent = state.collapsedJobs[path] ? "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼" : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²";
         return;
       }
     }
@@ -4435,7 +4443,7 @@ function wireEvents() {
         state.collapsedMonitors[path] = state.collapsedMonitors[path] === false ? true : false;
         card.classList.toggle("collapsed", state.collapsedMonitors[path]);
         const caret = card.querySelector(".monitor-toggle-btn");
-        if (caret) caret.textContent = state.collapsedMonitors[path] ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²";
+        if (caret) caret.textContent = state.collapsedMonitors[path] ? "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â¼" : "ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Å“Ãƒâ€šÃ‚Â²";
         return;
       }
     }
