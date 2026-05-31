@@ -1,10 +1,79 @@
 const statusEmojiLabels = {
-  prepared: "🔘 Prepared",
-  doing: "🚀 Doing",
-  local_done: "📦 Local Done",
-  pending_review: "🔎 In Review",
-  pending_reward: "⏳ Payout Pending",
-  rewarded: "🎉 Paid"
+  prepared: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‹Å“ Prepared",
+  doing: "ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ Doing",
+  local_done: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Local Done",
+  pending_review: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½ In Review",
+  pending_reward: "ÃƒÂ¢Ã‚ÂÃ‚Â³ Payout Pending",
+  rewarded: "ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Â° Paid"
+};
+
+const localizedStatusLabels = {
+  vi: {
+    prepared: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‹Å“ Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ chuÃƒÂ¡Ã‚ÂºÃ‚Â©n bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹",
+    doing: "ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ Ãƒâ€žÃ‚Âang lÃƒÆ’Ã‚Â m",
+    local_done: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ HoÃƒÆ’Ã‚Â n tÃƒÂ¡Ã‚ÂºÃ‚Â¥t local",
+    pending_review: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½ Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
+    pending_reward: "ÃƒÂ¢Ã‚ÂÃ‚Â³ ChÃƒÂ¡Ã‚Â»Ã‚Â thanh toÃƒÆ’Ã‚Â¡n",
+    rewarded: "ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Â° Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ thanh toÃƒÆ’Ã‚Â¡n"
+  },
+  en: statusEmojiLabels
+};
+
+const projectText = {
+  vi: {
+    unknown: "khÃƒÆ’Ã‚Â´ng rÃƒÆ’Ã‚Âµ",
+    manual: "thÃƒÂ¡Ã‚Â»Ã‚Â§ cÃƒÆ’Ã‚Â´ng",
+    age: "tuÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i",
+    score: "Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã†â€™m",
+    time: "thÃƒÂ¡Ã‚Â»Ã‚Âi gian",
+    noMonitor: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ monitor",
+    claim: "claim",
+    approved: "Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
+    rewarded: "Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ trÃƒÂ¡Ã‚ÂºÃ‚Â£",
+    marked: "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
+    watching: "Ãƒâ€žÃ‚Âang theo dÃƒÆ’Ã‚Âµi",
+    inboxComment: "BÃƒÆ’Ã‚Â¬nh luÃƒÂ¡Ã‚ÂºÃ‚Â­n GitHub inbox",
+    monitorComment: "BÃƒÆ’Ã‚Â¬nh luÃƒÂ¡Ã‚ÂºÃ‚Â­n monitor",
+    approvalGates: "cÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
+    files: "file",
+    issue: "Issue",
+    checkAgain: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
+    checkInbox: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox",
+    unmark: "BÃƒÂ¡Ã‚Â»Ã‚Â Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
+    mark: "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
+    unwatch: "BÃƒÂ¡Ã‚Â»Ã‚Â theo dÃƒÆ’Ã‚Âµi",
+    watch: "Theo dÃƒÆ’Ã‚Âµi",
+    openFolder: "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
+    noJobs: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ workspace trong jobs/.",
+    rewardedFallback: "Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ thanh toÃƒÆ’Ã‚Â¡n"
+  },
+  en: {
+    unknown: "unknown",
+    manual: "manual",
+    age: "age",
+    score: "score",
+    time: "time",
+    noMonitor: "No monitor",
+    claim: "claim",
+    approved: "approved",
+    rewarded: "rewarded",
+    marked: "Marked",
+    watching: "Watching",
+    inboxComment: "GitHub inbox comment",
+    monitorComment: "Monitor comment",
+    approvalGates: "approval gates",
+    files: "files",
+    issue: "Issue",
+    checkAgain: "Check again",
+    checkInbox: "Check inbox",
+    unmark: "Unmark",
+    mark: "Mark",
+    unwatch: "Unwatch",
+    watch: "Watch",
+    openFolder: "Open folder",
+    noJobs: "No workspace in jobs/.",
+    rewardedFallback: "rewarded"
+  }
 };
 
 const state = {
@@ -63,52 +132,52 @@ const state = {
 const translations = {
   vi: {
     brandTitle: "Job Status",
-    brandSubtitle: "Theo dõi cục bộ",
+    brandSubtitle: "Theo dÃƒÆ’Ã‚Âµi cÃƒÂ¡Ã‚Â»Ã‚Â¥c bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢",
     nav: {
-      overview: "Tổng quan",
+      overview: "TÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng quan",
       jobs: "Jobs GitHub",
-      schedules: "Lịch chạy",
-      rss: "Xu hướng RSS",
-      threads: "Tìm Threads",
+      schedules: "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch chÃƒÂ¡Ã‚ÂºÃ‚Â¡y",
+      rss: "Xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng RSS",
+      threads: "TÃƒÆ’Ã‚Â¬m Threads",
       facebook: "Facebook Trend",
       youtube: "YouTube Trend",
-      interest: "Chủ đề quan tâm",
-      settings: "Cài đặt"
+      interest: "ChÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â quan tÃƒÆ’Ã‚Â¢m",
+      settings: "CÃƒÆ’Ã‚Â i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t"
     },
-    topbarEyebrow: "Bảng trạng thái local",
+    topbarEyebrow: "BÃƒÂ¡Ã‚ÂºÃ‚Â£ng trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i local",
     topbarTitle: "Codex Job Status",
-    waiting: "Đang chờ dữ liệu",
-    refresh: "Làm mới",
-    openFolder: "Mở thư mục",
-    projectRoot: "Thư mục dự án",
-    reading: "Đang đọc",
-    idle: "Sẵn sàng",
+    waiting: "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
+    refresh: "LÃƒÆ’Ã‚Â m mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
+    openFolder: "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
+    projectRoot: "ThÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
+    reading: "Ãƒâ€žÃ‚Âang Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc",
+    idle: "SÃƒÂ¡Ã‚ÂºÃ‚Âµn sÃƒÆ’Ã‚Â ng",
     snapshot: "Snapshot",
-    verify: "Kiểm tra",
-    noEvents: "Chưa có sự kiện phiên.",
-    latestNoEvents: "Chưa có sự kiện.",
-    synced: "Đã đồng bộ",
-    logExpand: "Mở rộng",
-    logCollapse: "Thu gọn",
+    verify: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra",
+    noEvents: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n phiÃƒÆ’Ã‚Âªn.",
+    latestNoEvents: "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n.",
+    synced: "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ng bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢",
+    logExpand: "MÃƒÂ¡Ã‚Â»Ã…Â¸ rÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng",
+    logCollapse: "Thu gÃƒÂ¡Ã‚Â»Ã‚Ân",
     inspector: {
-      workflow: "Quy trình",
-      health: "Sức khỏe",
-      projectSignals: "Tín hiệu dự án",
-      nextActions: "Việc tiếp theo",
-      statusQueue: "Hàng đợi trạng thái",
-      latestEvent: "Sự kiện mới nhất",
-      sessionTrace: "Dấu vết phiên"
+      workflow: "Quy trÃƒÆ’Ã‚Â¬nh",
+      health: "SÃƒÂ¡Ã‚Â»Ã‚Â©c khÃƒÂ¡Ã‚Â»Ã‚Âe",
+      projectSignals: "TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
+      nextActions: "ViÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡c tiÃƒÂ¡Ã‚ÂºÃ‚Â¿p theo",
+      statusQueue: "HÃƒÆ’Ã‚Â ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â£i trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
+      latestEvent: "SÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+      sessionTrace: "DÃƒÂ¡Ã‚ÂºÃ‚Â¥u vÃƒÂ¡Ã‚ÂºÃ‚Â¿t phiÃƒÆ’Ã‚Âªn"
     },
     metrics: {
-      results: "Kết quả",
+      results: "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
       jobs: "Jobs",
-      attention: "Cần chú ý",
+      attention: "CÃƒÂ¡Ã‚ÂºÃ‚Â§n chÃƒÆ’Ã‚Âº ÃƒÆ’Ã‚Â½",
       monitors: "Monitors"
     },
     actions: {
-      reviewResults: "Xem kết quả",
-      openJobs: "Mở jobs",
-      checkMonitors: "Kiểm tra monitors"
+      reviewResults: "Xem kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
+      openJobs: "MÃƒÂ¡Ã‚Â»Ã…Â¸ jobs",
+      checkMonitors: "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra monitors"
     }
   },
   en: {
@@ -165,179 +234,179 @@ const translations = {
 
 const exactTextTranslations = {
   vi: {
-    "Job Status": "Trạng thái job",
-    "Read-only monitor": "Theo dõi cục bộ",
-    "Codex Job Status": "Trạng thái job Codex",
-    "Local status viewer": "Bảng trạng thái local",
-    "Waiting for data": "Đang chờ dữ liệu",
-    "Project root": "Thư mục dự án",
-    "Open folder": "Mở thư mục",
-    "Overview": "Tổng quan",
+    "Job Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i job",
+    "Read-only monitor": "Theo dÃƒÆ’Ã‚Âµi cÃƒÂ¡Ã‚Â»Ã‚Â¥c bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢",
+    "Codex Job Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i job Codex",
+    "Local status viewer": "BÃƒÂ¡Ã‚ÂºÃ‚Â£ng trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i local",
+    "Waiting for data": "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
+    "Project root": "ThÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
+    "Open folder": "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
+    "Overview": "TÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng quan",
     "Jobs GitHub": "Jobs GitHub",
-    "Schedules": "Lịch chạy",
-    "Trends RSS": "Xu hướng RSS",
-    "Threads Search": "Tìm Threads",
+    "Schedules": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch chÃƒÂ¡Ã‚ÂºÃ‚Â¡y",
+    "Trends RSS": "Xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng RSS",
+    "Threads Search": "TÃƒÆ’Ã‚Â¬m Threads",
     "Facebook Trend": "Facebook Trend",
     "YouTube Trend": "YouTube Trend",
-    "Settings": "Cài đặt",
-    "Manager file": "File quản lý",
-    "Open file": "Mở file",
-    "Job Title": "Tiêu đề job",
-    "Prepared": "Đã chuẩn bị",
-    "Doing": "Đang làm",
-    "Local done": "Hoàn tất local",
-    "Pending review": "Chờ review",
-    "Pending reward": "Chờ thưởng",
-    "Rewarded": "Đã nhận thưởng",
-    "Paid": "Đã trả",
-    "Received": "Đã nhận",
-    "Complete": "Hoàn tất",
-    "Pending": "Đang chờ",
-    "Qualify": "Đánh giá",
-    "Score details": "Chi tiết điểm",
-    "Actions": "Thao tác",
-    "Tool bridge": "Cầu nối tool",
+    "Settings": "CÃƒÆ’Ã‚Â i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t",
+    "Manager file": "File quÃƒÂ¡Ã‚ÂºÃ‚Â£n lÃƒÆ’Ã‚Â½",
+    "Open file": "MÃƒÂ¡Ã‚Â»Ã…Â¸ file",
+    "Job Title": "TiÃƒÆ’Ã‚Âªu Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â job",
+    "Prepared": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ chuÃƒÂ¡Ã‚ÂºÃ‚Â©n bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹",
+    "Doing": "Ãƒâ€žÃ‚Âang lÃƒÆ’Ã‚Â m",
+    "Local done": "HoÃƒÆ’Ã‚Â n tÃƒÂ¡Ã‚ÂºÃ‚Â¥t local",
+    "Pending review": "ChÃƒÂ¡Ã‚Â»Ã‚Â review",
+    "Pending reward": "ChÃƒÂ¡Ã‚Â»Ã‚Â thÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng",
+    "Rewarded": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ nhÃƒÂ¡Ã‚ÂºÃ‚Â­n thÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng",
+    "Paid": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ trÃƒÂ¡Ã‚ÂºÃ‚Â£",
+    "Received": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ nhÃƒÂ¡Ã‚ÂºÃ‚Â­n",
+    "Complete": "HoÃƒÆ’Ã‚Â n tÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Pending": "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚Â»Ã‚Â",
+    "Qualify": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â¡nh giÃƒÆ’Ã‚Â¡",
+    "Score details": "Chi tiÃƒÂ¡Ã‚ÂºÃ‚Â¿t Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã†â€™m",
+    "Actions": "Thao tÃƒÆ’Ã‚Â¡c",
+    "Tool bridge": "CÃƒÂ¡Ã‚ÂºÃ‚Â§u nÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi tool",
     "Files": "File",
     "Workspace files": "File workspace",
-    "Idle": "Sẵn sàng",
-    "Copy session": "Sao chép phiên",
-    "New": "Tạo mới",
-    "Supported skills": "Skill hỗ trợ",
-    "Skill library": "Thư viện skill",
-    "Context": "Ngữ cảnh",
-    "Send": "Gửi",
-    "Thinking": "Đang suy nghĩ",
-    "Agent steps": "Các bước agent",
-    "Open": "Mở",
-    "Close": "Đóng",
-    "Show execution trace": "Hiện dấu vết thực thi",
-    "Tools": "Công cụ",
-    "Calls and results": "Lệnh gọi và kết quả",
+    "Idle": "SÃƒÂ¡Ã‚ÂºÃ‚Âµn sÃƒÆ’Ã‚Â ng",
+    "Copy session": "Sao chÃƒÆ’Ã‚Â©p phiÃƒÆ’Ã‚Âªn",
+    "New": "TÃƒÂ¡Ã‚ÂºÃ‚Â¡o mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
+    "Supported skills": "Skill hÃƒÂ¡Ã‚Â»Ã¢â‚¬â€ trÃƒÂ¡Ã‚Â»Ã‚Â£",
+    "Skill library": "ThÃƒâ€ Ã‚Â° viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n skill",
+    "Context": "NgÃƒÂ¡Ã‚Â»Ã‚Â¯ cÃƒÂ¡Ã‚ÂºÃ‚Â£nh",
+    "Send": "GÃƒÂ¡Ã‚Â»Ã‚Â­i",
+    "Thinking": "Ãƒâ€žÃ‚Âang suy nghÃƒâ€žÃ‚Â©",
+    "Agent steps": "CÃƒÆ’Ã‚Â¡c bÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc agent",
+    "Open": "MÃƒÂ¡Ã‚Â»Ã…Â¸",
+    "Close": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â³ng",
+    "Show execution trace": "HiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n dÃƒÂ¡Ã‚ÂºÃ‚Â¥u vÃƒÂ¡Ã‚ÂºÃ‚Â¿t thÃƒÂ¡Ã‚Â»Ã‚Â±c thi",
+    "Tools": "CÃƒÆ’Ã‚Â´ng cÃƒÂ¡Ã‚Â»Ã‚Â¥",
+    "Calls and results": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh gÃƒÂ¡Ã‚Â»Ã‚Âi vÃƒÆ’Ã‚Â  kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
     "Jobs": "Jobs",
-    "Results": "Kết quả",
-    "Commands": "Lệnh",
+    "Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
+    "Commands": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh",
     "Monitors": "Monitors",
-    "Ledger": "Sổ tiền",
-    "Search": "Tìm kiếm",
-    "Status": "Trạng thái",
-    "Signal": "Tín hiệu",
-    "Sort": "Sắp xếp",
-    "Page size": "Cỡ trang",
-    "Source": "Nguồn",
-    "Query": "Truy vấn",
-    "Limit": "Giới hạn",
-    "Output JSON": "File JSON đầu ra",
-    "Results file": "File kết quả",
-    "Copy": "Sao chép",
-    "Executing...": "Đang chạy...",
-    "Check GitHub inbox": "Kiểm tra inbox GitHub",
-    "Run all monitors": "Chạy tất cả monitors",
-    "All statuses": "Tất cả trạng thái",
-    "All signals": "Tất cả tín hiệu",
-    "All sources": "Tất cả nguồn",
-    "All monitored jobs": "Tất cả job đang monitor",
-    "Claimed": "Đã claim",
-    "Approved": "Đã duyệt",
-    "Needs attention": "Cần chú ý",
-    "Marked": "Đã đánh dấu",
-    "Watching": "Đang theo dõi",
-    "New comment": "Bình luận mới",
-    "No monitor": "Chưa có monitor",
-    "Newest updated": "Cập nhật mới nhất",
-    "Newest file": "File mới nhất",
-    "Newest date": "Ngày mới nhất",
-    "Last checked": "Kiểm tra gần nhất",
-    "Attention first": "Ưu tiên cần chú ý",
-    "Highest budget": "Ngân sách cao nhất",
-    "Highest amount": "Số tiền cao nhất",
-    "Best score": "Điểm tốt nhất",
-    "Most candidates": "Nhiều candidate nhất",
-    "Title A-Z": "Tiêu đề A-Z",
-    "Path A-Z": "Đường dẫn A-Z",
+    "Ledger": "SÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ tiÃƒÂ¡Ã‚Â»Ã‚Ân",
+    "Search": "TÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
+    "Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
+    "Signal": "TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
+    "Sort": "SÃƒÂ¡Ã‚ÂºÃ‚Â¯p xÃƒÂ¡Ã‚ÂºÃ‚Â¿p",
+    "Page size": "CÃƒÂ¡Ã‚Â»Ã‚Â¡ trang",
+    "Source": "NguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n",
+    "Query": "Truy vÃƒÂ¡Ã‚ÂºÃ‚Â¥n",
+    "Limit": "GiÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi hÃƒÂ¡Ã‚ÂºÃ‚Â¡n",
+    "Output JSON": "File JSON Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u ra",
+    "Results file": "File kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
+    "Copy": "Sao chÃƒÆ’Ã‚Â©p",
+    "Executing...": "Ãƒâ€žÃ‚Âang chÃƒÂ¡Ã‚ÂºÃ‚Â¡y...",
+    "Check GitHub inbox": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox GitHub",
+    "Run all monitors": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y tÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ monitors",
+    "All statuses": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
+    "All signals": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u",
+    "All sources": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n",
+    "All monitored jobs": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£ job Ãƒâ€žÃ¢â‚¬Ëœang monitor",
+    "Claimed": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ claim",
+    "Approved": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ duyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t",
+    "Needs attention": "CÃƒÂ¡Ã‚ÂºÃ‚Â§n chÃƒÆ’Ã‚Âº ÃƒÆ’Ã‚Â½",
+    "Marked": "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¡nh dÃƒÂ¡Ã‚ÂºÃ‚Â¥u",
+    "Watching": "Ãƒâ€žÃ‚Âang theo dÃƒÆ’Ã‚Âµi",
+    "New comment": "BÃƒÆ’Ã‚Â¬nh luÃƒÂ¡Ã‚ÂºÃ‚Â­n mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
+    "No monitor": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ monitor",
+    "Newest updated": "CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Newest file": "File mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Newest date": "NgÃƒÆ’Ã‚Â y mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Last checked": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra gÃƒÂ¡Ã‚ÂºÃ‚Â§n nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Attention first": "Ãƒâ€ Ã‚Â¯u tiÃƒÆ’Ã‚Âªn cÃƒÂ¡Ã‚ÂºÃ‚Â§n chÃƒÆ’Ã‚Âº ÃƒÆ’Ã‚Â½",
+    "Highest budget": "NgÃƒÆ’Ã‚Â¢n sÃƒÆ’Ã‚Â¡ch cao nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Highest amount": "SÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ tiÃƒÂ¡Ã‚Â»Ã‚Ân cao nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Best score": "Ãƒâ€žÃ‚ÂiÃƒÂ¡Ã‚Â»Ã†â€™m tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœt nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Most candidates": "NhiÃƒÂ¡Ã‚Â»Ã‚Âu candidate nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Title A-Z": "TiÃƒÆ’Ã‚Âªu Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â A-Z",
+    "Path A-Z": "Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng dÃƒÂ¡Ã‚ÂºÃ‚Â«n A-Z",
     "Job A-Z": "Job A-Z",
-    "Manual": "Thủ công",
-    "All": "Tất cả",
-    "Default": "Mặc định",
-    "All GitHub": "Toàn GitHub",
-    "Run Search": "Chạy tìm kiếm",
-    "Run Hunt": "Chạy săn job",
-    "Run Ledger": "Chạy sổ tiền",
-    "Run Monitor": "Chạy monitor",
-    "Search Results": "Kết quả tìm kiếm",
-    "Hunt Results": "Kết quả săn job",
-    "Monitor Status": "Trạng thái monitor",
-    "Region": "Khu vực",
-    "Reload": "Tải lại",
+    "Manual": "ThÃƒÂ¡Ã‚Â»Ã‚Â§ cÃƒÆ’Ã‚Â´ng",
+    "All": "TÃƒÂ¡Ã‚ÂºÃ‚Â¥t cÃƒÂ¡Ã‚ÂºÃ‚Â£",
+    "Default": "MÃƒÂ¡Ã‚ÂºÃ‚Â·c Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh",
+    "All GitHub": "ToÃƒÆ’Ã‚Â n GitHub",
+    "Run Search": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
+    "Run Hunt": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y sÃƒâ€žÃ†â€™n job",
+    "Run Ledger": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y sÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ tiÃƒÂ¡Ã‚Â»Ã‚Ân",
+    "Run Monitor": "ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y monitor",
+    "Search Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
+    "Hunt Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ sÃƒâ€žÃ†â€™n job",
+    "Monitor Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i monitor",
+    "Region": "Khu vÃƒÂ¡Ã‚Â»Ã‚Â±c",
+    "Reload": "TÃƒÂ¡Ã‚ÂºÃ‚Â£i lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
     "Provider": "Provider",
-    "Unknown": "Chưa biết",
-    "OpenAI-compatible base URL": "Base URL tương thích OpenAI",
+    "Unknown": "ChÃƒâ€ Ã‚Â°a biÃƒÂ¡Ã‚ÂºÃ‚Â¿t",
+    "OpenAI-compatible base URL": "Base URL tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng thÃƒÆ’Ã‚Â­ch OpenAI",
     "Model": "Model",
     "API key": "API key",
-    "Context limit": "Giới hạn ngữ cảnh",
-    "Max loops": "Số vòng tối đa",
-    "Tool calls / round": "Tool call mỗi vòng",
+    "Context limit": "GiÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi hÃƒÂ¡Ã‚ÂºÃ‚Â¡n ngÃƒÂ¡Ã‚Â»Ã‚Â¯ cÃƒÂ¡Ã‚ÂºÃ‚Â£nh",
+    "Max loops": "SÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ vÃƒÆ’Ã‚Â²ng tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Ãƒâ€žÃ¢â‚¬Ëœa",
+    "Tool calls / round": "Tool call mÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i vÃƒÆ’Ã‚Â²ng",
     "Codex timeout ms": "Timeout Codex ms",
-    "Enable agent search": "Bật tìm kiếm cho agent",
-    "Auto-create missing workflow skills into my-skills": "Tự tạo workflow skill còn thiếu vào my-skills",
-    "Enable Codex CLI bridge": "Bật cầu nối Codex CLI",
-    "Codex CLI command": "Lệnh Codex CLI",
-    "Save settings": "Lưu cài đặt",
-    "Clear API key": "Xóa API key",
-    "Refresh": "Làm mới",
-    "Reset": "Đặt lại",
-    "Clear log": "Xóa log",
-    "Collapse": "Thu gọn",
-    "Expand": "Mở rộng",
-    "Activity log": "Nhật ký hoạt động",
-    "Session events": "Sự kiện phiên",
-    "Latest snapshot": "Snapshot mới nhất",
-    "Create skill": "Tạo skill",
-    "Command": "Lệnh",
-    "Goal": "Mục tiêu",
-    "Allowed tools": "Tool được phép",
-    "Output format": "Định dạng đầu ra",
-    "References": "Tài liệu tham khảo",
-    "Filename or preview": "Tên file hoặc xem trước",
-    "Workflow": "Quy trình",
-    "Health": "Sức khỏe",
-    "Project signals": "Tín hiệu dự án",
-    "Next actions": "Việc tiếp theo",
-    "Status queue": "Hàng đợi trạng thái",
-    "Latest event": "Sự kiện mới nhất",
-    "Session trace": "Dấu vết phiên",
-    "Review results": "Xem kết quả",
-    "Open jobs": "Mở jobs",
-    "Check monitors": "Kiểm tra monitors",
-    "No events yet.": "Chưa có sự kiện.",
-    "No snapshot loaded yet.": "Chưa tải snapshot.",
-    "No command has run in this session.": "Chưa có lệnh nào chạy trong phiên này.",
-    "No session events yet.": "Chưa có sự kiện phiên.",
-    "No files in workspace": "Không có file trong workspace",
-    "No active tracking signals": "Chưa có tín hiệu theo dõi",
-    "No overview data available": "Chưa có dữ liệu tổng quan",
-    "No red flags detected": "Không phát hiện cảnh báo đỏ",
-    "No explicit positive signals listed": "Chưa có tín hiệu tích cực rõ ràng",
-    "No description.": "Chưa có mô tả.",
-    "No work_plan.md found in workspace.": "Không thấy work_plan.md trong workspace.",
-    "No bid.md found in workspace.": "Không thấy bid.md trong workspace.",
-    "No delivery_checklist.md found in workspace.": "Không thấy delivery_checklist.md trong workspace.",
-    "No activity_log.md found in workspace.": "Không thấy activity_log.md trong workspace.",
-    "Open in VS Code": "Mở trong VS Code",
-    "Open on GitHub": "Mở trên GitHub",
-    "Check monitor": "Kiểm tra monitor",
-    "Check again": "Kiểm tra lại",
-    "Check inbox": "Kiểm tra inbox",
-    "Open JSON": "Mở JSON",
-    "Open plist": "Mở plist",
-    "Open job": "Mở job",
-    "Open Stdout": "Mở Stdout",
-    "Open Stderr": "Mở Stderr",
+    "Enable agent search": "BÃƒÂ¡Ã‚ÂºÃ‚Â­t tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m cho agent",
+    "Auto-create missing workflow skills into my-skills": "TÃƒÂ¡Ã‚Â»Ã‚Â± tÃƒÂ¡Ã‚ÂºÃ‚Â¡o workflow skill cÃƒÆ’Ã‚Â²n thiÃƒÂ¡Ã‚ÂºÃ‚Â¿u vÃƒÆ’Ã‚Â o my-skills",
+    "Enable Codex CLI bridge": "BÃƒÂ¡Ã‚ÂºÃ‚Â­t cÃƒÂ¡Ã‚ÂºÃ‚Â§u nÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Codex CLI",
+    "Codex CLI command": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh Codex CLI",
+    "Save settings": "LÃƒâ€ Ã‚Â°u cÃƒÆ’Ã‚Â i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t",
+    "Clear API key": "XÃƒÆ’Ã‚Â³a API key",
+    "Refresh": "LÃƒÆ’Ã‚Â m mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi",
+    "Reset": "Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚ÂºÃ‚Â·t lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
+    "Clear log": "XÃƒÆ’Ã‚Â³a log",
+    "Collapse": "Thu gÃƒÂ¡Ã‚Â»Ã‚Ân",
+    "Expand": "MÃƒÂ¡Ã‚Â»Ã…Â¸ rÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng",
+    "Activity log": "NhÃƒÂ¡Ã‚ÂºÃ‚Â­t kÃƒÆ’Ã‚Â½ hoÃƒÂ¡Ã‚ÂºÃ‚Â¡t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng",
+    "Session events": "SÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n phiÃƒÆ’Ã‚Âªn",
+    "Latest snapshot": "Snapshot mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Create skill": "TÃƒÂ¡Ã‚ÂºÃ‚Â¡o skill",
+    "Command": "LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh",
+    "Goal": "MÃƒÂ¡Ã‚Â»Ã‚Â¥c tiÃƒÆ’Ã‚Âªu",
+    "Allowed tools": "Tool Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c phÃƒÆ’Ã‚Â©p",
+    "Output format": "Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh dÃƒÂ¡Ã‚ÂºÃ‚Â¡ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u ra",
+    "References": "TÃƒÆ’Ã‚Â i liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o",
+    "Filename or preview": "TÃƒÆ’Ã‚Âªn file hoÃƒÂ¡Ã‚ÂºÃ‚Â·c xem trÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc",
+    "Workflow": "Quy trÃƒÆ’Ã‚Â¬nh",
+    "Health": "SÃƒÂ¡Ã‚Â»Ã‚Â©c khÃƒÂ¡Ã‚Â»Ã‚Âe",
+    "Project signals": "TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u dÃƒÂ¡Ã‚Â»Ã‚Â± ÃƒÆ’Ã‚Â¡n",
+    "Next actions": "ViÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡c tiÃƒÂ¡Ã‚ÂºÃ‚Â¿p theo",
+    "Status queue": "HÃƒÆ’Ã‚Â ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â£i trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i",
+    "Latest event": "SÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n mÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi nhÃƒÂ¡Ã‚ÂºÃ‚Â¥t",
+    "Session trace": "DÃƒÂ¡Ã‚ÂºÃ‚Â¥u vÃƒÂ¡Ã‚ÂºÃ‚Â¿t phiÃƒÆ’Ã‚Âªn",
+    "Review results": "Xem kÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£",
+    "Open jobs": "MÃƒÂ¡Ã‚Â»Ã…Â¸ jobs",
+    "Check monitors": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra monitors",
+    "No events yet.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n.",
+    "No snapshot loaded yet.": "ChÃƒâ€ Ã‚Â°a tÃƒÂ¡Ã‚ÂºÃ‚Â£i snapshot.",
+    "No command has run in this session.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ lÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh nÃƒÆ’Ã‚Â o chÃƒÂ¡Ã‚ÂºÃ‚Â¡y trong phiÃƒÆ’Ã‚Âªn nÃƒÆ’Ã‚Â y.",
+    "No session events yet.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ sÃƒÂ¡Ã‚Â»Ã‚Â± kiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n phiÃƒÆ’Ã‚Âªn.",
+    "No files in workspace": "KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ file trong workspace",
+    "No active tracking signals": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u theo dÃƒÆ’Ã‚Âµi",
+    "No overview data available": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng quan",
+    "No red flags detected": "KhÃƒÆ’Ã‚Â´ng phÃƒÆ’Ã‚Â¡t hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n cÃƒÂ¡Ã‚ÂºÃ‚Â£nh bÃƒÆ’Ã‚Â¡o Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â",
+    "No explicit positive signals listed": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u tÃƒÆ’Ã‚Â­ch cÃƒÂ¡Ã‚Â»Ã‚Â±c rÃƒÆ’Ã‚Âµ rÃƒÆ’Ã‚Â ng",
+    "No description.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ mÃƒÆ’Ã‚Â´ tÃƒÂ¡Ã‚ÂºÃ‚Â£.",
+    "No work_plan.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y work_plan.md trong workspace.",
+    "No bid.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y bid.md trong workspace.",
+    "No delivery_checklist.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y delivery_checklist.md trong workspace.",
+    "No activity_log.md found in workspace.": "KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚ÂºÃ‚Â¥y activity_log.md trong workspace.",
+    "Open in VS Code": "MÃƒÂ¡Ã‚Â»Ã…Â¸ trong VS Code",
+    "Open on GitHub": "MÃƒÂ¡Ã‚Â»Ã…Â¸ trÃƒÆ’Ã‚Âªn GitHub",
+    "Check monitor": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra monitor",
+    "Check again": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
+    "Check inbox": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox",
+    "Open JSON": "MÃƒÂ¡Ã‚Â»Ã…Â¸ JSON",
+    "Open plist": "MÃƒÂ¡Ã‚Â»Ã…Â¸ plist",
+    "Open job": "MÃƒÂ¡Ã‚Â»Ã…Â¸ job",
+    "Open Stdout": "MÃƒÂ¡Ã‚Â»Ã…Â¸ Stdout",
+    "Open Stderr": "MÃƒÂ¡Ã‚Â»Ã…Â¸ Stderr",
     "Agent Chat": "Agent Chat",
-    "You": "Bạn",
+    "You": "BÃƒÂ¡Ã‚ÂºÃ‚Â¡n",
     "Agent": "Agent",
-    "No agent steps yet.": "Chưa có bước agent.",
-    "Copy tool trace": "Sao chép trace tool",
-    "No skills loaded": "Chưa tải skill"
+    "No agent steps yet.": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ bÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc agent.",
+    "Copy tool trace": "Sao chÃƒÆ’Ã‚Â©p trace tool",
+    "No skills loaded": "ChÃƒâ€ Ã‚Â°a tÃƒÂ¡Ã‚ÂºÃ‚Â£i skill"
   },
   en: {}
 };
@@ -348,22 +417,22 @@ exactTextTranslations.en = Object.fromEntries(
 
 const phraseTranslations = {
   vi: {
-    "Search Results": "Kết quả tìm kiếm",
-    "Hunt Results": "Kết quả săn job",
-    "Monitor Status": "Trạng thái monitor",
-    "Open folder": "Mở thư mục",
-    "Open file": "Mở file",
-    "Open job": "Mở job",
-    "Check inbox": "Kiểm tra inbox",
-    "Check again": "Kiểm tra lại",
-    "Check now": "Kiểm tra ngay",
-    "Pending review": "Chờ review",
-    "Rewarded today": "Thưởng hôm nay",
+    "Search Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m",
+    "Hunt Results": "KÃƒÂ¡Ã‚ÂºÃ‚Â¿t quÃƒÂ¡Ã‚ÂºÃ‚Â£ sÃƒâ€žÃ†â€™n job",
+    "Monitor Status": "TrÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i monitor",
+    "Open folder": "MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c",
+    "Open file": "MÃƒÂ¡Ã‚Â»Ã…Â¸ file",
+    "Open job": "MÃƒÂ¡Ã‚Â»Ã…Â¸ job",
+    "Check inbox": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra inbox",
+    "Check again": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra lÃƒÂ¡Ã‚ÂºÃ‚Â¡i",
+    "Check now": "KiÃƒÂ¡Ã‚Â»Ã†â€™m tra ngay",
+    "Pending review": "ChÃƒÂ¡Ã‚Â»Ã‚Â review",
+    "Rewarded today": "ThÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng hÃƒÆ’Ã‚Â´m nay",
     "Jobs by repo": "Jobs theo repo",
     "LaunchAgents": "LaunchAgents",
-    "No monitor": "Chưa có monitor",
-    "No content": "Không có nội dung",
-    "Global Agent": "Agent toàn cục",
+    "No monitor": "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ monitor",
+    "No content": "KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ nÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢i dung",
+    "Global Agent": "Agent toÃƒÆ’Ã‚Â n cÃƒÂ¡Ã‚Â»Ã‚Â¥c",
     "Monitor Agent": "Monitor Agent",
     "Calendar Agent": "Calendar Agent",
     "Interval Agent": "Interval Agent"
@@ -485,25 +554,29 @@ function setLanguage(language) {
   if (!translations[language]) return;
   state.language = language;
   localStorage.setItem("app.language", language);
-  applyLanguage();
+  if (state.dashboard) {
+    renderDashboard(state.dashboard);
+  } else {
+    applyLanguage();
+  }
 }
 
 const pipelineSteps = [
-  { key: "query", icon: "🔎", label: "Query", detail: "GitHub, Reddit hoặc batch mở rộng" },
-  { key: "candidate", icon: "🧲", label: "Candidate", detail: "Normalize thành dataclass Candidate" },
-  { key: "score", icon: "🏆", label: "Score", detail: "Budget, positive signals, red flags" },
-  { key: "results", icon: "📦", label: "Results", detail: "Ghi JSON vào results/" },
-  { key: "workspace", icon: "🧰", label: "Workspace", detail: "Prepare jobs/<task>/" },
-  { key: "gates", icon: "🛡️", label: "Approval gates", detail: "Duyệt scope, payment, safety" },
-  { key: "monitor", icon: "📡", label: "Monitor", detail: "PR/issue approval và payout signals" },
-  { key: "ledger", icon: "💵", label: "Ledger", detail: "Ghi nhận payment đã nhận" }
+  { key: "query", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ…Â½", label: "Query", detail: "GitHub, Reddit hoÃƒÂ¡Ã‚ÂºÃ‚Â·c batch mÃƒÂ¡Ã‚Â»Ã…Â¸ rÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng" },
+  { key: "candidate", icon: "ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â²", label: "Candidate", detail: "Normalize thÃƒÆ’Ã‚Â nh dataclass Candidate" },
+  { key: "score", icon: "ÃƒÂ°Ã…Â¸Ã‚ÂÃ¢â‚¬Â ", label: "Score", detail: "Budget, positive signals, red flags" },
+  { key: "results", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦", label: "Results", detail: "Ghi JSON vÃƒÆ’Ã‚Â o results/" },
+  { key: "workspace", icon: "ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â°", label: "Workspace", detail: "Prepare jobs/<task>/" },
+  { key: "gates", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂºÃ‚Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â", label: "Approval gates", detail: "DuyÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t scope, payment, safety" },
+  { key: "monitor", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡", label: "Monitor", detail: "PR/issue approval vÃƒÆ’Ã‚Â  payout signals" },
+  { key: "ledger", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ", label: "Ledger", detail: "Ghi nhÃƒÂ¡Ã‚ÂºÃ‚Â­n payment Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ nhÃƒÂ¡Ã‚ÂºÃ‚Â­n" }
 ];
 
 const runtimeSteps = [
-  { key: "load", icon: "📥", label: "Load data" },
-  { key: "render", icon: "🖥️", label: "Render UI" },
-  { key: "snapshot", icon: "📊", label: "Snapshot" },
-  { key: "verify", icon: "✅", label: "Verify output" }
+  { key: "load", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¥", label: "Load data" },
+  { key: "render", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬â€œÃ‚Â¥ÃƒÂ¯Ã‚Â¸Ã‚Â", label: "Render UI" },
+  { key: "snapshot", icon: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â ", label: "Snapshot" },
+  { key: "verify", icon: "ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦", label: "Verify output" }
 ];
 
 const viewLabels = {
@@ -519,7 +592,7 @@ const viewLabels = {
   threads: "Threads Search",
   facebook: "Facebook Trend",
   youtube: "YouTube Trend",
-  interest: "Chủ đề quan tâm",
+  interest: "ChÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â quan tÃƒÆ’Ã‚Â¢m",
   settings: "Settings"
 };
 
@@ -869,7 +942,7 @@ async function openJobModal(jobPath) {
   $("#jobDetailTitle").textContent = job ? job.title : jobPath.split("/").pop();
   
   const statusEl = $("#jobDetailStatus");
-  statusEl.textContent = job ? (statusEmojiLabels[job.status.key] || job.status.label) : "🔘 Prepared";
+  statusEl.textContent = job ? (statusEmojiLabels[job.status.key] || job.status.label) : "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‹Å“ Prepared";
   statusEl.className = `job-state ${job ? job.status.key : "prepared"}`;
   
   const scoreEl = $("#jobDetailScore");
@@ -877,7 +950,7 @@ async function openJobModal(jobPath) {
   scoreEl.className = `score-pill ${scoreClass(job ? job.score : 0)}`;
   
   $("#jobDetailBudget").textContent = job ? job.budgetLabel : "unknown";
-  $("#jobDetailSource").textContent = job ? `${job.source} · age: ${job.duration ? job.duration.label : "n/a"}` : "manual";
+  $("#jobDetailSource").textContent = job ? `${job.source} Ãƒâ€šÃ‚Â· age: ${job.duration ? job.duration.label : "n/a"}` : "manual";
   
   if (job) {
     jobDetailState.files = job.files || [];
@@ -939,8 +1012,8 @@ function renderJobActions() {
   }
   
   el.innerHTML = `
-    <button class="primary-button" type="button" id="jobDetailOpenVSCodeBtn">💻 Open in VS Code</button>
-    ${job.url ? `<button class="secondary-button" type="button" data-open-url="${escapeHtml(job.url)}">🔗 Open on GitHub</button>` : ""}
+    <button class="primary-button" type="button" id="jobDetailOpenVSCodeBtn">ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» Open in VS Code</button>
+    ${job.url ? `<button class="secondary-button" type="button" data-open-url="${escapeHtml(job.url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ Open on GitHub</button>` : ""}
     ${job.hasMonitor ? `<button class="secondary-button" type="button" data-run-monitor="${escapeHtml(job.path)}">Check monitor</button>` : ""}
     ${job.hasMonitor ? `<button class="secondary-button" type="button" data-check-github-inbox="${escapeHtml(job.path)}">Check GitHub inbox</button>` : ""}
   `;
@@ -989,11 +1062,11 @@ async function selectJobTab(tabName) {
     }
     
     const redFlags = job.redFlags && job.redFlags.length 
-      ? job.redFlags.map(f => `<li style="color: var(--error); font-weight: 700;">⚠️ ${escapeHtml(f)}</li>`).join("") 
-      : `<li>✅ No red flags detected</li>`;
+      ? job.redFlags.map(f => `<li style="color: var(--error); font-weight: 700;">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â ${escapeHtml(f)}</li>`).join("") 
+      : `<li>ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ No red flags detected</li>`;
       
     const reasons = job.reasons && job.reasons.length
-      ? job.reasons.map(r => `<li>✨ ${escapeHtml(r)}</li>`).join("")
+      ? job.reasons.map(r => `<li>ÃƒÂ¢Ã…â€œÃ‚Â¨ ${escapeHtml(r)}</li>`).join("")
       : `<li>No explicit positive signals listed</li>`;
       
     let monitorHtml = "";
@@ -1001,7 +1074,7 @@ async function selectJobTab(tabName) {
       const checkedAt = job.approval && job.approval.checkedAt ? formatDate(job.approval.checkedAt) : "n/a";
       monitorHtml = `
         <div style="margin-top: 18px; padding: 12px; background: var(--surface-container); border: 1px solid var(--line); border-radius: var(--radius);">
-          <strong style="display:block; margin-bottom: 6px;">📡 Monitor Status</strong>
+          <strong style="display:block; margin-bottom: 6px;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ Monitor Status</strong>
           <p style="margin: 0; font-size: 13px;">Checked at: ${checkedAt}</p>
           <pre style="margin: 6px 0 0; background: var(--bg); padding: 8px; border-radius: 4px; overflow: auto; font-size: 12px;"><code>${escapeHtml(job.latestMonitorLine || "No logs captured yet")}</code></pre>
         </div>
@@ -1011,16 +1084,16 @@ async function selectJobTab(tabName) {
     body.innerHTML = `
       <div style="display: grid; gap: 16px; white-space: normal;">
         <div>
-          <h3 style="margin-top:0;">📝 Description</h3>
+          <h3 style="margin-top:0;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â Description</h3>
           <p style="line-height: 1.6; white-space: pre-wrap;">${job.description ? escapeHtml(job.description) : "No description."}</p>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div>
-            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">✨ Positive Signals</h3>
+            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">ÃƒÂ¢Ã…â€œÃ‚Â¨ Positive Signals</h3>
             <ul style="padding-left: 20px; display: grid; gap: 6px;">${reasons}</ul>
           </div>
           <div>
-            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">⚠️ Risk Signals</h3>
+            <h3 style="font-size: 14px; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 8px;">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â Risk Signals</h3>
             <ul style="padding-left: 20px; display: grid; gap: 6px;">${redFlags}</ul>
           </div>
         </div>
@@ -1157,14 +1230,14 @@ function renderStats(data) {
   const totals = Object.entries(data.ledger.totals || {}).map(([currency, amount]) => `${currency} ${Number(amount).toLocaleString("en-US")}`).join(", ") || "0";
   const jobSummary = data.stats.jobSummary || {};
   $("#statStrip").innerHTML = [
-    metric("📦 Result files", data.stats.resultFiles, `${data.stats.resultCandidates} candidates`, "goto-results"),
-    metric("🧰 Jobs", data.stats.jobs, `${jobSummary.doing || 0} doing · ${jobSummary.localDone || 0} local done · ${jobSummary.repoCount || 0} repos`, "goto-jobs"),
-    metric("⏳ Pending reward", jobSummary.pendingReward || 0, `${moneySummary(jobSummary.pendingRewardByCurrency)} expected`, "goto-jobs-pending-reward"),
-    metric("✅ Rewarded today", moneySummary(jobSummary.rewardedTodayByCurrency), `${jobSummary.rewardedTodayJobs || 0} job(s)`, "goto-ledger-paid"),
-    metric("⏱️ Avg completion", jobSummary.avgCompletionLabel || "n/a", "approved/rewarded jobs", "goto-jobs-rewarded"),
-    metric("📡 Monitors", data.stats.launchAgents, `${data.stats.monitoredJobs} active · ${data.stats.attentionJobs} attention`, "goto-monitors"),
-    metric("📌 Tracking", data.stats.markedJobs || 0, `${data.stats.watchingJobs || 0} watching · ${data.stats.inboxCommentJobs || 0} inbox comments`, "goto-jobs-tracking"),
-    metric("💵 Ledger", totals, `${data.stats.ledgerRows} rows`, "goto-ledger")
+    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¦ Result files", data.stats.resultFiles, `${data.stats.resultCandidates} candidates`, "goto-results"),
+    metric("ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â° Jobs", data.stats.jobs, `${jobSummary.doing || 0} doing Ãƒâ€šÃ‚Â· ${jobSummary.localDone || 0} local done Ãƒâ€šÃ‚Â· ${jobSummary.repoCount || 0} repos`, "goto-jobs"),
+    metric("ÃƒÂ¢Ã‚ÂÃ‚Â³ Pending reward", jobSummary.pendingReward || 0, `${moneySummary(jobSummary.pendingRewardByCurrency)} expected`, "goto-jobs-pending-reward"),
+    metric("ÃƒÂ¢Ã…â€œÃ¢â‚¬Â¦ Rewarded today", moneySummary(jobSummary.rewardedTodayByCurrency), `${jobSummary.rewardedTodayJobs || 0} job(s)`, "goto-ledger-paid"),
+    metric("ÃƒÂ¢Ã‚ÂÃ‚Â±ÃƒÂ¯Ã‚Â¸Ã‚Â Avg completion", jobSummary.avgCompletionLabel || "n/a", "approved/rewarded jobs", "goto-jobs-rewarded"),
+    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â¡ Monitors", data.stats.launchAgents, `${data.stats.monitoredJobs} active Ãƒâ€šÃ‚Â· ${data.stats.attentionJobs} attention`, "goto-monitors"),
+    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…â€™ Tracking", data.stats.markedJobs || 0, `${data.stats.watchingJobs || 0} watching Ãƒâ€šÃ‚Â· ${data.stats.inboxCommentJobs || 0} inbox comments`, "goto-jobs-tracking"),
+    metric("ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Âµ Ledger", totals, `${data.stats.ledgerRows} rows`, "goto-ledger")
   ].join("");
 }
 
@@ -1197,17 +1270,17 @@ function scoreClass(score) {
 
 function candidateRow(candidate) {
   const flags = candidate.redFlags.length ? candidate.redFlags.join(", ") : "No red flags";
-  const searchMeta = [candidate.searchTopic ? `topic ${candidate.searchTopic}` : "", candidate.searchRepo ? `repo ${candidate.searchRepo}` : ""].filter(Boolean).join(" · ");
+  const searchMeta = [candidate.searchTopic ? `topic ${candidate.searchTopic}` : "", candidate.searchRepo ? `repo ${candidate.searchRepo}` : ""].filter(Boolean).join(" Ãƒâ€šÃ‚Â· ");
   return `
     <article class="candidate-row">
       <div class="score-pill ${scoreClass(candidate.score)}">${candidate.score}</div>
       <div class="row-main">
         <strong title="${escapeHtml(candidate.title)}">${escapeHtml(candidate.title)}</strong>
-        <p>${escapeHtml(candidate.sourceFile || candidate.source)} · ${escapeHtml(candidate.budgetLabel)} · ${escapeHtml(flags)}</p>
+        <p>${escapeHtml(candidate.sourceFile || candidate.source)} Ãƒâ€šÃ‚Â· ${escapeHtml(candidate.budgetLabel)} Ãƒâ€šÃ‚Â· ${escapeHtml(flags)}</p>
         ${searchMeta ? `<p>${escapeHtml(searchMeta)}</p>` : ""}
       </div>
       <div class="row-actions">
-        ${candidate.url ? `<button class="text-button" data-open-url="${escapeHtml(candidate.url)}">🔗 Open</button>` : ""}
+        ${candidate.url ? `<button class="text-button" data-open-url="${escapeHtml(candidate.url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ Open</button>` : ""}
       </div>
     </article>
   `;
@@ -1216,7 +1289,7 @@ function candidateRow(candidate) {
 function renderTopCandidates(data) {
   $("#topCandidates").innerHTML = data.topCandidates.length
     ? data.topCandidates.map(candidateRow).join("")
-    : `<p class="empty">Chưa có candidate. Chạy Codex/CLI để tạo results rồi refresh màn hình này.</p>`;
+    : `<p class="empty">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ candidate. ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y Codex/CLI Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â¡o results rÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“i refresh mÃƒÆ’Ã‚Â n hÃƒÆ’Ã‚Â¬nh nÃƒÆ’Ã‚Â y.</p>`;
 }
 
 function renderManagerState(data) {
@@ -1257,16 +1330,16 @@ function renderResults(data) {
       <summary>
         <div>
           <strong>${escapeHtml(result.path)}</strong>
-          <p>${result.filteredCandidates.length}/${result.count} candidates · updated ${escapeHtml(formatDate(result.modifiedAt))}</p>
+          <p>${result.filteredCandidates.length}/${result.count} candidates Ãƒâ€šÃ‚Â· updated ${escapeHtml(formatDate(result.modifiedAt))}</p>
         </div>
-        <span class="button-look" data-open-path="${escapeHtml(result.path)}">📂 Open JSON</span>
+        <span class="button-look" data-open-path="${escapeHtml(result.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Open JSON</span>
       </summary>
       <div class="candidate-list">
-        ${result.filteredCandidates.length ? result.filteredCandidates.slice(0, 8).map(candidateRow).join("") : `<p class="empty">File này chưa có candidate hợp lệ.</p>`}
+        ${result.filteredCandidates.length ? result.filteredCandidates.slice(0, 8).map(candidateRow).join("") : `<p class="empty">File nÃƒÆ’Ã‚Â y chÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ candidate hÃƒÂ¡Ã‚Â»Ã‚Â£p lÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡.</p>`}
       </div>
     </details>
   `).join("");
-  $("#resultsList").innerHTML = resultHtml || `<p class="empty">Không tìm thấy JSON trong results/.</p>`;
+  $("#resultsList").innerHTML = resultHtml || `<p class="empty">KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y JSON trong results/.</p>`;
   setPager("results", pageData);
 }
 
@@ -1274,9 +1347,14 @@ function jobCard(job) {
   const needsAttention = job.signals && job.signals.needsAttention;
   const rewarded = job.signals && job.signals.rewarded;
   const status = job.status || { key: "prepared", label: "Prepared" };
+  const langText = projectText[state.language] || projectText.en;
+  const statusLabel = (localizedStatusLabels[state.language] || statusEmojiLabels)[status.key] || status.label;
+  const repoLabel = job.repo || job.source || langText.unknown;
+  const budgetLabel = job.budgetLabel || langText.unknown;
+  const ageLabel = job.duration && job.duration.label ? job.duration.label : "n/a";
   const signalText = job.hasMonitor
-    ? `claim=${Boolean(job.signals.claimed)} · approved=${Boolean(job.signals.approved)} · rewarded=${Boolean(job.signals.rewarded)}`
-    : "No monitor";
+    ? `${langText.claim}=${Boolean(job.signals.claimed)} Â· ${langText.approved}=${Boolean(job.signals.approved)} Â· ${langText.rewarded}=${Boolean(job.signals.rewarded)}`
+    : langText.noMonitor;
   const marked = Boolean(job.tracking && job.tracking.marked);
   const watching = Boolean(job.tracking && job.tracking.watching);
   const inboxNew = Boolean(job.githubInbox && job.githubInbox.newComment);
@@ -1290,35 +1368,35 @@ function jobCard(job) {
           <span class="status-dot ${rewarded ? "done" : needsAttention || inboxNew || monitorNew ? "attention" : watching ? "watching" : job.hasMonitor ? "watching" : "idle"}"></span>
           <div>
             <strong>${escapeHtml(job.title)}</strong>
-            <p>${escapeHtml(job.repo)} · ${escapeHtml(job.budgetLabel)} · age ${escapeHtml(job.duration && job.duration.label ? job.duration.label : "n/a")} · score ${job.score}</p>
+            <p>${escapeHtml(repoLabel)} Ã‚Â· ${escapeHtml(budgetLabel)} Ã‚Â· ${escapeHtml(langText.age)} ${escapeHtml(ageLabel)} Ã‚Â· ${escapeHtml(langText.score)} ${job.score}</p>
           </div>
         </div>
         <div class="job-header-right">
-          <span class="job-state ${escapeHtml(status.key)}">${escapeHtml(statusEmojiLabels[status.key] || status.label)}</span>
-          <button class="job-toggle-btn" aria-label="Toggle details">${isCollapsed ? "▼" : "▲"}</button>
+          <span class="job-state ${escapeHtml(status.key)}">${escapeHtml(statusLabel)}</span>
+          <button class="job-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²"}</button>
         </div>
       </header>
 
       <div class="job-details-body">
         <div class="job-detail">
-          <span>${escapeHtml(job.duration && job.duration.label ? `time ${job.duration.label}` : "time n/a")}</span>
+          <span>${escapeHtml(job.duration && job.duration.label ? `${langText.time} ${job.duration.label}` : `${langText.time} n/a`)}</span>
           <span>${escapeHtml(signalText)}</span>
-          ${marked ? `<span class="tracking-chip">Marked</span>` : ""}
-          ${watching ? `<span class="tracking-chip">Watching</span>` : ""}
-          ${inboxNew ? `<span class="tracking-chip attention">GitHub inbox comment</span>` : ""}
-          ${monitorNew ? `<span class="tracking-chip attention">Monitor comment</span>` : ""}
-          ${rewarded ? `<span>${escapeHtml(job.reward && job.reward.label ? job.reward.label : "rewarded")}</span>` : ""}
-          <span>${job.approvalGates} approval gates</span>
-          <span>${job.files.length} files</span>
+          ${marked ? `<span class="tracking-chip">${escapeHtml(langText.marked)}</span>` : ""}
+          ${watching ? `<span class="tracking-chip">${escapeHtml(langText.watching)}</span>` : ""}
+          ${inboxNew ? `<span class="tracking-chip attention">${escapeHtml(langText.inboxComment)}</span>` : ""}
+          ${monitorNew ? `<span class="tracking-chip attention">${escapeHtml(langText.monitorComment)}</span>` : ""}
+          ${rewarded ? `<span>${escapeHtml(job.reward && job.reward.label ? job.reward.label : langText.rewardedFallback)}</span>` : ""}
+          <span>${job.approvalGates} ${escapeHtml(langText.approvalGates)}</span>
+          <span>${job.files.length} ${escapeHtml(langText.files)}</span>
         </div>
         
         <div class="job-actions">
-          ${job.url ? `<button class="text-button" data-open-url="${escapeHtml(job.url)}">🔗 Issue</button>` : ""}
-          ${job.hasMonitor ? `<button class="secondary-button" data-run-monitor="${escapeHtml(job.path)}">Check again</button>` : ""}
-          ${job.hasMonitor ? `<button class="secondary-button" data-check-github-inbox="${escapeHtml(job.path)}">Check inbox</button>` : ""}
-          <button class="secondary-button" data-toggle-tracking="${escapeHtml(job.path)}" data-tracking-field="marked">${marked ? "Unmark" : "Mark"}</button>
-          <button class="secondary-button" data-toggle-tracking="${escapeHtml(job.path)}" data-tracking-field="watching">${watching ? "Unwatch" : "Watch"}</button>
-          <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">📂 Open folder</button>
+          ${job.url ? `<button class="text-button" data-open-url="${escapeHtml(job.url)}">Ã°Å¸â€â€” ${escapeHtml(langText.issue)}</button>` : ""}
+          ${job.hasMonitor ? `<button class="secondary-button" data-run-monitor="${escapeHtml(job.path)}">${escapeHtml(langText.checkAgain)}</button>` : ""}
+          ${job.hasMonitor ? `<button class="secondary-button" data-check-github-inbox="${escapeHtml(job.path)}">${escapeHtml(langText.checkInbox)}</button>` : ""}
+          <button class="secondary-button" data-toggle-tracking="${escapeHtml(job.path)}" data-tracking-field="marked">${escapeHtml(marked ? langText.unmark : langText.mark)}</button>
+          <button class="secondary-button" data-toggle-tracking="${escapeHtml(job.path)}" data-tracking-field="watching">${escapeHtml(watching ? langText.unwatch : langText.watch)}</button>
+          <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">Ã°Å¸â€œâ€š ${escapeHtml(langText.openFolder)}</button>
         </div>
       </div>
     </article>
@@ -1359,7 +1437,8 @@ function renderJobs(data) {
     return statusOk && signalOk && textOk;
   });
   const pageData = paginate("jobs", sortJobs(jobs, filter.sort));
-  $("#jobsList").innerHTML = pageData.items.length ? pageData.items.map(jobCard).join("") : `<p class="empty">Chưa có workspace trong jobs/.</p>`;
+  const emptyJobsText = (projectText[state.language] || projectText.en).noJobs;
+  $("#jobsList").innerHTML = pageData.items.length ? pageData.items.map(jobCard).join("") : `<p class="empty">${escapeHtml(emptyJobsText)}</p>`;
   setPager("jobs", pageData);
 }
 
@@ -1401,7 +1480,7 @@ function renderMonitors(data) {
       <article class="launch-agent-card" data-label="${escapeHtml(agent.label)}">
         <div class="agent-card-header">
           <div class="agent-card-title-area">
-            <span class="agent-card-avatar">🚀</span>
+            <span class="agent-card-avatar">ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬</span>
             <div class="agent-card-title-meta">
               <strong>${escapeHtml(agent.repo || "Global Agent")}</strong>
               <code class="agent-card-plist" title="${escapeHtml(agent.label)}">${escapeHtml(agent.label)}</code>
@@ -1414,23 +1493,23 @@ function renderMonitors(data) {
         <div class="agent-card-body">
           <div class="agent-card-meta-row">
             <span class="agent-meta-badge timing">
-              <span class="badge-icon">🕒</span> Every ${formattedInterval} (${agent.interval}s)
+              <span class="badge-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã¢â‚¬â„¢</span> Every ${formattedInterval} (${agent.interval}s)
             </span>
             ${agent.pr ? `
               <span class="agent-meta-badge pr">
-                <span class="badge-icon">🔀</span> PR #${escapeHtml(agent.pr)}
+                <span class="badge-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â€šÂ¬</span> PR #${escapeHtml(agent.pr)}
               </span>
             ` : ""}
             ${agent.issue ? `
               <span class="agent-meta-badge issue">
-                <span class="badge-icon">🐞</span> Issue #${escapeHtml(agent.issue)}
+                <span class="badge-icon">ÃƒÂ°Ã…Â¸Ã‚ÂÃ…Â¾</span> Issue #${escapeHtml(agent.issue)}
               </span>
             ` : ""}
           </div>
         </div>
         <div class="agent-card-footer">
-          <button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.path)}" title="Open plist file">📄 Open plist</button>
-          ${agent.jobDir ? `<button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.jobDir)}" title="Open job workspace directory">📂 Open job</button>` : ""}
+          <button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.path)}" title="Open plist file">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾ Open plist</button>
+          ${agent.jobDir ? `<button class="secondary-button compact-btn" data-open-path="${escapeHtml(agent.jobDir)}" title="Open job workspace directory">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Open job</button>` : ""}
         </div>
       </article>
     `;
@@ -1448,20 +1527,20 @@ function renderMonitors(data) {
           </div>
           <div class="monitor-header-right">
             <span class="job-state ${escapeHtml(statusKey)}">${escapeHtml(statusEmojiLabels[statusKey] || (job.status && job.status.label))}</span>
-            <button class="monitor-toggle-btn" aria-label="Toggle details">${isCollapsed ? "▼" : "▲"}</button>
+            <button class="monitor-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²"}</button>
           </div>
         </header>
 
         <div class="monitor-row-body">
           <div class="monitor-details">
             <p><strong>Log:</strong> ${escapeHtml(job.latestMonitorLine || "No monitor log line yet")}</p>
-            <p><strong>Signals:</strong> ${escapeHtml(`claim=${Boolean(job.signals.claimed)} · approved=${Boolean(job.signals.approved)} · rewarded=${Boolean(job.signals.rewarded)}`)}</p>
-            ${job.githubInbox && job.githubInbox.checkedAt ? `<p><strong>GitHub Inbox:</strong> ${escapeHtml(`${job.githubInbox.matched ? job.githubInbox.reason || "matched" : "no matching notification"} · ${job.githubInbox.latestUpdatedAt || "no update"}`)}</p>` : ""}
+            <p><strong>Signals:</strong> ${escapeHtml(`claim=${Boolean(job.signals.claimed)} Ãƒâ€šÃ‚Â· approved=${Boolean(job.signals.approved)} Ãƒâ€šÃ‚Â· rewarded=${Boolean(job.signals.rewarded)}`)}</p>
+            ${job.githubInbox && job.githubInbox.checkedAt ? `<p><strong>GitHub Inbox:</strong> ${escapeHtml(`${job.githubInbox.matched ? job.githubInbox.reason || "matched" : "no matching notification"} Ãƒâ€šÃ‚Â· ${job.githubInbox.latestUpdatedAt || "no update"}`)}</p>` : ""}
           </div>
           <div class="job-actions">
             <button class="secondary-button" data-run-monitor="${escapeHtml(job.path)}">Check now</button>
             <button class="secondary-button" data-check-github-inbox="${escapeHtml(job.path)}">Check inbox</button>
-            <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">📂 Open job</button>
+            <button class="secondary-button" data-open-path="${escapeHtml(job.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Open job</button>
           </div>
         </div>
       </article>
@@ -1469,7 +1548,7 @@ function renderMonitors(data) {
   }).join("");
 
   $("#monitorList").innerHTML = `
-    <h3>📊 Reward workflow</h3>
+    <h3>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â  Reward workflow</h3>
     <div class="monitor-summary">
       ${metric("Doing", jobSummary.doing || 0, "monitor active", "goto-jobs-doing")}
       ${metric("Local done", jobSummary.localDone || 0, "awaiting external action", "goto-jobs-local-done")}
@@ -1477,22 +1556,22 @@ function renderMonitors(data) {
       ${metric("Pending reward", jobSummary.pendingReward || 0, "approved, not paid", "goto-jobs-pending-reward")}
       ${metric("Rewarded today", moneySummary(jobSummary.rewardedTodayByCurrency), `${jobSummary.rewardedTodayJobs || 0} job(s)`, "goto-ledger-paid")}
     </div>
-    <h3>🧮 Jobs by repo</h3>
+    <h3>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â® Jobs by repo</h3>
     <div class="repo-summary">
       ${(jobSummary.repoSummary || []).map((repo) => `
         <article class="repo-row">
           <strong>${escapeHtml(repo.repo)}</strong>
           <span>${repo.total} jobs</span>
-          <small>${repo.doing} doing · ${repo.localDone || 0} local done · ${repo.pendingReview} review · ${repo.pendingReward} reward · ${repo.rewarded} paid</small>
+          <small>${repo.doing} doing Ãƒâ€šÃ‚Â· ${repo.localDone || 0} local done Ãƒâ€šÃ‚Â· ${repo.pendingReview} review Ãƒâ€šÃ‚Â· ${repo.pendingReward} reward Ãƒâ€šÃ‚Â· ${repo.rewarded} paid</small>
         </article>
-      `).join("") || `<p class="empty">Không có repo summary.</p>`}
+      `).join("") || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ repo summary.</p>`}
     </div>
-    <h3>🚀 LaunchAgents</h3>
+    <h3>ÃƒÂ°Ã…Â¸Ã…Â¡Ã¢â€šÂ¬ LaunchAgents</h3>
     <div class="launch-agents-grid">
-      ${launchHtml || `<p class="empty">Không có launchd plist.</p>`}
+      ${launchHtml || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ launchd plist.</p>`}
     </div>
-    <h3>📍 Job monitor status</h3>
-    ${jobHtml || `<p class="empty">Không có job monitor status.</p>`}
+    <h3>ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â Job monitor status</h3>
+    ${jobHtml || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ job monitor status.</p>`}
   `;
   setPager("monitors", pageData);
 }
@@ -1530,7 +1609,7 @@ function renderLedger(data) {
     <div class="stat-strip compact">${totalHtml}</div>
     <table>
       <thead><tr><th>Date</th><th>Job</th><th>Amount</th><th>Status</th><th>Notes</th></tr></thead>
-      <tbody>${rows || `<tr><td colspan="5">Chưa có payment row.</td></tr>`}</tbody>
+      <tbody>${rows || `<tr><td colspan="5">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ payment row.</td></tr>`}</tbody>
     </table>
   `;
   setPager("ledger", pageData);
@@ -1547,21 +1626,21 @@ function renderReferences(data) {
       <span class="file-state ok">md</span>
       <strong>${escapeHtml(file.path)}</strong>
       <p>${escapeHtml(file.preview || file.title)}</p>
-      <button class="text-button" data-open-path="${escapeHtml(file.path)}">📖 Open</button>
+      <button class="text-button" data-open-path="${escapeHtml(file.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬â€œ Open</button>
     </article>
-  `).join("") || `<p class="empty">Không có reference khớp filter.</p>`;
+  `).join("") || `<p class="empty">KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ reference khÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºp filter.</p>`;
   setPager("references", pageData);
 }
 
 function getTrendCategory(item) {
   const text = `${item.title} ${item.description || ""} ${item.news ? item.news.map(n => n.title + " " + (n.snippet || "")).join(" ") : ""}`.toLowerCase();
   
-  const sports = ["vs", "cup", "trận", "bóng đá", "soccer", "football", "tennis", "nba", "euro", "world cup", "fifa", "ngoại hạng", "cầu thủ", "v-league", "real madrid", "barcelona", "chelsea", "arsenal", "liverpool", "manchester", "mu ", "mc ", "clb", "vô địch", "bàn thắng", "gold cup", "athlete", "championship", "tournament", "olympics", "racing", "f1", "võ sĩ", "mma", "ufc", "bóng rổ", "bóng chuyền", "athletics", "sea games"];
-  const entertainment = ["phim", "movie", "show", "drama", "diễn viên", "ca sĩ", "album", " mv ", "music", "nhạc", "concert", "blackpink", "bts", "rap", "netflix", "rạp", "oscars", "oscar", "kpop", "vpop", "showbiz", "hoàng gia", "tập ", "tập bóng", "rap việt", "sao việt", "trấn thành", "sơn tùng", "cinema", "hát", "nghệ sĩ", "tập phim", "trailer", "actor", "actress", "singer", "song", "celeb"];
-  const tech = ["apple", "google", "microsoft", "openai", "chatgpt", " ai ", "ios", "android", "iphone", "samsung", "xiaomi", "oppo", "smartphone", "điện thoại", "laptop", "macbook", "chipset", "nvidia", "intel", "amd", "space", "nasa", "vũ trụ", "tên lửa", "game", "gaming", "playstation", "xbox", "nintendo", "steam", "update", "windows", "software", "phần mềm", "app ", "technology", "khoa học", "robot", "cyber", "hack", "an ninh mạng"];
-  const finance = ["vàng", "gold", " usd", "chứng khoán", "cổ phiếu", "bitcoin", "crypto", "ngân hàng", "tỷ giá", "lãi suất", "giá xăng", "bất động sản", "bđs", "doanh nghiệp", "kinh tế", "finance", "stock", "shares", "invest", "fed ", "lạm phát", "inflation", "doanh thu", "triệu đô", "bản án", "thuế", "oil ", "market"];
-  const news = ["bão", "lũ", "thời tiết", "mưa", "nắng nóng", "tổng thống", "bầu cử", "họp", "chính phủ", "quốc hội", "tai nạn", "cháy", "hỏa hoạn", "công an", "điều tra", "phát biểu", "thủ tướng", "bị bắt", "khởi tố", "vi phạm", "xử phạt", "phạt ", "tòa án", "kết án", "chiến tranh", "xung đột", "quân đội", "tấn công", "nổ ", "earthquake", "động đất", "tsunami", "sóng thần", "tornado", "lốc xoáy", "flood", "typhoon", "hurricane", "president", "election", "parliament", "government", "minister", "police", "arrest", "investigate", "court", "trial"];
-  const health = ["dịch bệnh", "covid", "vaccine", "thuốc", "bác sĩ", "bệnh viện", "giảm cân", "sức khỏe", "triệu chứng", "bệnh ", "virus", "vi khuẩn", "y tế", "sốt ", "ung thư", "đột quỵ", "health", "disease", "medical", "doctor", "hospital", "symptom", "cancer", "stroke"];
+  const sports = ["vs", "cup", "trÃƒÂ¡Ã‚ÂºÃ‚Â­n", "bÃƒÆ’Ã‚Â³ng Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¡", "soccer", "football", "tennis", "nba", "euro", "world cup", "fifa", "ngoÃƒÂ¡Ã‚ÂºÃ‚Â¡i hÃƒÂ¡Ã‚ÂºÃ‚Â¡ng", "cÃƒÂ¡Ã‚ÂºÃ‚Â§u thÃƒÂ¡Ã‚Â»Ã‚Â§", "v-league", "real madrid", "barcelona", "chelsea", "arsenal", "liverpool", "manchester", "mu ", "mc ", "clb", "vÃƒÆ’Ã‚Â´ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch", "bÃƒÆ’Ã‚Â n thÃƒÂ¡Ã‚ÂºÃ‚Â¯ng", "gold cup", "athlete", "championship", "tournament", "olympics", "racing", "f1", "vÃƒÆ’Ã‚Âµ sÃƒâ€žÃ‚Â©", "mma", "ufc", "bÃƒÆ’Ã‚Â³ng rÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢", "bÃƒÆ’Ã‚Â³ng chuyÃƒÂ¡Ã‚Â»Ã‚Ân", "athletics", "sea games"];
+  const entertainment = ["phim", "movie", "show", "drama", "diÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¦n viÃƒÆ’Ã‚Âªn", "ca sÃƒâ€žÃ‚Â©", "album", " mv ", "music", "nhÃƒÂ¡Ã‚ÂºÃ‚Â¡c", "concert", "blackpink", "bts", "rap", "netflix", "rÃƒÂ¡Ã‚ÂºÃ‚Â¡p", "oscars", "oscar", "kpop", "vpop", "showbiz", "hoÃƒÆ’Ã‚Â ng gia", "tÃƒÂ¡Ã‚ÂºÃ‚Â­p ", "tÃƒÂ¡Ã‚ÂºÃ‚Â­p bÃƒÆ’Ã‚Â³ng", "rap viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t", "sao viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡t", "trÃƒÂ¡Ã‚ÂºÃ‚Â¥n thÃƒÆ’Ã‚Â nh", "sÃƒâ€ Ã‚Â¡n tÃƒÆ’Ã‚Â¹ng", "cinema", "hÃƒÆ’Ã‚Â¡t", "nghÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡ sÃƒâ€žÃ‚Â©", "tÃƒÂ¡Ã‚ÂºÃ‚Â­p phim", "trailer", "actor", "actress", "singer", "song", "celeb"];
+  const tech = ["apple", "google", "microsoft", "openai", "chatgpt", " ai ", "ios", "android", "iphone", "samsung", "xiaomi", "oppo", "smartphone", "Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n thoÃƒÂ¡Ã‚ÂºÃ‚Â¡i", "laptop", "macbook", "chipset", "nvidia", "intel", "amd", "space", "nasa", "vÃƒâ€¦Ã‚Â© trÃƒÂ¡Ã‚Â»Ã‚Â¥", "tÃƒÆ’Ã‚Âªn lÃƒÂ¡Ã‚Â»Ã‚Â­a", "game", "gaming", "playstation", "xbox", "nintendo", "steam", "update", "windows", "software", "phÃƒÂ¡Ã‚ÂºÃ‚Â§n mÃƒÂ¡Ã‚Â»Ã‚Âm", "app ", "technology", "khoa hÃƒÂ¡Ã‚Â»Ã‚Âc", "robot", "cyber", "hack", "an ninh mÃƒÂ¡Ã‚ÂºÃ‚Â¡ng"];
+  const finance = ["vÃƒÆ’Ã‚Â ng", "gold", " usd", "chÃƒÂ¡Ã‚Â»Ã‚Â©ng khoÃƒÆ’Ã‚Â¡n", "cÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ phiÃƒÂ¡Ã‚ÂºÃ‚Â¿u", "bitcoin", "crypto", "ngÃƒÆ’Ã‚Â¢n hÃƒÆ’Ã‚Â ng", "tÃƒÂ¡Ã‚Â»Ã‚Â· giÃƒÆ’Ã‚Â¡", "lÃƒÆ’Ã‚Â£i suÃƒÂ¡Ã‚ÂºÃ‚Â¥t", "giÃƒÆ’Ã‚Â¡ xÃƒâ€žÃ†â€™ng", "bÃƒÂ¡Ã‚ÂºÃ‚Â¥t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng sÃƒÂ¡Ã‚ÂºÃ‚Â£n", "bÃƒâ€žÃ¢â‚¬Ëœs", "doanh nghiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡p", "kinh tÃƒÂ¡Ã‚ÂºÃ‚Â¿", "finance", "stock", "shares", "invest", "fed ", "lÃƒÂ¡Ã‚ÂºÃ‚Â¡m phÃƒÆ’Ã‚Â¡t", "inflation", "doanh thu", "triÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â´", "bÃƒÂ¡Ã‚ÂºÃ‚Â£n ÃƒÆ’Ã‚Â¡n", "thuÃƒÂ¡Ã‚ÂºÃ‚Â¿", "oil ", "market"];
+  const news = ["bÃƒÆ’Ã‚Â£o", "lÃƒâ€¦Ã‚Â©", "thÃƒÂ¡Ã‚Â»Ã‚Âi tiÃƒÂ¡Ã‚ÂºÃ‚Â¿t", "mÃƒâ€ Ã‚Â°a", "nÃƒÂ¡Ã‚ÂºÃ‚Â¯ng nÃƒÆ’Ã‚Â³ng", "tÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ng thÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœng", "bÃƒÂ¡Ã‚ÂºÃ‚Â§u cÃƒÂ¡Ã‚Â»Ã‚Â­", "hÃƒÂ¡Ã‚Â»Ã‚Âp", "chÃƒÆ’Ã‚Â­nh phÃƒÂ¡Ã‚Â»Ã‚Â§", "quÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc hÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢i", "tai nÃƒÂ¡Ã‚ÂºÃ‚Â¡n", "chÃƒÆ’Ã‚Â¡y", "hÃƒÂ¡Ã‚Â»Ã‚Âa hoÃƒÂ¡Ã‚ÂºÃ‚Â¡n", "cÃƒÆ’Ã‚Â´ng an", "Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã‚Âu tra", "phÃƒÆ’Ã‚Â¡t biÃƒÂ¡Ã‚Â»Ã†â€™u", "thÃƒÂ¡Ã‚Â»Ã‚Â§ tÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng", "bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ bÃƒÂ¡Ã‚ÂºÃ‚Â¯t", "khÃƒÂ¡Ã‚Â»Ã…Â¸i tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ", "vi phÃƒÂ¡Ã‚ÂºÃ‚Â¡m", "xÃƒÂ¡Ã‚Â»Ã‚Â­ phÃƒÂ¡Ã‚ÂºÃ‚Â¡t", "phÃƒÂ¡Ã‚ÂºÃ‚Â¡t ", "tÃƒÆ’Ã‚Â²a ÃƒÆ’Ã‚Â¡n", "kÃƒÂ¡Ã‚ÂºÃ‚Â¿t ÃƒÆ’Ã‚Â¡n", "chiÃƒÂ¡Ã‚ÂºÃ‚Â¿n tranh", "xung Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t", "quÃƒÆ’Ã‚Â¢n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢i", "tÃƒÂ¡Ã‚ÂºÃ‚Â¥n cÃƒÆ’Ã‚Â´ng", "nÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢ ", "earthquake", "Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¥t", "tsunami", "sÃƒÆ’Ã‚Â³ng thÃƒÂ¡Ã‚ÂºÃ‚Â§n", "tornado", "lÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc xoÃƒÆ’Ã‚Â¡y", "flood", "typhoon", "hurricane", "president", "election", "parliament", "government", "minister", "police", "arrest", "investigate", "court", "trial"];
+  const health = ["dÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ch bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh", "covid", "vaccine", "thuÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc", "bÃƒÆ’Ã‚Â¡c sÃƒâ€žÃ‚Â©", "bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh viÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡n", "giÃƒÂ¡Ã‚ÂºÃ‚Â£m cÃƒÆ’Ã‚Â¢n", "sÃƒÂ¡Ã‚Â»Ã‚Â©c khÃƒÂ¡Ã‚Â»Ã‚Âe", "triÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u chÃƒÂ¡Ã‚Â»Ã‚Â©ng", "bÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh ", "virus", "vi khuÃƒÂ¡Ã‚ÂºÃ‚Â©n", "y tÃƒÂ¡Ã‚ÂºÃ‚Â¿", "sÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœt ", "ung thÃƒâ€ Ã‚Â°", "Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t quÃƒÂ¡Ã‚Â»Ã‚Âµ", "health", "disease", "medical", "doctor", "hospital", "symptom", "cancer", "stroke"];
 
   if (sports.some(w => text.includes(w))) return "sports";
   if (entertainment.some(w => text.includes(w))) return "entertainment";
@@ -1586,7 +1665,7 @@ async function fetchAndRenderTrends(force = false) {
   const topicSelect = $("#trendsTopic");
   const topic = topicSelect ? topicSelect.value : "all";
   
-  $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">⏳</span><h3>Đang tải xu hướng...</h3><p>Đang lấy dữ liệu RSS từ Google Trends (${geo})...</p></div>`;
+  $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng...</h3><p>Ãƒâ€žÃ‚Âang lÃƒÂ¡Ã‚ÂºÃ‚Â¥y dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u RSS tÃƒÂ¡Ã‚Â»Ã‚Â« Google Trends (${geo})...</p></div>`;
   const chartRow = $("#trendsChartRow");
   if (chartRow) chartRow.style.display = "none";
 
@@ -1620,7 +1699,7 @@ async function fetchAndRenderTrends(force = false) {
     
     addLog("success", `Google Trends Loaded`, `Successfully parsed ${filtered.length}/${state.trends.length} daily trends for ${geo}`);
   } catch (err) {
-    $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Không thể tải xu hướng</h3><p>${escapeHtml(err.message)}</p></div>`;
+    $("#trendsList").innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng</h3><p>${escapeHtml(err.message)}</p></div>`;
     updateLoadMoreButton("trends", 0, 0);
     addLog("error", `Failed to fetch trends`, err.message);
   }
@@ -1632,8 +1711,8 @@ function updateLoadMoreButton(scope, total, visible) {
   const remaining = Math.max(0, Number(total || 0) - Number(visible || 0));
   button.style.display = remaining > 0 ? "inline-flex" : "none";
   button.textContent = remaining > 0
-    ? `⬇️ Load more (${remaining} còn lại)`
-    : "⬇️ Load more";
+    ? `ÃƒÂ¢Ã‚Â¬Ã¢â‚¬Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Load more (${remaining} cÃƒÆ’Ã‚Â²n lÃƒÂ¡Ã‚ÂºÃ‚Â¡i)`
+    : "ÃƒÂ¢Ã‚Â¬Ã¢â‚¬Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Load more";
 }
 
 function resetTrendsVisibleCount() {
@@ -1650,25 +1729,25 @@ function renderTrendsList(trends) {
   if (!container) return;
   
   if (!trends || !trends.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">🔍</span><h3>Không tìm thấy xu hướng nào</h3><p>Thử điều chỉnh bộ lọc từ khóa hoặc quốc gia khác.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y xu hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng nÃƒÆ’Ã‚Â o</h3><p>ThÃƒÂ¡Ã‚Â»Ã‚Â­ Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã‚Âu chÃƒÂ¡Ã‚Â»Ã¢â‚¬Â°nh bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ lÃƒÂ¡Ã‚Â»Ã‚Âc tÃƒÂ¡Ã‚Â»Ã‚Â« khÃƒÆ’Ã‚Â³a hoÃƒÂ¡Ã‚ÂºÃ‚Â·c quÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc gia khÃƒÆ’Ã‚Â¡c.</p></div>`;
     return;
   }
 
   const topicLabels = {
-    sports: "⚽ Thể thao",
-    entertainment: "🎬 Giải trí",
-    tech: "💻 Công nghệ",
-    finance: "📈 Tài chính",
-    news: "📰 Thời sự",
-    health: "🩺 Y tế",
-    other: "🌐 Khác"
+    sports: "ÃƒÂ¢Ã…Â¡Ã‚Â½ ThÃƒÂ¡Ã‚Â»Ã†â€™ thao",
+    entertainment: "ÃƒÂ°Ã…Â¸Ã…Â½Ã‚Â¬ GiÃƒÂ¡Ã‚ÂºÃ‚Â£i trÃƒÆ’Ã‚Â­",
+    tech: "ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â» CÃƒÆ’Ã‚Â´ng nghÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡",
+    finance: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‹â€  TÃƒÆ’Ã‚Â i chÃƒÆ’Ã‚Â­nh",
+    news: "ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â° ThÃƒÂ¡Ã‚Â»Ã‚Âi sÃƒÂ¡Ã‚Â»Ã‚Â±",
+    health: "ÃƒÂ°Ã…Â¸Ã‚Â©Ã‚Âº Y tÃƒÂ¡Ã‚ÂºÃ‚Â¿",
+    other: "ÃƒÂ°Ã…Â¸Ã…â€™Ã‚Â KhÃƒÆ’Ã‚Â¡c"
   };
   
   container.innerHTML = trends.map((item, index) => {
     let newsHtml = "";
     if (item.news && item.news.length) {
       newsHtml = `
-        <div class="trend-news-title">📰 Tin tức liên quan</div>
+        <div class="trend-news-title">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â° Tin tÃƒÂ¡Ã‚Â»Ã‚Â©c liÃƒÆ’Ã‚Âªn quan</div>
         <ul class="trend-news-list">
           ${item.news.slice(0, 3).map(n => `
             <li class="trend-news-item">
@@ -1696,7 +1775,7 @@ function renderTrendsList(trends) {
               <strong class="trend-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</strong>
               ${topicBadge}
             </div>
-            <span class="trend-traffic">🔥 ${escapeHtml(item.traffic)} searches</span>
+            <span class="trend-traffic">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ ${escapeHtml(item.traffic)} searches</span>
           </div>
         </div>
         <div class="trend-body">
@@ -1704,7 +1783,7 @@ function renderTrendsList(trends) {
           ${newsHtml}
         </div>
         <div class="trend-footer">
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(exploreUrl)}">🔗 Khám phá chi tiết</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(exploreUrl)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ KhÃƒÆ’Ã‚Â¡m phÃƒÆ’Ã‚Â¡ chi tiÃƒÂ¡Ã‚ÂºÃ‚Â¿t</button>
         </div>
       </article>
     `;
@@ -1792,7 +1871,7 @@ function renderTrendsChart(trends) {
         height="${barH}" 
         fill="url(#trendBarGrad)" 
         rx="4" 
-        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>🔥 Lượng tìm kiếm: ${escapeHtml(item.trafficLabel)}" 
+        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ LÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m: ${escapeHtml(item.trafficLabel)}" 
         style="transition: all 0.3s; cursor: pointer;" 
       />
     `;
@@ -1843,10 +1922,10 @@ async function fetchAndRenderThreads(force = false) {
   }
 
   const scopeLabel = request.countryLabel || "Global";
-  container.innerHTML = `<div class="empty-state"><span class="empty-icon">⏳</span><h3>Đang tải Threads...</h3><p>Đang đọc Threads Search scope ${escapeHtml(scopeLabel)} cho query "${escapeHtml(request.query)}".</p></div>`;
+  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i Threads...</h3><p>Ãƒâ€žÃ‚Âang Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc Threads Search scope ${escapeHtml(scopeLabel)} cho query "${escapeHtml(request.query)}".</p></div>`;
   const chartRow = $("#threadsChartRow");
   if (chartRow) chartRow.style.display = "none";
-  if (status) status.textContent = `Đang tải ${request.limit} post từ Threads Search...`;
+  if (status) status.textContent = `Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${request.limit} post tÃƒÂ¡Ã‚Â»Ã‚Â« Threads Search...`;
 
   try {
     addLog("refresh", "Fetching Threads Search", `query=${request.query}, limit=${request.limit}`);
@@ -1856,12 +1935,12 @@ async function fetchAndRenderThreads(force = false) {
     renderThreadsChart(state.threads);
     renderThreadsList(state.threads);
     const queries = data && Array.isArray(data.queries) ? data.queries.join(", ") : request.query;
-    if (status) status.textContent = `Đã tải ${state.threads.length}/${request.limit} post cho scope ${scopeLabel}. Queries: ${queries}`;
+    if (status) status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${state.threads.length}/${request.limit} post cho scope ${scopeLabel}. Queries: ${queries}`;
     updateThreadsLoadMoreButton(state.threads.length >= request.limit);
     addLog("success", "Threads Search loaded", `Parsed ${state.threads.length} post(s).`);
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Không thể tải Threads</h3><p>${escapeHtml(err.message)}</p></div>`;
-    if (status) status.textContent = "Không tải được Threads Search.";
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i Threads</h3><p>${escapeHtml(err.message)}</p></div>`;
+    if (status) status.textContent = "KhÃƒÆ’Ã‚Â´ng tÃƒÂ¡Ã‚ÂºÃ‚Â£i Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c Threads Search.";
     if (chartRow) chartRow.style.display = "none";
     updateThreadsLoadMoreButton(false);
     addLog("error", "Failed to fetch Threads", err.message);
@@ -1872,7 +1951,7 @@ function updateThreadsLoadMoreButton(canLoadMore) {
   const button = $("#loadMoreThreadsBtn");
   if (!button) return;
   button.style.display = canLoadMore ? "inline-flex" : "none";
-  button.textContent = `⬇️ Load more Threads (${Number(state.threadsVisibleCount || 10) + 10})`;
+  button.textContent = `ÃƒÂ¢Ã‚Â¬Ã¢â‚¬Â¡ÃƒÂ¯Ã‚Â¸Ã‚Â Load more Threads (${Number(state.threadsVisibleCount || 10) + 10})`;
 }
 
 function loadMoreThreads() {
@@ -1946,7 +2025,7 @@ function renderThreadsChart(items) {
         height="${barH}"
         fill="url(#threadsBarGrad)"
         rx="4"
-        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>❤️ Likes: ${item.value.toLocaleString()}<br>💬 Replies: ${item.replies.toLocaleString()}<br>Query: ${escapeHtml(item.query)}"
+        data-tooltip="<strong>${escapeHtml(item.title)}</strong><br>ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â Likes: ${item.value.toLocaleString()}<br>ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¬ Replies: ${item.replies.toLocaleString()}<br>Query: ${escapeHtml(item.query)}"
         style="transition: all 0.3s; cursor: pointer;"
       />
       <text
@@ -1967,7 +2046,7 @@ function renderThreadsList(items) {
   if (!container) return;
 
   if (!items || !items.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">🔍</span><h3>Chưa có thread phù hợp</h3><p>Thử query khác hoặc kiểm tra Threads có đang yêu cầu đăng nhập hay không.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ thread phÃƒÆ’Ã‚Â¹ hÃƒÂ¡Ã‚Â»Ã‚Â£p</h3><p>ThÃƒÂ¡Ã‚Â»Ã‚Â­ query khÃƒÆ’Ã‚Â¡c hoÃƒÂ¡Ã‚ÂºÃ‚Â·c kiÃƒÂ¡Ã‚Â»Ã†â€™m tra Threads cÃƒÆ’Ã‚Â³ Ãƒâ€žÃ¢â‚¬Ëœang yÃƒÆ’Ã‚Âªu cÃƒÂ¡Ã‚ÂºÃ‚Â§u Ãƒâ€žÃ¢â‚¬ËœÃƒâ€žÃ†â€™ng nhÃƒÂ¡Ã‚ÂºÃ‚Â­p hay khÃƒÆ’Ã‚Â´ng.</p></div>`;
     return;
   }
 
@@ -1976,8 +2055,8 @@ function renderThreadsList(items) {
     const preview = text.length > 260 ? `${text.slice(0, 257).trim()}...` : text;
     const takenAt = item.taken_at ? formatDate(item.taken_at) : "n/a";
     const thumbnail = item.thumbnail
-      ? `<img class="trend-img threads-thumb" src="${escapeHtml(item.thumbnail)}" alt="${escapeHtml(item.username || "Threads")} thumbnail" onerror="this.outerHTML='<div class=&quot;trend-img threads-thumb placeholder&quot; aria-hidden=&quot;true&quot;>🧵</div>'">`
-      : `<div class="trend-img threads-thumb placeholder" aria-hidden="true">🧵</div>`;
+      ? `<img class="trend-img threads-thumb" src="${escapeHtml(item.thumbnail)}" alt="${escapeHtml(item.username || "Threads")} thumbnail" onerror="this.outerHTML='<div class=&quot;trend-img threads-thumb placeholder&quot; aria-hidden=&quot;true&quot;>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âµ</div>'">`
+      : `<div class="trend-img threads-thumb placeholder" aria-hidden="true">ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Âµ</div>`;
     return `
       <article class="trend-card threads-card">
         <div class="trend-header">
@@ -1987,14 +2066,14 @@ function renderThreadsList(items) {
               <strong class="trend-title">#${index + 1} @${escapeHtml(item.username || "unknown")}</strong>
               <span class="trend-topic-badge topic-tech">${escapeHtml(item.full_name || "Threads")}</span>
             </div>
-            <span class="trend-traffic">❤️ ${Number(item.like_count || 0).toLocaleString()} likes · 💬 ${Number(item.reply_count || 0).toLocaleString()} replies · query: ${escapeHtml(item.source_query || "n/a")} · ${escapeHtml(takenAt)}</span>
+            <span class="trend-traffic">ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â ${Number(item.like_count || 0).toLocaleString()} likes Ãƒâ€šÃ‚Â· ÃƒÂ°Ã…Â¸Ã¢â‚¬â„¢Ã‚Â¬ ${Number(item.reply_count || 0).toLocaleString()} replies Ãƒâ€šÃ‚Â· query: ${escapeHtml(item.source_query || "n/a")} Ãƒâ€šÃ‚Â· ${escapeHtml(takenAt)}</span>
           </div>
         </div>
         <div class="trend-body">
           <p class="trend-desc">${escapeHtml(preview)}</p>
         </div>
         <div class="trend-footer">
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url)}">🔗 Mở thread</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ MÃƒÂ¡Ã‚Â»Ã…Â¸ thread</button>
         </div>
       </article>
     `;
@@ -2006,13 +2085,13 @@ async function sendThreadsTelegram() {
   const status = $("#threadsStatus");
   const request = getThreadsRequest();
   if (button) button.disabled = true;
-  if (status) status.textContent = `Đang gửi báo cáo Threads "${request.query}" về Telegram...`;
+  if (status) status.textContent = `Ãƒâ€žÃ‚Âang gÃƒÂ¡Ã‚Â»Ã‚Â­i bÃƒÆ’Ã‚Â¡o cÃƒÆ’Ã‚Â¡o Threads "${request.query}" vÃƒÂ¡Ã‚Â»Ã‚Â Telegram...`;
   try {
     const result = await window.moneyDesk.sendThreadsReport(request);
-    if (status) status.textContent = "Đã gửi báo cáo Threads về Telegram.";
+    if (status) status.textContent = "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ gÃƒÂ¡Ã‚Â»Ã‚Â­i bÃƒÆ’Ã‚Â¡o cÃƒÆ’Ã‚Â¡o Threads vÃƒÂ¡Ã‚Â»Ã‚Â Telegram.";
     addLog("success", "Sent Threads Telegram report", result.stdout || "Telegram message sent.");
   } catch (err) {
-    if (status) status.textContent = `Gửi Telegram thất bại: ${err.message}`;
+    if (status) status.textContent = `GÃƒÂ¡Ã‚Â»Ã‚Â­i Telegram thÃƒÂ¡Ã‚ÂºÃ‚Â¥t bÃƒÂ¡Ã‚ÂºÃ‚Â¡i: ${err.message}`;
     addLog("error", "Threads Telegram failed", err.message);
   } finally {
     if (button) button.disabled = false;
@@ -2052,9 +2131,9 @@ async function fetchAndRenderFacebook(force = false) {
     return;
   }
 
-  container.innerHTML = `<div class="empty-state"><span class="empty-icon">⏳</span><h3>Đang tải Facebook...</h3><p>Đang đọc ${request.sourceList.length} nguồn page/group đã chỉ định.</p></div>`;
+  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i Facebook...</h3><p>Ãƒâ€žÃ‚Âang Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc ${request.sourceList.length} nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n page/group Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ chÃƒÂ¡Ã‚Â»Ã¢â‚¬Â° Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh.</p></div>`;
   if (sourceList) sourceList.innerHTML = "";
-  if (status) status.textContent = `Đang tải tối đa ${request.limit} bài mỗi nguồn...`;
+  if (status) status.textContent = `Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi Ãƒâ€žÃ¢â‚¬Ëœa ${request.limit} bÃƒÆ’Ã‚Â i mÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n...`;
 
   try {
     addLog("refresh", "Fetching Facebook trends", `${request.sourceList.length} source(s), limit=${request.limit}`);
@@ -2069,12 +2148,12 @@ async function fetchAndRenderFacebook(force = false) {
     renderFacebookList(state.facebook.items || [], request.query);
     const blocked = (state.facebook.sources || []).filter(source => source.login_required).length;
     if (status) {
-      status.textContent = `Đã tải ${(state.facebook.items || []).length} bài. ${blocked ? `${blocked} nguồn cần cookie đăng nhập Facebook.` : "Các nguồn public đã đọc xong."}`;
+      status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${(state.facebook.items || []).length} bÃƒÆ’Ã‚Â i. ${blocked ? `${blocked} nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n cÃƒÂ¡Ã‚ÂºÃ‚Â§n cookie Ãƒâ€žÃ¢â‚¬ËœÃƒâ€žÃ†â€™ng nhÃƒÂ¡Ã‚ÂºÃ‚Â­p Facebook.` : "CÃƒÆ’Ã‚Â¡c nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n public Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc xong."}`;
     }
     addLog("success", "Facebook trends loaded", `${(state.facebook.items || []).length} post(s), blocked=${blocked}`);
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Không thể tải Facebook</h3><p>${escapeHtml(err.message)}</p></div>`;
-    if (status) status.textContent = "Không tải được Facebook trends.";
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i Facebook</h3><p>${escapeHtml(err.message)}</p></div>`;
+    if (status) status.textContent = "KhÃƒÆ’Ã‚Â´ng tÃƒÂ¡Ã‚ÂºÃ‚Â£i Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c Facebook trends.";
     addLog("error", "Failed to fetch Facebook trends", err.message);
   }
 }
@@ -2089,7 +2168,7 @@ function renderFacebookSources(sources) {
   container.innerHTML = sources.map((source) => {
     const count = Array.isArray(source.items) ? source.items.length : 0;
     const stateClass = count ? "ok" : source.login_required ? "blocked" : "empty";
-    const stateLabel = count ? `${count} bài` : source.login_required ? "Cần cookie" : "Chưa thấy bài public";
+    const stateLabel = count ? `${count} bÃƒÆ’Ã‚Â i` : source.login_required ? "CÃƒÂ¡Ã‚ÂºÃ‚Â§n cookie" : "ChÃƒâ€ Ã‚Â°a thÃƒÂ¡Ã‚ÂºÃ‚Â¥y bÃƒÆ’Ã‚Â i public";
     return `
       <button class="facebook-source-chip ${stateClass}" type="button" data-open-url="${escapeHtml(source.source_url)}" title="${escapeHtml(source.error || source.source_url)}">
         <strong>${escapeHtml(source.source || "Facebook")}</strong>
@@ -2108,7 +2187,7 @@ function renderFacebookList(items, query = "") {
   });
 
   if (!filtered.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">🔍</span><h3>Chưa có bài Facebook phù hợp</h3><p>Facebook có thể đang yêu cầu đăng nhập. Có thể đặt FACEBOOK_COOKIE trong .env để fetch các nhóm bạn có quyền xem.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ bÃƒÆ’Ã‚Â i Facebook phÃƒÆ’Ã‚Â¹ hÃƒÂ¡Ã‚Â»Ã‚Â£p</h3><p>Facebook cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ Ãƒâ€žÃ¢â‚¬Ëœang yÃƒÆ’Ã‚Âªu cÃƒÂ¡Ã‚ÂºÃ‚Â§u Ãƒâ€žÃ¢â‚¬ËœÃƒâ€žÃ†â€™ng nhÃƒÂ¡Ã‚ÂºÃ‚Â­p. CÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â·t FACEBOOK_COOKIE trong .env Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ fetch cÃƒÆ’Ã‚Â¡c nhÃƒÆ’Ã‚Â³m bÃƒÂ¡Ã‚ÂºÃ‚Â¡n cÃƒÆ’Ã‚Â³ quyÃƒÂ¡Ã‚Â»Ã‚Ân xem.</p></div>`;
     return;
   }
 
@@ -2131,8 +2210,8 @@ function renderFacebookList(items, query = "") {
           <p class="trend-desc">${escapeHtml(preview)}</p>
         </div>
         <div class="trend-footer">
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url || item.source_url)}">🔗 Mở bài</button>
-          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.source_url)}">📘 Mở nguồn</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.url || item.source_url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬â€ MÃƒÂ¡Ã‚Â»Ã…Â¸ bÃƒÆ’Ã‚Â i</button>
+          <button class="secondary-button compact-btn" data-open-url="${escapeHtml(item.source_url)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‹Å“ MÃƒÂ¡Ã‚Â»Ã…Â¸ nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n</button>
         </div>
       </article>
     `;
@@ -2161,18 +2240,18 @@ async function fetchAndRenderYouTube(force = false) {
     renderYouTubeList(state.youtube);
     return;
   }
-  container.innerHTML = `<div class="empty-state"><span class="empty-icon">⏳</span><h3>Đang tải YouTube trend...</h3><p>Đang lấy title và thumbnail từ YouTube.</p></div>`;
-  if (status) status.textContent = `Đang tải YouTube trend region=${request.region}, chủ đề=${request.topic}, thời gian=${request.period}...`;
+  container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã‚ÂÃ‚Â³</span><h3>Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend...</h3><p>Ãƒâ€žÃ‚Âang lÃƒÂ¡Ã‚ÂºÃ‚Â¥y title vÃƒÆ’Ã‚Â  thumbnail tÃƒÂ¡Ã‚Â»Ã‚Â« YouTube.</p></div>`;
+  if (status) status.textContent = `Ãƒâ€žÃ‚Âang tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend region=${request.region}, chÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â=${request.topic}, thÃƒÂ¡Ã‚Â»Ã‚Âi gian=${request.period}...`;
   try {
     const data = await window.moneyDesk.fetchYouTubeTrends(request);
     state.youtube = data.items || [];
     state.youtubeKey = cacheKey;
     renderYouTubeList(state.youtube);
-    if (status) status.textContent = `Đã tải ${state.youtube.length} video trong ${data.period || request.period}. Chủ đề: ${data.topic || request.topic}. Query: ${data.query || request.query || "default"}`;
+    if (status) status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ tÃƒÂ¡Ã‚ÂºÃ‚Â£i ${state.youtube.length} video trong ${data.period || request.period}. ChÃƒÂ¡Ã‚Â»Ã‚Â§ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â: ${data.topic || request.topic}. Query: ${data.query || request.query || "default"}`;
     addLog("success", "Loaded YouTube trends", `${state.youtube.length} video(s), region=${request.region}, topic=${request.topic}, period=${request.period}`);
   } catch (err) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Không thể tải YouTube trend</h3><p>${escapeHtml(err.message)}</p></div>`;
-    if (status) status.textContent = `Không thể tải YouTube trend: ${err.message}`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend</h3><p>${escapeHtml(err.message)}</p></div>`;
+    if (status) status.textContent = `KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â£i YouTube trend: ${err.message}`;
     addLog("error", "YouTube trend failed", err.message);
   }
 }
@@ -2181,7 +2260,7 @@ function renderYouTubeList(items) {
   const container = $("#youtubeList");
   if (!container) return;
   if (!items.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">📭</span><h3>Chưa có video</h3><p>Thử region hoặc query khác.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â­</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ video</h3><p>ThÃƒÂ¡Ã‚Â»Ã‚Â­ region hoÃƒÂ¡Ã‚ÂºÃ‚Â·c query khÃƒÆ’Ã‚Â¡c.</p></div>`;
     return;
   }
   container.innerHTML = items.map((item, index) => {
@@ -2193,9 +2272,9 @@ function renderYouTubeList(items) {
       const word = keyword.keyword || "";
       const url = `https://www.youtube.com/results?search_query=${encodeURIComponent(word)}`;
       return `
-        <button class="youtube-keyword-chip ${escapeHtml(keyword.type || "secondary")}" type="button" data-open-url="${escapeHtml(url)}" title="${escapeHtml(keyword.reason || "Mở keyword trên YouTube")}">
+        <button class="youtube-keyword-chip ${escapeHtml(keyword.type || "secondary")}" type="button" data-open-url="${escapeHtml(url)}" title="${escapeHtml(keyword.reason || "MÃƒÂ¡Ã‚Â»Ã…Â¸ keyword trÃƒÆ’Ã‚Âªn YouTube")}">
           <strong>${escapeHtml(word)}</strong>
-          <span>${Number(keyword.predicted_volume || 0).toLocaleString()} · ${escapeHtml(keyword.volume_label || "n/a")}</span>
+          <span>${Number(keyword.predicted_volume || 0).toLocaleString()} Ãƒâ€šÃ‚Â· ${escapeHtml(keyword.volume_label || "n/a")}</span>
         </button>
       `;
     };
@@ -2211,8 +2290,8 @@ function renderYouTubeList(items) {
     const colorSwatches = (analysis.color_palette || []).map(color => `
       <div class="youtube-color-swatch">
         <span style="background:${escapeHtml(color.hex || "#94a3b8")}"></span>
-        <strong>${escapeHtml(color.color || "màu")}</strong>
-        <small>${escapeHtml(color.role || "")} · ${Math.round(Number(color.share || 0) * 100)}%</small>
+        <strong>${escapeHtml(color.color || "mÃƒÆ’Ã‚Â u")}</strong>
+        <small>${escapeHtml(color.role || "")} Ãƒâ€šÃ‚Â· ${Math.round(Number(color.share || 0) * 100)}%</small>
         <em>${escapeHtml(color.emotion || "")}</em>
       </div>
     `).join("");
@@ -2225,7 +2304,7 @@ function renderYouTubeList(items) {
       </span>
     `).join("");
     const channelRefs = (analysis.niche_reference_channels || []).map(ref => `
-      <button class="youtube-channel-ref" type="button" data-open-url="${escapeHtml(ref.url || "")}" title="${escapeHtml(ref.reason || "Mở YouTube")}">
+      <button class="youtube-channel-ref" type="button" data-open-url="${escapeHtml(ref.url || "")}" title="${escapeHtml(ref.reason || "MÃƒÂ¡Ã‚Â»Ã…Â¸ YouTube")}">
         <strong>${escapeHtml(ref.label || "Channel")}</strong>
         <span>${escapeHtml(ref.reason || "")}</span>
       </button>
@@ -2240,10 +2319,10 @@ function renderYouTubeList(items) {
           <div class="youtube-rank">#${index + 1}</div>
           <h3><button class="youtube-title-button" type="button" data-open-url="${escapeHtml(item.url)}">${escapeHtml(item.title)}</button></h3>
           <div class="youtube-score-strip">
-            <span class="overall">Overall ${Number(analysis.overall_score || 0)}/100 · ${escapeHtml(analysis.score_label || "")}</span>
+            <span class="overall">Overall ${Number(analysis.overall_score || 0)}/100 Ãƒâ€šÃ‚Â· ${escapeHtml(analysis.score_label || "")}</span>
             <span>Title ${Number(analysis.title_score || 0)}</span>
             <span>Thumbnail ${Number(analysis.thumbnail_score || 0)}</span>
-            <span>Tâm lý ${Number(analysis.psychology_score || 0)}</span>
+            <span>TÃƒÆ’Ã‚Â¢m lÃƒÆ’Ã‚Â½ ${Number(analysis.psychology_score || 0)}</span>
           </div>
           <div class="youtube-meta">
             <span>${escapeHtml(item.channel || "Unknown channel")}</span>
@@ -2252,78 +2331,78 @@ function renderYouTubeList(items) {
           </div>
           <div class="youtube-hooks">${hooks}</div>
           <div class="youtube-analysis">
-            <strong>Từ cần ghi nhớ</strong>
-            <div class="youtube-memory-row">${memorableTerms || "<span class=\"muted\">Chưa đủ dữ liệu để highlight.</span>"}</div>
+            <strong>TÃƒÂ¡Ã‚Â»Ã‚Â« cÃƒÂ¡Ã‚ÂºÃ‚Â§n ghi nhÃƒÂ¡Ã‚Â»Ã¢â‚¬Âº</strong>
+            <div class="youtube-memory-row">${memorableTerms || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ highlight.</span>"}</div>
             <p>${escapeHtml(item.analysis?.memory_note || "")}</p>
             <strong>Title formula</strong>
             <p>${escapeHtml(item.analysis?.title_formula || "")}</p>
             <strong>Thumbnail formula</strong>
             <p>${escapeHtml(item.analysis?.thumbnail_formula || "")}</p>
-            <strong>Chủ thể trong thumbnail</strong>
+            <strong>ChÃƒÂ¡Ã‚Â»Ã‚Â§ thÃƒÂ¡Ã‚Â»Ã†â€™ trong thumbnail</strong>
             <div class="youtube-subjects">${thumbSubjects}</div>
             <p>${escapeHtml(item.analysis?.subject_reason || "")}</p>
-            <strong>Công thức chủ thể</strong>
+            <strong>CÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã‚Â©c chÃƒÂ¡Ã‚Â»Ã‚Â§ thÃƒÂ¡Ã‚Â»Ã†â€™</strong>
             <p>${escapeHtml(item.analysis?.subject_formula || "")}</p>
-            <strong>Vị trí & bố cục</strong>
+            <strong>VÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ trÃƒÆ’Ã‚Â­ & bÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ cÃƒÂ¡Ã‚Â»Ã‚Â¥c</strong>
             <p>${escapeHtml(item.analysis?.placement_reason || "")}</p>
-            <strong>Màu sắc & tương phản</strong>
+            <strong>MÃƒÆ’Ã‚Â u sÃƒÂ¡Ã‚ÂºÃ‚Â¯c & tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng phÃƒÂ¡Ã‚ÂºÃ‚Â£n</strong>
             <p>${escapeHtml(item.analysis?.color_strategy || "")}</p>
-            <div class="youtube-color-grid">${colorSwatches || "<span class=\"muted\">Chưa đọc được palette màu.</span>"}</div>
-            <strong>Công thức phối màu</strong>
+            <div class="youtube-color-grid">${colorSwatches || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Âc Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c palette mÃƒÆ’Ã‚Â u.</span>"}</div>
+            <strong>CÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã‚Â©c phÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœi mÃƒÆ’Ã‚Â u</strong>
             <p>${escapeHtml(item.analysis?.color_formula || "")}</p>
-            <strong>Vì sao dùng màu đó</strong>
+            <strong>VÃƒÆ’Ã‚Â¬ sao dÃƒÆ’Ã‚Â¹ng mÃƒÆ’Ã‚Â u Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â³</strong>
             <p>${escapeHtml(item.analysis?.color_formula_reason || "")}</p>
-            <strong>Cảm giác màu tạo ra</strong>
+            <strong>CÃƒÂ¡Ã‚ÂºÃ‚Â£m giÃƒÆ’Ã‚Â¡c mÃƒÆ’Ã‚Â u tÃƒÂ¡Ã‚ÂºÃ‚Â¡o ra</strong>
             <p>${escapeHtml(item.analysis?.color_emotional_effect || "")}</p>
-            <strong>Yếu tố khiến màu tạo sự thu hút</strong>
+            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ khiÃƒÂ¡Ã‚ÂºÃ‚Â¿n mÃƒÆ’Ã‚Â u tÃƒÂ¡Ã‚ÂºÃ‚Â¡o sÃƒÂ¡Ã‚Â»Ã‚Â± thu hÃƒÆ’Ã‚Âºt</strong>
             <ul class="youtube-product-list">${colorAttractionFactors}</ul>
-            <strong>Cách áp dụng lại palette này</strong>
+            <strong>CÃƒÆ’Ã‚Â¡ch ÃƒÆ’Ã‚Â¡p dÃƒÂ¡Ã‚Â»Ã‚Â¥ng lÃƒÂ¡Ã‚ÂºÃ‚Â¡i palette nÃƒÆ’Ã‚Â y</strong>
             <ol class="youtube-step-list">${colorReuseSteps}</ol>
-            <strong>Yếu tố tạo sự thu hút</strong>
+            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ tÃƒÂ¡Ã‚ÂºÃ‚Â¡o sÃƒÂ¡Ã‚Â»Ã‚Â± thu hÃƒÆ’Ã‚Âºt</strong>
             <ul class="youtube-attraction-list">${attractionFactors}</ul>
-            <strong>Keyword chính</strong>
-            <div class="youtube-keyword-row primary">${primaryKeywords || "<span class=\"muted\">Chưa đủ dữ liệu keyword chính.</span>"}</div>
-            <strong>Keyword phụ</strong>
-            <div class="youtube-keyword-row">${secondaryKeywords || "<span class=\"muted\">Chưa đủ dữ liệu keyword phụ.</span>"}</div>
+            <strong>Keyword chÃƒÆ’Ã‚Â­nh</strong>
+            <div class="youtube-keyword-row primary">${primaryKeywords || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u keyword chÃƒÆ’Ã‚Â­nh.</span>"}</div>
+            <strong>Keyword phÃƒÂ¡Ã‚Â»Ã‚Â¥</strong>
+            <div class="youtube-keyword-row">${secondaryKeywords || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u keyword phÃƒÂ¡Ã‚Â»Ã‚Â¥.</span>"}</div>
             <p>${escapeHtml(item.analysis?.keyword_note || "")}</p>
-            <strong>Yếu tố văn hóa</strong>
+            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ vÃƒâ€žÃ†â€™n hÃƒÆ’Ã‚Â³a</strong>
             <p>${escapeHtml(item.analysis?.cultural_factor || "")}</p>
-            <strong>Độ tuổi quan tâm</strong>
+            <strong>Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ tuÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i quan tÃƒÆ’Ã‚Â¢m</strong>
             <p>${escapeHtml(item.analysis?.age_interest || "")}</p>
-            <strong>Quốc gia quan tâm</strong>
-            <div class="youtube-country-row">${countriesInterest || "<span class=\"muted\">Chưa đủ dữ liệu quốc gia.</span>"}</div>
-            <strong>Tệp khách hướng đến</strong>
+            <strong>QuÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc gia quan tÃƒÆ’Ã‚Â¢m</strong>
+            <div class="youtube-country-row">${countriesInterest || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u quÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœc gia.</span>"}</div>
+            <strong>TÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡p khÃƒÆ’Ã‚Â¡ch hÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºng Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¿n</strong>
             <p>${escapeHtml(item.analysis?.target_customer || "")}</p>
-            <strong>Yếu tố marketing</strong>
+            <strong>YÃƒÂ¡Ã‚ÂºÃ‚Â¿u tÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ marketing</strong>
             <p>${escapeHtml(item.analysis?.marketing_angle || "")}</p>
-            <strong>Đề xuất bán sản phẩm</strong>
+            <strong>Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã‚Â xuÃƒÂ¡Ã‚ÂºÃ‚Â¥t bÃƒÆ’Ã‚Â¡n sÃƒÂ¡Ã‚ÂºÃ‚Â£n phÃƒÂ¡Ã‚ÂºÃ‚Â©m</strong>
             <ul class="youtube-product-list">${productSuggestions}</ul>
             <p>${escapeHtml(item.analysis?.audience_note || "")}</p>
-            <strong>Cách kênh có thể kiếm tiền từ video</strong>
+            <strong>CÃƒÆ’Ã‚Â¡ch kÃƒÆ’Ã‚Âªnh cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m tiÃƒÂ¡Ã‚Â»Ã‚Ân tÃƒÂ¡Ã‚Â»Ã‚Â« video</strong>
             <p>${escapeHtml(item.analysis?.creator_revenue_read || "")}</p>
             <ul class="youtube-product-list">${creatorMonetization}</ul>
-            <strong>Bí mật/insight ít thấy</strong>
+            <strong>BÃƒÆ’Ã‚Â­ mÃƒÂ¡Ã‚ÂºÃ‚Â­t/insight ÃƒÆ’Ã‚Â­t thÃƒÂ¡Ã‚ÂºÃ‚Â¥y</strong>
             <ul class="youtube-product-list">${hiddenInsights}</ul>
-            <strong>Họ có thể tham khảo từ đâu</strong>
-            <div class="youtube-source-row">${referenceSources || "<span class=\"muted\">Chưa đủ dữ liệu nguồn tham khảo.</span>"}</div>
-            <strong>Ý tưởng có thể bắt đầu từ đâu</strong>
+            <strong>HÃƒÂ¡Ã‚Â»Ã‚Â cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o tÃƒÂ¡Ã‚Â»Ã‚Â« Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¢u</strong>
+            <div class="youtube-source-row">${referenceSources || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u nguÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“n tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o.</span>"}</div>
+            <strong>ÃƒÆ’Ã‚Â tÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã…Â¸ng cÃƒÆ’Ã‚Â³ thÃƒÂ¡Ã‚Â»Ã†â€™ bÃƒÂ¡Ã‚ÂºÃ‚Â¯t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u tÃƒÂ¡Ã‚Â»Ã‚Â« Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¢u</strong>
             <p>${escapeHtml(item.analysis?.idea_origin || "")}</p>
             <p>${escapeHtml(item.analysis?.creator_strategy_note || "")}</p>
-            <strong>Có nên làm ngách này không?</strong>
+            <strong>CÃƒÆ’Ã‚Â³ nÃƒÆ’Ã‚Âªn lÃƒÆ’Ã‚Â m ngÃƒÆ’Ã‚Â¡ch nÃƒÆ’Ã‚Â y khÃƒÆ’Ã‚Â´ng?</strong>
             <div class="youtube-niche-verdict">
               <span>${Number(item.analysis?.niche_score || 0)}/100</span>
-              <strong>${escapeHtml(item.analysis?.niche_verdict || "Chưa đủ dữ liệu")}</strong>
+              <strong>${escapeHtml(item.analysis?.niche_verdict || "ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u")}</strong>
             </div>
             <ul class="youtube-product-list">${nicheReasons}</ul>
-            <strong>Bắt đầu từ đâu để làm ngách này</strong>
+            <strong>BÃƒÂ¡Ã‚ÂºÃ‚Â¯t Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u tÃƒÂ¡Ã‚Â»Ã‚Â« Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â¢u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ lÃƒÆ’Ã‚Â m ngÃƒÆ’Ã‚Â¡ch nÃƒÆ’Ã‚Â y</strong>
             <ol class="youtube-step-list">${nicheSteps}</ol>
-            <strong>Kênh liên quan để tham khảo</strong>
-            <div class="youtube-channel-grid">${channelRefs || "<span class=\"muted\">Chưa đủ dữ liệu kênh tham khảo.</span>"}</div>
+            <strong>KÃƒÆ’Ã‚Âªnh liÃƒÆ’Ã‚Âªn quan Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o</strong>
+            <div class="youtube-channel-grid">${channelRefs || "<span class=\"muted\">ChÃƒâ€ Ã‚Â°a Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã‚Â§ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u kÃƒÆ’Ã‚Âªnh tham khÃƒÂ¡Ã‚ÂºÃ‚Â£o.</span>"}</div>
             <strong>Deep thumbnail formula</strong>
             <p>${escapeHtml(item.analysis?.thumbnail_deep_formula || "")}</p>
-            <strong>Tâm lý học</strong>
+            <strong>TÃƒÆ’Ã‚Â¢m lÃƒÆ’Ã‚Â½ hÃƒÂ¡Ã‚Â»Ã‚Âc</strong>
             <p>${escapeHtml(item.analysis?.title_note || "")}</p>
-            <strong>Lý do chấm điểm</strong>
+            <strong>LÃƒÆ’Ã‚Â½ do chÃƒÂ¡Ã‚ÂºÃ‚Â¥m Ãƒâ€žÃ¢â‚¬ËœiÃƒÂ¡Ã‚Â»Ã†â€™m</strong>
             <p>${escapeHtml(item.analysis?.score_reason || "")}</p>
           </div>
         </div>
@@ -2335,18 +2414,18 @@ function renderYouTubeList(items) {
 async function fetchAndRenderInterest() {
   const status = $("#interestStatus");
   const period = $("#interestPeriod")?.value || "24h";
-  if (status) status.textContent = `Đang phân tích dữ liệu đã lưu trong ${period}...`;
+  if (status) status.textContent = `Ãƒâ€žÃ‚Âang phÃƒÆ’Ã‚Â¢n tÃƒÆ’Ã‚Â­ch dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u Ãƒâ€žÃ¢â‚¬ËœÃƒÆ’Ã‚Â£ lÃƒâ€ Ã‚Â°u trong ${period}...`;
   try {
     const data = await window.moneyDesk.analyzeTrendArchive({ period });
     state.interest = data;
     renderInterest(data);
-    if (status) status.textContent = `Đã phân tích ${data.records} record từ ${data.files} file lưu trữ. Cập nhật: ${formatDate(data.generatedAt)}`;
+    if (status) status.textContent = `Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ phÃƒÆ’Ã‚Â¢n tÃƒÆ’Ã‚Â­ch ${data.records} record tÃƒÂ¡Ã‚Â»Ã‚Â« ${data.files} file lÃƒâ€ Ã‚Â°u trÃƒÂ¡Ã‚Â»Ã‚Â¯. CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t: ${formatDate(data.generatedAt)}`;
     addLog("success", "Analyzed trend archive", `${data.records} records, period=${period}`);
   } catch (err) {
-    if (status) status.textContent = `Không thể phân tích dữ liệu: ${err.message}`;
+    if (status) status.textContent = `KhÃƒÆ’Ã‚Â´ng thÃƒÂ¡Ã‚Â»Ã†â€™ phÃƒÆ’Ã‚Â¢n tÃƒÆ’Ã‚Â­ch dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u: ${err.message}`;
     ["#interestTopList", "#interestMoneyList", "#interestForecastList"].forEach((selector) => {
       const el = $(selector);
-      if (el) el.innerHTML = `<div class="empty-state"><span class="empty-icon">⚠️</span><h3>Không có dữ liệu</h3><p>${escapeHtml(err.message)}</p></div>`;
+      if (el) el.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span><h3>KhÃƒÆ’Ã‚Â´ng cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u</h3><p>${escapeHtml(err.message)}</p></div>`;
     });
     addLog("error", "Trend archive analysis failed", err.message);
   }
@@ -2378,7 +2457,7 @@ function renderInterestSourceDonut(data) {
   if (count) count.textContent = String(data.records || total || 0);
   if (!total) {
     svg.innerHTML = "";
-    legend.innerHTML = `<span class="muted">Chưa có dữ liệu.</span>`;
+    legend.innerHTML = `<span class="muted">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u.</span>`;
     return;
   }
   const radius = 78;
@@ -2387,8 +2466,8 @@ function renderInterestSourceDonut(data) {
   const threadsLength = circumference - rssLength;
   svg.innerHTML = `
     <circle cx="100" cy="100" r="${radius}" fill="none" stroke="var(--surface-container)" stroke-width="22" />
-    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#f97316" stroke-width="22" stroke-dasharray="${rssLength} ${circumference - rssLength}" stroke-dashoffset="0" transform="rotate(-90 100 100)" data-interest-source="rss" data-tooltip="<strong>RSS</strong><br>${rss} tín hiệu" tabindex="0" role="button" />
-    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#4f46e5" stroke-width="22" stroke-dasharray="${threadsLength} ${circumference - threadsLength}" stroke-dashoffset="${-rssLength}" transform="rotate(-90 100 100)" data-interest-source="threads" data-tooltip="<strong>Threads</strong><br>${threads} tín hiệu" tabindex="0" role="button" />
+    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#f97316" stroke-width="22" stroke-dasharray="${rssLength} ${circumference - rssLength}" stroke-dashoffset="0" transform="rotate(-90 100 100)" data-interest-source="rss" data-tooltip="<strong>RSS</strong><br>${rss} tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u" tabindex="0" role="button" />
+    <circle class="clickable-chart-segment" cx="100" cy="100" r="${radius}" fill="none" stroke="#4f46e5" stroke-width="22" stroke-dasharray="${threadsLength} ${circumference - threadsLength}" stroke-dashoffset="${-rssLength}" transform="rotate(-90 100 100)" data-interest-source="threads" data-tooltip="<strong>Threads</strong><br>${threads} tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u" tabindex="0" role="button" />
   `;
   legend.innerHTML = [
     `<div class="legend-item"><span class="legend-color" style="background:#f97316"></span><span>RSS</span><span class="legend-val">${rss}</span></div>`,
@@ -2405,7 +2484,7 @@ function renderInterestBarChart(selector, topics, key, gradient, label) {
     frequency: topic.frequency || 0
   })).filter(item => item.value > 0);
   if (!items.length) {
-    svg.innerHTML = `<text x="200" y="95" text-anchor="middle" class="chart-axis-text">Chưa có dữ liệu</text>`;
+    svg.innerHTML = `<text x="200" y="95" text-anchor="middle" class="chart-axis-text">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u</text>`;
     return;
   }
   const width = 400;
@@ -2441,7 +2520,7 @@ function renderInterestBarChart(selector, topics, key, gradient, label) {
     const y = height - paddingBottom - barH;
     const short = item.topic.length > 10 ? `${item.topic.slice(0, 8)}...` : item.topic;
     html += `
-      <rect class="chart-bar clickable-chart-bar" x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="url(#${gradId})" data-interest-topic="${escapeHtml(item.topic)}" data-tooltip="<strong>${escapeHtml(item.topic)}</strong><br>${label}: ${item.value.toLocaleString()}<br>Tín hiệu: ${item.frequency}" tabindex="0" role="button" />
+      <rect class="chart-bar clickable-chart-bar" x="${x}" y="${y}" width="${barW}" height="${barH}" rx="4" fill="url(#${gradId})" data-interest-topic="${escapeHtml(item.topic)}" data-tooltip="<strong>${escapeHtml(item.topic)}</strong><br>${label}: ${item.value.toLocaleString()}<br>TÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u: ${item.frequency}" tabindex="0" role="button" />
       <text class="chart-axis-text" x="${x + barW / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(short)}</text>
     `;
   });
@@ -2452,16 +2531,16 @@ function renderTopicList(selector, topics, mode) {
   const container = $(selector);
   if (!container) return;
   if (!topics.length) {
-    container.innerHTML = `<div class="empty-state"><span class="empty-icon">📭</span><h3>Chưa có dữ liệu lưu</h3><p>Bấm “Lưu dữ liệu hôm nay” để tạo snapshot RSS và Threads đầu tiên.</p></div>`;
+    container.innerHTML = `<div class="empty-state"><span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã‚Â­</span><h3>ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u lÃƒâ€ Ã‚Â°u</h3><p>BÃƒÂ¡Ã‚ÂºÃ‚Â¥m ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œLÃƒâ€ Ã‚Â°u dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u hÃƒÆ’Ã‚Â´m nayÃƒÂ¢Ã¢â€šÂ¬Ã‚Â Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ tÃƒÂ¡Ã‚ÂºÃ‚Â¡o snapshot RSS vÃƒÆ’Ã‚Â  Threads Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u tiÃƒÆ’Ã‚Âªn.</p></div>`;
     return;
   }
   container.innerHTML = topics.map((topic, index) => {
     const score = mode === "money" ? topic.monetization.score : mode === "forecast" ? topic.forecastScore : topic.interestScore;
-    const label = mode === "money" ? topic.monetization.label : mode === "forecast" ? `Growth ${Math.round(topic.growth * 100)}%` : `${topic.frequency} tín hiệu`;
+    const label = mode === "money" ? topic.monetization.label : mode === "forecast" ? `Growth ${Math.round(topic.growth * 100)}%` : `${topic.frequency} tÃƒÆ’Ã‚Â­n hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u`;
     const examples = (topic.examples || []).slice(0, 2).map(example => `
       <li>
         ${example.url ? `<a href="#" data-open-url="${escapeHtml(example.url)}">${escapeHtml(example.title)}</a>` : escapeHtml(example.title)}
-        <span>${escapeHtml(example.source)} · ${escapeHtml(formatDate(example.date))}</span>
+        <span>${escapeHtml(example.source)} Ãƒâ€šÃ‚Â· ${escapeHtml(formatDate(example.date))}</span>
       </li>
     `).join("");
     const ideas = topic.monetization && topic.monetization.ideas ? topic.monetization.ideas.slice(0, 2).join(" ") : "";
@@ -2477,8 +2556,8 @@ function renderTopicList(selector, topics, mode) {
             <span>Score ${Number(score || 0).toLocaleString()}</span>
             <span>RSS ${Number(topic.rssCount || 0)}</span>
             <span>Threads ${Number(topic.threadsCount || 0)}</span>
-            <span>❤️ ${Number(topic.totalLikes || 0).toLocaleString()}</span>
-            <span>🔥 ${Number(topic.totalTraffic || 0).toLocaleString()}</span>
+            <span>ÃƒÂ¢Ã‚ÂÃ‚Â¤ÃƒÂ¯Ã‚Â¸Ã‚Â ${Number(topic.totalLikes || 0).toLocaleString()}</span>
+            <span>ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ‚Â¥ ${Number(topic.totalTraffic || 0).toLocaleString()}</span>
           </div>
           <div class="topic-keywords">${(topic.keywords || []).map(word => `<span>${escapeHtml(word)}</span>`).join("")}</div>
           ${ideas ? `<p class="topic-ideas">${escapeHtml(ideas)}</p>` : ""}
@@ -2521,13 +2600,13 @@ async function archiveTrendsNow() {
   const button = $("#archiveTrendsNowBtn");
   const status = $("#interestStatus");
   if (button) button.disabled = true;
-  if (status) status.textContent = "Đang lưu snapshot RSS và Threads hôm nay...";
+  if (status) status.textContent = "Ãƒâ€žÃ‚Âang lÃƒâ€ Ã‚Â°u snapshot RSS vÃƒÆ’Ã‚Â  Threads hÃƒÆ’Ã‚Â´m nay...";
   try {
     const result = await window.moneyDesk.runTrendArchive();
-    if (status) status.textContent = result.stdout || "Đã lưu dữ liệu hôm nay.";
+    if (status) status.textContent = result.stdout || "Ãƒâ€žÃ‚ÂÃƒÆ’Ã‚Â£ lÃƒâ€ Ã‚Â°u dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u hÃƒÆ’Ã‚Â´m nay.";
     await fetchAndRenderInterest();
   } catch (err) {
-    if (status) status.textContent = `Lưu dữ liệu thất bại: ${err.message}`;
+    if (status) status.textContent = `LÃƒâ€ Ã‚Â°u dÃƒÂ¡Ã‚Â»Ã‚Â¯ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u thÃƒÂ¡Ã‚ÂºÃ‚Â¥t bÃƒÂ¡Ã‚ÂºÃ‚Â¡i: ${err.message}`;
   } finally {
     if (button) button.disabled = false;
   }
@@ -2559,25 +2638,25 @@ function renderSchedules(data) {
 
   const html = pageData.items.map((agent) => {
     const triggerText = agent.calendar 
-      ? `📅 ${agent.calendar}` 
+      ? `ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦ ${agent.calendar}` 
       : agent.interval 
-        ? `🕒 Lặp lại mỗi ${agent.interval < 3600 ? `${agent.interval / 60} phút` : `${agent.interval / 3600} giờ`}` 
-        : "🔄 Chạy một lần / Không rõ trigger";
+        ? `ÃƒÂ°Ã…Â¸Ã¢â‚¬Â¢Ã¢â‚¬â„¢ LÃƒÂ¡Ã‚ÂºÃ‚Â·p lÃƒÂ¡Ã‚ÂºÃ‚Â¡i mÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i ${agent.interval < 3600 ? `${agent.interval / 60} phÃƒÆ’Ã‚Âºt` : `${agent.interval / 3600} giÃƒÂ¡Ã‚Â»Ã‚Â`}` 
+        : "ÃƒÂ°Ã…Â¸Ã¢â‚¬ÂÃ¢â‚¬Å¾ ChÃƒÂ¡Ã‚ÂºÃ‚Â¡y mÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t lÃƒÂ¡Ã‚ÂºÃ‚Â§n / KhÃƒÆ’Ã‚Â´ng rÃƒÆ’Ã‚Âµ trigger";
     const fullCommand = agent.args && agent.args.length ? agent.args.join(" ") : `python3 ${agent.script || agent.label}`;
     
     let logHtml = "";
     if (agent.outPath || agent.errPath) {
       logHtml = `
         <div class="schedule-logs-section">
-          <strong>🧾 Nhật ký thực thi (Logs)</strong>
+          <strong>ÃƒÂ°Ã…Â¸Ã‚Â§Ã‚Â¾ NhÃƒÂ¡Ã‚ÂºÃ‚Â­t kÃƒÆ’Ã‚Â½ thÃƒÂ¡Ã‚Â»Ã‚Â±c thi (Logs)</strong>
           <div class="schedule-log-items">
             ${agent.outPath ? `
               <div class="log-file-item">
                 <div class="log-file-meta">
-                  <span class="file-icon">📄</span>
+                  <span class="file-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¾</span>
                   <div>
                     <strong>Stdout log</strong>
-                    <span class="muted">${agent.outSize ? `${(agent.outSize / 1024).toFixed(2)} KB` : "Trống"} · Cập nhật: ${agent.outModified ? formatDate(agent.outModified) : "Chưa có"}</span>
+                    <span class="muted">${agent.outSize ? `${(agent.outSize / 1024).toFixed(2)} KB` : "TrÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœng"} Ãƒâ€šÃ‚Â· CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t: ${agent.outModified ? formatDate(agent.outModified) : "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³"}</span>
                   </div>
                 </div>
                 <button class="secondary-button" data-open-path="${escapeHtml(agent.outPath)}">Open Stdout</button>
@@ -2586,10 +2665,10 @@ function renderSchedules(data) {
             ${agent.errPath ? `
               <div class="log-file-item">
                 <div class="log-file-meta">
-                  <span class="file-icon err">⚠️</span>
+                  <span class="file-icon err">ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â</span>
                   <div>
                     <strong>Stderr log</strong>
-                    <span class="muted">${agent.errSize ? `${(agent.errSize / 1024).toFixed(2)} KB` : "Trống"} · Cập nhật: ${agent.errModified ? formatDate(agent.errModified) : "Chưa có"}</span>
+                    <span class="muted">${agent.errSize ? `${(agent.errSize / 1024).toFixed(2)} KB` : "TrÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœng"} Ãƒâ€šÃ‚Â· CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t: ${agent.errModified ? formatDate(agent.errModified) : "ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³"}</span>
                   </div>
                 </div>
                 <button class="secondary-button" data-open-path="${escapeHtml(agent.errPath)}">Open Stderr</button>
@@ -2617,7 +2696,7 @@ function renderSchedules(data) {
           </div>
           <div class="schedule-header-right">
             <span class="schedule-type-badge ${badgeClass}">${badgeLabel}</span>
-            <button class="schedule-toggle-btn" aria-label="Toggle details">${isCollapsed ? "▼" : "▲"}</button>
+            <button class="schedule-toggle-btn" aria-label="Toggle details">${isCollapsed ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²"}</button>
           </div>
         </header>
 
@@ -2636,13 +2715,13 @@ function renderSchedules(data) {
             ${agent.pr ? `
               <div class="meta-item">
                 <span class="meta-label">PR / Issue</span>
-                <strong class="meta-value">PR #${escapeHtml(agent.pr)} · Issue #${escapeHtml(agent.issue)}</strong>
+                <strong class="meta-value">PR #${escapeHtml(agent.pr)} Ãƒâ€šÃ‚Â· Issue #${escapeHtml(agent.issue)}</strong>
               </div>
             ` : ""}
           </div>
 
           <div class="schedule-command-box">
-            <span class="meta-label">Lệnh thực thi</span>
+            <span class="meta-label">LÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh thÃƒÂ¡Ã‚Â»Ã‚Â±c thi</span>
             <pre class="terminal compact-terminal"><code>${escapeHtml(fullCommand)}</code></pre>
           </div>
 
@@ -2650,8 +2729,8 @@ function renderSchedules(data) {
         </div>
 
         <footer class="schedule-card-footer">
-          <button class="secondary-button icon-button-left" data-open-path="${escapeHtml(agent.path)}">📂 Xem file .plist</button>
-          ${agent.jobDir ? `<button class="secondary-button" data-open-path="${escapeHtml(agent.jobDir)}">📂 Mở thư mục Job</button>` : ""}
+          <button class="secondary-button icon-button-left" data-open-path="${escapeHtml(agent.path)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ Xem file .plist</button>
+          ${agent.jobDir ? `<button class="secondary-button" data-open-path="${escapeHtml(agent.jobDir)}">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Å¡ MÃƒÂ¡Ã‚Â»Ã…Â¸ thÃƒâ€ Ã‚Â° mÃƒÂ¡Ã‚Â»Ã‚Â¥c Job</button>` : ""}
         </footer>
       </article>
     `;
@@ -2659,9 +2738,9 @@ function renderSchedules(data) {
 
   $("#schedulesList").innerHTML = html || `
     <div class="empty-state">
-      <span class="empty-icon">📅</span>
-      <h3>Không tìm thấy Schedule nào</h3>
-      <p>Không tìm thấy LaunchAgent nào khớp với từ khóa tìm kiếm hoặc bộ lọc.</p>
+      <span class="empty-icon">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¦</span>
+      <h3>KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y Schedule nÃƒÆ’Ã‚Â o</h3>
+      <p>KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y LaunchAgent nÃƒÆ’Ã‚Â o khÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºp vÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi tÃƒÂ¡Ã‚Â»Ã‚Â« khÃƒÆ’Ã‚Â³a tÃƒÆ’Ã‚Â¬m kiÃƒÂ¡Ã‚ÂºÃ‚Â¿m hoÃƒÂ¡Ã‚ÂºÃ‚Â·c bÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ lÃƒÂ¡Ã‚Â»Ã‚Âc.</p>
     </div>
   `;
   setPager("schedules", pageData);
@@ -2718,8 +2797,8 @@ function renderAgentMessages() {
   $("#agentMessages").innerHTML = messageHtml || thinkingHtml
     ? `${messageHtml}${thinkingHtml}`
     : `<div class="chat-empty">
-        <strong>Agent Chat chưa có message.</strong>
-        <p>Dùng ngôn ngữ tự nhiên hoặc thử skill như <code>/tool-runtime-status</code>, <code>/tool-provider-check</code>, <code>/tool-release-qa</code>.</p>
+        <strong>Agent Chat chÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ message.</strong>
+        <p>DÃƒÆ’Ã‚Â¹ng ngÃƒÆ’Ã‚Â´n ngÃƒÂ¡Ã‚Â»Ã‚Â¯ tÃƒÂ¡Ã‚Â»Ã‚Â± nhiÃƒÆ’Ã‚Âªn hoÃƒÂ¡Ã‚ÂºÃ‚Â·c thÃƒÂ¡Ã‚Â»Ã‚Â­ skill nhÃƒâ€ Ã‚Â° <code>/tool-runtime-status</code>, <code>/tool-provider-check</code>, <code>/tool-release-qa</code>.</p>
       </div>`;
   const box = $("#agentMessages");
   box.scrollTop = box.scrollHeight;
@@ -2740,7 +2819,7 @@ function renderAgentThinkingMessage() {
         <span class="thinking-dot"></span>
         <span>
           <strong>Thinking...</strong>
-          <small>${escapeHtml(latest.title || "Preparing")}${latest.detail ? ` · ${escapeHtml(latest.detail)}` : ""}</small>
+          <small>${escapeHtml(latest.title || "Preparing")}${latest.detail ? ` Ãƒâ€šÃ‚Â· ${escapeHtml(latest.detail)}` : ""}</small>
         </span>
       </button>
     </article>
@@ -2771,7 +2850,7 @@ function renderAgentTrace() {
   $("#agentSteps").innerHTML = state.agent.events.length
     ? state.agent.events.map((event, index) => `
       <li class="${escapeHtml(event.type)}">
-        <span>${String(index + 1).padStart(2, "0")} · ${escapeHtml(new Date(event.time).toLocaleTimeString())} · ${escapeHtml(event.type)}</span>
+        <span>${String(index + 1).padStart(2, "0")} Ãƒâ€šÃ‚Â· ${escapeHtml(new Date(event.time).toLocaleTimeString())} Ãƒâ€šÃ‚Â· ${escapeHtml(event.type)}</span>
         <strong>${escapeHtml(event.title)}</strong>
         ${event.detail ? `<p>${escapeHtml(event.detail)}</p>` : ""}
       </li>
@@ -2797,7 +2876,7 @@ function renderAgentTrace() {
         <button class="text-button" type="button" data-copy-tool="${index}">Copy tool trace</button>
       </details>
     `).join("")
-    : `<p class="empty">Chưa có tool call trong session này.</p>`;
+    : `<p class="empty">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ tool call trong session nÃƒÆ’Ã‚Â y.</p>`;
 }
 
 function renderAgentContext() {
@@ -2806,7 +2885,7 @@ function renderAgentContext() {
   const limit = (state.agent.context && state.agent.context.limit) || (state.agent.config && state.agent.config.contextLimit) || 24000;
   const method = state.agent.context && state.agent.context.tokenMethod ? state.agent.context.tokenMethod : "local estimate";
   const value = Math.min(100, Math.round((backendTokens / Math.max(limit, 1)) * 100));
-  $("#agentContextText").textContent = `${backendTokens.toLocaleString("en-US")} / ${Number(limit).toLocaleString("en-US")} tokens · ${method}`;
+  $("#agentContextText").textContent = `${backendTokens.toLocaleString("en-US")} / ${Number(limit).toLocaleString("en-US")} tokens Ãƒâ€šÃ‚Â· ${method}`;
   $("#agentContextBar").value = value;
 }
 
@@ -2850,7 +2929,7 @@ function renderAgentSkills() {
         </article>
       `).join("")}
     </div>
-  `).join("") || `<p class="empty">Không tìm thấy skill nào.</p>`;
+  `).join("") || `<p class="empty">KhÃƒÆ’Ã‚Â´ng tÃƒÆ’Ã‚Â¬m thÃƒÂ¡Ã‚ÂºÃ‚Â¥y skill nÃƒÆ’Ã‚Â o.</p>`;
 
   setPager("skills", pageData);
 }
@@ -2934,7 +3013,7 @@ async function sendAgentMessage() {
     }
     addLog(result.ok ? "success" : "error", result.ok ? "Agent response completed" : "Agent response failed", result.error || `${state.agent.toolResults.length} tool call(s).`);
   } catch (error) {
-    state.agent.messages.push({ role: "assistant", content: `Lỗi Agent Chat: ${error.message}`, time: timeLabel() });
+    state.agent.messages.push({ role: "assistant", content: `LÃƒÂ¡Ã‚Â»Ã¢â‚¬â€i Agent Chat: ${error.message}`, time: timeLabel() });
     state.agent.events.push({ type: "error", title: "IPC error", detail: error.message, time: new Date().toISOString() });
   } finally {
     state.agent.running = false;
@@ -2991,7 +3070,7 @@ function getEventClickAttrs(entry) {
   if (typeof entry.detail === "string") {
     const trimmed = entry.detail.trim();
     if (trimmed.startsWith(".manager/")) {
-      return `data-manager-preview-path="${escapeHtml(trimmed)}" class="clickable" title="Nhấn để xem trước: ${escapeHtml(trimmed)}"`;
+      return `data-manager-preview-path="${escapeHtml(trimmed)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ xem trÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc: ${escapeHtml(trimmed)}"`;
     }
     if (trimmed.startsWith("jobs/") || trimmed.startsWith("results/") || trimmed.startsWith("launchd/") || trimmed.endsWith(".plist") || trimmed.endsWith(".json") || trimmed.endsWith(".md")) {
       path = trimmed;
@@ -3005,7 +3084,7 @@ function getEventClickAttrs(entry) {
   }
 
   if (path) {
-    return `data-open-path="${escapeHtml(path)}" class="clickable" title="Nhấn để mở: ${escapeHtml(path)}"`;
+    return `data-open-path="${escapeHtml(path)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ mÃƒÂ¡Ã‚Â»Ã…Â¸: ${escapeHtml(path)}"`;
   }
 
   // Handle views and navigation
@@ -3014,7 +3093,7 @@ function getEventClickAttrs(entry) {
     if (match) {
       const viewName = match[1].toLowerCase();
       const targetView = viewName === "references" ? "settings" : viewName;
-      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="Nhấn để chuyển sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
+      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
     }
   }
   if (entry.type === "navigate" && typeof entry.title === "string") {
@@ -3022,11 +3101,11 @@ function getEventClickAttrs(entry) {
     if (match) {
       const viewName = match[1].toLowerCase();
       const targetView = viewName === "references" ? "settings" : viewName;
-      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="Nhấn để chuyển sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
+      return `data-view-link="${escapeHtml(targetView)}" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n sang tab ${escapeHtml(targetView === "settings" ? "settings" : viewName)}"`;
     }
   }
   if (entry.type === "command" || (typeof entry.title === "string" && (entry.title.includes("finished") || entry.title.includes("failed")))) {
-    return `data-view-link="commands" class="clickable" title="Nhấn để chuyển đến tab Commands"`;
+    return `data-view-link="commands" class="clickable" title="NhÃƒÂ¡Ã‚ÂºÃ‚Â¥n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â¿n tab Commands"`;
   }
 
   return "";
@@ -3147,7 +3226,7 @@ function renderDashboardCharts(data) {
   const jobs = data.jobs || [];
   const totalJobs = jobs.length;
   
-  // Tính toán số lượng theo trạng thái
+  // TÃƒÆ’Ã‚Â­nh toÃƒÆ’Ã‚Â¡n sÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£ng theo trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i
   const counts = {};
   chartStatuses.forEach(s => counts[s.key] = 0);
   jobs.forEach(job => {
@@ -3159,7 +3238,7 @@ function renderDashboardCharts(data) {
     }
   });
 
-  // 1. Vẽ biểu đồ Donut
+  // 1. VÃƒÂ¡Ã‚ÂºÃ‚Â½ biÃƒÂ¡Ã‚Â»Ã†â€™u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ Donut
   const svgDonut = $("#statusDonutChart");
   const legendDonut = $("#statusChartLegend");
   const centerTotal = $("#donutTotalCount");
@@ -3168,7 +3247,7 @@ function renderDashboardCharts(data) {
 
   if (totalJobs === 0) {
     if (svgDonut) svgDonut.innerHTML = `<circle cx="100" cy="100" r="70" fill="none" stroke="var(--line)" stroke-width="12" />`;
-    if (legendDonut) legendDonut.innerHTML = `<div class="muted" style="padding: 10px;">Chưa có job nào được tạo</div>`;
+    if (legendDonut) legendDonut.innerHTML = `<div class="muted" style="padding: 10px;">ChÃƒâ€ Ã‚Â°a cÃƒÆ’Ã‚Â³ job nÃƒÆ’Ã‚Â o Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c tÃƒÂ¡Ã‚ÂºÃ‚Â¡o</div>`;
   } else {
     let currentAngle = 0;
     const r = 70;
@@ -3176,7 +3255,7 @@ function renderDashboardCharts(data) {
     let donutHtml = "";
     let legendHtml = "";
 
-    // Vẽ cung nền trước
+    // VÃƒÂ¡Ã‚ÂºÃ‚Â½ cung nÃƒÂ¡Ã‚Â»Ã‚Ân trÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc
     donutHtml += `<circle cx="100" cy="100" r="${r}" fill="none" stroke="var(--surface-container-high)" stroke-width="22" />`;
 
     chartStatuses.forEach((status) => {
@@ -3222,7 +3301,7 @@ function renderDashboardCharts(data) {
     if (legendDonut) legendDonut.innerHTML = legendHtml;
   }
 
-  // 2. Vẽ biểu đồ Cột cho Ngân sách
+  // 2. VÃƒÂ¡Ã‚ÂºÃ‚Â½ biÃƒÂ¡Ã‚Â»Ã†â€™u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ CÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t cho NgÃƒÆ’Ã‚Â¢n sÃƒÆ’Ã‚Â¡ch
   const budgetSums = {};
   chartStatuses.forEach(s => budgetSums[s.key] = 0);
   jobs.forEach(job => {
@@ -3239,7 +3318,7 @@ function renderDashboardCharts(data) {
   const legendBar = $("#budgetChartLegend");
   const maxBudget = Math.max(...Object.values(budgetSums), 100);
 
-  // Kích thước biểu đồ cột
+  // KÃƒÆ’Ã‚Â­ch thÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºc biÃƒÂ¡Ã‚Â»Ã†â€™u Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Å“ cÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t
   const width = 400;
   const height = 180;
   const paddingLeft = 45;
@@ -3253,24 +3332,24 @@ function renderDashboardCharts(data) {
   let barHtml = "";
   let barLegendHtml = "";
 
-  // Đường lưới trục Y và số liệu
+  // Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng lÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi trÃƒÂ¡Ã‚Â»Ã‚Â¥c Y vÃƒÆ’Ã‚Â  sÃƒÂ¡Ã‚Â»Ã¢â‚¬Ëœ liÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u
   const gridLevels = 3;
   for (let i = 0; i <= gridLevels; i++) {
     const yVal = Math.round((maxBudget / gridLevels) * i);
     const yPos = height - paddingBottom - (chartH / gridLevels) * i;
     
-    // Đường ngang
+    // Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng ngang
     barHtml += `<line class="chart-grid-line" x1="${paddingLeft}" y1="${yPos}" x2="${width - paddingRight}" y2="${yPos}" />`;
     // Label
     barHtml += `<text class="chart-axis-text" x="${paddingLeft - 8}" y="${yPos + 3}" text-anchor="end">$${yVal >= 1000 ? (yVal/1000).toFixed(1) + 'k' : yVal}</text>`;
   }
 
-  // Vẽ các Cột
+  // VÃƒÂ¡Ã‚ÂºÃ‚Â½ cÃƒÆ’Ã‚Â¡c CÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t
   const barCount = chartStatuses.length;
   const gap = 12;
   const barW = (chartW - (gap * (barCount - 1))) / barCount;
 
-  // Thêm định nghĩa Gradient màu chuyển đổi cao cấp
+  // ThÃƒÆ’Ã‚Âªm Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh nghÃƒâ€žÃ‚Â©a Gradient mÃƒÆ’Ã‚Â u chuyÃƒÂ¡Ã‚Â»Ã†â€™n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¢i cao cÃƒÂ¡Ã‚ÂºÃ‚Â¥p
   let defs = "<defs>";
   chartStatuses.forEach(status => {
     defs += `
@@ -3289,7 +3368,7 @@ function renderDashboardCharts(data) {
     const x = paddingLeft + idx * (barW + gap);
     const y = height - paddingBottom - barH;
 
-    // Đường vẽ cột bo tròn đầu
+    // Ãƒâ€žÃ‚ÂÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Âng vÃƒÂ¡Ã‚ÂºÃ‚Â½ cÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t bo trÃƒÆ’Ã‚Â²n Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚ÂºÃ‚Â§u
     const path = barH > 4 
       ? `M ${x},${y + 4} a 4,4 0 0 1 4,-4 h ${barW - 8} a 4,4 0 0 1 4,4 v ${barH - 4} h ${-barW} Z`
       : `M ${x},${height - paddingBottom} h ${barW} v ${-Math.max(barH, 1)} h ${-barW} Z`;
@@ -3305,9 +3384,9 @@ function renderDashboardCharts(data) {
       />
     `;
 
-    // Nhãn trục X ở dưới cột
+    // NhÃƒÆ’Ã‚Â£n trÃƒÂ¡Ã‚Â»Ã‚Â¥c X ÃƒÂ¡Ã‚Â»Ã…Â¸ dÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã¢â‚¬Âºi cÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t
     const labelX = x + barW / 2;
-    const shortLabel = status.label.split(" ")[0]; // e.g. "Reward" thay vì "Reward Pending"
+    const shortLabel = status.label.split(" ")[0]; // e.g. "Reward" thay vÃƒÆ’Ã‚Â¬ "Reward Pending"
     barHtml += `<text class="chart-axis-text" x="${labelX}" y="${height - 8}" text-anchor="middle">${shortLabel}</text>`;
 
     barLegendHtml += `
@@ -3321,7 +3400,7 @@ function renderDashboardCharts(data) {
   if (svgBar) svgBar.innerHTML = barHtml;
   if (legendBar) legendBar.innerHTML = barLegendHtml;
 
-  // Khởi động các hiệu ứng di chuột và tooltip
+  // KhÃƒÂ¡Ã‚Â»Ã…Â¸i Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng cÃƒÆ’Ã‚Â¡c hiÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡u ÃƒÂ¡Ã‚Â»Ã‚Â©ng di chuÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t vÃƒÆ’Ã‚Â  tooltip
   setupChartInteractivity();
 }
 
@@ -3342,7 +3421,7 @@ function setupChartInteractivity() {
     tooltip.style.transform = "translateY(4px)";
   };
 
-  // Tương tác donut chart
+  // TÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng tÃƒÆ’Ã‚Â¡c donut chart
   $$(".donut-segment").forEach(slice => {
     const update = (e) => {
       const label = slice.dataset.statusLabel;
@@ -3361,12 +3440,12 @@ function setupChartInteractivity() {
     });
   });
 
-  // Tương tác bar chart
+  // TÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng tÃƒÆ’Ã‚Â¡c bar chart
   $$(".chart-bar").forEach(bar => {
     const update = (e) => {
       const label = bar.dataset.statusLabel;
       const budget = Number(bar.dataset.budget);
-      showTooltip(`<strong>Ngân sách ${label}</strong><br/>$${budget.toLocaleString("en-US")} USD`, bar, e.clientX, e.clientY);
+      showTooltip(`<strong>NgÃƒÆ’Ã‚Â¢n sÃƒÆ’Ã‚Â¡ch ${label}</strong><br/>$${budget.toLocaleString("en-US")} USD`, bar, e.clientX, e.clientY);
     };
 
     bar.addEventListener("mouseenter", update);
@@ -3379,7 +3458,7 @@ function setupChartInteractivity() {
     });
   });
 
-  // Tương tác click vào Legend để chuyển view và lọc
+  // TÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng tÃƒÆ’Ã‚Â¡c click vÃƒÆ’Ã‚Â o Legend Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã†â€™ chuyÃƒÂ¡Ã‚Â»Ã†â€™n view vÃƒÆ’Ã‚Â  lÃƒÂ¡Ã‚Â»Ã‚Âc
   $$("[data-status-filter]").forEach(item => {
     item.addEventListener("click", () => {
       const statusKey = item.dataset.statusFilter;
@@ -3389,19 +3468,19 @@ function setupChartInteractivity() {
 }
 
 function navigateToStatusFilter(statusKey) {
-  // 1. Chuyển sang màn hình Jobs
+  // 1. ChuyÃƒÂ¡Ã‚Â»Ã†â€™n sang mÃƒÆ’Ã‚Â n hÃƒÆ’Ã‚Â¬nh Jobs
   setView("jobs");
 
-  // 2. Chọn trạng thái tương ứng trên filter dropdown
+  // 2. ChÃƒÂ¡Ã‚Â»Ã‚Ân trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng ÃƒÂ¡Ã‚Â»Ã‚Â©ng trÃƒÆ’Ã‚Âªn filter dropdown
   const selectStatus = $("#jobsStatus");
   if (selectStatus) {
     selectStatus.value = statusKey;
     
-    // 3. Cập nhật state filter
+    // 3. CÃƒÂ¡Ã‚ÂºÃ‚Â­p nhÃƒÂ¡Ã‚ÂºÃ‚Â­t state filter
     state.filters.jobs.status = statusKey;
     state.filters.jobs.page = 1;
     
-    // 4. Render lại danh sách
+    // 4. Render lÃƒÂ¡Ã‚ÂºÃ‚Â¡i danh sÃƒÆ’Ã‚Â¡ch
     renderJobs(state.dashboard);
   }
 }
@@ -3446,7 +3525,7 @@ async function refresh() {
     renderDashboard(data);
     setStep("load", "done");
     setStep("verify", "done");
-    addLog("success", "Status refreshed", `${data.stats.resultFiles} result files · ${data.stats.jobs} jobs · ${data.stats.launchAgents} monitors.`);
+    addLog("success", "Status refreshed", `${data.stats.resultFiles} result files Ãƒâ€šÃ‚Â· ${data.stats.jobs} jobs Ãƒâ€šÃ‚Â· ${data.stats.launchAgents} monitors.`);
   } catch (error) {
     state.latestSnapshotOutput = `Failed to load status: ${error.message}`;
     setStep("load", "error");
@@ -3477,7 +3556,7 @@ async function runAllMonitors() {
   addLog("monitor", "Running all monitors", "Checking every monitored job workspace.");
   try {
     const result = await window.moneyDesk.runAllMonitors();
-    addLog(result.failed ? "error" : "success", "All monitors finished", `${result.ok}/${result.total} passed · ${result.failed} failed`);
+    addLog(result.failed ? "error" : "success", "All monitors finished", `${result.ok}/${result.total} passed Ãƒâ€šÃ‚Â· ${result.failed} failed`);
     await refresh();
   } catch (error) {
     addLog("error", "Run all monitors failed", error.message);
@@ -3528,7 +3607,7 @@ async function checkAllGithubInboxes() {
     addLog(
       result.failed ? "error" : "success",
       "GitHub inbox check finished",
-      `${result.ok}/${result.total} passed · ${result.newComments || 0} new comment notification(s)`
+      `${result.ok}/${result.total} passed Ãƒâ€šÃ‚Â· ${result.newComments || 0} new comment notification(s)`
     );
     await refresh();
   } catch (error) {
@@ -3569,7 +3648,7 @@ async function runMoneyCommand(label, runner) {
     resultsPanel.style.display = "none";
   }
   
-  // Hiển thị trạng thái loading cho nút bấm kích hoạt
+  // HiÃƒÂ¡Ã‚Â»Ã†â€™n thÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ trÃƒÂ¡Ã‚ÂºÃ‚Â¡ng thÃƒÆ’Ã‚Â¡i loading cho nÃƒÆ’Ã‚Âºt bÃƒÂ¡Ã‚ÂºÃ‚Â¥m kÃƒÆ’Ã‚Â­ch hoÃƒÂ¡Ã‚ÂºÃ‚Â¡t
   const btnSelector = commandButtonSelectors[label];
   const btn = btnSelector ? $(btnSelector) : null;
   let originalBtnHtml = "";
@@ -3579,7 +3658,7 @@ async function runMoneyCommand(label, runner) {
     btn.innerHTML = `<span class="spinner"></span> Running...`;
   }
 
-  // Khởi chạy thanh tiến trình smooth simulated progress bar
+  // KhÃƒÂ¡Ã‚Â»Ã…Â¸i chÃƒÂ¡Ã‚ÂºÃ‚Â¡y thanh tiÃƒÂ¡Ã‚ÂºÃ‚Â¿n trÃƒÆ’Ã‚Â¬nh smooth simulated progress bar
   const progressContainer = $("#commandProgressContainer");
   const progressBar = $("#commandProgressBar");
   const progressText = $("#commandProgressText");
@@ -3589,7 +3668,7 @@ async function runMoneyCommand(label, runner) {
   let progressInterval = null;
 
   if (progressContainer && progressBar && progressText && progressLabel) {
-    progressLabel.innerHTML = `⚙️ Running <strong>${label}</strong>...`;
+    progressLabel.innerHTML = `ÃƒÂ¢Ã…Â¡Ã¢â€žÂ¢ÃƒÂ¯Ã‚Â¸Ã‚Â Running <strong>${label}</strong>...`;
     progressText.textContent = "0%";
     progressBar.style.width = "0%";
     progressBar.style.background = "linear-gradient(90deg, var(--primary), #818cf8)";
@@ -3626,14 +3705,14 @@ async function runMoneyCommand(label, runner) {
       progressText.textContent = "100%";
       progressBar.style.width = "100%";
       progressBar.style.background = "linear-gradient(90deg, var(--success), #34d399)";
-      progressLabel.innerHTML = `🎉 <strong>${label} completed successfully!</strong>`;
+      progressLabel.innerHTML = `ÃƒÂ°Ã…Â¸Ã…Â½Ã¢â‚¬Â° <strong>${label} completed successfully!</strong>`;
     }
 
     state.latestCommandOutput = formatCommandResult(result);
     addLog("success", `${label} finished`, result.stdout || result.command);
     await refresh();
 
-    // Tự động render và active sub-tab tương thích dựa vào loại lệnh chạy thành công
+    // TÃƒÂ¡Ã‚Â»Ã‚Â± Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ng render vÃƒÆ’Ã‚Â  active sub-tab tÃƒâ€ Ã‚Â°Ãƒâ€ Ã‚Â¡ng thÃƒÆ’Ã‚Â­ch dÃƒÂ¡Ã‚Â»Ã‚Â±a vÃƒÆ’Ã‚Â o loÃƒÂ¡Ã‚ÂºÃ‚Â¡i lÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¡nh chÃƒÂ¡Ã‚ÂºÃ‚Â¡y thÃƒÆ’Ã‚Â nh cÃƒÆ’Ã‚Â´ng
     if (["search", "hunt", "prepare", "monitor one-shot"].includes(label) && state.dashboard) {
       let isPanelVisible = false;
       
@@ -3654,7 +3733,7 @@ async function runMoneyCommand(label, runner) {
           isPanelVisible = true;
         }
       } else if (label === "prepare") {
-        const latestJob = state.dashboard.jobs[0]; // jobs được sort desc theo modifiedAt/createdAt
+        const latestJob = state.dashboard.jobs[0]; // jobs Ãƒâ€žÃ¢â‚¬ËœÃƒâ€ Ã‚Â°ÃƒÂ¡Ã‚Â»Ã‚Â£c sort desc theo modifiedAt/createdAt
         const prepareDetailsEl = $("#commandPrepareDetails");
         
         if (latestJob && prepareDetailsEl) {
@@ -3669,11 +3748,11 @@ async function runMoneyCommand(label, runner) {
         
         if (targetJob && monitorDetailsEl) {
           monitorDetailsEl.innerHTML = `
-            <div style="margin-bottom: 12px; font-weight: 700; color: var(--muted); font-size: 13px;">📋 Job Status Checked:</div>
+            <div style="margin-bottom: 12px; font-weight: 700; color: var(--muted); font-size: 13px;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã¢â‚¬Â¹ Job Status Checked:</div>
             ${jobCard(targetJob)}
             ${targetJob.latestMonitorLine ? `
               <div style="margin-top: 14px;">
-                <div style="font-weight: 700; color: var(--muted); font-size: 12px; margin-bottom: 6px; text-transform: uppercase;">📟 Latest Monitor Log:</div>
+                <div style="font-weight: 700; color: var(--muted); font-size: 12px; margin-bottom: 6px; text-transform: uppercase;">ÃƒÂ°Ã…Â¸Ã¢â‚¬Å“Ã…Â¸ Latest Monitor Log:</div>
                 <pre class="command-output" style="min-height: auto; max-height: 160px; padding: 12px; font-size: 11px;">${escapeHtml(targetJob.latestMonitorLine)}</pre>
               </div>
             ` : ""}
@@ -3698,7 +3777,7 @@ async function runMoneyCommand(label, runner) {
     if (progressText && progressBar && progressLabel) {
       progressBar.style.background = "var(--rose)";
       progressText.textContent = "Error";
-      progressLabel.innerHTML = `⚠️ <strong>${label} failed!</strong>`;
+      progressLabel.innerHTML = `ÃƒÂ¢Ã…Â¡Ã‚Â ÃƒÂ¯Ã‚Â¸Ã‚Â <strong>${label} failed!</strong>`;
     }
 
     const result = error.result || null;
@@ -4188,7 +4267,7 @@ function wireEvents() {
         throw new Error("Claim URL must be a valid Algora claim URL (e.g. 'https://algora.io/claims/abc').");
       }
 
-      // Nếu pass qua mọi validation, tiến hành chạy IPC an toàn
+      // NÃƒÂ¡Ã‚ÂºÃ‚Â¿u pass qua mÃƒÂ¡Ã‚Â»Ã‚Âi validation, tiÃƒÂ¡Ã‚ÂºÃ‚Â¿n hÃƒÆ’Ã‚Â nh chÃƒÂ¡Ã‚ÂºÃ‚Â¡y IPC an toÃƒÆ’Ã‚Â n
       return window.moneyDesk.runMonitorOneShot({ repo, pr, issue, jobDir, claimUrl });
     });
   });
@@ -4276,7 +4355,7 @@ function wireEvents() {
       globalTooltip.style.opacity = "1";
       globalTooltip.style.transform = "translateY(0)";
       
-      // Định vị tooltip bám sát toạ độ chuột ngay lập tức
+      // Ãƒâ€žÃ‚ÂÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹nh vÃƒÂ¡Ã‚Â»Ã¢â‚¬Â¹ tooltip bÃƒÆ’Ã‚Â¡m sÃƒÆ’Ã‚Â¡t toÃƒÂ¡Ã‚ÂºÃ‚Â¡ Ãƒâ€žÃ¢â‚¬ËœÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢ chuÃƒÂ¡Ã‚Â»Ã¢â€žÂ¢t ngay lÃƒÂ¡Ã‚ÂºÃ‚Â­p tÃƒÂ¡Ã‚Â»Ã‚Â©c
       const x = e.clientX + 15;
       const y = e.clientY - 20;
       globalTooltip.style.left = `${x}px`;
@@ -4328,7 +4407,7 @@ function wireEvents() {
         state.collapsedSchedules[label] = state.collapsedSchedules[label] === false ? true : false;
         card.classList.toggle("collapsed", state.collapsedSchedules[label]);
         const caret = card.querySelector(".schedule-toggle-btn");
-        if (caret) caret.textContent = state.collapsedSchedules[label] ? "▼" : "▲";
+        if (caret) caret.textContent = state.collapsedSchedules[label] ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²";
         return;
       }
     }
@@ -4342,7 +4421,7 @@ function wireEvents() {
         state.collapsedJobs[path] = state.collapsedJobs[path] === false ? true : false;
         card.classList.toggle("collapsed", state.collapsedJobs[path]);
         const caret = card.querySelector(".job-toggle-btn");
-        if (caret) caret.textContent = state.collapsedJobs[path] ? "▼" : "▲";
+        if (caret) caret.textContent = state.collapsedJobs[path] ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²";
         return;
       }
     }
@@ -4356,7 +4435,7 @@ function wireEvents() {
         state.collapsedMonitors[path] = state.collapsedMonitors[path] === false ? true : false;
         card.classList.toggle("collapsed", state.collapsedMonitors[path]);
         const caret = card.querySelector(".monitor-toggle-btn");
-        if (caret) caret.textContent = state.collapsedMonitors[path] ? "▼" : "▲";
+        if (caret) caret.textContent = state.collapsedMonitors[path] ? "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â¼" : "ÃƒÂ¢Ã¢â‚¬â€œÃ‚Â²";
         return;
       }
     }
