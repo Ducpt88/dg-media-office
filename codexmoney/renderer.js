@@ -542,7 +542,7 @@ const staticUiText = {
   }
 };
 
-const mojibakePattern = /[ÃÂÆƒâ€šðŸÄá»]/;
+const mojibakePattern = /[ÃÂ]/;
 
 function plainAscii(value) {
   return String(value || "")
