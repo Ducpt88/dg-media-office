@@ -1,0 +1,65 @@
+{
+  "updatedAt": "2026-05-31 15:15 Asia/Bangkok",
+  "metrics": {
+    "jobs": 137,
+    "clientProjects": 2,
+    "completedProjects": 2,
+    "automationRuns": 26
+  },
+  "clientProjects": [
+    {
+      "date": "2026-05-31",
+      "platform": "Freelancer",
+      "jobId": "FL-MODERN-LOGO-POSTER-20260531",
+      "title": "Modern Logo & Advertising Poster Design",
+      "url": "https://www.freelancer.com/projects/poster-design/Modern-Logo-Advertising-Poster-Design/proposals?bidCreated=true",
+      "clientLocation": "Unknown",
+      "budget": "Unknown",
+      "bidSent": "INR 12,500",
+      "deliveryTime": "2 days",
+      "status": "Bid submitted; waiting client response",
+      "workComplete": "Proposal submitted; waiting client response before delivery.",
+      "notes": "Evidence screenshot: output/modern-logo-after-submit.png"
+    },
+    {
+      "date": "2026-05-31",
+      "platform": "Freelancer",
+      "jobId": "40479822",
+      "title": "Responsive Professional Portfolio Website",
+      "url": "https://www.freelancer.com/projects/seo/Responsive-Professional-Portfolio?project_id=40479822",
+      "clientLocation": "Unknown",
+      "budget": "INR 12500-37500",
+      "bidSent": "INR 28,000",
+      "deliveryTime": "2 days",
+      "status": "Work completed; waiting client review",
+      "workComplete": "Proposal submitted and management tracking row created; waiting client response before code delivery.",
+      "notes": "Rank observed: 34 of 49"
+    }
+  ],
+  "jobGroup": [
+    {
+      "date": "2026-05-31",
+      "jobId": "FL-MODERN-LOGO-POSTER-20260531",
+      "title": "Modern Logo & Advertising Poster Design",
+      "bidSent": "INR 12,500",
+      "deliveryTime": "2 days",
+      "status": "Bid submitted; waiting client response"
+    },
+    {
+      "date": "2026-05-31",
+      "jobId": "40479822",
+      "title": "Responsive Professional Portfolio Website",
+      "bidSent": "INR 28,000",
+      "deliveryTime": "2 days",
+      "status": "Work completed; waiting client review"
+    },
+    {
+      "date": "2026-05-30",
+      "jobId": "40479493",
+      "title": "Modern Monochrome Logo Design",
+      "bidSent": "INR 1,050",
+      "deliveryTime": "1 day",
+      "status": "Bid submitted successfully; ranked 16/22 at submit time"
+    }
+  ]
+}

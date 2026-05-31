@@ -6,23 +6,82 @@
     <meta name="robots" content="noindex,nofollow">
     <title>Codex Money</title>
     <style>
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        background: #0b1020;
-      }
-
-      iframe {
-        display: block;
-        width: 100%;
-        height: 100%;
-        border: 0;
-      }
+      :root { color-scheme: dark; --bg: #0b1020; --panel: #151b2e; --line: #29324a; --text: #eef3ff; --muted: #9aa7bf; --green: #35d07f; --blue: #60a5fa; --amber: #f4b740; }
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: Inter, Segoe UI, Arial, sans-serif; background: var(--bg); color: var(--text); }
+      header { padding: 28px clamp(18px, 4vw, 48px) 18px; border-bottom: 1px solid var(--line); }
+      h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 44px); letter-spacing: 0; }
+      main { padding: 24px clamp(18px, 4vw, 48px) 48px; }
+      .muted { color: var(--muted); }
+      .grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px; }
+      .metric, .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+      .metric { padding: 16px; }
+      .metric strong { display: block; font-size: 28px; margin-bottom: 4px; }
+      .toolbar { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin: 10px 0 14px; }
+      .card { padding: 16px; margin-bottom: 12px; }
+      .card h2 { margin: 0 0 8px; font-size: 18px; }
+      .meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+      .chip { padding: 5px 8px; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); font-size: 13px; }
+      .status { color: var(--green); border-color: rgba(53, 208, 127, .45); }
+      a { color: var(--blue); }
+      table { width: 100%; border-collapse: collapse; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+      th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { color: var(--muted); font-weight: 600; }
+      tr:last-child td { border-bottom: 0; }
+      @media (max-width: 850px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } table { display: block; overflow-x: auto; } }
+      @media (max-width: 520px) { .grid { grid-template-columns: 1fr; } .toolbar { display: block; } }
     </style>
   </head>
   <body>
-    <iframe src="https://tools.1nutnhan.com/codexmoney/" title="Codex Money"></iframe>
+    <header>
+      <h1>Codex Money</h1>
+      <div class="muted" id="updated">Đang tải dữ liệu...</div>
+    </header>
+    <main>
+      <section class="grid" id="metrics"></section>
+      <div class="toolbar">
+        <h2>Client Projects</h2>
+        <span class="muted">Dữ liệu được xuất trực tiếp từ workspace Codex Money</span>
+      </div>
+      <section id="projects"></section>
+      <div class="toolbar">
+        <h2>Job Group</h2>
+      </div>
+      <div id="jobTable"></div>
+    </main>
+    <script>
+      const money = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
+      function esc(value) {
+        return String(value ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+      }
+      fetch("./data.json?ts=" + Date.now(), { cache: "no-store" })
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById("updated").textContent = `Cập nhật: ${data.updatedAt}`;
+          document.getElementById("metrics").innerHTML = [
+            ["Jobs", data.metrics.jobs],
+            ["Client Projects", data.metrics.clientProjects],
+            ["Completed", data.metrics.completedProjects],
+            ["Automation Runs", data.metrics.automationRuns]
+          ].map(([label, value]) => `<div class="metric"><strong>${esc(value)}</strong><span class="muted">${esc(label)}</span></div>`).join("");
+          document.getElementById("projects").innerHTML = data.clientProjects.map(project => `
+            <article class="card">
+              <h2>${esc(project.title)}</h2>
+              <div class="meta">
+                <span class="chip">${esc(project.date)}</span>
+                <span class="chip">${esc(project.platform)}</span>
+                <span class="chip status">${esc(project.status)}</span>
+                <span class="chip">Bid: ${esc(project.bidSent)}</span>
+                <span class="chip">${esc(project.deliveryTime)}</span>
+              </div>
+              <p class="muted">${esc(project.notes || project.workComplete || "")}</p>
+              <a href="${esc(project.url)}" target="_blank" rel="noreferrer">Mở project</a>
+            </article>
+          `).join("");
+          const rows = data.jobGroup.map(row => `<tr><td>${esc(row.date)}</td><td>${esc(row.jobId)}</td><td>${esc(row.title)}</td><td>${esc(row.bidSent)}</td><td>${esc(row.deliveryTime)}</td><td>${esc(row.status)}</td></tr>`).join("");
+          document.getElementById("jobTable").innerHTML = `<table><thead><tr><th>Date</th><th>Job ID</th><th>Job title</th><th>Bid sent</th><th>Delivery</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>`;
+        })
+        .catch(() => { document.getElementById("updated").textContent = "Không tải được dữ liệu."; });
+    </script>
   </body>
 </html>
