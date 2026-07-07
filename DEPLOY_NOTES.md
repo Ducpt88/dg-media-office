@@ -18,7 +18,7 @@ Checklist trước khi đưa lên host:
 Analytics:
 - Trong `index.html`, tìm `ANALYTICS_CONFIG`.
 - Điền `googleAnalyticsId` dạng `G-XXXXXXXXXX` để bật Google Analytics.
-- Điền `clarityProjectId` để bật Microsoft Clarity.
+- Microsoft Clarity đang dùng project id `a391372641p533055026`.
 - Các event đã gắn sẵn: `outbound_click`, `internal_click`, `project_card_click`, `project_filter`, `project_search`, `section_view`.
 
 Trang có nền video từ URL bên ngoài. Nếu video không tải được, nền fallback vẫn hiển thị.
