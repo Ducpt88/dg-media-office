@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mẫu 1 · Aurora Glass — DUCPT Store</title>
+<title>DUCPT · Công cụ số & sản phẩm AI</title>
+<link rel="icon" href="assets/ducpt-logo.svg" type="image/svg+xml">
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -104,9 +105,9 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 @media(max-width:900px){.social-flow{min-height:220px}.social-item{width:72px;height:72px}.social-logo{width:56px;height:56px;background-size:40px 40px}.social-name{display:none}@keyframes socialPass{0%{translate:42vw 0;scale:.74;opacity:.4}45%{translate:0 0;scale:1.28;opacity:1}100%{translate:-42vw 0;scale:.74;opacity:.4}}}
 
 footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
-.back{position:fixed;bottom:22px;left:22px;z-index:99}
+.back{display:none!important}
 .mouse-light{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50vw) var(--my,45vh),rgba(110,231,255,.18),rgba(167,139,250,.10) 36%,transparent 70%);mix-blend-mode:screen}
-.stats-btn{position:fixed;right:22px;bottom:22px;z-index:100}
+.stats-btn{display:none!important}
 .stats-panel{position:fixed;right:22px;bottom:78px;z-index:100;width:min(360px,calc(100vw - 44px));display:none;padding:16px;border-radius:22px;background:rgba(10,14,26,.82);border:1px solid var(--glass-line);backdrop-filter:blur(20px);box-shadow:0 28px 90px rgba(0,0,0,.5)}
 .stats-panel.open{display:block}
 .stats-panel h3{font-size:17px;margin-bottom:10px}
@@ -212,8 +213,7 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
   </div>
 </section>
 
-<footer>Mẫu 1 — <b>Aurora Glass</b> · glassmorphism, nền cực quang, bo tròn lớn</footer>
-<a class="back btn btn-glass" href="index.html">← Chọn mẫu khác</a>
+<footer><b>DUCPT</b> · App, AI Bot, Automation & Creator Tools</footer>
 <button class="stats-btn btn btn-hero" type="button" id="statsToggle">Stats</button>
 <aside class="stats-panel" id="statsPanel" aria-label="Click stats">
   <h3>Click stats</h3>
@@ -303,6 +303,11 @@ document.addEventListener("click",e=>{
 });
 document.getElementById("statsToggle").addEventListener("click",()=>document.getElementById("statsPanel").classList.toggle("open"));
 document.getElementById("resetStats").addEventListener("click",()=>writeStats({total:0,events:{}}));
+document.addEventListener("keydown",event=>{
+  if(event.ctrlKey&&event.shiftKey&&event.key.toLowerCase()==="s"){
+    document.getElementById("statsPanel").classList.toggle("open");
+  }
+});
 function openCheckout(button){
   const form=document.getElementById("checkoutForm");
   const product=button.dataset.product||"San pham";
