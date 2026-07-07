@@ -1,0 +1,1578 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Teacher Tú Brain</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #eef3f7;
+        --paper: #ffffff;
+        --paper-soft: #f7fafc;
+        --ink: #142033;
+        --muted: #667085;
+        --line: #d8e2ed;
+        --teal: #0f766e;
+        --blue: #2563eb;
+        --amber: #b7791f;
+        --rose: #b42318;
+        --green: #157347;
+        --shadow: 0 16px 42px rgba(20, 32, 51, 0.10);
+      }
+
+      * { box-sizing: border-box; }
+      html, body { min-height: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        letter-spacing: 0;
+      }
+
+      h1, h2, h3, p { margin: 0; }
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 330px minmax(0, 1fr);
+      }
+
+      .rail {
+        min-height: 100vh;
+        background: var(--paper);
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .brand {
+        padding: 14px;
+        border-bottom: 1px solid var(--line);
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 11px;
+        align-items: center;
+      }
+
+      .logo {
+        width: 42px;
+        height: 42px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-weight: 800;
+        background: linear-gradient(135deg, #0f766e, #2563eb);
+      }
+
+      h1 { font-size: 17px; line-height: 1.2; }
+      .subtle { color: var(--muted); font-size: 12px; line-height: 1.45; }
+
+      .brain-switcher {
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+        display: grid;
+        gap: 8px;
+      }
+
+      .brain-tab {
+        width: 100%;
+        min-height: 48px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: center;
+        padding: 7px 8px;
+        text-align: left;
+      }
+
+      .brain-tab.active {
+        border-color: var(--blue);
+        background: #eef6ff;
+        box-shadow: inset 3px 0 0 var(--blue);
+      }
+
+      .brain-tab .mini-logo {
+        width: 34px;
+        height: 34px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+        background: linear-gradient(135deg, #0f766e, #2563eb);
+      }
+
+      .brain-tab strong,
+      .brain-tab span {
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .brain-tab strong { font-size: 13px; line-height: 1.25; }
+      .brain-tab span { margin-top: 2px; color: var(--muted); font-size: 11px; }
+      .brain-tab .count { color: var(--muted); font-size: 11px; white-space: nowrap; }
+
+      .stats {
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .stat {
+        min-width: 0;
+        padding: 9px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper-soft);
+      }
+
+      .stat strong { display: block; font-size: 17px; line-height: 1.1; }
+      .stat span { color: var(--muted); font-size: 11px; }
+
+      .search-wrap {
+        padding: 10px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .search {
+        width: 100%;
+        height: 40px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 0 12px;
+        color: var(--ink);
+        background: #fff;
+        outline: none;
+      }
+
+      .search:focus {
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.13);
+      }
+
+      .lesson-list {
+        overflow: auto;
+        padding: 10px;
+        display: grid;
+        gap: 8px;
+      }
+
+      .lesson {
+        width: 100%;
+        min-height: 72px;
+        padding: 10px 11px;
+        text-align: left;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+      }
+
+      .lesson.active {
+        border-color: var(--teal);
+        box-shadow: inset 3px 0 0 var(--teal), 0 8px 18px rgba(15, 118, 110, 0.10);
+      }
+
+      .lesson strong {
+        display: block;
+        font-size: 13px;
+        line-height: 1.35;
+        word-break: break-word;
+      }
+
+      .lesson span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 11px;
+        word-break: break-word;
+      }
+
+      .main {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 12px 14px;
+        background: rgba(238, 243, 247, 0.94);
+        backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--line);
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: start;
+      }
+
+      h2 {
+        font-size: 18px;
+        line-height: 1.3;
+        word-break: break-word;
+      }
+
+      .source {
+        color: var(--blue);
+        text-decoration: none;
+        word-break: break-all;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        min-height: 36px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        padding: 0 11px;
+        white-space: nowrap;
+      }
+
+      .btn.active {
+        color: #fff;
+        background: var(--ink);
+        border-color: var(--ink);
+      }
+
+      .btn.primary {
+        color: #fff;
+        background: var(--teal);
+        border-color: var(--teal);
+      }
+
+      .btn.overview {
+        color: #fff;
+        background: var(--blue);
+        border-color: var(--blue);
+      }
+
+      .workspace {
+        padding: 12px 14px 14px;
+        min-width: 0;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 280px;
+        gap: 12px;
+        align-items: start;
+      }
+
+      .panel {
+        min-width: 0;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      .panel-head {
+        min-height: 52px;
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .panel-head h3 {
+        font-size: 14px;
+        line-height: 1.25;
+      }
+
+      .map-actions {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .range {
+        width: 120px;
+        accent-color: var(--teal);
+      }
+
+      .content {
+        padding: 15px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        line-height: 1.66;
+        font-size: 15px;
+      }
+
+      .mind-stage {
+        position: relative;
+        height: min(64vh, 640px);
+        min-height: 420px;
+        overflow: auto;
+        overscroll-behavior: contain;
+        cursor: grab;
+        touch-action: pan-x pan-y;
+        background:
+          linear-gradient(90deg, rgba(216, 226, 237, 0.58) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(216, 226, 237, 0.58) 1px, transparent 1px),
+          #fbfdff;
+        background-size: 30px 30px;
+        border-radius: 0 0 8px 8px;
+      }
+
+      .mind-stage.dragging {
+        cursor: grabbing;
+        user-select: none;
+      }
+
+      .mind-canvas {
+        position: relative;
+        transform-origin: top left;
+        transition: transform 240ms ease;
+      }
+
+      .mind-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .mind-link {
+        fill: none;
+        stroke: rgba(37, 99, 235, 0.28);
+        stroke-width: 3;
+      }
+
+      .node {
+        position: absolute;
+        width: 190px;
+        min-height: 52px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        box-shadow: 0 12px 26px rgba(20, 32, 51, 0.11);
+        padding: 10px 11px;
+        transform: translate(-50%, -50%);
+        animation: nodeIn 420ms both;
+      }
+
+      .node.root {
+        width: 230px;
+        color: #fff;
+        background: linear-gradient(135deg, #0f766e, #2563eb);
+        border-color: transparent;
+      }
+
+      .node.branch {
+        border-color: rgba(15, 118, 110, 0.26);
+      }
+
+      .node.leaf {
+        width: 178px;
+        background: var(--paper-soft);
+      }
+
+      .node.active {
+        outline: 3px solid rgba(183, 121, 31, 0.24);
+        border-color: var(--amber);
+        animation: nodePulse 1200ms ease-in-out infinite;
+      }
+
+      .node strong {
+        display: block;
+        font-size: 13px;
+        line-height: 1.28;
+        overflow-wrap: anywhere;
+      }
+
+      .node span {
+        display: block;
+        margin-top: 5px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .node.root span { color: rgba(255, 255, 255, 0.78); }
+
+      .node.c0 { background: #e9f9ef; border-color: #64d882; }
+      .node.c1 { background: #edf4ff; border-color: #75a7ff; }
+      .node.c2 { background: #fff7d7; border-color: #e0c139; }
+      .node.c3 { background: #f6ecff; border-color: #c779f2; }
+      .node.c4 { background: #ecfbff; border-color: #55c9de; }
+      .node.c5 { background: #fff0ef; border-color: #f18b7e; }
+
+      .node.branch.c0, .node.leaf.c0 { box-shadow: inset 0 -4px 0 #20b455, 0 12px 26px rgba(20, 32, 51, 0.10); }
+      .node.branch.c1, .node.leaf.c1 { box-shadow: inset 0 -4px 0 #4f83ee, 0 12px 26px rgba(20, 32, 51, 0.10); }
+      .node.branch.c2, .node.leaf.c2 { box-shadow: inset 0 -4px 0 #c6a700, 0 12px 26px rgba(20, 32, 51, 0.10); }
+      .node.branch.c3, .node.leaf.c3 { box-shadow: inset 0 -4px 0 #9f45df, 0 12px 26px rgba(20, 32, 51, 0.10); }
+      .node.branch.c4, .node.leaf.c4 { box-shadow: inset 0 -4px 0 #16a6bc, 0 12px 26px rgba(20, 32, 51, 0.10); }
+      .node.branch.c5, .node.leaf.c5 { box-shadow: inset 0 -4px 0 #df6252, 0 12px 26px rgba(20, 32, 51, 0.10); }
+
+      .map-panel.overview-map .mind-stage {
+        height: clamp(500px, calc(100vh - 210px), 760px);
+        min-height: 500px;
+      }
+
+      .map-panel.overview-map .study-strip {
+        display: none;
+      }
+
+      .map-panel.overview-map .node {
+        width: 176px;
+        min-height: 48px;
+        padding: 9px 10px;
+      }
+
+      .map-panel.overview-map .node.root {
+        width: 126px;
+        min-height: 74px;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+      }
+
+      .map-panel.overview-map .node strong {
+        font-size: 12px;
+        line-height: 1.24;
+      }
+
+      .map-panel.overview-map .node span {
+        font-size: 10px;
+        margin-top: 3px;
+      }
+
+      .raw-map {
+        display: none;
+        min-height: 460px;
+        max-height: 68vh;
+        overflow: auto;
+        padding: 14px;
+        font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+        font-size: 12px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: #fbfdff;
+        border-radius: 0 0 8px 8px;
+      }
+
+      .map-panel.raw .mind-stage { display: none; }
+      .map-panel.raw .raw-map { display: block; }
+
+      .study-strip {
+        border-top: 1px solid var(--line);
+        padding: 12px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+        background: #fff;
+        border-radius: 0 0 8px 8px;
+      }
+
+      .study-card {
+        min-width: 0;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper-soft);
+        padding: 11px;
+      }
+
+      .study-card strong {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 6px;
+      }
+
+      .study-card p {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.48;
+        overflow-wrap: anywhere;
+      }
+
+      .side {
+        display: grid;
+        gap: 12px;
+      }
+
+      .topics {
+        padding: 12px;
+        display: flex;
+        gap: 7px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: var(--paper-soft);
+        color: var(--muted);
+        padding: 6px 9px;
+        font-size: 12px;
+      }
+
+      .outline {
+        padding: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.58;
+      }
+
+      .empty {
+        padding: 22px;
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .warn { color: var(--rose); }
+
+      .app.rail-closed {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .app.rail-closed .rail {
+        display: none;
+      }
+
+      .app.rail-closed .main { grid-column: 1; }
+
+      .app.focus {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .app.focus .rail,
+      .app.focus .side,
+      .app.focus .reader-panel {
+        display: none;
+      }
+
+      .app.focus .main { grid-column: 1; }
+
+      .app.focus .workspace {
+        grid-template-columns: minmax(0, 1fr);
+        padding: 10px;
+      }
+
+      .app.focus .mind-stage {
+        height: calc(100vh - 128px);
+        min-height: 500px;
+      }
+
+      .app.focus .map-panel.overview-map .mind-stage {
+        height: calc(100vh - 128px);
+      }
+
+      .app.focus .topbar {
+        grid-template-columns: minmax(0, 1fr) auto;
+        position: static;
+      }
+
+      .auto-run .mind-canvas {
+        animation: none;
+      }
+
+      @keyframes nodeIn {
+        from { opacity: 0; transform: translate(-50%, -46%) scale(0.96); }
+        to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      }
+
+      @keyframes floatMap {
+        from { translate: -10px -4px; }
+        to { translate: 10px 5px; }
+      }
+
+      @keyframes nodePulse {
+        0%, 100% { box-shadow: 0 12px 26px rgba(20, 32, 51, 0.11); }
+        50% { box-shadow: 0 14px 34px rgba(15, 118, 110, 0.22); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+        }
+      }
+
+      @media (max-width: 980px) {
+        .app { grid-template-columns: 1fr; }
+        .rail {
+          min-height: 0;
+          max-height: 64vh;
+          border-right: 0;
+          border-bottom: 1px solid var(--line);
+        }
+        .app.rail-closed { grid-template-columns: 1fr; }
+        .app.rail-closed .rail { display: none; }
+        .topbar { grid-template-columns: 1fr; gap: 8px; }
+        .toolbar {
+          justify-content: flex-start;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          overscroll-behavior-x: contain;
+          padding-bottom: 2px;
+          scrollbar-width: none;
+        }
+        .toolbar::-webkit-scrollbar { display: none; }
+        .toolbar .btn { flex: 0 0 auto; }
+        .workspace { grid-template-columns: 1fr; padding: 8px; gap: 10px; }
+        .side { grid-template-columns: 1fr; }
+        .mind-stage { height: 62vh; min-height: 430px; }
+        .study-strip { grid-template-columns: 1fr; }
+        .app.focus .mind-stage { height: calc(100vh - 126px); min-height: 500px; }
+        .map-panel.overview-map .mind-stage { height: clamp(500px, calc(100vh - 238px), 680px); min-height: 500px; }
+      }
+
+      @media (max-width: 520px) {
+        body { overflow-x: hidden; }
+        .brand { padding: 12px; }
+        .stats { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .topbar {
+          position: static;
+          padding: 8px;
+        }
+        h2 {
+          font-size: 15px;
+          line-height: 1.24;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        .source {
+          display: block;
+          max-width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-size: 11px;
+        }
+        .btn { min-height: 32px; padding: 0 10px; font-size: 12px; }
+        .panel { box-shadow: 0 8px 18px rgba(20, 32, 51, 0.08); }
+        .panel-head {
+          min-height: 0;
+          padding: 9px;
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .panel-head h3 { font-size: 13px; }
+        .map-actions {
+          width: 100%;
+          justify-content: flex-start;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          overscroll-behavior-x: contain;
+          padding-bottom: 2px;
+          scrollbar-width: none;
+        }
+        .map-actions::-webkit-scrollbar { display: none; }
+        .map-actions .btn { flex: 0 0 auto; }
+        .range { width: 82px; flex: 0 0 82px; }
+        .mind-stage {
+          height: min(620px, 72svh);
+          min-height: 500px;
+          border-radius: 0 0 8px 8px;
+        }
+        .map-panel.overview-map .mind-stage {
+          height: min(640px, 74svh);
+          min-height: 520px;
+        }
+        .raw-map { min-height: 420px; max-height: 62vh; font-size: 11px; }
+        .content { padding: 12px; font-size: 14px; line-height: 1.58; }
+        .node { width: 164px; min-height: 48px; padding: 8px; }
+        .node.root { width: 190px; }
+        .node.leaf { width: 152px; }
+        .node strong { font-size: 12px; line-height: 1.22; }
+        .node span { font-size: 10px; }
+        .map-panel.overview-map .node { width: 154px; min-height: 44px; padding: 8px; }
+        .map-panel.overview-map .node.root { width: 112px; min-height: 64px; }
+        .map-panel.overview-map .node strong { font-size: 11px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app" class="app">
+      <aside id="rail" class="rail">
+        <div class="brand">
+          <div id="logo" class="logo">TT</div>
+          <div>
+            <h1>Teacher Tú Brain</h1>
+            <p id="meta" class="subtle">Đang tải dữ liệu...</p>
+          </div>
+        </div>
+        <div id="brainSwitcher" class="brain-switcher"></div>
+        <div class="stats">
+          <div class="stat"><strong id="lessonCount">0</strong><span>Bài học</span></div>
+          <div class="stat"><strong id="topicCount">0</strong><span>Chủ đề</span></div>
+          <div class="stat"><strong id="visibleCount">0</strong><span>Đang xem</span></div>
+        </div>
+        <div class="search-wrap">
+          <input id="q" class="search" type="search" placeholder="Tìm bài, chủ đề, nội dung">
+        </div>
+        <div id="list" class="lesson-list"></div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="titlebox">
+            <h2 id="title">Teacher Tú Brain</h2>
+            <p class="subtle"><a id="source" class="source" href="#" target="_blank" rel="noopener">Chọn bài để đọc</a></p>
+          </div>
+          <div class="toolbar">
+            <button id="toggleRail" class="btn" type="button">Danh sách</button>
+            <button id="focusMap" class="btn primary" type="button">Tập trung Map</button>
+            <button class="btn active" data-view="map" type="button">Map</button>
+            <button class="btn" data-view="summary" type="button">Tóm tắt</button>
+            <button class="btn" data-view="script" type="button">Kịch bản</button>
+            <button class="btn" data-view="transcript" type="button">Transcript</button>
+          </div>
+        </header>
+
+        <div class="workspace">
+          <section id="mapPanel" class="panel map-panel">
+            <div class="panel-head">
+              <h3 id="mapTitle">Mindmap bài học</h3>
+              <div class="map-actions">
+                <button id="autoRun" class="btn active" type="button">Auto</button>
+                <button id="mapScope" class="btn overview" type="button">Tổng quan</button>
+                <button id="rawToggle" class="btn" type="button">Text</button>
+                <button id="fitMap" class="btn" type="button">Fit</button>
+                <input id="zoom" class="range" type="range" min="22" max="160" value="100" aria-label="Zoom map">
+              </div>
+            </div>
+            <div id="mindStage" class="mind-stage">
+              <div id="mindCanvas" class="mind-canvas"></div>
+            </div>
+            <div id="rawMap" class="raw-map"></div>
+            <div id="studyStrip" class="study-strip"></div>
+          </section>
+
+          <aside class="side">
+            <section class="panel reader-panel">
+              <div class="panel-head">
+                <h3 id="contentTitle">Tóm tắt</h3>
+                <span id="readMeta" class="subtle"></span>
+              </div>
+              <div id="content" class="content">Đang tải...</div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>Chủ đề</h3></div>
+              <div id="topics" class="topics"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-head"><h3>Điều hướng</h3></div>
+              <div id="outline" class="outline"></div>
+            </section>
+          </aside>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      const state = {
+        lessons: [],
+        masterMindmap: "",
+        mapScope: "overview",
+        selected: null,
+        view: "map",
+        q: "",
+        zoom: 1,
+        fitMode: true,
+        mapSize: { width: 1, height: 1 },
+        auto: true,
+        focus: false,
+        showRaw: false,
+        activeNode: 0,
+        timer: null,
+        didPan: false,
+        lastRenderedIndex: null,
+      };
+
+      const $ = (id) => document.getElementById(id);
+
+      const brainProfiles = [
+        {
+          id: "teacher_tu",
+          api: "lite",
+          title: "Teacher Tú Brain",
+          shortTitle: "Teacher Tú",
+          logo: "TT",
+          totals: { lessons: 0, topics: 0, images: 0 },
+        },
+        {
+          id: "khoi_mmo",
+          api: "khoi-lite",
+          title: "Nguyễn Tiến Khởi MMO Brain",
+          shortTitle: "Khoi MMO",
+          logo: "KM",
+          totals: { lessons: 0, topics: 0, images: 0 },
+        },
+      ];
+
+      function profileFromUrl() {
+        const brain = new URLSearchParams(location.search).get("brain") || "teacher_tu";
+        return brainProfiles.find((item) => item.id === brain) || brainProfiles[0];
+      }
+
+      function brainProfile() {
+        const brain = new URLSearchParams(location.search).get("brain") || "";
+        if (brain === "khoi_mmo") {
+          return {
+            api: "khoi-lite",
+            title: "Nguyễn Tiến Khởi MMO Brain",
+            shortTitle: "Khoi MMO",
+            logo: "KM",
+          };
+        }
+        return {
+          api: "lite",
+          title: "Teacher Tú Brain",
+          shortTitle: "Teacher Tú",
+          logo: "TT",
+        };
+      }
+
+      let profile = profileFromUrl();
+
+      function apiBase() {
+        return `${location.pathname.startsWith("/downloader/") ? "/downloader" : ""}/api/brain/${profile.api}`;
+      }
+
+      function fixText(value) {
+        const text = String(value || "");
+        if (!/[ÃÂÄÆ�]/.test(text)) return text;
+        try {
+          const bytes = Uint8Array.from([...text].map((char) => char.charCodeAt(0) & 255));
+          const decoded = new TextDecoder("utf-8", { fatal: false }).decode(bytes);
+          const cleaned = decoded.replace(/\uFFFD/g, "").trim();
+          if (!cleaned || cleaned.length < text.length * 0.55) return text;
+          return cleaned;
+        } catch {
+          return text;
+        }
+      }
+
+      function normalize(text) {
+        return fixText(text).replace(/\r/g, "").trim();
+      }
+
+      function short(text, limit = 110) {
+        const value = normalize(text).replace(/\s+/g, " ").trim();
+        return value.length <= limit ? value : `${value.slice(0, limit - 1).trim()}...`;
+      }
+
+      function escapeHtml(text) {
+        return String(text || "").replace(/[&<>"']/g, (char) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          "\"": "&quot;",
+          "'": "&#039;",
+        }[char]));
+      }
+
+      function filteredLessons() {
+        const q = state.q.toLowerCase();
+        if (!q) return state.lessons;
+        return state.lessons.filter((lesson) => [
+          lesson.title,
+          lesson.summary,
+          lesson.closeScript,
+          lesson.transcript,
+          lesson.mindmap,
+          (lesson.topics || []).join(" "),
+        ].join(" ").toLowerCase().includes(q));
+      }
+
+      function contentFor(lesson) {
+        if (!lesson) return "";
+        if (state.mapScope === "overview" && state.view === "map") return overviewSummary();
+        if (state.view === "script") return lesson.closeScript || lesson.summary || "";
+        if (state.view === "transcript") return lesson.transcript || "";
+        if (state.view === "map") return lesson.summary || lesson.closeScript || "";
+        return lesson.summary || lesson.closeScript || "";
+      }
+
+      function currentMapLesson() {
+        if (state.mapScope !== "overview") return state.selected;
+        const lessons = state.lessons || [];
+        const topics = Array.from(new Set(lessons.flatMap((lesson) => lesson.topics || [])));
+        return {
+          index: "Tổng",
+          title: "Map tổng quan toàn bộ bài đã cào",
+          source: "",
+          topics,
+          summary: overviewSummary(),
+          closeScript: "",
+          transcript: "",
+          mindmap: buildOverviewMap(),
+        };
+      }
+
+      function overviewSummary() {
+        const lessons = state.lessons || [];
+        const latest = lessons.slice(-5).reverse().map((lesson) => `${lesson.index}. ${short(lesson.title, 90)}`).join("\n");
+        const topics = Array.from(new Set(lessons.flatMap((lesson) => lesson.topics || []))).join(", ");
+        return [
+          `Tổng quan hiện có ${lessons.length} bài học đã cào từ page.`,
+          topics ? `Các cụm chủ đề chính: ${topics}.` : "",
+          latest ? `Các bài mới nhất:\n${latest}` : "",
+        ].filter(Boolean).join("\n\n");
+      }
+
+      function sentenceIdeas(text, limit = 4) {
+        const cleaned = normalize(text)
+          .replace(/^#+\s+/gm, "")
+          .replace(/\*\*/g, "")
+          .replace(/\s+/g, " ")
+          .trim();
+        if (!cleaned) return [];
+        const sentences = cleaned
+          .split(/(?<=[.!?。！？])\s+|[\n\r]+|(?:\s+-\s+)/)
+          .map((item) => item.replace(/^[•*\-\d.)\s]+/, "").trim())
+          .filter((item) => item.length >= 32 && item.length <= 220)
+          .filter((item) => !/^https?:\/\//i.test(item));
+        const seen = new Set();
+        const out = [];
+        for (const sentence of sentences) {
+          const key = sentence.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").slice(0, 90);
+          if (seen.has(key)) continue;
+          seen.add(key);
+          out.push(sentence);
+          if (out.length >= limit) break;
+        }
+        return out;
+      }
+
+      function topicIdeas(topic, lessons, limit = 4) {
+        const source = lessons
+          .map((lesson) => [lesson.summary, lesson.closeScript, lesson.transcript].filter(Boolean).join(" "))
+          .join(" ");
+        const direct = sentenceIdeas(source, limit + 2)
+          .filter((idea) => topic === "Chưa phân loại" || idea.toLowerCase().includes(topic.toLowerCase().split(/\s+/)[0] || ""));
+        const fallback = sentenceIdeas(source, limit + 2);
+        return (direct.length ? direct : fallback).slice(0, limit);
+      }
+
+      function buildOverviewMap() {
+        const byTopic = new Map();
+        state.lessons.forEach((lesson) => {
+          const topics = lesson.topics && lesson.topics.length ? lesson.topics : ["Chưa phân loại"];
+          topics.slice(0, 2).forEach((topic) => {
+            if (!byTopic.has(topic)) byTopic.set(topic, []);
+            byTopic.get(topic).push(lesson);
+          });
+        });
+        const lines = ["mindmap", `Map tổng quan ${profile.shortTitle}`];
+        Array.from(byTopic.entries())
+          .sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]))
+          .slice(0, 6)
+          .forEach(([topic, lessons]) => {
+            lines.push(`    ${topic}: ${lessons.length} bài`);
+            topicIdeas(topic, lessons, 2).forEach((idea) => {
+              lines.push(`        Ý: ${short(idea, 76)}`);
+            });
+            lessons.slice(0, 1).forEach((lesson) => {
+              lines.push(`        Bài ${lesson.index}: ${short(lesson.title, 62)}`);
+            });
+          });
+        lines.push(`    Tất cả bài đã cào: ${state.lessons.length} bài`);
+        state.lessons.slice(-3).reverse().forEach((lesson) => {
+          lines.push(`        Mới: Bài ${lesson.index} - ${short(lesson.title, 62)}`);
+        });
+        return lines.join("\n");
+      }
+
+      function viewLabel() {
+        return {
+          map: "Ghi chú nhanh",
+          summary: "Tóm tắt",
+          script: "Kịch bản sát transcript",
+          transcript: "Transcript",
+        }[state.view] || "Nội dung";
+      }
+
+      function normalizeMindmap(text, lesson) {
+        const value = normalize(text);
+        if (value) {
+          const base = value
+            .replace(/^mindmap\s*:/i, "mindmap\n")
+            .replace(/^mindmap\s*$/im, "mindmap")
+            .replace(/[()]{2}/g, "")
+            .trim();
+          if (state.mapScope === "overview" || !lesson) return base;
+          const ideaLines = sentenceIdeas([lesson.summary, lesson.closeScript].filter(Boolean).join(" "), 5)
+            .map((idea) => `        Gợi ý: ${short(idea, 92)}`);
+          const usefulLineCount = base.split("\n").filter((line) => line.trim() && !/^mindmap$/i.test(line.trim())).length;
+          if (!ideaLines.length || usefulLineCount >= 10) return base;
+          return `${base}\n    Bổ sung ý học từ nội dung\n${ideaLines.join("\n")}`;
+        }
+        const title = lesson ? lesson.title : "Bài học";
+        const topics = lesson && lesson.topics && lesson.topics.length ? lesson.topics : ["Ý chính", "Ứng dụng", "Ghi nhớ"];
+        return ["mindmap", `  ${short(title, 72)}`, ...topics.map((topic) => `    ${topic}`)].join("\n");
+      }
+
+      function parseMindmap(text, lesson) {
+        const lines = normalizeMindmap(text, lesson).split("\n")
+          .map((raw) => ({ raw, clean: raw.replace(/^\s*[-*]\s+/, "").trim() }))
+          .filter((line) => line.clean && !/^mindmap$/i.test(line.clean));
+
+        const nodes = [];
+        const stack = [];
+        lines.forEach((line, index) => {
+          const indent = (line.raw.match(/^\s*/) || [""])[0].replace(/\t/g, "  ").length;
+          const depth = Math.min(3, Math.max(0, Math.round(indent / 4)));
+        const node = {
+            id: nodes.length,
+            label: line.clean.replace(/^root\s*/i, "").replace(/^\(\((.*)\)\)$/g, "$1").replace(/^\((.*)\)$/g, "$1"),
+            depth: index === 0 ? 0 : Math.max(1, depth),
+            parent: null,
+          };
+          while (stack.length && stack[stack.length - 1].depth >= node.depth) stack.pop();
+          node.parent = stack.length ? stack[stack.length - 1].id : null;
+          nodes.push(node);
+          stack.push(node);
+        });
+
+        if (!nodes.length) {
+          nodes.push({ id: 0, label: lesson ? lesson.title : "Bài học", depth: 0, parent: null });
+        }
+        nodes[0].depth = 0;
+        nodes[0].parent = null;
+        return nodes.slice(0, state.mapScope === "overview" ? 80 : 28);
+      }
+
+      function layoutOverviewNodes(nodes) {
+        const stage = $("mindStage");
+        const rect = stage.getBoundingClientRect();
+        const width = Math.max(980, rect.width * 1.25);
+        const height = Math.max(660, rect.height * 1.35);
+        const byParent = new Map();
+        nodes.forEach((node) => {
+          const key = node.parent === null ? "root" : String(node.parent);
+          if (!byParent.has(key)) byParent.set(key, []);
+          byParent.get(key).push(node);
+        });
+
+        const root = nodes[0];
+        root.x = width / 2;
+        root.y = height / 2;
+        const branches = byParent.get(String(root.id)) || [];
+        const branchRadius = Math.min(width, height) * 0.27;
+        const leafRadius = Math.min(width, height) * 0.20;
+        const preferredAngles = [-2.9, -2.15, -1.15, -0.25, 0.72, 1.55, 2.45];
+        branches.forEach((branch, index) => {
+          const angle = preferredAngles[index] ?? (-Math.PI / 2 + (Math.PI * 2 * index) / Math.max(1, branches.length));
+          branch.x = root.x + Math.cos(angle) * branchRadius;
+          branch.y = root.y + Math.sin(angle) * branchRadius;
+          const leaves = byParent.get(String(branch.id)) || [];
+          const arc = Math.min(Math.PI * 0.70, 0.50 + leaves.length * 0.15);
+          leaves.forEach((leaf, leafIndex) => {
+            const offset = leaves.length <= 1 ? 0 : -arc / 2 + (arc * leafIndex) / (leaves.length - 1);
+            const leafAngle = angle + offset;
+            const ring = leafRadius + Math.floor(leafIndex / 4) * 70;
+            leaf.x = branch.x + Math.cos(leafAngle) * ring;
+            leaf.y = branch.y + Math.sin(leafAngle) * ring;
+          });
+        });
+
+        const minX = Math.min(...nodes.map((node) => node.x || 0));
+        const minY = Math.min(...nodes.map((node) => node.y || 0));
+        const shiftX = minX < 120 ? 120 - minX : 0;
+        const shiftY = minY < 80 ? 80 - minY : 0;
+        nodes.forEach((node) => {
+          node.x = (node.x || root.x) + shiftX;
+          node.y = (node.y || root.y) + shiftY;
+        });
+        const maxX = Math.max(...nodes.map((node) => node.x));
+        const maxY = Math.max(...nodes.map((node) => node.y));
+        return {
+          width: Math.max(rect.width + 20, maxX + 150),
+          height: Math.max(rect.height + 20, maxY + 100),
+        };
+      }
+
+      function branchClassFor(nodes, node) {
+        if (state.mapScope !== "overview" || node.depth === 0) return "";
+        let current = node;
+        const byId = new Map(nodes.map((item) => [item.id, item]));
+        while (current && current.parent !== null && byId.get(current.parent)?.parent !== null) {
+          current = byId.get(current.parent);
+        }
+        const branches = nodes.filter((item) => item.parent === 0);
+        const index = Math.max(0, branches.findIndex((item) => item.id === (current ? current.id : node.id)));
+        return `c${index % 6}`;
+      }
+
+      function layoutTreeNodes(nodes) {
+        const stage = $("mindStage");
+        const rect = stage.getBoundingClientRect();
+        const byParent = new Map();
+        nodes.forEach((node) => {
+          const key = node.parent === null ? "root" : String(node.parent);
+          if (!byParent.has(key)) byParent.set(key, []);
+          byParent.get(key).push(node);
+        });
+
+        const root = nodes[0];
+        const isPhone = window.innerWidth <= 520;
+        const leafStep = isPhone ? 74 : 108;
+        const columnStep = isPhone ? 178 : 285;
+        const leftPad = isPhone ? 86 : 145;
+        const topPad = isPhone ? 70 : 82;
+        let leafIndex = 0;
+
+        function place(node) {
+          const children = byParent.get(String(node.id)) || [];
+          node.x = leftPad + node.depth * columnStep;
+          if (!children.length) {
+            node.y = topPad + leafIndex * leafStep;
+            leafIndex += 1;
+            return node.y;
+          }
+          children.forEach(place);
+          node.y = children.reduce((sum, child) => sum + child.y, 0) / children.length;
+          return node.y;
+        }
+
+        place(root);
+
+        nodes.forEach((node) => {
+          if (Number.isFinite(node.x) && Number.isFinite(node.y)) return;
+          node.x = leftPad + node.depth * columnStep;
+          node.y = topPad + leafIndex * leafStep;
+          leafIndex += 1;
+        });
+
+        const maxX = Math.max(...nodes.map((node) => node.x));
+        const maxY = Math.max(...nodes.map((node) => node.y));
+        const width = Math.max(rect.width + 20, maxX + 180);
+        const height = Math.max(rect.height + 20, maxY + 110);
+        return { width, height };
+      }
+
+      function layoutNodes(nodes) {
+        if (window.innerWidth <= 520) return layoutTreeNodes(nodes);
+        return state.mapScope === "overview" ? layoutOverviewNodes(nodes) : layoutTreeNodes(nodes);
+      }
+
+      function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+      }
+
+      function fitZoomFor(size) {
+        const stage = $("mindStage");
+        const isPhone = window.innerWidth <= 520;
+        const pad = state.mapScope === "overview" ? 0.92 : 0.86;
+        const value = Math.min(stage.clientWidth / size.width, stage.clientHeight / size.height) * pad;
+        const minZoom = isPhone ? (state.mapScope === "overview" ? 0.66 : 0.64) : 0.22;
+        const maxZoom = state.mapScope === "overview" ? (isPhone ? 0.95 : 1) : 1.15;
+        return clamp(value || 1, minZoom, maxZoom);
+      }
+
+      function fitStageHeight() {
+        const stage = $("mindStage");
+        const isPhone = window.innerWidth <= 520;
+        if (state.mapScope !== "overview" || state.showRaw) {
+          stage.style.height = "";
+          return;
+        }
+        if (isPhone && !state.focus) {
+          stage.style.height = "";
+          return;
+        }
+        const top = stage.getBoundingClientRect().top;
+        const bottomPad = isPhone ? 8 : 12;
+        const minHeight = isPhone ? 520 : 430;
+        const maxHeight = window.innerHeight - top - bottomPad;
+        stage.style.height = `${Math.max(minHeight, Math.floor(maxHeight))}px`;
+      }
+
+      function applyZoomToCanvas() {
+        $("mindCanvas").style.zoom = state.zoom;
+        $("zoom").value = Math.round(state.zoom * 100);
+      }
+
+      function centerMap() {
+        const stage = $("mindStage");
+        if (window.innerWidth <= 520) {
+          stage.scrollLeft = 0;
+          stage.scrollTop = 0;
+          return;
+        }
+        stage.scrollLeft = Math.max(0, (state.mapSize.width * state.zoom - stage.clientWidth) / 2);
+        stage.scrollTop = Math.max(0, (state.mapSize.height * state.zoom - stage.clientHeight) / 2);
+      }
+
+      function renderMap() {
+        $("mapPanel").classList.toggle("overview-map", state.mapScope === "overview");
+        fitStageHeight();
+        const lesson = currentMapLesson();
+        const nodes = parseMindmap(lesson ? lesson.mindmap : "", lesson);
+        const size = layoutNodes(nodes);
+        state.mapSize = size;
+        if (state.fitMode) state.zoom = fitZoomFor(size);
+        const byId = new Map(nodes.map((node) => [node.id, node]));
+        const links = nodes.filter((node) => node.parent !== null && byId.has(node.parent));
+
+        $("mindCanvas").style.width = `${size.width}px`;
+        $("mindCanvas").style.height = `${size.height}px`;
+        $("mindCanvas").style.transform = "";
+        applyZoomToCanvas();
+
+        const paths = links.map((node) => {
+          const parent = byId.get(node.parent);
+          const c1x = parent.x + (node.x - parent.x) * 0.45;
+          const c2x = parent.x + (node.x - parent.x) * 0.55;
+          return `<path class="mind-link" d="M ${parent.x} ${parent.y} C ${c1x} ${parent.y}, ${c2x} ${node.y}, ${node.x} ${node.y}"></path>`;
+        }).join("");
+
+        const nodeHtml = nodes.map((node, index) => {
+          const cls = node.depth === 0 ? "root" : node.depth === 1 ? "branch" : "leaf";
+          const colorClass = branchClassFor(nodes, node);
+          const label = short(node.label, node.depth === 0 ? 84 : 76);
+          const caption = node.depth === 0 ? "Trung tâm bài học" : node.depth === 1 ? "Ý chính" : "Chi tiết";
+          return `
+            <button class="node ${cls} ${colorClass} ${index === state.activeNode ? "active" : ""}" style="left:${node.x}px;top:${node.y}px;animation-delay:${Math.min(index * 32, 360)}ms" data-node="${index}" type="button">
+              <strong>${escapeHtml(label)}</strong>
+              <span>${caption}</span>
+            </button>
+          `;
+        }).join("");
+
+        $("mindCanvas").innerHTML = `
+          <svg class="mind-svg" viewBox="0 0 ${size.width} ${size.height}" preserveAspectRatio="none">${paths}</svg>
+          ${nodeHtml}
+        `;
+
+        document.querySelectorAll(".node").forEach((button) => {
+          button.addEventListener("click", () => {
+            state.activeNode = Number(button.dataset.node || 0);
+            document.querySelectorAll(".node").forEach((item, idx) => item.classList.toggle("active", idx === state.activeNode));
+          });
+        });
+
+        $("rawMap").textContent = normalizeMindmap(lesson ? lesson.mindmap : "", lesson);
+        renderStudyStrip(nodes, lesson);
+        const stage = $("mindStage");
+        const selectedIndex = `${state.mapScope}:${lesson ? lesson.index : "none"}`;
+        if (!state.didPan || state.lastRenderedIndex !== selectedIndex) {
+          centerMap();
+          state.lastRenderedIndex = selectedIndex;
+        }
+      }
+
+      function renderStudyStrip(nodes, lesson) {
+        const summary = lesson ? lesson.summary || lesson.closeScript || "" : "";
+        const keyNodes = nodes.filter((node) => node.depth > 0).slice(0, 6).map((node) => node.label);
+        const transcript = lesson ? lesson.transcript || lesson.closeScript || "" : "";
+        const leftTitle = state.mapScope === "overview" ? "Cụm kiến thức tổng quan" : "Ý chính trên Map";
+        const midTitle = state.mapScope === "overview" ? "Tóm tắt toàn bộ kho bài" : "Tóm tắt để học nhanh";
+        const rightTitle = state.mapScope === "overview" ? "Bài mới trong hệ thống" : "Trích đoạn kiến thức";
+        $("studyStrip").innerHTML = `
+          <div class="study-card">
+            <strong>${leftTitle}</strong>
+            <p>${escapeHtml(keyNodes.length ? keyNodes.map((item) => `• ${short(item, 78)}`).join("\n") : "Chưa có ý chính.")}</p>
+          </div>
+          <div class="study-card">
+            <strong>${midTitle}</strong>
+            <p>${escapeHtml(short(summary, 360) || "Chưa có tóm tắt.")}</p>
+          </div>
+          <div class="study-card">
+            <strong>${rightTitle}</strong>
+            <p>${escapeHtml(short(transcript, 360) || "Chưa có transcript.")}</p>
+          </div>
+        `;
+      }
+
+      function renderList() {
+        const rows = filteredLessons().slice().reverse();
+        $("visibleCount").textContent = rows.length;
+        if (!rows.length) {
+          $("list").innerHTML = `<div class="empty">Không có bài phù hợp.</div>`;
+          return;
+        }
+        $("list").innerHTML = rows.map((lesson) => `
+          <button class="lesson ${state.selected && Number(state.selected.index) === Number(lesson.index) ? "active" : ""}" data-index="${lesson.index}" type="button">
+            <strong>${lesson.index}. ${escapeHtml(short(lesson.title, 120))}</strong>
+            <span>${escapeHtml((lesson.topics || []).join(", ") || "General")}</span>
+          </button>
+        `).join("");
+        document.querySelectorAll(".lesson").forEach((button) => {
+          button.addEventListener("click", () => {
+            const index = Number(button.dataset.index);
+            state.selected = state.lessons.find((lesson) => Number(lesson.index) === index) || state.selected;
+            state.activeNode = 0;
+            state.didPan = false;
+            state.fitMode = true;
+            render();
+            if (window.innerWidth <= 980) $("app").classList.add("rail-closed");
+          });
+        });
+      }
+
+      function render() {
+        renderList();
+        const lesson = state.selected;
+        if (!lesson) {
+          $("title").textContent = profile.title;
+          $("source").textContent = "Chưa có bài học";
+          $("content").textContent = "Chưa có dữ liệu.";
+          $("topics").innerHTML = "";
+          $("outline").textContent = "";
+          renderMap();
+          return;
+        }
+        $("title").textContent = `${lesson.index}. ${short(lesson.title, 150)}`;
+        $("source").href = lesson.source || "#";
+        $("source").textContent = lesson.source || "Không có nguồn";
+        $("contentTitle").textContent = viewLabel();
+        const text = normalize(contentFor(lesson));
+        $("content").textContent = text || "Chưa có nội dung.";
+        $("readMeta").textContent = `${text.length.toLocaleString("vi-VN")} ký tự`;
+        $("mapTitle").textContent = state.mapScope === "overview" ? "Mindmap tổng quan toàn bộ bài" : `Mindmap bài ${lesson.index}`;
+        $("topics").innerHTML = (lesson.topics || []).length
+          ? (lesson.topics || []).map((topic) => `<span class="chip">${escapeHtml(fixText(topic))}</span>`).join("")
+          : `<span class="chip">General</span>`;
+        $("outline").innerHTML = `
+          <strong>Bài ${lesson.index}</strong><br>
+          ${escapeHtml(short(lesson.title, 160))}<br><br>
+          ${state.mapScope === "overview" ? "Đây là bản đồ tổng quan tất cả bài đã cào. Bấm Bài này để quay lại map của bài đang chọn." : "Xem Map là trung tâm. Khi cần đào sâu, chuyển sang Tóm tắt, Kịch bản hoặc Transcript ở thanh trên."}
+        `;
+        renderMap();
+      }
+
+      function applyMode() {
+        $("app").classList.toggle("focus", state.focus);
+        $("app").classList.toggle("auto-run", state.auto);
+        $("mapPanel").classList.toggle("raw", state.showRaw);
+        $("mapPanel").classList.toggle("overview-map", state.mapScope === "overview");
+        $("focusMap").textContent = state.focus ? "Thu gọn" : "Tập trung Map";
+        $("mapScope").textContent = state.mapScope === "overview" ? "Bài này" : "Tổng quan";
+        $("mapScope").classList.toggle("overview", state.mapScope === "overview");
+        $("autoRun").classList.toggle("active", state.auto);
+        $("rawToggle").classList.toggle("active", state.showRaw);
+        clearInterval(state.timer);
+        state.timer = null;
+        if (state.auto) {
+          state.timer = setInterval(() => {
+            const total = document.querySelectorAll(".node").length || 1;
+            state.activeNode = (state.activeNode + 1) % total;
+            document.querySelectorAll(".node").forEach((item, idx) => item.classList.toggle("active", idx === state.activeNode));
+          }, 1800);
+        }
+      }
+
+      document.querySelectorAll(".btn[data-view]").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.view = button.dataset.view;
+          document.querySelectorAll(".btn[data-view]").forEach((item) => item.classList.toggle("active", item === button));
+          render();
+        });
+      });
+
+      $("toggleRail").addEventListener("click", () => $("app").classList.toggle("rail-closed"));
+      $("focusMap").addEventListener("click", () => {
+        state.focus = !state.focus;
+        applyMode();
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+          renderMap();
+        }, 80);
+      });
+      $("autoRun").addEventListener("click", () => {
+        state.auto = !state.auto;
+        applyMode();
+      });
+      $("mapScope").addEventListener("click", () => {
+        state.mapScope = state.mapScope === "overview" ? "lesson" : "overview";
+        state.activeNode = 0;
+        state.didPan = false;
+        state.fitMode = true;
+        applyMode();
+        render();
+      });
+      $("rawToggle").addEventListener("click", () => {
+        state.showRaw = !state.showRaw;
+        applyMode();
+      });
+      $("fitMap").addEventListener("click", () => {
+        state.zoom = fitZoomFor(state.mapSize);
+        state.fitMode = true;
+        state.didPan = false;
+        applyZoomToCanvas();
+        centerMap();
+      });
+      $("zoom").addEventListener("input", (event) => {
+        state.zoom = Number(event.target.value || 100) / 100;
+        state.fitMode = false;
+        state.didPan = true;
+        applyZoomToCanvas();
+      });
+      $("q").addEventListener("input", (event) => {
+        state.q = event.target.value || "";
+        renderList();
+      });
+      let resizeTimer = null;
+      let lastLayoutWidth = window.innerWidth;
+      function rerenderMapAfterResize() {
+        const currentWidth = window.innerWidth;
+        const widthChanged = Math.abs(currentWidth - lastLayoutWidth) > 24;
+        lastLayoutWidth = currentWidth;
+        if (currentWidth <= 520 && !widthChanged) return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          const scrollY = window.scrollY;
+          renderMap();
+          requestAnimationFrame(() => window.scrollTo(0, scrollY));
+        }, 120);
+      }
+      window.addEventListener("resize", rerenderMapAfterResize, { passive: true });
+
+      let dragStart = null;
+      $("mindStage").addEventListener("pointerdown", (event) => {
+        if (event.target.closest(".node")) return;
+        const stage = $("mindStage");
+        dragStart = {
+          x: event.clientX,
+          y: event.clientY,
+          left: stage.scrollLeft,
+          top: stage.scrollTop,
+        };
+        stage.classList.add("dragging");
+        stage.setPointerCapture(event.pointerId);
+      });
+      $("mindStage").addEventListener("pointermove", (event) => {
+        if (!dragStart) return;
+        const stage = $("mindStage");
+        stage.scrollLeft = dragStart.left - (event.clientX - dragStart.x);
+        stage.scrollTop = dragStart.top - (event.clientY - dragStart.y);
+        state.didPan = true;
+      });
+      function endDrag(event) {
+        const stage = $("mindStage");
+        dragStart = null;
+        stage.classList.remove("dragging");
+        try { stage.releasePointerCapture(event.pointerId); } catch {}
+      }
+      $("mindStage").addEventListener("pointerup", endDrag);
+      $("mindStage").addEventListener("pointercancel", endDrag);
+      $("mindStage").addEventListener("wheel", (event) => {
+        event.preventDefault();
+        const stage = $("mindStage");
+        const oldZoom = state.zoom;
+        const factor = event.deltaY < 0 ? 1.10 : 0.90;
+        const nextZoom = clamp(oldZoom * factor, 0.22, 1.60);
+        if (Math.abs(nextZoom - oldZoom) < 0.001) return;
+        const rect = stage.getBoundingClientRect();
+        const pointerX = event.clientX - rect.left;
+        const pointerY = event.clientY - rect.top;
+        const contentX = (stage.scrollLeft + pointerX) / oldZoom;
+        const contentY = (stage.scrollTop + pointerY) / oldZoom;
+        state.zoom = nextZoom;
+        state.fitMode = false;
+        state.didPan = true;
+        applyZoomToCanvas();
+        stage.scrollLeft = contentX * nextZoom - pointerX;
+        stage.scrollTop = contentY * nextZoom - pointerY;
+      }, { passive: false });
+
+      document.title = profile.title;
+      if ($("logo")) $("logo").textContent = profile.logo;
+      const brandHeading = document.querySelector(".brand h1");
+      if (brandHeading) brandHeading.textContent = profile.title;
+      if ($("title")) $("title").textContent = profile.title;
+
+      fetch(apiBase(), { cache: "no-store" })
+        .then((response) => response.json())
+        .then((payload) => {
+          if (!payload.ok) throw new Error(payload.error || "Không tải được dữ liệu");
+          state.lessons = (payload.data.lessons || []).map((lesson) => ({
+            ...lesson,
+            title: fixText(lesson.title),
+            summary: fixText(lesson.summary),
+            closeScript: fixText(lesson.closeScript),
+            transcript: fixText(lesson.transcript),
+            mindmap: fixText(lesson.mindmap),
+            topics: (lesson.topics || []).map(fixText),
+          }));
+          state.masterMindmap = fixText(payload.data.maps && payload.data.maps.master ? payload.data.maps.master : "");
+          state.selected = state.lessons[state.lessons.length - 1] || null;
+          if (window.innerWidth <= 980) {
+            $("app").classList.add("rail-closed");
+          }
+          $("lessonCount").textContent = payload.data.totals.lessons || 0;
+          $("topicCount").textContent = payload.data.totals.topics || 0;
+          $("meta").textContent = `${payload.data.totals.lessons || 0} bài học · ${payload.data.totals.topics || 0} chủ đề`;
+          applyMode();
+          render();
+        })
+        .catch((error) => {
+          $("meta").textContent = "Không tải được dữ liệu";
+          $("content").innerHTML = `<span class="warn">${escapeHtml(error.message)}</span>`;
+          $("mindCanvas").innerHTML = `<div class="empty warn">${escapeHtml(error.message)}</div>`;
+        });
+      function renderBrainSwitcher() {
+        const holder = $("brainSwitcher");
+        if (!holder) return;
+        holder.innerHTML = brainProfiles.map((item) => {
+          const totals = item.totals || {};
+          return `
+            <button class="brain-tab ${item.id === profile.id ? "active" : ""}" data-brain="${item.id}" type="button">
+              <span class="mini-logo">${escapeHtml(item.logo)}</span>
+              <span>
+                <strong>${escapeHtml(item.shortTitle)}</strong>
+                <span>${Number(totals.topics || 0)} chủ đề · ${Number(totals.images || 0)} ảnh</span>
+              </span>
+              <span class="count">${Number(totals.lessons || 0)} bài</span>
+            </button>
+          `;
+        }).join("");
+        holder.querySelectorAll(".brain-tab").forEach((button) => {
+          button.addEventListener("click", () => {
+            const next = brainProfiles.find((item) => item.id === button.dataset.brain);
+            if (!next || next.id === profile.id) return;
+            const url = new URL(location.href);
+            if (next.id === "teacher_tu") url.searchParams.delete("brain");
+            else url.searchParams.set("brain", next.id);
+            location.href = url.toString();
+          });
+        });
+      }
+
+      fetch(`${location.pathname.startsWith("/downloader/") ? "/downloader" : ""}/api/brain/profiles`, { cache: "no-store" })
+        .then((response) => response.json())
+        .then((payload) => {
+          const remoteProfiles = payload.ok ? (payload.data.profiles || []) : [];
+          for (const remote of remoteProfiles) {
+            const local = brainProfiles.find((item) => item.id === remote.id);
+            if (local) Object.assign(local, remote);
+          }
+        })
+        .catch(() => {})
+        .finally(renderBrainSwitcher);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,209 @@
+BRAIN BOT - BAN GIAO / GIOI THIEU CHO KHACH
+
+1. San pham nay lam gi?
+
+Brain Bot tu dong lay noi dung tu video, fanpage, kenh hoac file nguon.
+Sau do bot bien noi dung thanh:
+
+- Transcript
+- Tom tat bai hoc
+- Mindmap tung bai
+- Master map tong
+- Tai lieu doc nhanh
+- File gui ve Telegram
+
+Muc tieu: bien video dai thanh kien thuc co the doc, hoc, tra cuu tren dien thoai.
+
+Trang website gioi thieu san pham:
+
+http://IP_SERVER:3800/brain-bot-offer.html
+
+Vi du tren may hien tai:
+
+http://192.168.100.232:3800/brain-bot-offer.html
+
+
+2. Bot chay theo 2 nhanh dau ra
+
+Nhanh 1: Kien thuc vao Map
+
+Video / link nguon
+-> Tai va xu ly noi dung
+-> Tao transcript
+-> Tao mindmap bai
+-> Cap nhat master map tong
+-> Hien tren web map mobile
+
+Link map dang dung:
+http://IP_SERVER:3800/brain-lite.html
+
+Vi du tren may hien tai:
+http://192.168.100.232:3800/brain-lite.html
+
+
+Nhanh 2: Gui ve Telegram
+
+Khi co bai moi, bot gui ve Telegram:
+
+- Text doc truc tiep
+- File mindmap
+- File wiki / tai lieu doc nhanh
+- File full script
+- File transcript sat noi dung
+- Master map / wiki tong
+
+Neu khong co bai moi, bot khong spam Telegram.
+
+
+3. Cach setup khong can code
+
+Mo trang setup:
+
+http://IP_SERVER:3800/customer-setup.html
+
+Vi du tren may hien tai:
+
+http://192.168.100.232:3800/customer-setup.html
+
+Khach chi can dien:
+
+- Telegram bot token
+- Telegram chat id
+- Link kenh / fanpage / video / file nguon
+- Chu ky quet lai
+- So link quet moi lan
+- Bat/tat xoa file nang
+
+Sau do bam:
+
+1. Setup bot
+2. Kiem tra audit
+3. Chay thu 1 vong
+4. Bat chay lien tuc
+5. Mo map
+
+
+4. Setup qua Telegram
+
+Co the gui truc tiep link vao bot Telegram.
+
+Vi du:
+
+https://www.facebook.com/yourpage
+https://www.youtube.com/watch?v=abc
+
+Bot se tu nhan dien day la nguon moi va them vao he thong.
+
+Neu muon setup day du, gui mau nay:
+
+SETUP_BRAIN
+TELEGRAM_BOT_TOKEN=PASTE_TOKEN_HERE
+TELEGRAM_CHAT_ID=PASTE_CHAT_ID_HERE
+SOURCE=https://www.facebook.com/yourpage
+SOURCE=https://www.youtube.com/watch?v=abc
+INTERVAL=20
+LIMIT=50
+RUN_ONCE=yes
+START_WATCH=yes
+CLEANUP=yes
+
+
+5. Y nghia cac dong lenh Telegram
+
+SETUP_BRAIN
+Bao cho bot biet day la lenh setup day du.
+
+TELEGRAM_BOT_TOKEN
+Token cua bot Telegram, lay tu BotFather.
+
+TELEGRAM_CHAT_ID
+Noi nhan bao cao: ca nhan, group hoac channel.
+
+SOURCE
+Nguon can quet. Co the co nhieu dong SOURCE.
+
+INTERVAL
+Bao nhieu phut quet lai mot lan.
+
+LIMIT
+Moi lan quet toi da bao nhieu link.
+
+RUN_ONCE
+yes = setup xong chay thu mot vong.
+
+START_WATCH
+yes = setup xong bat che do chay lien tuc.
+
+CLEANUP
+yes = xoa audio/video nang sau khi tao xong tai lieu.
+
+
+6. Co che xoa file nang
+
+Bot khong giu audio/video nang lau dai.
+
+Sau khi da tao xong:
+
+- Transcript
+- Mindmap
+- Wiki
+- Full script
+- Verbatim script
+
+Bot se xoa raw audio/video/chunks de nhe may va nhe he thong.
+
+Lenh xoa thu cong:
+
+npm.cmd run brain-cleanup-apply
+
+
+7. Lenh kiem tra ban giao
+
+Truoc khi ban giao hoac demo, chay:
+
+npm.cmd run brain-audit
+
+Trang thai dat:
+
+RESULT: 31/31 checks passed
+STATUS: READY for a commercial demo/handover.
+
+
+8. Ban chat san pham de ban
+
+Khong ban code.
+Ban mot he thong giup khach:
+
+- Quet video / kenh / fanpage
+- Bien noi dung thanh kien thuc
+- Co map de tra cuu
+- Co Telegram de doc nhanh
+- Co lich chay tu dong
+- Co cleanup de khong nang may
+
+Cau gioi thieu ngan:
+
+Bot tu dong bien video thanh mindmap, tai lieu hoc nhanh va gui ve Telegram.
+Khach chi can cung cap Telegram bot, chat id va link nguon.
+
+
+9. Goi ban goi y
+
+Goi ca nhan:
+- 1 Telegram bot
+- 1-3 nguon quet
+- Web map mobile
+- Bao cao Telegram
+- Cleanup tu dong
+
+Goi team:
+- Nhieu nguon quet
+- Nhieu thanh vien gui link vao Telegram
+- Web map dung chung
+- Chay lien tuc
+- Bao tri dinh ky
+
+Goi setup rieng:
+- Cai tren may/VPS rieng cua khach
+- Cau hinh theo thuong hieu rieng
+- Ban giao link setup va link map

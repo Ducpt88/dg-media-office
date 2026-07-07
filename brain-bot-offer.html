@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Knowledge Brain Bot</title>
+    <style>
+      :root {
+        --bg: #eef4f6;
+        --paper: #ffffff;
+        --ink: #17212b;
+        --muted: #667085;
+        --line: #d8e1e7;
+        --teal: #0f766e;
+        --blue: #2563eb;
+        --amber: #b7791f;
+        --green: #15803d;
+        --red: #b42318;
+        --shadow: 0 16px 34px rgba(22, 34, 51, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.48;
+      }
+
+      a { color: inherit; }
+
+      .shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 14px;
+      }
+
+      .nav {
+        min-height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 800;
+      }
+
+      .logo {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        color: #fff;
+        background: var(--teal);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .link {
+        min-height: 34px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        padding: 0 10px;
+        text-decoration: none;
+        font-size: 13px;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+        gap: 18px;
+        align-items: center;
+        padding: 28px 0 18px;
+      }
+
+      h1 {
+        margin: 0;
+        max-width: 760px;
+        font-size: 42px;
+        line-height: 1.06;
+        letter-spacing: 0;
+      }
+
+      .lead {
+        max-width: 720px;
+        margin: 14px 0 0;
+        color: var(--muted);
+        font-size: 17px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .btn {
+        min-height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--ink);
+        padding: 0 13px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+
+      .btn.primary {
+        color: #fff;
+        border-color: var(--teal);
+        background: var(--teal);
+      }
+
+      .btn.blue {
+        color: #fff;
+        border-color: var(--blue);
+        background: var(--blue);
+      }
+
+      .visual {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .visual-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        border-bottom: 1px solid var(--line);
+        padding: 10px;
+      }
+
+      .dots {
+        display: flex;
+        gap: 5px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--line);
+      }
+
+      .dot:nth-child(1) { background: var(--red); }
+      .dot:nth-child(2) { background: var(--amber); }
+      .dot:nth-child(3) { background: var(--green); }
+
+      .visual-body {
+        display: grid;
+        grid-template-columns: 190px minmax(0, 1fr);
+        gap: 10px;
+        padding: 12px;
+      }
+
+      .phone {
+        min-height: 300px;
+        border: 10px solid #111827;
+        border-radius: 26px;
+        background: #f8fafc;
+        padding: 10px;
+      }
+
+      .phone-title {
+        font-weight: 800;
+        font-size: 13px;
+      }
+
+      .mini-node {
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--teal);
+        border-radius: 8px;
+        background: #fff;
+        padding: 8px;
+        margin-top: 8px;
+        font-size: 12px;
+      }
+
+      .mini-node:nth-child(3) { border-left-color: var(--blue); }
+      .mini-node:nth-child(4) { border-left-color: var(--amber); }
+
+      .flow {
+        display: grid;
+        gap: 9px;
+      }
+
+      .flow-row {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1fr);
+        gap: 8px;
+        align-items: start;
+      }
+
+      .num {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--blue);
+        font-weight: 800;
+      }
+
+      .flow-box {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        padding: 9px;
+      }
+
+      .flow-box strong {
+        display: block;
+        margin-bottom: 3px;
+      }
+
+      .section {
+        padding: 14px 0;
+      }
+
+      .section-head {
+        display: flex;
+        align-items: end;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 24px;
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 560px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        min-width: 0;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 14px;
+      }
+
+      .card h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+
+      .card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .list {
+        margin: 10px 0 0;
+        padding-left: 18px;
+      }
+
+      .list li + li {
+        margin-top: 5px;
+      }
+
+      .pricing {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .price {
+        display: flex;
+        align-items: baseline;
+        gap: 6px;
+        margin: 8px 0 10px;
+        color: var(--blue);
+      }
+
+      .price strong {
+        font-size: 24px;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        border-radius: 999px;
+        background: #e8f4ee;
+        color: var(--green);
+        padding: 0 9px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .quote {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 14px;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--ink);
+        color: #fff;
+        padding: 16px;
+        margin: 16px 0 8px;
+      }
+
+      .quote p {
+        margin: 6px 0 0;
+        color: #cbd5e1;
+      }
+
+      code {
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.08);
+        padding: 2px 5px;
+        font-family: Consolas, monospace;
+      }
+
+      @media (max-width: 860px) {
+        .hero,
+        .visual-body,
+        .grid,
+        .pricing,
+        .quote {
+          grid-template-columns: 1fr;
+        }
+
+        h1 { font-size: 30px; }
+        .section-head {
+          display: block;
+        }
+        .section-head p {
+          margin-top: 6px;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .shell { padding: 10px; }
+        .nav {
+          align-items: flex-start;
+          flex-direction: column;
+          padding-bottom: 10px;
+        }
+        .nav-links {
+          justify-content: flex-start;
+          width: 100%;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          padding-bottom: 2px;
+        }
+        .link,
+        .btn {
+          white-space: nowrap;
+        }
+        .phone { min-height: 250px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <nav class="nav">
+        <div class="brand">
+          <div class="logo">AI</div>
+          <span>AI Knowledge Brain Bot</span>
+        </div>
+        <div class="nav-links">
+          <a class="link" href="/customer-setup.html">Setup</a>
+          <a class="link" href="/brain-lite.html">Demo Map</a>
+          <a class="link" href="/commercial-maps.html">Commercial Maps</a>
+        </div>
+      </nav>
+
+      <section class="hero">
+        <div>
+          <h1>Bien video thanh mindmap, tai lieu hoc nhanh va goi Telegram tu dong</h1>
+          <p class="lead">Mot bot cho nguoi lam content, dao tao, agency va team van hanh: nhan link video/fanpage, tao transcript, map kien thuc, tai lieu doc nhanh, gui ve Telegram va tu xoa file nang.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="/customer-setup.html">Mo trang setup</a>
+            <a class="btn blue" href="/brain-lite.html">Xem demo map</a>
+            <a class="btn" href="/BRAIN_BOT_BAN_GIAO_GUI_KHACH.txt">Tai file gioi thieu</a>
+          </div>
+        </div>
+
+        <div class="visual" aria-label="Brain Bot product preview">
+          <div class="visual-head">
+            <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+            <strong>Video -> Map -> Telegram</strong>
+          </div>
+          <div class="visual-body">
+            <div class="phone">
+              <div class="phone-title">Mobile Knowledge Map</div>
+              <div class="mini-node"><strong>Bai moi</strong><br />Tom tat noi dung video</div>
+              <div class="mini-node"><strong>Y chinh</strong><br />Nhan dien insight va buoc lam</div>
+              <div class="mini-node"><strong>Tai lieu</strong><br />Wiki, full script, transcript</div>
+            </div>
+            <div class="flow">
+              <div class="flow-row"><div class="num">1</div><div class="flow-box"><strong>Nhan nguon</strong>Fanpage, video, YouTube, file audio/video.</div></div>
+              <div class="flow-row"><div class="num">2</div><div class="flow-box"><strong>Tao kien thuc</strong>Transcript, summary, mindmap, wiki.</div></div>
+              <div class="flow-row"><div class="num">3</div><div class="flow-box"><strong>Gui Telegram</strong>Text doc ngay va file tai lieu.</div></div>
+              <div class="flow-row"><div class="num">4</div><div class="flow-box"><strong>Don dung luong</strong>Xoa raw media sau khi da tao tai lieu.</div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Khach hang nhan duoc gi</h2>
+          <p>Ban khong ban code. Ban mot he thong bien noi dung thô thanh tri thuc co the doc, tra cuu va chia se.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>Map kien thuc mobile</h3>
+            <p>Moi bai duoc nap vao mindmap rieng va master map tong de xem tren dien thoai.</p>
+          </div>
+          <div class="card">
+            <h3>Goi Telegram</h3>
+            <p>Moi noi dung moi se gui text doc nhanh kem file mindmap, wiki, full script.</p>
+          </div>
+          <div class="card">
+            <h3>Setup khong can code</h3>
+            <p>Co trang HTML setup va luong setup bang Telegram cho thanh vien moi.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <h2>Goi dich vu</h2>
+          <p>Gia de trong trang thai cap nhat sau, ban co the sua truc tiep trong file HTML khi chot bang gia.</p>
+        </div>
+        <div class="pricing">
+          <div class="card">
+            <span class="status">Ca nhan</span>
+            <h3>Starter Bot</h3>
+            <div class="price"><strong>Cap nhat sau</strong></div>
+            <ul class="list">
+              <li>1 Telegram bot</li>
+              <li>1-3 nguon quet</li>
+              <li>Web map mobile</li>
+              <li>Cleanup file nang</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="status">Team</span>
+            <h3>Growth Brain</h3>
+            <div class="price"><strong>Cap nhat sau</strong></div>
+            <ul class="list">
+              <li>Nhieu nguon quet</li>
+              <li>Thanh vien gui link qua Telegram</li>
+              <li>Dashboard setup</li>
+              <li>Chay lien tuc theo lich</li>
+            </ul>
+          </div>
+          <div class="card">
+            <span class="status">Rieng</span>
+            <h3>Custom Handover</h3>
+            <div class="price"><strong>Cap nhat sau</strong></div>
+            <ul class="list">
+              <li>Cai tren may/VPS rieng</li>
+              <li>Cau hinh thuong hieu rieng</li>
+              <li>Ban giao tai lieu</li>
+              <li>Audit truoc khi ban giao</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="quote">
+        <div>
+          <strong>Cau gioi thieu ngan</strong>
+          <p>Bot tu dong bien video thanh mindmap, tai lieu hoc nhanh va gui ve Telegram. Khach chi can cung cap Telegram bot, chat id va link nguon.</p>
+        </div>
+        <a class="btn primary" href="/customer-setup.html">Bat dau setup</a>
+      </section>
+    </main>
+  </body>
+</html>

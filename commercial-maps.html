@@ -1,0 +1,459 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Brain Bot Commercial Maps</title>
+    <style>
+      :root {
+        --bg: #f4f7f8;
+        --paper: #ffffff;
+        --ink: #17212b;
+        --muted: #667085;
+        --line: #d9e1e7;
+        --teal: #0f766e;
+        --blue: #2563eb;
+        --amber: #b7791f;
+        --green: #15803d;
+        --shadow: 0 14px 34px rgba(22, 34, 51, 0.1);
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.45;
+      }
+
+      .shell {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+
+      .top {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 12px;
+        align-items: end;
+        padding: 12px 0 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 26px;
+        line-height: 1.15;
+      }
+
+      .subtitle {
+        margin: 7px 0 0;
+        color: var(--muted);
+        max-width: 760px;
+      }
+
+      .badge-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .badge {
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: #fff;
+        padding: 7px 10px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 8px;
+        padding: 14px 0;
+        overflow-x: auto;
+      }
+
+      .tab {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--paper);
+        color: var(--ink);
+        min-height: 38px;
+        padding: 0 12px;
+        white-space: nowrap;
+        cursor: pointer;
+      }
+
+      .tab.active {
+        background: var(--ink);
+        border-color: var(--ink);
+        color: #fff;
+      }
+
+      .panel {
+        display: none;
+      }
+
+      .panel.active {
+        display: block;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .card {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 14px;
+      }
+
+      .card h2,
+      .card h3 {
+        margin: 0 0 10px;
+        font-size: 17px;
+      }
+
+      .card p {
+        margin: 0 0 10px;
+        color: var(--muted);
+      }
+
+      .mindmap {
+        display: grid;
+        grid-template-columns: 250px minmax(0, 1fr);
+        gap: 12px;
+        align-items: start;
+      }
+
+      .root {
+        min-height: 110px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        color: #fff;
+        background: linear-gradient(135deg, var(--teal), var(--blue));
+        border-radius: 8px;
+        padding: 18px;
+        font-size: 21px;
+        font-weight: 700;
+        box-shadow: var(--shadow);
+      }
+
+      .branches {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .branch {
+        border: 1px solid var(--line);
+        border-left: 5px solid var(--teal);
+        background: var(--paper);
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .branch:nth-child(2n) { border-left-color: var(--blue); }
+      .branch:nth-child(3n) { border-left-color: var(--amber); }
+      .branch:nth-child(5n) { border-left-color: var(--green); }
+
+      .branch strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 18px;
+      }
+
+      li + li {
+        margin-top: 5px;
+      }
+
+      .flow {
+        display: grid;
+        gap: 10px;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: 42px minmax(0, 1fr);
+        gap: 10px;
+        align-items: start;
+      }
+
+      .num {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--blue);
+        font-weight: 700;
+      }
+
+      .step-box {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .step-box strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .lane {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .lane-card {
+        border-radius: 8px;
+        padding: 14px;
+        color: #fff;
+      }
+
+      .lane-card.map { background: var(--teal); }
+      .lane-card.telegram { background: var(--blue); }
+
+      .checklist {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .check {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .check strong {
+        display: block;
+        margin-bottom: 8px;
+      }
+
+      code {
+        background: #eef3f7;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 2px 5px;
+        font-family: Consolas, monospace;
+        font-size: 12px;
+      }
+
+      .footer {
+        margin-top: 16px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        color: var(--muted);
+      }
+
+      .footer a {
+        color: var(--blue);
+        font-weight: 700;
+      }
+
+      @media (max-width: 760px) {
+        .shell { padding: 10px; }
+        .top,
+        .mindmap,
+        .grid,
+        .branches,
+        .lane,
+        .checklist {
+          grid-template-columns: 1fr;
+        }
+        h1 { font-size: 21px; }
+        .badge-row { justify-content: flex-start; }
+        .root { min-height: 86px; font-size: 18px; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="top">
+        <div>
+          <h1>Brain Bot Commercial Maps</h1>
+          <p class="subtitle">Ban do giai thich bot theo cach nguoi mua, doi van hanh, hoac nguoi khong ky thuat deu co the hieu nhanh.</p>
+        </div>
+        <div class="badge-row">
+          <span class="badge">Input: video / page / file</span>
+          <span class="badge">Output 1: mobile map</span>
+          <span class="badge">Output 2: Telegram</span>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="Commercial map tabs">
+        <button class="tab active" data-tab="overview" type="button">Tong quan</button>
+        <button class="tab" data-tab="workflow" type="button">Workflow</button>
+        <button class="tab" data-tab="handover" type="button">Ban giao</button>
+      </nav>
+
+      <section id="overview" class="panel active">
+        <div class="mindmap">
+          <div class="root">Brain Bot thuong mai</div>
+          <div class="branches">
+            <div class="branch">
+              <strong>Khach hang nhan duoc gi</strong>
+              <ul>
+                <li>Map kien thuc mo tren dien thoai.</li>
+                <li>Tin nhan Telegram de doc ngay.</li>
+                <li>File mindmap va tai lieu bai hoc.</li>
+                <li>He thong quet lien tuc theo chu ky.</li>
+              </ul>
+            </div>
+            <div class="branch">
+              <strong>Bot lam viec tu dau vao nao</strong>
+              <ul>
+                <li>Link video Facebook hoac YouTube.</li>
+                <li>Trang fanpage, profile, group cong khai.</li>
+                <li>File video hoac audio tren may.</li>
+                <li>Danh sach nguon trong file cau hinh.</li>
+              </ul>
+            </div>
+            <div class="branch">
+              <strong>Bot bien video thanh kien thuc</strong>
+              <ul>
+                <li>Tai audio tu video.</li>
+                <li>Tao transcript.</li>
+                <li>Tom tat noi dung.</li>
+                <li>Tao mindmap tung bai va master map.</li>
+              </ul>
+            </div>
+            <div class="branch">
+              <strong>Gia tri de ban cho khach</strong>
+              <ul>
+                <li>Giam thoi gian xem video thu cong.</li>
+                <li>Gom kien thuc thanh he thong.</li>
+                <li>Co bao cao de hoc nhanh.</li>
+                <li>Co the chay rieng cho tung niche.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflow" class="panel">
+        <div class="grid">
+          <div class="card">
+            <h2>Duong chay chinh</h2>
+            <div class="flow">
+              <div class="step"><div class="num">1</div><div class="step-box"><strong>Nguon vao</strong>Video, fanpage, profile, group, hoac file audio/video.</div></div>
+              <div class="step"><div class="num">2</div><div class="step-box"><strong>Quet link moi</strong>Bot loc link chua xu ly de tranh trung bai.</div></div>
+              <div class="step"><div class="num">3</div><div class="step-box"><strong>Tai va tach audio</strong>Dung yt-dlp va ffmpeg de lay am thanh.</div></div>
+              <div class="step"><div class="num">4</div><div class="step-box"><strong>Transcribe</strong>Bien loi noi trong video thanh van ban.</div></div>
+              <div class="step"><div class="num">5</div><div class="step-box"><strong>AI tao bai hoc</strong>Tom tat, tao y chinh, mindmap, wiki, full script.</div></div>
+            </div>
+          </div>
+          <div class="card">
+            <h2>Hai dau ra bat buoc</h2>
+            <p>Day la phan can noi ro voi khach: bot khong chi quet video, ma dong goi thanh kien thuc co the doc va tra cuu.</p>
+            <div class="lane">
+              <div class="lane-card map">
+                <h3>Output 1: Map</h3>
+                <ul>
+                  <li>Nap vao brain index.</li>
+                  <li>Cap nhat map tung bai.</li>
+                  <li>Cap nhat master map tong.</li>
+                  <li>Mo tren mobile web.</li>
+                </ul>
+              </div>
+              <div class="lane-card telegram">
+                <h3>Output 2: Telegram</h3>
+                <ul>
+                  <li>Gui text doc ngay.</li>
+                  <li>Gui file mindmap.</li>
+                  <li>Gui wiki va full script.</li>
+                  <li>Gui master map/wiki tong.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="handover" class="panel">
+        <div class="checklist">
+          <div class="check">
+            <strong>1. Cau hinh ban dau</strong>
+            <ul>
+              <li>Tao bot Telegram.</li>
+              <li>Dien <code>TELEGRAM_BOT_TOKEN</code>.</li>
+              <li>Dien <code>TELEGRAM_CHAT_ID</code>.</li>
+              <li>Dien web host, web port, va nguon can quet.</li>
+            </ul>
+          </div>
+          <div class="check">
+            <strong>2. Setup khong can code</strong>
+            <ul>
+              <li><code>npm.cmd run commercial-setup</code></li>
+              <li>Nhap bot token, chat id, va source URL.</li>
+              <li>Hoac chay mot dong voi <code>--token</code>, <code>--chat</code>, <code>--source</code>.</li>
+              <li>Script tu tao cau hinh va chay audit.</li>
+            </ul>
+          </div>
+          <div class="check">
+            <strong>3. Chay thu</strong>
+            <ul>
+              <li><code>npm.cmd run web</code></li>
+              <li><code>npm.cmd run brain-public</code></li>
+              <li><code>npm.cmd run brain-watch-once</code></li>
+              <li><code>npm.cmd run brain-audit</code></li>
+            </ul>
+          </div>
+          <div class="check">
+            <strong>4. Khach kiem tra ket qua</strong>
+            <ul>
+              <li>Mo link map tren dien thoai.</li>
+              <li>Xem bai moi nhat tren map.</li>
+              <li>Doc text trong Telegram.</li>
+              <li>Tai file mindmap va wiki.</li>
+            </ul>
+          </div>
+          <div class="check">
+            <strong>5. Tieu chuan dat</strong>
+            <ul>
+              <li>Audit pass tat ca dong.</li>
+              <li>Web map mo duoc tren mobile.</li>
+              <li>Telegram gui duoc text va file.</li>
+              <li>Khach co tai lieu huong dan.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="footer">
+        File nay dung de demo nhanh cho khach. Mo <a href="/customer-setup.html">Customer Setup</a> de dien Telegram, nguon quet, chu ky quet va bam chay. Ban ky thuat chi tiet nam trong <code>COMMERCIAL_BOT_HANDOVER.md</code> va cac file <code>.mmd</code> trong <code>output/brain/maps</code>.
+      </div>
+    </main>
+
+    <script>
+      document.querySelectorAll(".tab").forEach((button) => {
+        button.addEventListener("click", () => {
+          document.querySelectorAll(".tab").forEach((item) => item.classList.toggle("active", item === button));
+          document.querySelectorAll(".panel").forEach((panel) => panel.classList.toggle("active", panel.id === button.dataset.tab));
+        });
+      });
+    </script>
+  </body>
+</html>
