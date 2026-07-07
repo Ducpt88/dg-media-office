@@ -518,6 +518,47 @@
   </div>
 
   <script>
+    const ANALYTICS_CONFIG = {
+      googleAnalyticsId: "",
+      clarityProjectId: ""
+    };
+
+    function loadAnalytics(){
+      const gaId = ANALYTICS_CONFIG.googleAnalyticsId.trim();
+      const clarityId = ANALYTICS_CONFIG.clarityProjectId.trim();
+
+      if(gaId){
+        window.dataLayer = window.dataLayer || [];
+        window.gtag = function(){ dataLayer.push(arguments); };
+        gtag("js", new Date());
+        gtag("config", gaId, { send_page_view: true });
+        const gaScript = document.createElement("script");
+        gaScript.async = true;
+        gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
+        document.head.appendChild(gaScript);
+      }
+
+      if(clarityId){
+        (function(c,l,a,r,i,t,y){
+          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", clarityId);
+      }
+    }
+
+    function trackEvent(name, params = {}){
+      const cleanParams = Object.fromEntries(
+        Object.entries(params).filter(([, value]) => value !== undefined && value !== null && value !== "")
+      );
+      if(typeof window.gtag === "function"){
+        window.gtag("event", name, cleanParams);
+      }
+      if(typeof window.clarity === "function"){
+        window.clarity("event", name);
+      }
+    }
+
     if("serviceWorker" in navigator){
       navigator.serviceWorker.getRegistrations().then(registrations => {
         registrations.forEach(registration => registration.unregister());
@@ -539,6 +580,7 @@
     const navLinks = [...document.querySelectorAll(".nav-center a[href^='#'], .mobile-menu a[href^='#']")];
     const sections = ["top", "services", "projects", "suggestions", "about"].map(id => document.getElementById(id)).filter(Boolean);
     let activeFilter = "all";
+    let searchTimer;
     const checkIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     const waitIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
@@ -619,9 +661,51 @@
         button.classList.add("active");
         activeFilter = button.dataset.filter;
         applyFilters();
+        trackEvent("project_filter", {
+          filter: activeFilter,
+          visible_projects: cards.filter(card => !card.classList.contains("is-hidden")).length
+        });
       });
     });
-    if(search) search.addEventListener("input", applyFilters);
+    if(search) search.addEventListener("input", () => {
+      applyFilters();
+      window.clearTimeout(searchTimer);
+      searchTimer = window.setTimeout(() => {
+        const query = search.value.trim();
+        if(query.length >= 2){
+          trackEvent("project_search", {
+            search_term: query,
+            active_filter: activeFilter,
+            visible_projects: cards.filter(card => !card.classList.contains("is-hidden")).length
+          });
+        }
+      }, 700);
+    });
+
+    document.querySelectorAll("a[href]").forEach(link => {
+      link.addEventListener("click", () => {
+        const href = link.getAttribute("href") || "";
+        const isOutbound = /^https?:\/\//.test(href) && !href.includes(location.hostname);
+        const projectCard = link.closest(".project-card");
+        const label = link.textContent.trim().replace(/\s+/g, " ").slice(0, 80);
+        trackEvent(isOutbound ? "outbound_click" : "internal_click", {
+          link_text: label,
+          link_url: href,
+          project_name: projectCard?.querySelector("h3")?.textContent.trim()
+        });
+      });
+    });
+
+    cards.forEach(card => {
+      card.addEventListener("click", event => {
+        if(event.target.closest("a")) return;
+        trackEvent("project_card_click", {
+          project_name: card.querySelector("h3")?.textContent.trim(),
+          project_type: card.querySelector(".kind")?.textContent.trim(),
+          project_status: card.dataset.status
+        });
+      });
+    });
 
     if("IntersectionObserver" in window){
       const revealObserver = new IntersectionObserver(entries => {
@@ -642,6 +726,7 @@
             navLinks.forEach(link => {
               link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
             });
+            trackEvent("section_view", { section_id: id });
           }
         });
       }, { rootMargin: "-45% 0px -45% 0px", threshold: 0.01 });
@@ -651,6 +736,7 @@
       revealItems.forEach(item => item.classList.add("is-visible"));
     }
 
+    loadAnalytics();
     addProjectChecks();
     applyFilters();
   </script>
