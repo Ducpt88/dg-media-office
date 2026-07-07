@@ -78,6 +78,21 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
 .badge{position:absolute;top:20px;right:20px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a}
 
+.social-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
+.social-feature,.social-list a{border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px);overflow:hidden;position:relative;transition:.35s var(--ease)}
+.social-feature:hover,.social-list a:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.28);box-shadow:0 26px 60px rgba(0,0,0,.38)}
+.social-feature img{width:100%;height:310px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
+.social-body{padding:24px}
+.social-body h3{font-size:26px;letter-spacing:-.5px}
+.social-body p{color:var(--muted);margin:10px 0 20px}
+.social-list{display:grid;gap:16px}
+.social-list a{display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:14px;padding:18px}
+.social-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:26px;background:linear-gradient(135deg,rgba(110,231,255,.22),rgba(240,166,255,.2));border:1px solid var(--glass-line)}
+.social-list h3{font-size:18px}
+.social-list p{color:var(--muted);font-size:13.5px}
+.arrow{color:var(--a1);font-weight:900}
+@media(max-width:900px){.social-grid{grid-template-columns:1fr}.social-list a{grid-template-columns:52px 1fr}.arrow{display:none}}
+
 footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 .back{position:fixed;bottom:22px;left:22px;z-index:99}
 .mouse-light{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50vw) var(--my,45vh),rgba(110,231,255,.18),rgba(167,139,250,.10) 36%,transparent 70%);mix-blend-mode:screen}
@@ -129,6 +144,43 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
     <div class="card"><div class="ico">📌</div><span class="tag">Extension</span>
       <h3>Pinterest AutoPost</h3><p>Đăng pin ảnh/video tự động chạy nền, lên lịch hàng loạt nhiều board.</p>
       <div class="row"><span class="price">249.000đ<small>349k</small></span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+  </div>
+</section>
+
+<section class="sec wrap" id="social">
+  <div class="sec-head"><h2>Nền tảng video & mạng xã hội</h2><p>Theo dõi các kênh nội dung, sản phẩm và cộng đồng đang được DUCPT vận hành.</p></div>
+  <div class="social-grid">
+    <a class="social-feature" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="social_youtube_feature">
+      <img src="assets/youtube-channel-preview.png" alt="Kênh YouTube DUCPT">
+      <div class="social-body">
+        <span class="tag">YouTube Channel</span>
+        <h3>Kênh video, hướng dẫn và demo sản phẩm</h3>
+        <p>Nơi đăng video vận hành, demo tool, nội dung creator và các workflow thực tế của DUCPT.</p>
+        <span class="btn btn-hero">Mở kênh YouTube</span>
+      </div>
+    </a>
+    <div class="social-list">
+      <a href="https://www.facebook.com/ducserving" target="_blank" rel="noopener" data-track="social_facebook">
+        <span class="social-icon">f</span>
+        <span><h3>Facebook / Reels</h3><p>Cập nhật nội dung ngắn, bài viết và hoạt động social.</p></span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="social_github">
+        <span class="social-icon">GH</span>
+        <span><h3>GitHub Projects</h3><p>Repo, tool, extension và automation đang phát triển.</p></span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="/brain-bot/" data-track="social_brain_bot">
+        <span class="social-icon">AI</span>
+        <span><h3>AI Knowledge Brain Bot</h3><p>Trang sản phẩm bot biến video thành map và TXT Telegram.</p></span>
+        <span class="arrow">→</span>
+      </a>
+      <a href="https://verbar.io/" target="_blank" rel="noopener" data-track="social_verba">
+        <span class="social-icon">V</span>
+        <span><h3>Verba Studio</h3><p>Sản phẩm studio cho creator, live và AI transcript.</p></span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
   </div>
 </section>
 
