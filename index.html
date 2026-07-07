@@ -1,566 +1,203 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DUCPT | Aurora Product Studio</title>
-  <meta name="description" content="DUCPT xây dựng app, automation, AI bot, website sản phẩm và hệ thống vận hành nội dung.">
-  <meta name="theme-color" content="#0a0e1a">
-  <meta property="og:title" content="DUCPT | Aurora Product Studio">
-  <meta property="og:description" content="App, extension, AI bot và automation do DUCPT xây dựng.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://ducpt.com/">
-  <meta property="og:image" content="https://ducpt.com/assets/ducpt-logo.svg">
-  <link rel="icon" href="assets/ducpt-logo.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg:#0a0e1a;
-      --ink:#f2f5ff;
-      --muted:#9aa3bd;
-      --glass:rgba(255,255,255,.065);
-      --glass-strong:rgba(255,255,255,.105);
-      --glass-line:rgba(255,255,255,.16);
-      --a1:#6ee7ff;
-      --a2:#a78bfa;
-      --a3:#f0a6ff;
-      --a4:#5eead4;
-      --warn:#ffd166;
-      --ease:cubic-bezier(.2,.7,.2,1);
-      --mx:50vw;
-      --my:42vh;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mẫu 1 · Aurora Glass — DUCPT Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0e1a; --ink:#f2f5ff; --muted:#9aa3bd;
+  --glass:rgba(255,255,255,.06); --glass-line:rgba(255,255,255,.14);
+  --a1:#6ee7ff; --a2:#a78bfa; --a3:#f0a6ff; --a4:#5eead4;
+  --ease:cubic-bezier(.2,.7,.2,1);
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro",sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
 
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth;background:var(--bg)}
-    body{
-      margin:0;
-      min-height:100vh;
-      background:var(--bg);
-      color:var(--ink);
-      font-family:"Be Vietnam Pro",Arial,sans-serif;
-      line-height:1.6;
-      overflow-x:hidden;
-    }
+/* Aurora background */
+.aurora{position:fixed;inset:0;z-index:-1;overflow:hidden;filter:blur(70px) saturate(1.3)}
+.aurora i{position:absolute;border-radius:50%;opacity:.5;animation:drift 18s var(--ease) infinite alternate}
+.aurora i:nth-child(1){width:55vw;height:40vh;background:#2563eb;top:-10%;left:-10%}
+.aurora i:nth-child(2){width:45vw;height:45vh;background:#7c3aed;top:10%;right:-15%;animation-delay:-6s}
+.aurora i:nth-child(3){width:40vw;height:35vh;background:#0d9488;bottom:-10%;left:20%;animation-delay:-12s}
+@keyframes drift{to{transform:translate(6vw,5vh) scale(1.2) rotate(10deg)}}
 
-    body::before{
-      content:"";
-      position:fixed;
-      inset:0;
-      z-index:1;
-      pointer-events:none;
-      background:
-        radial-gradient(560px circle at var(--mx) var(--my),rgba(110,231,255,.18),rgba(167,139,250,.11) 30%,transparent 62%),
-        radial-gradient(260px circle at var(--mx) var(--my),rgba(255,255,255,.16),transparent 68%);
-      mix-blend-mode:screen;
-      transition:opacity .2s var(--ease);
-    }
+.wrap{max-width:1140px;margin:0 auto;padding:0 24px}
 
-    a{color:inherit;text-decoration:none}
-    button{font:inherit}
-    img{max-width:100%;display:block}
-    .wrap{width:min(1140px,calc(100% - 32px));margin:0 auto}
+/* Glass nav */
+nav{position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1140px;padding:0 24px}
+.nav-inner{display:flex;align-items:center;gap:20px;padding:12px 22px;border-radius:999px;
+  background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px)}
+.logo{font-weight:900;font-size:19px;background:linear-gradient(90deg,var(--a1),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-inner a.lnk{color:var(--muted);font-size:14.5px;font-weight:500;transition:.2s}
+.nav-inner a.lnk:hover{color:var(--ink)}
+.spacer{flex:1}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:999px;font-weight:700;font-size:14.5px;border:0;cursor:pointer;transition:.25s var(--ease)}
+.btn-hero{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));color:#0a0e1a;box-shadow:0 8px 30px rgba(167,139,250,.4)}
+.btn-hero:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(167,139,250,.55)}
+.btn-glass{background:var(--glass);border:1px solid var(--glass-line);color:var(--ink);backdrop-filter:blur(10px)}
+.btn-glass:hover{background:rgba(255,255,255,.1)}
 
-    .aurora{position:fixed;inset:0;z-index:0;overflow:hidden;filter:blur(70px) saturate(1.35)}
-    .aurora i{position:absolute;border-radius:50%;opacity:.48;animation:drift 18s var(--ease) infinite alternate}
-    .aurora i:nth-child(1){width:55vw;height:40vh;background:#2563eb;top:-10%;left:-10%}
-    .aurora i:nth-child(2){width:45vw;height:45vh;background:#7c3aed;top:10%;right:-15%;animation-delay:-6s}
-    .aurora i:nth-child(3){width:40vw;height:35vh;background:#0d9488;bottom:-10%;left:20%;animation-delay:-12s}
-    @keyframes drift{to{transform:translate(6vw,5vh) scale(1.2) rotate(10deg)}}
+/* Hero */
+.hero{padding:110px 0 70px;text-align:center;position:relative}
+.pill{display:inline-flex;gap:8px;align-items:center;padding:8px 18px;border-radius:999px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(12px);font-size:13.5px;color:var(--muted);margin-bottom:26px}
+.pill b{color:var(--a4)}
+h1{font-size:clamp(38px,6.4vw,72px);line-height:1.04;letter-spacing:-2.5px;font-weight:900}
+h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1));background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gr 7s linear infinite}
+@keyframes gr{to{background-position:250% 0}}
+.hero p{color:var(--muted);font-size:18px;max-width:560px;margin:22px auto 34px}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
-    .page{position:relative;z-index:2}
-    nav{position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1140px;padding:0 16px}
-    .nav-inner{
-      min-height:64px;
-      display:flex;
-      align-items:center;
-      gap:16px;
-      padding:10px 14px;
-      border-radius:999px;
-      background:var(--glass);
-      border:1px solid var(--glass-line);
-      -webkit-backdrop-filter:blur(20px);
-      backdrop-filter:blur(20px);
-      box-shadow:0 18px 70px rgba(0,0,0,.28);
-    }
-    .brand{display:flex;align-items:center;gap:10px;font-weight:900;white-space:nowrap}
-    .brand img{width:38px;height:38px;border-radius:12px;background:#fff}
-    .brand span{background:linear-gradient(90deg,var(--a1),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
-    .lnk{color:var(--muted);font-size:14px;font-weight:700;transition:.2s var(--ease);padding:8px 4px}
-    .lnk:hover{color:var(--ink)}
-    .spacer{flex:1}
+/* Floating glass chips */
+.float-chip{position:absolute;padding:10px 18px;border-radius:16px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(14px);font-size:13.5px;font-weight:600;animation:bob 5s ease-in-out infinite;display:flex;gap:8px;align-items:center;box-shadow:0 14px 40px rgba(0,0,0,.3)}
+.float-chip.c1{top:24%;left:4%;animation-delay:-1s}
+.float-chip.c2{top:38%;right:5%;animation-delay:-2.5s}
+.float-chip.c3{bottom:8%;left:12%;animation-delay:-4s}
+@keyframes bob{50%{transform:translateY(-14px) rotate(-1.5deg)}}
+@media(max-width:900px){.float-chip{display:none}}
 
-    .btn{
-      min-height:42px;
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      border-radius:999px;
-      border:0;
-      cursor:pointer;
-      padding:0 18px;
-      font-weight:800;
-      font-size:14px;
-      transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease);
-      white-space:nowrap;
-    }
-    .btn-hero{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));color:#0a0e1a;box-shadow:0 8px 30px rgba(167,139,250,.38)}
-    .btn-hero:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(167,139,250,.55)}
-    .btn-glass{background:var(--glass);border:1px solid var(--glass-line);color:var(--ink);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
-    .btn-glass:hover{background:rgba(255,255,255,.13)}
+/* Products — glass cards */
+.sec{padding:70px 0}
+.sec-head{text-align:center;margin-bottom:44px}
+.sec-head h2{font-size:clamp(28px,4vw,42px);letter-spacing:-1px;font-weight:800}
+.sec-head p{color:var(--muted);margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
+.card{border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px);padding:26px;position:relative;overflow:hidden;transition:.35s var(--ease)}
+.card::before{content:"";position:absolute;inset:0;background:radial-gradient(300px 180px at var(--gx,50%) var(--gy,0%),rgba(167,139,250,.18),transparent 70%);opacity:0;transition:.3s}
+.card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,.28);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+.card:hover::before{opacity:1}
+.card .ico{width:66px;height:66px;border-radius:18px;display:grid;place-items:center;font-size:30px;margin-bottom:18px;
+  background:linear-gradient(135deg,rgba(110,231,255,.25),rgba(240,166,255,.25));border:1px solid var(--glass-line)}
+.card h3{font-size:20px;font-weight:800;letter-spacing:-.3px}
+.card .tag{color:var(--a1);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px}
+.card p{color:var(--muted);font-size:14.5px;margin:10px 0 20px;min-height:66px}
+.card .row{display:flex;align-items:center;justify-content:space-between}
+.price{font-size:23px;font-weight:900}
+.price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
+.badge{position:absolute;top:20px;right:20px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a}
 
-    .hero{position:relative;min-height:calc(100vh - 96px);display:grid;align-items:center;padding:78px 0 52px;text-align:center;perspective:1100px}
-    .pill{
-      display:inline-flex;
-      gap:8px;
-      align-items:center;
-      padding:8px 18px;
-      border-radius:999px;
-      background:var(--glass);
-      border:1px solid var(--glass-line);
-      -webkit-backdrop-filter:blur(12px);
-      backdrop-filter:blur(12px);
-      color:var(--muted);
-      margin-bottom:24px;
-      font-size:13px;
-      font-weight:700;
-    }
-    .pill b{color:var(--a4)}
-    h1{margin:0 auto;font-size:clamp(38px,6.6vw,78px);line-height:1.04;letter-spacing:-1px;font-weight:900;max-width:920px}
-    h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1));background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gr 7s linear infinite}
-    @keyframes gr{to{background-position:250% 0}}
-    .hero p{color:var(--muted);font-size:18px;max-width:680px;margin:22px auto 30px}
-    .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-
-    .float-chip{
-      position:absolute;
-      padding:10px 16px;
-      border-radius:16px;
-      background:var(--glass);
-      border:1px solid var(--glass-line);
-      -webkit-backdrop-filter:blur(14px);
-      backdrop-filter:blur(14px);
-      font-size:13px;
-      font-weight:800;
-      animation:bob 5s ease-in-out infinite;
-      display:flex;
-      gap:8px;
-      align-items:center;
-      box-shadow:0 14px 40px rgba(0,0,0,.3);
-    }
-    .float-chip.c1{top:22%;left:3%;animation-delay:-1s}
-    .float-chip.c2{top:34%;right:4%;animation-delay:-2.5s}
-    .float-chip.c3{bottom:12%;left:10%;animation-delay:-4s}
-    @keyframes bob{50%{transform:translateY(-14px) rotate(-1.5deg)}}
-
-    .sec{padding:64px 0}
-    .sec-head{text-align:center;margin-bottom:32px}
-    .sec-head h2{margin:0;font-size:clamp(28px,4vw,42px);letter-spacing:-.5px;font-weight:900}
-    .sec-head p{color:var(--muted);margin:8px 0 0}
-    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
-    .card{
-      min-width:0;
-      min-height:320px;
-      border-radius:24px;
-      background:var(--glass);
-      border:1px solid var(--glass-line);
-      -webkit-backdrop-filter:blur(20px);
-      backdrop-filter:blur(20px);
-      padding:24px;
-      position:relative;
-      overflow:hidden;
-      transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease);
-      transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0));
-      transform-style:preserve-3d;
-    }
-    .card::before{content:"";position:absolute;inset:0;background:radial-gradient(300px 180px at var(--gx,50%) var(--gy,0%),rgba(167,139,250,.2),rgba(110,231,255,.1) 42%,transparent 70%);opacity:.25;transition:.3s}
-    .card:hover{--ty:-8px;border-color:rgba(255,255,255,.3);box-shadow:0 30px 70px rgba(0,0,0,.45)}
-    .card:hover::before{opacity:1}
-    .card>*{position:relative;z-index:1}
-    .card-img{height:120px;border-radius:18px;border:1px solid var(--glass-line);background:rgba(255,255,255,.08);padding:12px;margin-bottom:18px;object-fit:contain;width:100%}
-    .card .ico{width:60px;height:60px;border-radius:18px;display:grid;place-items:center;font-size:27px;margin-bottom:16px;background:linear-gradient(135deg,rgba(110,231,255,.25),rgba(240,166,255,.25));border:1px solid var(--glass-line)}
-    .card h3{margin:0;font-size:20px;font-weight:900;letter-spacing:-.2px}
-    .tag{display:block;color:var(--a1);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:6px}
-    .card p{color:var(--muted);font-size:14px;margin:10px 0 18px;min-height:66px}
-    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
-    .price{font-size:22px;font-weight:900}
-    .price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
-    .badge{position:absolute;top:18px;right:18px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a;z-index:2}
-
-    .stats-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
-    .stat{
-      border-radius:22px;
-      background:var(--glass);
-      border:1px solid var(--glass-line);
-      padding:18px;
-      -webkit-backdrop-filter:blur(18px);
-      backdrop-filter:blur(18px);
-    }
-    .stat b{display:block;font-size:28px;color:var(--warn)}
-    .stat span{display:block;color:var(--muted);font-size:13px}
-
-    .showcase{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
-    .wide{
-      border-radius:28px;
-      background:var(--glass);
-      border:1px solid var(--glass-line);
-      overflow:hidden;
-      -webkit-backdrop-filter:blur(18px);
-      backdrop-filter:blur(18px);
-    }
-    .wide img{width:100%;height:280px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
-    .wide-body{padding:22px}
-    .wide-body h3{margin:0;font-size:26px}
-    .wide-body p{color:var(--muted)}
-
-    .analytics-toggle{position:fixed;right:18px;bottom:18px;z-index:80}
-    .analytics-panel{
-      position:fixed;
-      right:18px;
-      bottom:76px;
-      z-index:79;
-      width:min(390px,calc(100vw - 36px));
-      max-height:70vh;
-      overflow:auto;
-      display:none;
-      border-radius:22px;
-      background:rgba(10,14,26,.86);
-      border:1px solid var(--glass-line);
-      box-shadow:0 28px 90px rgba(0,0,0,.48);
-      -webkit-backdrop-filter:blur(22px);
-      backdrop-filter:blur(22px);
-      padding:16px;
-    }
-    .analytics-panel.open{display:block}
-    .analytics-panel h2{font-size:18px;margin:0 0 10px}
-    .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
-    .metric{border:1px solid var(--glass-line);border-radius:16px;padding:10px;background:rgba(255,255,255,.06)}
-    .metric b{display:block;font-size:24px;color:var(--a1)}
-    .metric span{font-size:12px;color:var(--muted)}
-    .click-row{display:grid;grid-template-columns:1fr auto;gap:10px;border-top:1px solid rgba(255,255,255,.1);padding:9px 0;color:var(--muted);font-size:13px}
-    .click-row strong{color:var(--ink)}
-    .panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-
-    footer{padding:46px 0;text-align:center;color:var(--muted);font-size:14px}
-
-    @media(max-width:900px){
-      .float-chip{display:none}
-      .grid,.stats-band,.showcase{grid-template-columns:1fr}
-      .nav-inner{border-radius:24px;align-items:flex-start;flex-wrap:wrap}
-      .spacer{display:none}
-      .lnk{font-size:13px}
-    }
-    @media(max-width:560px){
-      .wrap{width:min(100% - 22px,1140px)}
-      nav{top:8px;margin-top:8px;padding:0 8px}
-      .hero{text-align:left;padding-top:62px}
-      h1{letter-spacing:0}
-      .hero p{font-size:16px}
-      .hero-cta{justify-content:flex-start}
-      .btn{width:auto;max-width:100%}
-      .card{min-height:auto;padding:18px}
-      .row{align-items:flex-start;flex-direction:column}
-      .stats-band{gap:10px}
-    }
-  </style>
+footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
+.back{position:fixed;bottom:22px;left:22px;z-index:99}
+.mouse-light{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50vw) var(--my,45vh),rgba(110,231,255,.18),rgba(167,139,250,.10) 36%,transparent 70%);mix-blend-mode:screen}
+.stats-btn{position:fixed;right:22px;bottom:22px;z-index:100}
+.stats-panel{position:fixed;right:22px;bottom:78px;z-index:100;width:min(360px,calc(100vw - 44px));display:none;padding:16px;border-radius:22px;background:rgba(10,14,26,.82);border:1px solid var(--glass-line);backdrop-filter:blur(20px);box-shadow:0 28px 90px rgba(0,0,0,.5)}
+.stats-panel.open{display:block}
+.stats-panel h3{font-size:17px;margin-bottom:10px}
+.stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
+.stat-box{padding:10px;border-radius:16px;background:var(--glass);border:1px solid var(--glass-line)}
+.stat-box b{display:block;font-size:24px;color:var(--a1)}
+.stat-box span{font-size:12px;color:var(--muted)}
+.click-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:var(--muted)}
+.click-row strong{color:var(--ink)}
+</style>
 </head>
 <body>
-  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
-  <div class="page">
-    <nav>
-      <div class="nav-inner">
-        <a class="brand" href="/" data-track="nav_logo"><img src="assets/ducpt-logo.svg" alt="DUCPT"><span>DUCPT</span></a>
-        <a class="lnk" href="#products" data-track="nav_products">Sản phẩm</a>
-        <a class="lnk" href="#showcase" data-track="nav_showcase">Showcase</a>
-        <a class="lnk" href="#stats" data-track="nav_stats">Thống kê</a>
-        <span class="spacer"></span>
-        <a class="btn btn-glass" href="mailto:admin@ducpt.com" data-track="nav_contact">Liên hệ</a>
-      </div>
-    </nav>
+<div class="aurora"><i></i><i></i><i></i></div>
+<div class="mouse-light" aria-hidden="true"></div>
 
-    <section class="hero wrap">
-      <div class="float-chip c1">Verba Studio</div>
-      <div class="float-chip c2">YouTube Ops</div>
-      <div class="float-chip c3">AI Brain Bot</div>
-      <div>
-        <div class="pill"><b>●</b> Aurora Glass interface đang chạy chính thức</div>
-        <h1>Công cụ số, bot AI và website sản phẩm <span class="gr">sáng theo từng chuyển động.</span></h1>
-        <p>DUCPT xây app, extension, automation, Telegram bot và hệ thống nội dung. Giao diện mới có hiệu ứng ánh sáng theo chuột, card 3D và tracking click để theo dõi hành vi người dùng.</p>
-        <div class="hero-cta">
-          <a class="btn btn-hero" href="/brain-bot/" data-track="hero_brain_bot">Khám phá Brain Bot</a>
-          <a class="btn btn-glass" href="https://verbar.io/" target="_blank" rel="noopener" data-track="hero_verba">Xem Verba Studio</a>
-          <button class="btn btn-glass" type="button" data-track="hero_open_stats" data-open-analytics>Chỉ số click</button>
-        </div>
-      </div>
-    </section>
+<nav><div class="nav-inner">
+  <span class="logo">DUCPT</span>
+  <a class="lnk" href="#">Trang chủ</a><a class="lnk" href="#sp">Sản phẩm</a><a class="lnk" href="#">Liên hệ</a>
+  <span class="spacer"></span>
+  <button class="btn btn-glass">🛒 Giỏ hàng</button>
+</div></nav>
 
-    <section class="sec wrap" id="products">
-      <div class="sec-head">
-        <h2>Sản phẩm nổi bật</h2>
-        <p>Các sản phẩm và hệ thống có thể đóng gói bán, demo hoặc dùng làm bằng chứng năng lực.</p>
-      </div>
-      <div class="grid">
-        <article class="card tilt-card" data-track-card="card_verba">
-          <span class="badge">LIVE</span>
-          <img class="card-img" src="assets/project-verba-studio.svg" alt="Verba Studio">
-          <span class="tag">Ứng dụng creator</span>
-          <h3>Verba Studio</h3>
-          <p>Phòng thu creator: live đa nền tảng, quay màn hình, camera PiP, chroma key và AI transcript tiếng Việt.</p>
-          <div class="row"><span class="price">199.000đ<small>299k</small></span><a class="btn btn-hero" href="https://verbar.io/" target="_blank" rel="noopener" data-track="buy_verba">Mở</a></div>
-        </article>
-
-        <article class="card tilt-card" data-track-card="card_brain_bot">
-          <span class="badge">NEW</span>
-          <img class="card-img" src="assets/project-product-hub.svg" alt="AI Knowledge Brain Bot">
-          <span class="tag">Bot & AI</span>
-          <h3>Knowledge Brain Bot</h3>
-          <p>Gom kiến thức đa nguồn, đẩy mindmap, gửi TXT về Telegram và dọn file nặng sau khi nạp dữ liệu.</p>
-          <div class="row"><span class="price">Cập nhật sau</span><a class="btn btn-hero" href="/brain-bot/" data-track="buy_brain_bot">Mở</a></div>
-        </article>
-
-        <article class="card tilt-card" data-track-card="card_youtube_ops">
-          <img class="card-img" src="assets/youtube-channel-preview.png" alt="YouTube Ops">
-          <span class="tag">Content Ops</span>
-          <h3>Hệ thống vận hành YouTube</h3>
-          <p>Quản lý ý tưởng, lịch đăng, nội dung, asset và quy trình vận hành kênh cho creator hoặc team nhỏ.</p>
-          <div class="row"><span class="price">Dịch vụ</span><a class="btn btn-hero" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="open_youtube">Mở</a></div>
-        </article>
-
-        <article class="card tilt-card" data-track-card="card_github">
-          <img class="card-img" src="assets/github-profile-preview.png" alt="GitHub Ducpt88">
-          <span class="tag">Code & tool</span>
-          <h3>GitHub Projects</h3>
-          <p>Repo, tool và automation công khai: video downloader, extension, image tools, dashboard và sản phẩm web.</p>
-          <div class="row"><span class="price">Public</span><a class="btn btn-hero" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="open_github">Mở</a></div>
-        </article>
-
-        <article class="card tilt-card" data-track-card="card_pro_video">
-          <img class="card-img" src="assets/project-pro-video.svg" alt="Pro Video Downloader">
-          <span class="tag">Downloader</span>
-          <h3>Pro Video Downloader</h3>
-          <p>Công cụ tải và xử lý video phục vụ workflow nội dung, lưu trữ, tái biên tập và automation.</p>
-          <div class="row"><span class="price">Tool</span><a class="btn btn-hero" href="https://github.com/Ducpt88/pro-video-downloader" target="_blank" rel="noopener" data-track="open_video_tool">Mở</a></div>
-        </article>
-
-        <article class="card tilt-card" data-track-card="card_interface_lab">
-          <img class="card-img" src="assets/project-dashboard-dev.svg" alt="Interface Lab">
-          <span class="tag">Website Lab</span>
-          <h3>Interface Lab</h3>
-          <p>Phòng thử giao diện cho DUCPT: các mẫu website, trang sản phẩm và concept thương mại hóa.</p>
-          <div class="row"><span class="price">Demo</span><a class="btn btn-hero" href="/ducpt-interface-lab/" data-track="open_interface_lab">Mở</a></div>
-        </article>
-      </div>
-    </section>
-
-    <section class="sec wrap" id="stats">
-      <div class="sec-head">
-        <h2>Thống kê và theo dõi click</h2>
-        <p>Giao diện ghi lại click trong trình duyệt để kiểm thử, đồng thời gửi event sang Microsoft Clarity nếu script tải thành công.</p>
-      </div>
-      <div class="stats-band">
-        <div class="stat"><b id="statTotal">0</b><span>Tổng click đã ghi trong trình duyệt này</span></div>
-        <div class="stat"><b id="statUnique">0</b><span>Nút/khu vực khác nhau được click</span></div>
-        <div class="stat"><b id="statLast">--</b><span>Lần click gần nhất</span></div>
-        <div class="stat"><b>Clarity</b><span>Gửi event để xem heatmap và hành vi người dùng thật</span></div>
-      </div>
-    </section>
-
-    <section class="sec wrap" id="showcase">
-      <div class="sec-head">
-        <h2>Showcase</h2>
-        <p>Hai tín hiệu chính để khách hiểu DUCPT vừa build sản phẩm, vừa vận hành nội dung.</p>
-      </div>
-      <div class="showcase">
-        <article class="wide tilt-card">
-          <img src="assets/verba-site-preview.png" alt="Verba Studio preview">
-          <div class="wide-body">
-            <span class="tag">Product signal</span>
-            <h3>Trang sản phẩm thật</h3>
-            <p>Verba Studio và Brain Bot có thể dùng làm nền cho mô hình bán sản phẩm, gói setup hoặc dịch vụ triển khai.</p>
-            <a class="btn btn-glass" href="https://verbar.io/" target="_blank" rel="noopener" data-track="showcase_verba">Xem Verba</a>
-          </div>
-        </article>
-        <article class="wide tilt-card">
-          <img src="assets/youtube-channel-preview.png" alt="YouTube channel preview">
-          <div class="wide-body">
-            <span class="tag">Content signal</span>
-            <h3>Hệ thống kênh và media</h3>
-            <p>Website không chỉ giới thiệu cá nhân, mà còn chứng minh năng lực xây quy trình nội dung và automation.</p>
-            <a class="btn btn-glass" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="showcase_youtube">Mở kênh</a>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <footer class="wrap">
-      DUCPT Aurora Glass · Theo dõi click · Hiệu ứng ánh sáng theo chuột · Card 3D tilt
-    </footer>
+<section class="hero wrap">
+  <div class="float-chip c1">🎬 Verba Studio</div>
+  <div class="float-chip c2">📌 AutoPost</div>
+  <div class="float-chip c3">🧠 AI Bot</div>
+  <div class="pill"><b>●</b> 17+ sản phẩm đang hoạt động</div>
+  <h1>Công cụ số<br><span class="gr">trong suốt như kính</span></h1>
+  <p>App, extension và automation do DUCPT tự xây dựng. Thiết kế glassmorphism — nhẹ nhàng, hiện đại, sang trọng.</p>
+  <div class="hero-cta">
+    <button class="btn btn-hero">Khám phá ngay →</button>
+    <button class="btn btn-glass">Xem demo</button>
   </div>
+</section>
 
-  <button class="analytics-toggle btn btn-hero" type="button" data-open-analytics data-track="floating_stats">Thống kê</button>
-  <aside class="analytics-panel" id="analyticsPanel" aria-label="Click analytics panel">
-    <h2>Chỉ số click</h2>
-    <div class="metric-grid">
-      <div class="metric"><b id="panelTotal">0</b><span>Tổng click</span></div>
-      <div class="metric"><b id="panelUnique">0</b><span>Điểm click</span></div>
-    </div>
-    <div id="clickList"></div>
-    <div class="panel-actions">
-      <button class="btn btn-glass" type="button" id="exportStats">Copy JSON</button>
-      <button class="btn btn-glass" type="button" id="resetStats">Reset</button>
-    </div>
-  </aside>
+<section class="sec wrap" id="sp">
+  <div class="sec-head"><h2>Sản phẩm nổi bật</h2><p>Chọn công cụ phù hợp với bạn</p></div>
+  <div class="grid">
+    <div class="card"><span class="badge">HOT</span><div class="ico">🎬</div><span class="tag">Ứng dụng</span>
+      <h3>Verba Studio</h3><p>Phòng thu creator: live đa nền tảng, chroma key, AI transcript tiếng Việt.</p>
+      <div class="row"><span class="price">199.000đ<small>299k</small></span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+    <div class="card"><span class="badge">NEW</span><div class="ico">🧠</div><span class="tag">Bot & AI</span>
+      <h3>Knowledge Brain Bot</h3><p>Gom kiến thức đa nguồn, đẩy mindmap, gửi Telegram tự động.</p>
+      <div class="row"><span class="price">149.000đ</span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+    <div class="card"><div class="ico">📌</div><span class="tag">Extension</span>
+      <h3>Pinterest AutoPost</h3><p>Đăng pin ảnh/video tự động chạy nền, lên lịch hàng loạt nhiều board.</p>
+      <div class="row"><span class="price">249.000đ<small>349k</small></span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+  </div>
+</section>
 
-  <script>
-    const ANALYTICS_CONFIG = {
-      googleAnalyticsId: "",
-      clarityProjectId: "a391372641p533055026"
-    };
-
-    const statsKey = "ducpt_aurora_click_stats_v1";
-    const $ = (selector) => document.querySelector(selector);
-    const $$ = (selector) => [...document.querySelectorAll(selector)];
-
-    function loadAnalytics(){
-      const gaId = ANALYTICS_CONFIG.googleAnalyticsId.trim();
-      const clarityId = ANALYTICS_CONFIG.clarityProjectId.trim();
-      if(gaId){
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function(){ dataLayer.push(arguments); };
-        gtag("js", new Date());
-        gtag("config", gaId, { send_page_view: true });
-        const gaScript = document.createElement("script");
-        gaScript.async = true;
-        gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
-        document.head.appendChild(gaScript);
-      }
-      if(clarityId){
-        (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-        })(window, document, "clarity", "script", clarityId);
-      }
-    }
-
-    function readStats(){
-      try {
-        return JSON.parse(localStorage.getItem(statsKey)) || { total:0, events:{}, last:null };
-      } catch {
-        return { total:0, events:{}, last:null };
-      }
-    }
-
-    function writeStats(stats){
-      localStorage.setItem(statsKey, JSON.stringify(stats));
-      renderStats(stats);
-    }
-
-    function trackEvent(name, params = {}){
-      const cleanName = String(name || "unknown_click").replace(/[^\w.-]+/g,"_").slice(0,64);
-      const stats = readStats();
-      stats.total += 1;
-      stats.events[cleanName] = (stats.events[cleanName] || 0) + 1;
-      stats.last = { name: cleanName, at: new Date().toISOString(), href: params.href || "", text: params.text || "" };
-      writeStats(stats);
-
-      if(typeof window.gtag === "function"){
-        window.gtag("event", "ducpt_click", { click_name: cleanName, ...params });
-      }
-      if(typeof window.clarity === "function"){
-        window.clarity("event", `ducpt_click_${cleanName}`);
-      }
-    }
-
-    function renderStats(stats = readStats()){
-      const unique = Object.keys(stats.events || {}).length;
-      $("#statTotal").textContent = stats.total || 0;
-      $("#statUnique").textContent = unique;
-      $("#panelTotal").textContent = stats.total || 0;
-      $("#panelUnique").textContent = unique;
-      $("#statLast").textContent = stats.last ? new Date(stats.last.at).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}) : "--";
-      const rows = Object.entries(stats.events || {})
-        .sort((a,b) => b[1] - a[1])
-        .slice(0,12)
-        .map(([name,count]) => `<div class="click-row"><strong>${escapeHtml(name)}</strong><span>${count}</span></div>`)
-        .join("");
-      $("#clickList").innerHTML = rows || '<div class="click-row"><strong>Chưa có click</strong><span>0</span></div>';
-    }
-
-    function escapeHtml(value){
-      return String(value || "").replace(/[&<>"']/g, char => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-      }[char]));
-    }
-
-    function bindClickTracking(){
-      document.addEventListener("click", (event) => {
-        const target = event.target.closest("[data-track],a,button");
-        if(!target) return;
-        const name = target.dataset.track || target.getAttribute("href") || target.textContent || "click";
-        trackEvent(name, {
-          href: target.getAttribute("href") || "",
-          text: target.textContent.trim().slice(0,80)
-        });
-      });
-
-      $$("[data-track-card]").forEach(card => {
-        card.addEventListener("click", (event) => {
-          if(event.target.closest("a,button")) return;
-          trackEvent(card.dataset.trackCard, { text: card.querySelector("h3")?.textContent || "" });
-        });
-      });
-    }
-
-    function bindMouseGlow(){
-      window.addEventListener("pointermove", (event) => {
-        document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
-        document.documentElement.style.setProperty("--my", `${event.clientY}px`);
-      }, { passive: true });
-
-      $$(".tilt-card,.card").forEach(card => {
-        card.addEventListener("pointermove", event => {
-          const rect = card.getBoundingClientRect();
-          const x = (event.clientX - rect.left) / rect.width;
-          const y = (event.clientY - rect.top) / rect.height;
-          card.style.setProperty("--gx", `${x * 100}%`);
-          card.style.setProperty("--gy", `${y * 100}%`);
-          card.style.setProperty("--rx", `${(0.5 - y) * 8}deg`);
-          card.style.setProperty("--ry", `${(x - 0.5) * 10}deg`);
-        });
-        card.addEventListener("pointerleave", () => {
-          card.style.setProperty("--rx", "0deg");
-          card.style.setProperty("--ry", "0deg");
-        });
-      });
-    }
-
-    function bindPanel(){
-      const panel = $("#analyticsPanel");
-      $$("[data-open-analytics]").forEach(button => {
-        button.addEventListener("click", () => panel.classList.toggle("open"));
-      });
-      $("#resetStats").addEventListener("click", () => writeStats({ total:0, events:{}, last:null }));
-      $("#exportStats").addEventListener("click", async () => {
-        const payload = JSON.stringify(readStats(), null, 2);
-        try {
-          await navigator.clipboard.writeText(payload);
-          $("#exportStats").textContent = "Đã copy";
-          setTimeout(() => $("#exportStats").textContent = "Copy JSON", 1200);
-        } catch {
-          alert(payload);
-        }
-      });
-    }
-
-    loadAnalytics();
-    bindClickTracking();
-    bindMouseGlow();
-    bindPanel();
-    renderStats();
-  </script>
+<footer>Mẫu 1 — <b>Aurora Glass</b> · glassmorphism, nền cực quang, bo tròn lớn</footer>
+<a class="back btn btn-glass" href="index.html">← Chọn mẫu khác</a>
+<button class="stats-btn btn btn-hero" type="button" id="statsToggle">Stats</button>
+<aside class="stats-panel" id="statsPanel" aria-label="Click stats">
+  <h3>Click stats</h3>
+  <div class="stat-grid">
+    <div class="stat-box"><b id="statTotal">0</b><span>Total clicks</span></div>
+    <div class="stat-box"><b id="statUnique">0</b><span>Click points</span></div>
+  </div>
+  <div id="clickList"></div>
+  <button class="btn btn-glass" type="button" id="resetStats" style="margin-top:10px">Reset</button>
+</aside>
+<script>
+const ANALYTICS_CONFIG={clarityProjectId:"a391372641p533055026"};
+const statsKey="ducpt_aurora_store_clicks_v1";
+function loadClarity(){
+  const id=ANALYTICS_CONFIG.clarityProjectId;
+  if(!id)return;
+  (function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+  })(window,document,"clarity","script",id);
+}
+function readStats(){
+  try{return JSON.parse(localStorage.getItem(statsKey))||{total:0,events:{}}}catch{return{total:0,events:{}}}
+}
+function writeStats(stats){
+  localStorage.setItem(statsKey,JSON.stringify(stats));
+  renderStats(stats);
+}
+function cleanName(value){
+  return String(value||"click").trim().replace(/\s+/g,"_").replace(/[^\w.-]/g,"").slice(0,60)||"click";
+}
+function trackClick(target){
+  const name=cleanName(target.dataset.track||target.getAttribute("href")||target.textContent);
+  const stats=readStats();
+  stats.total=(stats.total||0)+1;
+  stats.events[name]=(stats.events[name]||0)+1;
+  stats.last={name,at:new Date().toISOString()};
+  writeStats(stats);
+  if(typeof window.clarity==="function")window.clarity("event","ducpt_click_"+name);
+}
+function renderStats(stats=readStats()){
+  const events=stats.events||{};
+  document.getElementById("statTotal").textContent=stats.total||0;
+  document.getElementById("statUnique").textContent=Object.keys(events).length;
+  document.getElementById("clickList").innerHTML=Object.entries(events).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,v])=>`<div class="click-row"><strong>${k}</strong><span>${v}</span></div>`).join("")||'<div class="click-row"><strong>No clicks yet</strong><span>0</span></div>';
+}
+window.addEventListener("pointermove",e=>{
+  document.documentElement.style.setProperty("--mx",e.clientX+"px");
+  document.documentElement.style.setProperty("--my",e.clientY+"px");
+},{passive:true});
+document.addEventListener("click",e=>{
+  const target=e.target.closest("a,button,.card");
+  if(target)trackClick(target);
+});
+document.getElementById("statsToggle").addEventListener("click",()=>document.getElementById("statsPanel").classList.toggle("open"));
+document.getElementById("resetStats").addEventListener("click",()=>writeStats({total:0,events:{}}));
+document.querySelectorAll('.card').forEach(c=>c.addEventListener('mousemove',e=>{
+  const r=c.getBoundingClientRect();
+  c.style.setProperty('--gx',((e.clientX-r.left)/r.width*100)+'%');
+  c.style.setProperty('--gy',((e.clientY-r.top)/r.height*100)+'%');
+}));
+loadClarity();
+renderStats();
+</script>
 </body>
 </html>
