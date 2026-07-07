@@ -103,6 +103,17 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-item[data-track="social_brain_bot"] .social-logo{background-image:url("assets/project-product-hub.svg")}
 @keyframes socialPass{0%{translate:44vw 0;scale:.72;opacity:.36;filter:blur(1px)}38%{translate:0 0;scale:1.45;opacity:1;filter:blur(0)}50%{translate:0 0;scale:1.55;opacity:1;filter:blur(0)}100%{translate:-44vw 0;scale:.72;opacity:.36;filter:blur(1px)}}
 @media(max-width:900px){.social-flow{min-height:220px}.social-item{width:72px;height:72px}.social-logo{width:56px;height:56px;background-size:40px 40px}.social-name{display:none}@keyframes socialPass{0%{translate:42vw 0;scale:.74;opacity:.4}45%{translate:0 0;scale:1.28;opacity:1}100%{translate:-42vw 0;scale:.74;opacity:.4}}}
+.youtube-tabs{order:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:16px}
+.youtube-tab{min-width:0;border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(18px);overflow:hidden;box-shadow:0 22px 60px rgba(0,0,0,.26)}
+.youtube-frame{aspect-ratio:16/9;background:rgba(255,255,255,.06)}
+.youtube-frame iframe{width:100%;height:100%;border:0;display:block}
+.youtube-meta{padding:14px 16px 16px}
+.youtube-meta .tag{color:#ff6b6b;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.4px}
+.youtube-meta h3{font-size:16px;line-height:1.35;margin-top:5px}
+.youtube-meta p{color:var(--muted);font-size:13px;margin-top:6px}
+.youtube-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.youtube-actions .btn{padding:9px 14px;font-size:12.5px}
+@media(max-width:900px){.youtube-tabs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}.youtube-tab{flex:0 0 min(86vw,380px);scroll-snap-align:center}.youtube-tab:last-child{margin-right:24px}}
 
 footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 .back{display:none!important}
@@ -182,6 +193,41 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
     </div>
   </div>
   <div class="sec-head"><h2>Nền tảng video & mạng xã hội</h2><p>Theo dõi các kênh nội dung, sản phẩm và cộng đồng đang được DUCPT vận hành.</p></div>
+  <div class="youtube-tabs" aria-label="Ba tab YouTube cua Duc DG">
+    <article class="youtube-tab">
+      <div class="youtube-frame">
+        <iframe loading="lazy" src="https://www.youtube.com/embed/videoseries?list=UU6CkCXq2gPH8rIkeyP0rtcQ" title="Video moi nhat tren kenh Duc DG" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="youtube-meta">
+        <span class="tag">YouTube moi nhat</span>
+        <h3>Video mới tự cập nhật từ kênh Đức DG</h3>
+        <p>Khi kênh có video mới, playlist uploads của YouTube sẽ đưa nội dung mới lên đầu khung này.</p>
+        <div class="youtube-actions"><a class="btn btn-hero" href="https://www.youtube.com/@ducdg2/videos" target="_blank" rel="noopener" data-track="youtube_latest_open">Mở kênh</a></div>
+      </div>
+    </article>
+    <article class="youtube-tab">
+      <div class="youtube-frame">
+        <iframe loading="lazy" src="https://www.youtube.com/embed/LBK6Aex2dY0" title="DG Maps Bot tu dong gom kien thuc thanh map" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="youtube-meta">
+        <span class="tag">Bot / Maps</span>
+        <h3>DG Maps Bot gom kiến thức thành map và TXT</h3>
+        <p>Khách có thể xem nhanh quy trình bot lấy nguồn, tạo map kiến thức và gửi kết quả về Telegram.</p>
+        <div class="youtube-actions"><a class="btn btn-glass" href="https://www.youtube.com/shorts/LBK6Aex2dY0" target="_blank" rel="noopener" data-track="youtube_bot_video">Xem trên YouTube</a></div>
+      </div>
+    </article>
+    <article class="youtube-tab">
+      <div class="youtube-frame">
+        <iframe loading="lazy" src="https://www.youtube.com/embed/4yjelymJ8r8" title="Kiem tien voi Vibe Coding" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="youtube-meta">
+        <span class="tag">Build san pham</span>
+        <h3>Build app, extension và hệ sản phẩm AI</h3>
+        <p>Tab dành cho nội dung chính về cách vận hành sản phẩm số, app và automation thương mại.</p>
+        <div class="youtube-actions"><a class="btn btn-glass" href="https://www.youtube.com/watch?v=4yjelymJ8r8" target="_blank" rel="noopener" data-track="youtube_build_video">Xem video</a></div>
+      </div>
+    </article>
+  </div>
   <div class="social-orbit">
     <a class="social-feature" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="social_youtube_feature">
       <img src="assets/youtube-channel-preview.png" alt="Kênh YouTube DUCPT">
