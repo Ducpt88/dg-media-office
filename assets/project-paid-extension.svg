@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="750" viewBox="0 0 1200 750">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#06111d"/>
+      <stop offset=".56" stop-color="#111827"/>
+      <stop offset="1" stop-color="#0b0f17"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="34" stdDeviation="32" flood-color="#000" flood-opacity=".38"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="750" fill="url(#bg)"/>
+  <circle cx="1040" cy="118" r="290" fill="#9b6cff" opacity=".2"/>
+  <circle cx="156" cy="642" r="320" fill="#35d5ff" opacity=".18"/>
+  <g opacity=".18">
+    <path d="M0 110 H1200 M0 230 H1200 M0 350 H1200 M0 470 H1200 M0 590 H1200" stroke="#fff"/>
+    <path d="M140 0 V750 M300 0 V750 M460 0 V750 M620 0 V750 M780 0 V750 M940 0 V750 M1100 0 V750" stroke="#fff"/>
+  </g>
+  <g filter="url(#shadow)">
+    
+      <rect x="118" y="138" width="964" height="500" rx="42" fill="#101827" stroke="rgba(255,255,255,.16)"/>
+      <rect x="118" y="138" width="964" height="72" rx="42" fill="#172337"/>
+      <circle cx="166" cy="174" r="11" fill="#ff625b"/><circle cx="200" cy="174" r="11" fill="#ffd166"/><circle cx="234" cy="174" r="11" fill="#64e89f"/>
+      <rect x="310" y="166" width="548" height="18" rx="9" fill="#ffffff" opacity=".32"/>
+      <rect x="170" y="264" width="230" height="230" rx="46" fill="#9b6cff" opacity=".92"/>
+      <path d="M244 338 h82 v82 h-82z M244 338 v-44 M326 338 v-44 M244 420 v44 M326 420 v44" stroke="#fff" stroke-width="18" stroke-linecap="round" fill="none" opacity=".92"/>
+      <rect x="454" y="266" width="494" height="44" rx="22" fill="#fff" opacity=".86"/>
+      <rect x="454" y="346" width="378" height="24" rx="12" fill="#fff" opacity=".24"/>
+      <rect x="454" y="394" width="458" height="24" rx="12" fill="#fff" opacity=".18"/>
+      <rect x="454" y="476" width="180" height="64" rx="24" fill="#35d5ff"/>
+      <rect x="660" y="476" width="210" height="64" rx="24" fill="#fff" opacity=".12"/>
+  </g>
+  <rect x="70" y="54" width="1060" height="642" rx="50" fill="none" stroke="#fff" opacity=".08"/>
+  <text x="96" y="86" fill="#9b6cff" font-family="Inter, Arial, sans-serif" font-size="20" font-weight="900" letter-spacing="4">LICENSED TOOL</text>
+  <text x="96" y="692" fill="#fff" font-family="Inter, Arial, sans-serif" font-size="48" font-weight="900">Paid Extension Line</text>
+  <text x="96" y="724" fill="#c9d3df" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700">Chrome store card, license key, paid features</text>
+</svg>
