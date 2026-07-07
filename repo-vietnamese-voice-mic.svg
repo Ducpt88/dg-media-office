@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="g" x1="48" x2="210" y1="32" y2="226" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#5eead4"/>
+      <stop offset=".5" stop-color="#6ee7ff"/>
+      <stop offset="1" stop-color="#f0a6ff"/>
+    </linearGradient>
+  </defs>
+  <rect width="256" height="256" rx="64" fill="#0a0e1a"/>
+  <circle cx="128" cy="128" r="94" fill="url(#g)" opacity=".18"/>
+  <rect x="96" y="42" width="64" height="112" rx="32" fill="url(#g)"/>
+  <path fill="#fff" d="M78 112a10 10 0 0 1 20 0v16a30 30 0 0 0 60 0v-16a10 10 0 0 1 20 0v16a50 50 0 0 1-40 49v24h24a10 10 0 0 1 0 20H94a10 10 0 0 1 0-20h24v-24a50 50 0 0 1-40-49z" opacity=".95"/>
+  <path fill="#0a0e1a" d="M111 80h34v10h-34zm0 26h34v10h-34z" opacity=".42"/>
+  <text x="128" y="235" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="800" fill="#fff">VOICE MIC</text>
+</svg>
