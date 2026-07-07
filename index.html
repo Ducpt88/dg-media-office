@@ -87,11 +87,16 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-flow{position:relative;min-height:260px;overflow:hidden;display:grid;place-items:center}
 .social-flow::before{content:"";position:absolute;left:50%;top:50%;width:170px;height:170px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(110,231,255,.22),rgba(167,139,250,.12) 46%,transparent 72%);border:1px solid rgba(255,255,255,.13);box-shadow:0 0 70px rgba(110,231,255,.18);pointer-events:none}
 .social-track{position:absolute;left:0;right:0;top:50%;height:150px;transform:translateY(-50%);pointer-events:none}
-.social-item{position:absolute;left:50%;top:50%;width:86px;height:86px;display:grid;place-items:center;border-radius:50%;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(18px);box-shadow:0 18px 42px rgba(0,0,0,.32);transform:translate(-50%,-50%);animation:socialPass 16s var(--ease) infinite;pointer-events:auto}
-.social-item:nth-child(1){animation-delay:-16s}
-.social-item:nth-child(2){animation-delay:-12s}
-.social-item:nth-child(3){animation-delay:-8s}
-.social-item:nth-child(4){animation-delay:-4s}
+.social-item{position:absolute;left:50%;top:50%;width:86px;height:86px;display:grid;place-items:center;border-radius:50%;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(18px);box-shadow:0 18px 42px rgba(0,0,0,.32);transform:translate(-50%,-50%);animation:socialPass 27s var(--ease) infinite;pointer-events:auto}
+.social-item:nth-child(1){animation-delay:-27s}
+.social-item:nth-child(2){animation-delay:-24s}
+.social-item:nth-child(3){animation-delay:-21s}
+.social-item:nth-child(4){animation-delay:-18s}
+.social-item:nth-child(5){animation-delay:-15s}
+.social-item:nth-child(6){animation-delay:-12s}
+.social-item:nth-child(7){animation-delay:-9s}
+.social-item:nth-child(8){animation-delay:-6s}
+.social-item:nth-child(9){animation-delay:-3s}
 .social-item:hover{animation-play-state:paused}
 .social-logo{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:#fff center/48px 48px no-repeat;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);font-size:0;overflow:hidden}
 .social-logo svg{width:44px;height:44px}
@@ -101,6 +106,11 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-item[data-track="social_facebook"] .social-logo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231877F2' d='M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.49 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z'/%3E%3C/svg%3E")}
 .social-item[data-track="social_github"] .social-logo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23181717' d='M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.18 1.18.92-.26 1.9-.38 2.88-.39.98.01 1.97.13 2.89.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.16c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z'/%3E%3C/svg%3E")}
 .social-item[data-track="social_brain_bot"] .social-logo{background-image:url("assets/project-product-hub.svg")}
+.social-item[data-track="repo_pro_video"] .social-logo{background-image:url("assets/repo-pro-video-downloader.png")}
+.social-item[data-track="repo_wp_ad"] .social-logo{background-image:url("assets/repo-wp-ad-extension.svg")}
+.social-item[data-track="repo_image_tools"] .social-logo{background-image:url("assets/repo-dg-image-tools.svg")}
+.social-item[data-track="repo_voice_mic"] .social-logo{background-image:url("assets/repo-vietnamese-voice-mic.svg")}
+.social-item[data-track="repo_file_manager"] .social-logo{background-image:url("assets/repo-file-manager-pro.png")}
 @keyframes socialPass{0%{translate:44vw 0;scale:.72;opacity:.36;filter:blur(1px)}38%{translate:0 0;scale:1.45;opacity:1;filter:blur(0)}50%{translate:0 0;scale:1.55;opacity:1;filter:blur(0)}100%{translate:-44vw 0;scale:.72;opacity:.36;filter:blur(1px)}}
 @media(max-width:900px){.social-flow{min-height:220px}.social-item{width:72px;height:72px}.social-logo{width:56px;height:56px;background-size:40px 40px}.social-name{display:none}@keyframes socialPass{0%{translate:42vw 0;scale:.74;opacity:.4}45%{translate:0 0;scale:1.28;opacity:1}100%{translate:-42vw 0;scale:.74;opacity:.4}}}
 .youtube-tabs{order:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:16px}
@@ -214,6 +224,11 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
       <a class="social-item" href="https://www.facebook.com/ducserving" target="_blank" rel="noopener" data-track="social_facebook"><span class="social-logo"></span><span class="social-name">Facebook</span></a>
       <a class="social-item" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="social_github"><span class="social-logo"></span><span class="social-name">GitHub</span></a>
       <a class="social-item" href="/brain-bot/" data-track="social_brain_bot"><span class="social-logo"></span><span class="social-name">Brain Bot</span></a>
+      <a class="social-item" href="https://github.com/Ducpt88/pro-video-downloader" target="_blank" rel="noopener" data-track="repo_pro_video"><span class="social-logo"></span><span class="social-name">Pro Video</span></a>
+      <a class="social-item" href="https://github.com/Ducpt88/wp-ad-extension" target="_blank" rel="noopener" data-track="repo_wp_ad"><span class="social-logo"></span><span class="social-name">WP Ad</span></a>
+      <a class="social-item" href="https://github.com/Ducpt88/dg-image-tools-updates" target="_blank" rel="noopener" data-track="repo_image_tools"><span class="social-logo"></span><span class="social-name">Image Tools</span></a>
+      <a class="social-item" href="https://github.com/Ducpt88/VietnameseVoiceMic" target="_blank" rel="noopener" data-track="repo_voice_mic"><span class="social-logo"></span><span class="social-name">Voice Mic</span></a>
+      <a class="social-item" href="https://github.com/Ducpt88/file-manager-pro" target="_blank" rel="noopener" data-track="repo_file_manager"><span class="social-logo"></span><span class="social-name">File Manager</span></a>
     </div>
   </div>
   <div class="sec-head"><h2>Nền tảng video & mạng xã hội</h2><p>Theo dõi các kênh nội dung, sản phẩm và cộng đồng đang được DUCPT vận hành.</p></div>
