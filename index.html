@@ -3,530 +3,416 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>DUCPT | Hồ sơ, Dịch vụ & Dự án</title>
-  <meta name="description" content="Trang bio cá nhân của DUCPT: giới thiệu bản thân, dịch vụ, chức năng, dự án app, extension và automation đang xây dựng.">
-  <meta name="theme-color" content="#000000">
-  <meta property="og:title" content="DUCPT | Hồ sơ, Dịch vụ & Dự án">
-  <meta property="og:description" content="Bio cá nhân, dịch vụ, dự án app, extension và automation tool của DUCPT.">
+  <title>DUCPT | Aurora Product Studio</title>
+  <meta name="description" content="DUCPT xây dựng app, automation, AI bot, website sản phẩm và hệ thống vận hành nội dung.">
+  <meta name="theme-color" content="#0a0e1a">
+  <meta property="og:title" content="DUCPT | Aurora Product Studio">
+  <meta property="og:description" content="App, extension, AI bot và automation do DUCPT xây dựng.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://ducpt.com/">
-  <meta property="og:image" content="assets/ducpt-logo.svg">
+  <meta property="og:image" content="https://ducpt.com/assets/ducpt-logo.svg">
   <link rel="icon" href="assets/ducpt-logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#05070c;
-      --ink:#fff;
-      --muted:#b8bbc4;
-      --panel:#0d0f16;
-      --panel-2:#141823;
-      --line:rgba(255,255,255,.14);
-      --orange:#ff6b13;
-      --cyan:#35d5ff;
-      --green:#64e89f;
-      --violet:#9b6cff;
-      --rose:#ff7598;
-      --yellow:#ffd166;
-      --radius:8px;
+      --bg:#0a0e1a;
+      --ink:#f2f5ff;
+      --muted:#9aa3bd;
+      --glass:rgba(255,255,255,.065);
+      --glass-strong:rgba(255,255,255,.105);
+      --glass-line:rgba(255,255,255,.16);
+      --a1:#6ee7ff;
+      --a2:#a78bfa;
+      --a3:#f0a6ff;
+      --a4:#5eead4;
+      --warn:#ffd166;
+      --ease:cubic-bezier(.2,.7,.2,1);
+      --mx:50vw;
+      --my:42vh;
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth;background:var(--bg)}
-    body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
-    a{color:inherit;text-decoration:none}
-    button,input{font:inherit}
-    button{cursor:pointer}
-    .wrap{width:min(1160px,calc(100% - 32px));margin:0 auto}
-    .page{min-height:100vh;background:linear-gradient(180deg,#05070c 0%,#080b12 46%,#10131a 100%)}
-    .scroll-progress{position:fixed;top:0;left:0;z-index:100;width:100%;height:4px;background:linear-gradient(90deg,var(--cyan),var(--green),var(--orange),var(--rose),var(--violet));transform-origin:left;transform:scaleX(0);box-shadow:0 0 28px rgba(84,214,255,.65)}
-    .liquid-glass{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.035));background-blend-mode:luminosity;-webkit-backdrop-filter:blur(15px);backdrop-filter:blur(15px);border:none;box-shadow:inset 0 1px 1px rgba(255,255,255,.22),0 24px 80px rgba(0,0,0,.34);position:relative;overflow:hidden}
-    .liquid-glass:before{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.4px;background:linear-gradient(180deg,rgba(255,255,255,.45) 0%,rgba(255,255,255,.15) 20%,rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(255,255,255,.15) 80%,rgba(255,255,255,.45) 100%);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none}
-    .animate-blur-fade-up{opacity:0;animation:blurFadeUp 1s ease-out forwards}
-    @keyframes blurFadeUp{from{opacity:0;filter:blur(20px);transform:translateY(40px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
-    @media(prefers-reduced-motion:reduce){.animate-blur-fade-up{opacity:1;animation:none}.hero-video{display:none}}
-
-    .hero{position:relative;min-height:100vh;min-height:100dvh;overflow:hidden;background:#05070c}
-    .hero:before{content:"";position:fixed;inset:-12% -8% auto;z-index:1;height:72vh;pointer-events:none;background:radial-gradient(circle at 16% 20%,rgba(53,213,255,.36),transparent 29%),radial-gradient(circle at 76% 16%,rgba(255,107,19,.34),transparent 28%),radial-gradient(circle at 54% 70%,rgba(155,108,255,.26),transparent 38%);filter:blur(6px);opacity:.9}
-    .hero:after{content:"";position:fixed;left:50%;top:13%;z-index:4;width:min(980px,86vw);height:min(980px,86vw);pointer-events:none;border:1px solid rgba(255,255,255,.09);border-radius:50%;transform:translateX(-50%);box-shadow:inset 0 0 80px rgba(255,255,255,.035),0 0 120px rgba(53,213,255,.08)}
-    .video-fallback{position:fixed;inset:0;z-index:0;background:radial-gradient(circle at 18% 18%,rgba(53,213,255,.22),transparent 30%),radial-gradient(circle at 82% 12%,rgba(255,107,19,.22),transparent 28%),radial-gradient(circle at 55% 100%,rgba(155,108,255,.2),transparent 38%),#05070c}
-    .hero-video{position:fixed;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;filter:saturate(1.04) contrast(1.18) brightness(.48);transform:scale(1.04);animation:videoDrift 18s ease-in-out infinite alternate}
-    .bottom-blur{position:fixed;inset:0;z-index:1;pointer-events:none;-webkit-backdrop-filter:blur(28px);backdrop-filter:blur(28px);-webkit-mask-image:linear-gradient(to top,black 0%,transparent 48%);mask-image:linear-gradient(to top,black 0%,transparent 48%)}
-    .hero-shade{position:fixed;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at var(--mx,50%) var(--my,42%),rgba(255,255,255,.24),rgba(53,213,255,.12) 17%,transparent 35%),linear-gradient(180deg,rgba(5,7,12,.05),rgba(5,7,12,.72) 78%,#0c0f16 100%)}
-    .hero-noise{position:fixed;inset:0;z-index:3;pointer-events:none;opacity:.22;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.18));mask-image:linear-gradient(180deg,rgba(0,0,0,.78),rgba(0,0,0,.18))}
-
-    .nav{position:fixed;top:0;left:0;right:0;z-index:50;padding:16px 0}
-    .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
-    .brand{display:flex;align-items:center;gap:11px;min-width:0}
-    .brand-mark{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#fff,var(--yellow));color:#05070c;font-weight:900;box-shadow:0 18px 40px rgba(255,107,19,.22),0 0 0 1px rgba(255,255,255,.22);overflow:hidden}
-    .brand-mark img,.intro-avatar img{width:100%;height:100%;object-fit:cover;display:block}
-    .brand-title{line-height:1}.brand-title b{display:block;font-size:16px;letter-spacing:-.02em}.brand-title span{display:block;margin-top:4px;color:rgba(255,255,255,.62);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
-    .nav-center{display:flex;align-items:center;gap:4px;border-radius:999px;padding:7px}
-    .nav-center a{border-radius:999px;padding:9px 14px;color:rgba(255,255,255,.76);font-size:13px;font-weight:700;transition:color .22s ease,background .22s ease,transform .22s ease}
-    .nav-center a:hover,.nav-center a.active{background:rgba(255,255,255,.16);color:#fff;transform:translateY(-1px)}
-    .nav-actions{display:flex;align-items:center;gap:10px}
-    .nav-btn,.profile-btn,.menu-btn{min-height:42px;border-radius:999px;color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 17px;font-size:13px;font-weight:800}
-    .nav-btn svg,.profile-btn svg,.primary-cta svg,.secondary-cta svg{width:16px;height:16px;stroke:currentColor;flex:0 0 auto}
-    .profile-btn,.menu-btn{width:40px;height:40px;padding:0}
-    .menu-btn{display:none}
-    .menu-icon{position:absolute;transition:opacity .5s ease,transform .5s ease}
-    .menu-icon.close{opacity:0;transform:rotate(-180deg) scale(.5)}
-    .menu-btn.open .menu-icon.open{opacity:0;transform:rotate(180deg) scale(.5)}
-    .menu-btn.open .menu-icon.close{opacity:1;transform:rotate(0) scale(1)}
-    .mobile-menu{position:absolute;left:0;right:0;top:72px;z-index:40;background:rgba(17,20,27,.96);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid #1f2430;border-bottom:1px solid #1f2430;box-shadow:0 28px 70px rgba(0,0,0,.45);transform:translateY(-16px);opacity:0;pointer-events:none;transition:transform .5s ease,opacity .5s ease}
-    .mobile-menu.open{transform:translateY(0);opacity:1;pointer-events:auto}
-    .mobile-menu-inner{display:grid;gap:6px;padding:16px}
-    .mobile-menu a{padding:13px;border-radius:var(--radius);color:rgba(255,255,255,.78);font-weight:700}
-    .mobile-menu a:hover{background:rgba(255,255,255,.08);color:#fff}
-    .mobile-actions{display:none;margin-top:8px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);gap:10px}
-
-    .hero-content{position:relative;z-index:10;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:112px 0 72px}
-    .intro-card{width:min(980px,100%);text-align:center;padding:0 12px;transform-style:preserve-3d;position:relative}
-    .intro-card:before{content:"DUCPT";position:absolute;left:50%;top:45%;z-index:-1;transform:translate(-50%,-50%);font-size:clamp(92px,18vw,260px);font-weight:900;letter-spacing:.04em;color:rgba(255,255,255,.035);text-shadow:0 0 70px rgba(53,213,255,.12);pointer-events:none}
-    .intro-avatar{width:82px;height:82px;margin:0 auto 18px;border-radius:24px;display:grid;place-items:center;background:linear-gradient(135deg,#fff,var(--yellow) 46%,var(--orange));color:#05070c;font-size:25px;font-weight:900;box-shadow:0 0 0 8px rgba(255,255,255,.08),0 30px 70px rgba(255,107,19,.24);overflow:hidden}
-    .eyebrow{display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,255,255,.24);border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.16),rgba(255,255,255,.07));padding:9px 14px;color:#fff;font-size:13px;font-weight:900;box-shadow:0 18px 54px rgba(0,0,0,.28)}
-    .pulse{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 7px rgba(100,232,159,.14)}
-    h1{margin:18px auto 16px;color:#fff;font-size:clamp(48px,7.8vw,112px);line-height:.9;font-weight:900;letter-spacing:-.045em;max-width:900px;text-shadow:0 24px 90px rgba(0,0,0,.72)}
-    h1{background:linear-gradient(180deg,#fff 0%,#fff2d0 38%,#35d5ff 72%,#9b6cff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .lead{max-width:760px;margin:0 auto;color:#eef2ff;font-size:clamp(16px,2vw,20px);line-height:1.72;text-shadow:0 18px 44px rgba(0,0,0,.72)}
-    .hero-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:28px}
-    .primary-cta,.secondary-cta{min-height:52px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 26px;font-weight:900;transition:transform .22s ease,box-shadow .22s ease,background .22s ease}
-    .primary-cta{border:0;background:linear-gradient(135deg,var(--orange),#ff9f1c);color:#fff;box-shadow:0 22px 60px rgba(255,107,19,.36),inset 0 1px 0 rgba(255,255,255,.28)}
-    .primary-cta:hover{background:linear-gradient(135deg,#ff812f,#ffd166);transform:translateY(-3px) scale(1.03);box-shadow:0 30px 70px rgba(255,107,19,.44)}
-    .secondary-cta{color:#fff;border:0}
-    .quick-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:26px}
-    .quick-info div{border:1px solid rgba(255,255,255,.18);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.13),rgba(255,255,255,.045));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);padding:15px 16px;text-align:left;transition:transform .22s ease,background .22s ease,border-color .22s ease;box-shadow:0 18px 50px rgba(0,0,0,.2)}
-    .quick-info div:hover{transform:translateY(-4px);background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.28)}
-    .quick-info span{display:block;color:var(--yellow);font-size:11px;font-weight:900;text-transform:uppercase}
-    .quick-info b{display:block;margin-top:6px;color:#fff;font-size:14px;line-height:1.38}
-    .signal-strip{position:absolute;left:0;right:0;bottom:22px;z-index:11;overflow:hidden;border-top:1px solid rgba(255,255,255,.16);border-bottom:1px solid rgba(255,255,255,.14);background:linear-gradient(90deg,rgba(255,107,19,.16),rgba(53,213,255,.12),rgba(155,108,255,.16));-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
-    .signal-track{display:flex;width:max-content;gap:28px;padding:12px 0;color:rgba(255,255,255,.86);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;animation:marqueeMove 28s linear infinite}
-    .signal-track span{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
-    .signal-track span:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 16px rgba(100,232,159,.9)}
-
-    .content-shell{position:relative;z-index:12;background:#0c0f16}
-    .section{padding:86px 0;background:linear-gradient(180deg,#0c0f16,#10141d);position:relative;overflow:hidden}
-    .section:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 14% 0,rgba(53,213,255,.13),transparent 32%),radial-gradient(circle at 86% 8%,rgba(255,107,19,.1),transparent 30%)}
-    .section.alt{background:linear-gradient(180deg,#121620,#0d1119)}
-    #services{padding-bottom:52px}
-    #projects{padding-top:64px}
-    .section-head{text-align:center;max-width:760px;margin:0 auto 26px}
-    .section h2{margin:0;color:#fff;font-size:clamp(36px,4.4vw,64px);line-height:.96;letter-spacing:-.035em;font-weight:900;text-shadow:0 18px 60px rgba(0,0,0,.42)}
-    .section-desc{margin:14px auto 0;color:#cfd4df;max-width:720px;line-height:1.68}
-    .services-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:24px}
-    .service-card{border:1px solid rgba(255,255,255,.15);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.115),rgba(255,255,255,.04));padding:22px;text-align:center;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;transition:transform .32s cubic-bezier(.16,1,.3,1),border-color .32s ease,background .32s ease,box-shadow .32s ease;position:relative;overflow:hidden}
-    .service-card:before{content:"";position:absolute;inset:-1px;background:radial-gradient(circle at 50% 0,rgba(255,255,255,.16),transparent 38%);opacity:0;transition:opacity .32s ease}
-    .service-card:hover{transform:translateY(-10px);border-color:rgba(255,255,255,.34);background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.055));box-shadow:0 34px 90px rgba(0,0,0,.34)}
-    .service-card:hover:before{opacity:1}
-    .service-card>*{position:relative;z-index:1}
-    .service-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;color:#fff;background:linear-gradient(135deg,var(--cyan),var(--violet));box-shadow:0 18px 42px rgba(0,0,0,.24)}
-    .service-icon svg{width:28px;height:28px;stroke:currentColor}
-    .service-card:hover .service-icon{animation:iconPop .7s cubic-bezier(.16,1,.3,1)}
-    .service-card h3{margin:0;color:#fff;font-size:17px}
-    .service-card p{margin:0;color:rgba(255,255,255,.64);font-size:13px;line-height:1.5}
-    .detail-check{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:20px}
-    .detail-item{border:1px solid rgba(255,255,255,.12);border-radius:12px;background:rgba(255,255,255,.055);padding:13px 14px;display:flex;align-items:center;gap:10px;min-width:0}
-    .detail-icon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--violet));color:#fff;flex:0 0 auto}
-    .detail-icon svg{width:17px;height:17px;stroke:currentColor}
-    .detail-item b{display:block;color:#fff;font-size:13px}.detail-item span{display:block;margin-top:3px;color:rgba(255,255,255,.56);font-size:11px;font-weight:700}
-    .ecosystem-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-top:26px}
-    .ecosystem-item{border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.06);padding:10px 14px;display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.76);font-size:13px;font-weight:800;transition:transform .24s ease,border-color .24s ease,background .24s ease}
-    .ecosystem-item:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.26);background:rgba(255,255,255,.1)}
-    .ecosystem-logo{width:24px;height:24px;border-radius:8px;display:grid;place-items:center;background:rgba(255,255,255,.1);color:#fff;font-size:11px;font-weight:900;flex:0 0 auto;overflow:hidden}
-    .ecosystem-logo img{width:100%;height:100%;object-fit:contain;background:#fff;padding:3px}
-    .ecosystem-logo svg{width:16px;height:16px;stroke:currentColor}
-    .controls{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin:22px auto 20px}
-    .search{height:44px;width:280px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;padding:0 16px;outline:0}
-    .search::placeholder{color:rgba(255,255,255,.45)}
-    .chip{height:44px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;padding:0 15px;font-weight:800}
-    .chip.active{background:#fff;color:#11131b;border-color:#fff}
-    .project-board-note{max-width:980px;margin:0 auto 18px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-    .board-note{border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.055);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:10px 14px;display:flex;align-items:center;justify-content:center;gap:8px;color:rgba(255,255,255,.75);font-size:12px;font-weight:900}
-    .board-note b{color:#fff}.board-note i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px rgba(100,232,159,.9);flex:0 0 auto}
-    .project-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-    .project-card{grid-column:span 4;min-width:0;border:1px solid rgba(255,255,255,.16);border-radius:20px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.045));overflow:hidden;display:flex;flex-direction:column;transition:transform .34s cubic-bezier(.16,1,.3,1),border-color .34s ease,box-shadow .34s ease,background .34s ease;position:relative;box-shadow:0 20px 70px rgba(0,0,0,.18)}
-    .project-card[data-primary-url]{cursor:pointer}
-    .project-card:before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--orange),var(--violet));opacity:.72;transform:scaleX(.25);transform-origin:left;transition:transform .45s cubic-bezier(.16,1,.3,1),opacity .34s ease;z-index:3}
-    .project-card:after{content:"";position:absolute;inset:-1px;background:linear-gradient(120deg,transparent 20%,rgba(255,255,255,.12),transparent 48%);transform:translateX(-120%);transition:transform .8s cubic-bezier(.16,1,.3,1);pointer-events:none;z-index:2}
-    .project-card:hover{transform:translateY(-12px);border-color:rgba(255,255,255,.36);box-shadow:0 42px 110px rgba(0,0,0,.48),0 0 50px rgba(53,213,255,.08);background:linear-gradient(180deg,rgba(255,255,255,.15),rgba(255,255,255,.055))}
-    .project-card:hover:before{transform:scaleX(1);opacity:1}
-    .project-card:hover:after{transform:translateX(120%)}
-    .project-card.featured{grid-column:span 8;display:grid;grid-template-columns:minmax(0,.92fr) minmax(280px,1.08fr)}
-    .project-art{min-height:218px;position:relative;overflow:hidden;background:#161a24}
-    .project-card:not(.featured) .project-art{aspect-ratio:16/10;min-height:0}
-    .project-art:before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 25% 25%,var(--c1),transparent 28%),radial-gradient(circle at 78% 16%,var(--c2),transparent 24%),linear-gradient(135deg,rgba(255,255,255,.12),rgba(255,255,255,.02));transition:transform .65s cubic-bezier(.16,1,.3,1)}
-    .project-card:hover .project-art:before{transform:scale(1.12) rotate(3deg)}
-    .project-art:after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.07) 1px,transparent 1px);background-size:34px 34px;-webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.75),transparent);mask-image:linear-gradient(180deg,rgba(0,0,0,.75),transparent)}
-    .project-shot{position:absolute;inset:0;z-index:1}
-    .project-shot img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(.92) contrast(1.02);transition:transform .72s cubic-bezier(.16,1,.3,1),filter .34s ease}
-    .project-shot:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(0,0,0,.32) 68%,rgba(0,0,0,.62))}
-    .project-card:hover .project-shot img{transform:scale(1.06);filter:saturate(1.04) contrast(1.05)}
-    .project-shot + .badge,.project-shot ~ .glyph,.project-shot ~ .product-logo,.project-shot ~ .brand-orbit{z-index:3}
-    .mock-browser{position:absolute;inset:28px 18px 18px;z-index:1;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(5,8,13,.42);box-shadow:0 20px 58px rgba(0,0,0,.28);overflow:hidden}
-    .mock-browser:before{content:"";position:absolute;left:0;right:0;top:0;height:22px;background:rgba(255,255,255,.09);border-bottom:1px solid rgba(255,255,255,.1)}
-    .mock-browser:after{content:"";position:absolute;left:14px;top:8px;width:6px;height:6px;border-radius:50%;background:#ff625b;box-shadow:11px 0 #ffd166,22px 0 #64e89f}
-    .mock-lines{position:absolute;left:16px;right:16px;top:44px;bottom:18px;display:grid;gap:9px}
-    .mock-lines i{display:block;border-radius:999px;background:rgba(255,255,255,.14)}
-    .mock-lines i:nth-child(1){height:18px;width:70%}.mock-lines i:nth-child(2){height:10px;width:92%}.mock-lines i:nth-child(3){height:10px;width:78%}.mock-lines i:nth-child(4){height:48px;width:100%;border-radius:10px;background:linear-gradient(90deg,var(--c1),var(--c2))}
-    .mock-phone{position:absolute;right:22px;bottom:18px;z-index:2;width:76px;height:132px;border:1px solid rgba(255,255,255,.18);border-radius:18px;background:rgba(0,0,0,.46);box-shadow:0 20px 58px rgba(0,0,0,.34);overflow:hidden}
-    .mock-phone:before{content:"";position:absolute;left:18px;right:18px;top:8px;height:4px;border-radius:99px;background:rgba(255,255,255,.28)}
-    .mock-phone:after{content:"";position:absolute;left:9px;right:9px;top:22px;bottom:9px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.04))}
-    .mock-code{position:absolute;inset:34px 18px 20px;z-index:1;border:1px solid rgba(255,255,255,.15);border-radius:14px;background:rgba(0,0,0,.36);padding:28px 14px 14px;display:grid;gap:8px;overflow:hidden}
-    .mock-code:before{content:"";position:absolute;left:12px;top:10px;width:7px;height:7px;border-radius:50%;background:#ff625b;box-shadow:12px 0 #ffd166,24px 0 #64e89f}
-    .mock-code i{display:block;height:8px;border-radius:99px;background:rgba(255,255,255,.16)}
-    .mock-code i:nth-child(1){width:62%;background:var(--c1)}.mock-code i:nth-child(2){width:82%}.mock-code i:nth-child(3){width:46%;background:var(--c2)}.mock-code i:nth-child(4){width:72%}.mock-code i:nth-child(5){width:54%}
-    .mock-grid{position:absolute;inset:38px 18px 20px;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .mock-grid i{border-radius:12px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.08)}
-    .mock-grid i:nth-child(2),.mock-grid i:nth-child(6){background:linear-gradient(135deg,var(--c1),var(--c2))}
-    .glyph{position:absolute;left:18px;bottom:16px;width:66px;height:66px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:24px;font-weight:900;-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 18px 42px rgba(0,0,0,.26);transition:transform .34s cubic-bezier(.16,1,.3,1),background .34s ease}
-    .glyph svg{width:32px;height:32px;stroke:currentColor}
-    .glyph svg.fill-icon{stroke:none;fill:currentColor}
-    .project-card:hover .glyph{transform:translateY(-3px) scale(1.04);background:rgba(255,255,255,.2)}
-    .product-logo{position:absolute;left:18px;bottom:16px;width:82px;height:82px;border-radius:22px;display:grid;place-items:center;background:rgba(255,255,255,.96);border:1px solid rgba(255,255,255,.32);box-shadow:0 22px 58px rgba(0,0,0,.34);padding:14px}
-    .product-logo img{width:100%;height:100%;object-fit:contain;display:block}
-    .product-device{position:absolute;right:18px;top:52px;width:54%;height:46%;border:1px solid rgba(255,255,255,.14);border-radius:14px;background:rgba(0,0,0,.2);box-shadow:0 24px 60px rgba(0,0,0,.28);overflow:hidden;z-index:2}
-    .product-device:before{content:"";position:absolute;left:0;right:0;top:0;height:18px;background:rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.1)}
-    .product-device:after{content:"LIVE  AI  STUDIO";position:absolute;left:14px;right:14px;top:34px;height:calc(100% - 48px);border-radius:10px;background:linear-gradient(135deg,rgba(255,77,61,.28),rgba(40,215,255,.18));display:grid;place-items:center;color:rgba(255,255,255,.78);font-size:11px;font-weight:900;letter-spacing:.18em}
-    .brand-orbit{position:absolute;right:22px;bottom:20px;width:168px;height:168px;border:1px solid rgba(255,255,255,.12);border-radius:50%;opacity:.75}
-    .brand-orbit:before,.brand-orbit:after{content:"";position:absolute;inset:24px;border:1px solid rgba(255,255,255,.1);border-radius:50%}
-    .brand-orbit:after{inset:54px;background:rgba(255,255,255,.08)}
-    .badge{position:absolute;left:12px;top:12px;z-index:2;border-radius:999px;background:linear-gradient(135deg,#fff,#ffe2a6);color:#11131b;padding:8px 11px;font-size:11px;font-weight:900;box-shadow:0 12px 28px rgba(0,0,0,.26)}
-    .content{padding:18px;display:flex;flex-direction:column;gap:13px;min-width:0;flex:1;position:relative;z-index:4}
-    .title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
-    .title-row h3{margin:0;color:#fff;font-size:22px;line-height:1.16}
-    .kind{border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);color:#fff;padding:6px 9px;font-size:11px;font-weight:900;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
-    .kind:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 12px rgba(100,232,159,.75)}
-    .content p{margin:0;color:rgba(255,255,255,.67);font-size:14px;line-height:1.58}
-    .meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:auto}
-    .meta div{border-radius:10px;background:rgba(255,255,255,.07);padding:9px;min-width:0;border:1px solid rgba(255,255,255,.07)}
-    .meta b{display:block;color:#fff;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .meta span{display:block;margin-top:3px;color:rgba(255,255,255,.52);font-size:11px}
-    .tags{display:flex;flex-wrap:wrap;gap:7px}
-    .tag{border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.72);padding:6px 9px;font-size:12px;font-weight:800;transition:transform .2s ease,background .2s ease,color .2s ease,border-color .2s ease}
-    a.tag{background:linear-gradient(135deg,#fff,#ffe2a6);color:#11131b;border-color:#fff;box-shadow:0 12px 28px rgba(255,255,255,.1)}
-    .tag:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.28);background:rgba(255,255,255,.1);color:#fff}
-    a.tag:hover{background:linear-gradient(135deg,var(--orange),#ff9f1c);border-color:var(--orange);color:#fff}
-    .card-checks{display:flex;flex-wrap:wrap;gap:6px;padding-top:2px}
-    .card-check{display:inline-flex;align-items:center;gap:5px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.055);color:rgba(255,255,255,.68);padding:5px 8px;font-size:10px;font-weight:900}
-    .card-check.is-ready{border-color:rgba(100,232,159,.34);background:rgba(100,232,159,.1);color:#dbffe9}
-    .card-check.is-missing{border-color:rgba(255,209,102,.3);background:rgba(255,209,102,.08);color:#ffe8a5}
-    .card-check svg{width:12px;height:12px;stroke:currentColor}
-    .open-hint{display:inline-flex;align-items:center;gap:6px;margin-left:auto;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.075);color:rgba(255,255,255,.72);padding:6px 9px;font-size:11px;font-weight:900}
-    .open-hint svg{width:12px;height:12px;stroke:currentColor}
-    .suggestion-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:24px}
-    .suggestion-card{position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.13);border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.035));padding:20px;min-height:220px;display:flex;flex-direction:column;justify-content:space-between;gap:18px;transition:transform .34s cubic-bezier(.16,1,.3,1),border-color .34s ease,box-shadow .34s ease}
-    .suggestion-card:before{content:"";position:absolute;inset:-2px;background:linear-gradient(120deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-120%);transition:transform .7s cubic-bezier(.16,1,.3,1)}
-    .suggestion-card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,.3);box-shadow:0 28px 90px rgba(0,0,0,.34)}
-    .suggestion-card:hover:before{transform:translateX(120%)}
-    .suggestion-card>*{position:relative;z-index:1}
-    .suggestion-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .suggestion-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:900;background:linear-gradient(135deg,var(--orange),var(--violet))}
-    .suggestion-status{border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.08);padding:7px 10px;color:rgba(255,255,255,.7);font-size:11px;font-weight:900}
-    .suggestion-card h3{margin:0;color:#fff;font-size:21px;line-height:1.16}
-    .suggestion-card p{margin:10px 0 0;color:rgba(255,255,255,.66);line-height:1.58;font-size:14px}
-    .suggestion-actions{display:flex;flex-wrap:wrap;gap:8px}
-    .asset-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:24px}
-    .asset-card{border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(255,255,255,.055);padding:16px;min-height:146px}
-    .asset-card h3{margin:0;color:#fff;font-size:17px}.asset-card p{margin:9px 0 0;color:rgba(255,255,255,.62);font-size:13px;line-height:1.5}.asset-status{display:inline-flex;margin-top:14px;border-radius:999px;padding:7px 10px;background:rgba(100,232,159,.11);color:#dbffe9;font-size:11px;font-weight:900}
-    .about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:14px}
-    .about-card,.links-card{border:1px solid rgba(255,255,255,.12);border-radius:var(--radius);background:rgba(255,255,255,.06);padding:20px}
-    .about-card h3,.links-card h3{margin:0;color:#fff;font-size:24px}.about-card p{margin:12px 0 0;color:rgba(255,255,255,.68);line-height:1.68}
-    .link-list{display:grid;gap:10px;margin-top:14px}
-    .link-item{display:grid;grid-template-columns:44px 1fr auto;gap:12px;align-items:center;border:1px solid rgba(255,255,255,.11);border-radius:var(--radius);background:rgba(0,0,0,.16);padding:12px}
-    .link-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--violet))}
-    .link-item b{display:block;color:#fff;font-size:14px}.link-item span{display:block;margin-top:4px;color:rgba(255,255,255,.56);font-size:12px}.link-item em{font-style:normal;color:rgba(255,255,255,.5);font-weight:900}
-    .link-item{transition:transform .24s ease,border-color .24s ease,background .24s ease}
-    .link-item:hover{transform:translateX(4px);border-color:rgba(255,255,255,.24);background:rgba(255,255,255,.08)}
-    .empty{display:none;margin-top:14px;border:1px dashed rgba(255,255,255,.2);border-radius:var(--radius);padding:28px;text-align:center;color:var(--muted);font-weight:900}
-    .is-hidden{display:none!important}
-    .reveal-on-scroll{opacity:0;filter:blur(18px);transform:translateY(34px);transition:opacity .8s ease,filter .8s ease,transform .8s cubic-bezier(.16,1,.3,1)}
-    .reveal-on-scroll.is-visible{opacity:1;filter:blur(0);transform:translateY(0)}
-    @keyframes videoDrift{from{transform:scale(1.04) translate3d(0,0,0)}to{transform:scale(1.1) translate3d(-1.4%,1%,0)}}
-    @keyframes marqueeMove{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    @keyframes iconPop{0%{transform:scale(1) rotate(0)}45%{transform:scale(1.12) rotate(-4deg)}100%{transform:scale(1) rotate(0)}}
-
-    @media(max-width:1023px){
-      .nav-center,.nav-actions .profile-btn{display:none}.menu-btn{display:inline-flex}.services-grid,.detail-check{grid-template-columns:repeat(2,minmax(0,1fr))}.ecosystem-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.project-board-note{grid-template-columns:repeat(2,minmax(0,1fr))}.project-card,.project-card.featured{grid-column:span 6;display:flex}.project-grid{grid-template-columns:repeat(6,1fr)}.suggestion-grid,.asset-grid{grid-template-columns:1fr}.about-grid{grid-template-columns:1fr}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--ink);
+      font-family:"Be Vietnam Pro",Arial,sans-serif;
+      line-height:1.6;
+      overflow-x:hidden;
     }
-    @media(max-width:640px){
-      .wrap{width:min(430px,calc(100% - 24px))}.nav{padding:12px 0}.brand-title span{font-size:9px}.nav-actions .nav-btn{display:none}.mobile-actions{display:grid;grid-template-columns:1fr 40px}
-      .hero-content{padding:104px 0 36px}.hero:after{width:680px;height:680px;top:13%}.intro-card{padding:0}.intro-card:before{font-size:104px;top:39%;letter-spacing:.01em}.intro-avatar{width:62px;height:62px;border-radius:19px;font-size:20px}.eyebrow{max-width:100%;justify-content:center;flex-wrap:wrap;border-radius:18px;padding:8px 11px;font-size:12px;line-height:1.35}.eyebrow .pulse{flex:0 0 auto}h1{max-width:340px;font-size:36px;line-height:.98;letter-spacing:-.035em;text-wrap:balance}.lead{max-width:340px;font-size:14px}.hero-actions{display:grid;grid-template-columns:1fr;width:100%;max-width:340px;margin-left:auto;margin-right:auto}.primary-cta,.secondary-cta{width:100%;padding:0 16px}.quick-info{grid-template-columns:1fr;text-align:left;max-width:340px;margin-left:auto;margin-right:auto}
-      .section{padding:46px 0}.services-grid,.detail-check,.ecosystem-grid,.project-board-note{grid-template-columns:1fr}.controls{display:grid;grid-template-columns:1fr 1fr;width:100%}.search{grid-column:1/-1;width:100%}.chip{width:100%;padding:0 10px}
-      .project-grid{grid-template-columns:1fr}.project-card,.project-card.featured{grid-column:auto;width:100%}.project-art{min-height:176px}.title-row{display:grid;gap:8px}.kind{justify-self:start}.meta{grid-template-columns:1fr 1fr}.link-item{grid-template-columns:44px 1fr}.link-item em{display:none}
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      z-index:1;
+      pointer-events:none;
+      background:
+        radial-gradient(560px circle at var(--mx) var(--my),rgba(110,231,255,.18),rgba(167,139,250,.11) 30%,transparent 62%),
+        radial-gradient(260px circle at var(--mx) var(--my),rgba(255,255,255,.16),transparent 68%);
+      mix-blend-mode:screen;
+      transition:opacity .2s var(--ease);
+    }
+
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    img{max-width:100%;display:block}
+    .wrap{width:min(1140px,calc(100% - 32px));margin:0 auto}
+
+    .aurora{position:fixed;inset:0;z-index:0;overflow:hidden;filter:blur(70px) saturate(1.35)}
+    .aurora i{position:absolute;border-radius:50%;opacity:.48;animation:drift 18s var(--ease) infinite alternate}
+    .aurora i:nth-child(1){width:55vw;height:40vh;background:#2563eb;top:-10%;left:-10%}
+    .aurora i:nth-child(2){width:45vw;height:45vh;background:#7c3aed;top:10%;right:-15%;animation-delay:-6s}
+    .aurora i:nth-child(3){width:40vw;height:35vh;background:#0d9488;bottom:-10%;left:20%;animation-delay:-12s}
+    @keyframes drift{to{transform:translate(6vw,5vh) scale(1.2) rotate(10deg)}}
+
+    .page{position:relative;z-index:2}
+    nav{position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1140px;padding:0 16px}
+    .nav-inner{
+      min-height:64px;
+      display:flex;
+      align-items:center;
+      gap:16px;
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--glass);
+      border:1px solid var(--glass-line);
+      -webkit-backdrop-filter:blur(20px);
+      backdrop-filter:blur(20px);
+      box-shadow:0 18px 70px rgba(0,0,0,.28);
+    }
+    .brand{display:flex;align-items:center;gap:10px;font-weight:900;white-space:nowrap}
+    .brand img{width:38px;height:38px;border-radius:12px;background:#fff}
+    .brand span{background:linear-gradient(90deg,var(--a1),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lnk{color:var(--muted);font-size:14px;font-weight:700;transition:.2s var(--ease);padding:8px 4px}
+    .lnk:hover{color:var(--ink)}
+    .spacer{flex:1}
+
+    .btn{
+      min-height:42px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      border-radius:999px;
+      border:0;
+      cursor:pointer;
+      padding:0 18px;
+      font-weight:800;
+      font-size:14px;
+      transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease);
+      white-space:nowrap;
+    }
+    .btn-hero{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3));color:#0a0e1a;box-shadow:0 8px 30px rgba(167,139,250,.38)}
+    .btn-hero:hover{transform:translateY(-2px);box-shadow:0 14px 44px rgba(167,139,250,.55)}
+    .btn-glass{background:var(--glass);border:1px solid var(--glass-line);color:var(--ink);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    .btn-glass:hover{background:rgba(255,255,255,.13)}
+
+    .hero{position:relative;min-height:calc(100vh - 96px);display:grid;align-items:center;padding:78px 0 52px;text-align:center;perspective:1100px}
+    .pill{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      padding:8px 18px;
+      border-radius:999px;
+      background:var(--glass);
+      border:1px solid var(--glass-line);
+      -webkit-backdrop-filter:blur(12px);
+      backdrop-filter:blur(12px);
+      color:var(--muted);
+      margin-bottom:24px;
+      font-size:13px;
+      font-weight:700;
+    }
+    .pill b{color:var(--a4)}
+    h1{margin:0 auto;font-size:clamp(38px,6.6vw,78px);line-height:1.04;letter-spacing:-1px;font-weight:900;max-width:920px}
+    h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1));background-size:250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:gr 7s linear infinite}
+    @keyframes gr{to{background-position:250% 0}}
+    .hero p{color:var(--muted);font-size:18px;max-width:680px;margin:22px auto 30px}
+    .hero-cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+    .float-chip{
+      position:absolute;
+      padding:10px 16px;
+      border-radius:16px;
+      background:var(--glass);
+      border:1px solid var(--glass-line);
+      -webkit-backdrop-filter:blur(14px);
+      backdrop-filter:blur(14px);
+      font-size:13px;
+      font-weight:800;
+      animation:bob 5s ease-in-out infinite;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      box-shadow:0 14px 40px rgba(0,0,0,.3);
+    }
+    .float-chip.c1{top:22%;left:3%;animation-delay:-1s}
+    .float-chip.c2{top:34%;right:4%;animation-delay:-2.5s}
+    .float-chip.c3{bottom:12%;left:10%;animation-delay:-4s}
+    @keyframes bob{50%{transform:translateY(-14px) rotate(-1.5deg)}}
+
+    .sec{padding:64px 0}
+    .sec-head{text-align:center;margin-bottom:32px}
+    .sec-head h2{margin:0;font-size:clamp(28px,4vw,42px);letter-spacing:-.5px;font-weight:900}
+    .sec-head p{color:var(--muted);margin:8px 0 0}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+    .card{
+      min-width:0;
+      min-height:320px;
+      border-radius:24px;
+      background:var(--glass);
+      border:1px solid var(--glass-line);
+      -webkit-backdrop-filter:blur(20px);
+      backdrop-filter:blur(20px);
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+      transition:transform .35s var(--ease),border-color .35s var(--ease),box-shadow .35s var(--ease);
+      transform:rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(var(--ty,0));
+      transform-style:preserve-3d;
+    }
+    .card::before{content:"";position:absolute;inset:0;background:radial-gradient(300px 180px at var(--gx,50%) var(--gy,0%),rgba(167,139,250,.2),rgba(110,231,255,.1) 42%,transparent 70%);opacity:.25;transition:.3s}
+    .card:hover{--ty:-8px;border-color:rgba(255,255,255,.3);box-shadow:0 30px 70px rgba(0,0,0,.45)}
+    .card:hover::before{opacity:1}
+    .card>*{position:relative;z-index:1}
+    .card-img{height:120px;border-radius:18px;border:1px solid var(--glass-line);background:rgba(255,255,255,.08);padding:12px;margin-bottom:18px;object-fit:contain;width:100%}
+    .card .ico{width:60px;height:60px;border-radius:18px;display:grid;place-items:center;font-size:27px;margin-bottom:16px;background:linear-gradient(135deg,rgba(110,231,255,.25),rgba(240,166,255,.25));border:1px solid var(--glass-line)}
+    .card h3{margin:0;font-size:20px;font-weight:900;letter-spacing:-.2px}
+    .tag{display:block;color:var(--a1);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:1.3px;margin-bottom:6px}
+    .card p{color:var(--muted);font-size:14px;margin:10px 0 18px;min-height:66px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .price{font-size:22px;font-weight:900}
+    .price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
+    .badge{position:absolute;top:18px;right:18px;padding:5px 12px;border-radius:999px;font-size:11px;font-weight:900;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a;z-index:2}
+
+    .stats-band{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+    .stat{
+      border-radius:22px;
+      background:var(--glass);
+      border:1px solid var(--glass-line);
+      padding:18px;
+      -webkit-backdrop-filter:blur(18px);
+      backdrop-filter:blur(18px);
+    }
+    .stat b{display:block;font-size:28px;color:var(--warn)}
+    .stat span{display:block;color:var(--muted);font-size:13px}
+
+    .showcase{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
+    .wide{
+      border-radius:28px;
+      background:var(--glass);
+      border:1px solid var(--glass-line);
+      overflow:hidden;
+      -webkit-backdrop-filter:blur(18px);
+      backdrop-filter:blur(18px);
+    }
+    .wide img{width:100%;height:280px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
+    .wide-body{padding:22px}
+    .wide-body h3{margin:0;font-size:26px}
+    .wide-body p{color:var(--muted)}
+
+    .analytics-toggle{position:fixed;right:18px;bottom:18px;z-index:80}
+    .analytics-panel{
+      position:fixed;
+      right:18px;
+      bottom:76px;
+      z-index:79;
+      width:min(390px,calc(100vw - 36px));
+      max-height:70vh;
+      overflow:auto;
+      display:none;
+      border-radius:22px;
+      background:rgba(10,14,26,.86);
+      border:1px solid var(--glass-line);
+      box-shadow:0 28px 90px rgba(0,0,0,.48);
+      -webkit-backdrop-filter:blur(22px);
+      backdrop-filter:blur(22px);
+      padding:16px;
+    }
+    .analytics-panel.open{display:block}
+    .analytics-panel h2{font-size:18px;margin:0 0 10px}
+    .metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+    .metric{border:1px solid var(--glass-line);border-radius:16px;padding:10px;background:rgba(255,255,255,.06)}
+    .metric b{display:block;font-size:24px;color:var(--a1)}
+    .metric span{font-size:12px;color:var(--muted)}
+    .click-row{display:grid;grid-template-columns:1fr auto;gap:10px;border-top:1px solid rgba(255,255,255,.1);padding:9px 0;color:var(--muted);font-size:13px}
+    .click-row strong{color:var(--ink)}
+    .panel-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+
+    footer{padding:46px 0;text-align:center;color:var(--muted);font-size:14px}
+
+    @media(max-width:900px){
+      .float-chip{display:none}
+      .grid,.stats-band,.showcase{grid-template-columns:1fr}
+      .nav-inner{border-radius:24px;align-items:flex-start;flex-wrap:wrap}
+      .spacer{display:none}
+      .lnk{font-size:13px}
+    }
+    @media(max-width:560px){
+      .wrap{width:min(100% - 22px,1140px)}
+      nav{top:8px;margin-top:8px;padding:0 8px}
+      .hero{text-align:left;padding-top:62px}
+      h1{letter-spacing:0}
+      .hero p{font-size:16px}
+      .hero-cta{justify-content:flex-start}
+      .btn{width:auto;max-width:100%}
+      .card{min-height:auto;padding:18px}
+      .row{align-items:flex-start;flex-direction:column}
+      .stats-band{gap:10px}
     }
   </style>
 </head>
 <body>
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="page">
-    <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
-    <section class="hero" id="top" aria-label="Trang chủ DUCPT">
-      <div class="video-fallback" aria-hidden="true"></div>
-      <video class="hero-video" autoplay muted loop playsinline aria-hidden="true">
-        <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260406_094145_4a271a6c-3869-4f1c-8aa7-aeb0cb227994.mp4" type="video/mp4">
-      </video>
-      <div class="bottom-blur" aria-hidden="true"></div>
-      <div class="hero-shade" aria-hidden="true"></div>
-      <div class="hero-noise" aria-hidden="true"></div>
-
-      <header class="nav">
-        <div class="wrap nav-inner">
-          <a class="brand animate-blur-fade-up" style="animation-delay:0ms" href="#top" aria-label="DUCPT">
-            <span class="brand-mark"><img src="assets/ducpt-logo.svg" alt=""></span>
-            <span class="brand-title"><b>DUCPT</b><span>Hồ sơ & dự án</span></span>
-          </a>
-          <nav class="nav-center liquid-glass" aria-label="Điều hướng">
-            <a class="active animate-blur-fade-up" style="animation-delay:100ms" href="#top">Trang chủ</a>
-            <a class="animate-blur-fade-up" style="animation-delay:150ms" href="#services">Dịch vụ</a>
-            <a class="animate-blur-fade-up" style="animation-delay:200ms" href="#projects">Dự án</a>
-            <a class="animate-blur-fade-up" style="animation-delay:250ms" href="#suggestions">Đề xuất</a>
-            <a class="animate-blur-fade-up" style="animation-delay:300ms" href="#about">Giới thiệu</a>
-          </nav>
-          <div class="nav-actions">
-            <button class="nav-btn liquid-glass animate-blur-fade-up" style="animation-delay:350ms" type="button" onclick="document.querySelector('#project-search').focus()"><svg viewBox="0 0 24 24" fill="none"><path d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke-width="2" stroke-linecap="round"/></svg>Tìm kiếm</button>
-            <a class="profile-btn liquid-glass animate-blur-fade-up" style="animation-delay:400ms" href="mailto:admin@ducpt.com" aria-label="Liên hệ"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6.8A2.8 2.8 0 0 1 6.8 4h10.4A2.8 2.8 0 0 1 20 6.8v10.4a2.8 2.8 0 0 1-2.8 2.8H6.8A2.8 2.8 0 0 1 4 17.2V6.8Z" stroke-width="1.8"/><path d="m6.5 7 5.5 5 5.5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            <button class="menu-btn liquid-glass animate-blur-fade-up" id="menu-toggle" style="animation-delay:350ms" type="button" aria-label="Mở menu" aria-expanded="false">
-              <svg class="icon menu-icon open" viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-              <svg class="icon menu-icon close" viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </button>
-          </div>
-        </div>
-        <div class="mobile-menu" id="mobile-menu">
-          <div class="wrap mobile-menu-inner">
-            <a href="#top">Trang chủ</a>
-            <a href="#services">Dịch vụ</a>
-            <a href="#projects">Dự án</a>
-            <a href="#suggestions">Đề xuất</a>
-            <a href="#about">Giới thiệu</a>
-            <a href="mailto:admin@ducpt.com">Liên hệ</a>
-            <div class="mobile-actions">
-              <button class="nav-btn liquid-glass" type="button" onclick="document.querySelector('#project-search').focus()"><svg viewBox="0 0 24 24" fill="none"><path d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Tìm kiếm</button>
-              <a class="profile-btn liquid-glass" href="mailto:admin@ducpt.com" aria-label="Liên hệ"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6.8A2.8 2.8 0 0 1 6.8 4h10.4A2.8 2.8 0 0 1 20 6.8v10.4a2.8 2.8 0 0 1-2.8 2.8H6.8A2.8 2.8 0 0 1 4 17.2V6.8Z" stroke="currentColor" stroke-width="1.8"/><path d="m6.5 7 5.5 5 5.5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div class="wrap hero-content">
-        <div class="intro-card animate-blur-fade-up" style="animation-delay:280ms">
-          <div class="intro-avatar"><img src="assets/ducpt-logo.svg" alt="DUCPT logo"></div>
-          <div class="eyebrow"><span class="pulse"></span> Builder làm app, extension và hệ thống kiếm tiền</div>
-          <h1>Xin chào, tôi là DUCPT.</h1>
-          <p class="lead">Tôi xây dựng và vận hành các hệ thống số phục vụ kiếm tiền online: quản lý nội dung YouTube, phát triển website/app, code chức năng tùy chỉnh, automation nội bộ, bio funnel và extension trả phí.</p>
-          <div class="hero-actions">
-            <a class="primary-cta" href="#services"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Xem tôi làm được gì</a>
-            <a class="secondary-cta liquid-glass" href="#projects"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h6v6H5V5ZM13 5h6v6h-6V5ZM5 13h6v6H5v-6ZM13 13h6v6h-6v-6Z" stroke-width="1.8"/></svg>Xem dự án</a>
-            <a class="secondary-cta liquid-glass" href="https://verbar.io/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Mở Verba Studio</a>
-          </div>
-          <div class="quick-info">
-            <div><span>Vận hành</span><b>Quản lý nội dung YouTube & hệ thống kênh</b></div>
-            <div><span>Phát triển</span><b>Dev website, app nhỏ, extension và tính năng</b></div>
-            <div><span>Tự động hóa</span><b>Code workflow, công cụ nội bộ và dashboard quản lý</b></div>
-          </div>
-        </div>
+    <nav>
+      <div class="nav-inner">
+        <a class="brand" href="/" data-track="nav_logo"><img src="assets/ducpt-logo.svg" alt="DUCPT"><span>DUCPT</span></a>
+        <a class="lnk" href="#products" data-track="nav_products">Sản phẩm</a>
+        <a class="lnk" href="#showcase" data-track="nav_showcase">Showcase</a>
+        <a class="lnk" href="#stats" data-track="nav_stats">Thống kê</a>
+        <span class="spacer"></span>
+        <a class="btn btn-glass" href="mailto:admin@ducpt.com" data-track="nav_contact">Liên hệ</a>
       </div>
-      <div class="signal-strip" aria-hidden="true">
-        <div class="signal-track">
-          <span>Bio chuyên nghiệp</span><span>Verba Studio</span><span>YouTube Ops</span><span>GitHub Projects</span><span>Code chức năng</span><span>Extension trả phí</span><span>Automation nội bộ</span><span>Landing page bán hàng</span>
-          <span>Bio chuyên nghiệp</span><span>Verba Studio</span><span>YouTube Ops</span><span>GitHub Projects</span><span>Code chức năng</span><span>Extension trả phí</span><span>Automation nội bộ</span><span>Landing page bán hàng</span>
+    </nav>
+
+    <section class="hero wrap">
+      <div class="float-chip c1">Verba Studio</div>
+      <div class="float-chip c2">YouTube Ops</div>
+      <div class="float-chip c3">AI Brain Bot</div>
+      <div>
+        <div class="pill"><b>●</b> Aurora Glass interface đang chạy chính thức</div>
+        <h1>Công cụ số, bot AI và website sản phẩm <span class="gr">sáng theo từng chuyển động.</span></h1>
+        <p>DUCPT xây app, extension, automation, Telegram bot và hệ thống nội dung. Giao diện mới có hiệu ứng ánh sáng theo chuột, card 3D và tracking click để theo dõi hành vi người dùng.</p>
+        <div class="hero-cta">
+          <a class="btn btn-hero" href="/brain-bot/" data-track="hero_brain_bot">Khám phá Brain Bot</a>
+          <a class="btn btn-glass" href="https://verbar.io/" target="_blank" rel="noopener" data-track="hero_verba">Xem Verba Studio</a>
+          <button class="btn btn-glass" type="button" data-track="hero_open_stats" data-open-analytics>Chỉ số click</button>
         </div>
       </div>
     </section>
 
-    <main class="content-shell">
-      <section class="section reveal-on-scroll" id="services">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>Dịch vụ & chức năng</h2>
-            <p class="section-desc">Các nhóm công việc được đặt chính giữa để người xem hiểu nhanh bạn làm được gì trước khi xem từng dự án cụ thể.</p>
-          </div>
-          <div class="services-grid">
-            <article class="service-card"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M10 9.5v5l4.5-2.5L10 9.5Z" fill="currentColor"/><path d="M3.5 8.5c.2-1.5 1.4-2.7 2.9-2.9C8 5.4 10.2 5.3 12 5.3s4 .1 5.6.3c1.5.2 2.7 1.4 2.9 2.9.1 1 .2 2.2.2 3.5s-.1 2.5-.2 3.5c-.2 1.5-1.4 2.7-2.9 2.9-1.6.2-3.8.3-5.6.3s-4-.1-5.6-.3c-1.5-.2-2.7-1.4-2.9-2.9-.1-1-.2-2.2-.2-3.5s.1-2.5.2-3.5Z" stroke="currentColor" stroke-width="1.8"/></svg></span><h3>Vận hành YouTube</h3><p>Quản lý nội dung, quy trình đăng tải, lịch sản xuất, tối ưu tác vụ lặp lại và theo dõi trạng thái kênh.</p></article>
-            <article class="service-card"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v8A2.5 2.5 0 0 1 17.5 17h-11A2.5 2.5 0 0 1 4 14.5v-8Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 20h8M10 17l-.8 3M14 17l.8 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><h3>Dev website & app</h3><p>Thiết kế giao diện, xây dựng landing page, dashboard, app nhỏ và các trang giới thiệu sản phẩm.</p></article>
-            <article class="service-card"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg></span><h3>Code chức năng</h3><p>Làm tính năng tùy chỉnh, form, bộ lọc, tìm kiếm, quản lý dữ liệu, tích hợp API và logic vận hành.</p></article>
-            <article class="service-card"><span class="service-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><h3>Automation nội bộ</h3><p>Tạo công cụ tự động hóa riêng để tiết kiệm thời gian, quản lý tác vụ và hỗ trợ vận hành sản phẩm.</p></article>
-          </div>
-          <div class="detail-check" aria-label="Các chi tiết đã được bổ sung">
-            <div class="detail-item"><span class="detail-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4V5Zm3 11 3.2-3.4 2.4 2.6 2.2-2.2L18 16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span><b>Ảnh preview</b><span>Card có ảnh/mockup riêng</span></span></div>
-            <div class="detail-item"><span class="detail-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 4.5 7v10L12 21l7.5-4V7L12 3Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v8M8.5 10l7 4M15.5 10l-7 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span><b>Logo & icon</b><span>Header, favicon, badge, glyph</span></span></div>
-            <div class="detail-item"><span class="detail-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9.5 14.5 14.5 9.5M8 11a4 4 0 0 1 0-5.7l.3-.3a4 4 0 0 1 5.7 0M16 13a4 4 0 0 1 0 5.7l-.3.3a4 4 0 0 1-5.7 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span><span><b>Link hành động</b><span>Verba, GitHub, YouTube, Facebook</span></span></div>
-            <div class="detail-item"><span class="detail-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span><b>Lọc & tìm kiếm</b><span>Tự kiểm tra theo tag dự án</span></span></div>
-          </div>
-          <div class="ecosystem-grid" aria-label="Hệ sinh thái đang xây">
-            <a class="ecosystem-item" href="https://verbar.io/" target="_blank" rel="noopener"><span class="ecosystem-logo"><img src="assets/verba-icon-official.svg" alt=""></span>Verba Studio</a>
-            <a class="ecosystem-item" href="https://github.com/Ducpt88" target="_blank" rel="noopener"><span class="ecosystem-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.5 2.4 1.1 2.9.8.1-.7.4-1.1.7-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1.1a9.6 9.6 0 0 1 5.1 0c1.9-1.4 2.8-1.1 2.8-1.1.6 1.4.2 2.4.1 2.7.7.7 1.1 1.6 1.1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.8v2.6c0 .3.2.6.7.5A9.2 9.2 0 0 0 12 2.8Z" fill="currentColor"/></svg></span>GitHub source</a>
-            <a class="ecosystem-item" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener"><span class="ecosystem-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M10 9.5v5l4.5-2.5L10 9.5Z" fill="currentColor"/><path d="M3.5 8.5c.2-1.5 1.4-2.7 2.9-2.9C8 5.4 10.2 5.3 12 5.3s4 .1 5.6.3c1.5.2 2.7 1.4 2.9 2.9.1 1 .2 2.2.2 3.5s-.1 2.5-.2 3.5c-.2 1.5-1.4 2.7-2.9 2.9-1.6.2-3.8.3-5.6.3s-4-.1-5.6-.3c-1.5-.2-2.7-1.4-2.9-2.9-.1-1-.2-2.2-.2-3.5s.1-2.5.2-3.5Z" stroke="currentColor" stroke-width="1.8"/></svg></span>YouTube channel</a>
-            <a class="ecosystem-item" href="https://www.facebook.com/ducserving" target="_blank" rel="noopener"><span class="ecosystem-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M14 8.4V7.1c0-.7.5-1.1 1.2-1.1H17V3h-2.7C11.6 3 10 4.6 10 7v1.4H8v3h2V21h4v-9.6h2.7l.5-3H14Z" fill="currentColor"/></svg></span>Facebook profile</a>
-            <a class="ecosystem-item" href="#projects"><span class="ecosystem-logo"><svg viewBox="0 0 24 24" fill="none"><path d="M5 5h6v6H5V5ZM13 5h6v6h-6V5ZM5 13h6v6H5v-6ZM13 13h6v6h-6v-6Z" stroke="currentColor" stroke-width="1.8"/></svg></span>App & extension</a>
-            <a class="ecosystem-item" href="#suggestions"><span class="ecosystem-logo">+</span>Đề xuất tiếp theo</a>
-          </div>
-        </div>
-      </section>
+    <section class="sec wrap" id="products">
+      <div class="sec-head">
+        <h2>Sản phẩm nổi bật</h2>
+        <p>Các sản phẩm và hệ thống có thể đóng gói bán, demo hoặc dùng làm bằng chứng năng lực.</p>
+      </div>
+      <div class="grid">
+        <article class="card tilt-card" data-track-card="card_verba">
+          <span class="badge">LIVE</span>
+          <img class="card-img" src="assets/project-verba-studio.svg" alt="Verba Studio">
+          <span class="tag">Ứng dụng creator</span>
+          <h3>Verba Studio</h3>
+          <p>Phòng thu creator: live đa nền tảng, quay màn hình, camera PiP, chroma key và AI transcript tiếng Việt.</p>
+          <div class="row"><span class="price">199.000đ<small>299k</small></span><a class="btn btn-hero" href="https://verbar.io/" target="_blank" rel="noopener" data-track="buy_verba">Mở</a></div>
+        </article>
 
-      <section class="section alt reveal-on-scroll" id="projects">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>Dự án đang xây dựng</h2>
-            <p class="section-desc">Đây là bảng tổng hợp các app, dịch vụ, kênh nội dung và hệ thống bạn đang xây. Mỗi card giữ thông tin ở mức an toàn, có thể bổ sung link Facebook, demo, landing page hoặc sản phẩm mới sau này.</p>
-          </div>
-          <div class="controls">
-            <input class="search" id="project-search" type="search" placeholder="Tìm dự án, thẻ, chức năng...">
-            <button class="chip active" type="button" data-filter="all">Tất cả</button>
-            <button class="chip" type="button" data-filter="youtube">YouTube</button>
-            <button class="chip" type="button" data-filter="github">GitHub</button>
-            <button class="chip" type="button" data-filter="dev">Dev</button>
-            <button class="chip" type="button" data-filter="service">Dịch vụ</button>
-            <button class="chip" type="button" data-filter="bio">Bio</button>
-            <button class="chip" type="button" data-filter="extension">Extension</button>
-            <button class="chip" type="button" data-filter="app">App</button>
-            <button class="chip" type="button" data-filter="ops">Ops</button>
-          </div>
+        <article class="card tilt-card" data-track-card="card_brain_bot">
+          <span class="badge">NEW</span>
+          <img class="card-img" src="assets/project-product-hub.svg" alt="AI Knowledge Brain Bot">
+          <span class="tag">Bot & AI</span>
+          <h3>Knowledge Brain Bot</h3>
+          <p>Gom kiến thức đa nguồn, đẩy mindmap, gửi TXT về Telegram và dọn file nặng sau khi nạp dữ liệu.</p>
+          <div class="row"><span class="price">Cập nhật sau</span><a class="btn btn-hero" href="/brain-bot/" data-track="buy_brain_bot">Mở</a></div>
+        </article>
 
-          <div class="project-board-note" aria-label="Tóm tắt bảng dự án">
-            <div class="board-note"><i></i><b>17+</b> mục đang đóng gói</div>
-            <div class="board-note"><i></i><b>Live</b> sản phẩm có link dùng ngay</div>
-            <div class="board-note"><i></i><b>Repo</b> có mã nguồn công khai</div>
-            <div class="board-note"><i></i><b>Slot</b> sẵn để thêm dự án mới</div>
-          </div>
+        <article class="card tilt-card" data-track-card="card_youtube_ops">
+          <img class="card-img" src="assets/youtube-channel-preview.png" alt="YouTube Ops">
+          <span class="tag">Content Ops</span>
+          <h3>Hệ thống vận hành YouTube</h3>
+          <p>Quản lý ý tưởng, lịch đăng, nội dung, asset và quy trình vận hành kênh cho creator hoặc team nhỏ.</p>
+          <div class="row"><span class="price">Dịch vụ</span><a class="btn btn-hero" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="open_youtube">Mở</a></div>
+        </article>
 
-          <div class="project-grid" id="project-grid">
-            <article class="project-card featured" data-status="app service youtube" data-search="verba studio streamer creator live đa nền tảng quay màn hình ai transcript tiếng việt phụ đề">
-              <div class="project-art" style="--c1:rgba(84,214,255,.42);--c2:rgba(181,140,255,.34)"><span class="project-shot"><img src="assets/project-verba-studio.svg" alt="Verba Studio product preview" loading="lazy"></span><span class="badge">Live product</span><span class="product-logo"><img src="assets/verba-icon-official.svg" alt="Verba Studio logo" loading="lazy"></span></div>
-              <div class="content"><div class="title-row"><h3>Verba Studio</h3><span class="kind">Sản phẩm</span></div><p>Phòng thu cho streamer và creator: live đa nền tảng, quay màn hình, camera PiP, chroma key, phụ đề và AI transcript tiếng Việt.</p><div class="meta"><div><b>Live</b><span>đa nền tảng</span></div><div><b>AI</b><span>transcript</span></div><div><b>Pro</b><span>199.000đ</span></div></div><div class="tags"><a class="tag" href="https://verbar.io/" target="_blank" rel="noopener">Dùng Verba</a><span class="tag">Streamer</span><span class="tag">Creator</span></div></div>
-            </article>
-            <article class="project-card featured" data-status="app service bot ai" data-search="ai knowledge brain bot telegram maps minmax setup thuong mai hoa">
-              <div class="project-art" style="--c1:rgba(100,232,159,.34);--c2:rgba(255,209,102,.26)"><span class="badge">New product</span><span class="glyph">AI</span><span class="mock-browser"><i></i><i></i><i></i></span><span class="mock-phone"></span></div>
-              <div class="content"><div class="title-row"><h3>AI Knowledge Brain Bot</h3><span class="kind">Telegram Bot</span></div><p>Bot gom nguồn kênh, page, video và file; đẩy kiến thức vào map, gửi TXT cho Telegram, hẹn lịch quét liên tục và dọn dẹp tư liệu sau khi nạp.</p><div class="meta"><div><b>Maps</b><span>kiến thức</span></div><div><b>TXT</b><span>gửi Tele</span></div><div><b>Giá</b><span>cập nhật sau</span></div></div><div class="tags"><a class="tag" href="/brain-bot/">Mở sản phẩm</a><a class="tag" href="/BRAIN_BOT_BAN_GIAO_GUI_KHACH.txt">Tải TXT</a><span class="tag">Commercial</span></div></div>
-            </article>
-            <article class="project-card" data-status="youtube ops service" data-search="youtube vận hành kênh quản lý nội dung lịch đăng video shorts reels content ops">
-              <div class="project-art" style="--c1:rgba(84,214,255,.42);--c2:rgba(255,122,36,.32)"><span class="project-shot"><img src="assets/youtube-channel-preview.png" alt="Kênh YouTube Đức DG" loading="lazy"></span><span class="badge">YouTube Ops</span><span class="glyph">YT</span></div>
-              <div class="content"><div class="title-row"><h3>Hệ thống vận hành YouTube</h3><span class="kind">Content Ops</span></div><p>Quản lý quy trình nội dung từ ý tưởng, chuẩn bị asset, đăng tải, theo dõi trạng thái đến tối ưu tác vụ lặp lại cho kênh.</p><div class="meta"><div><b>Content</b><span>quy trình</span></div><div><b>Schedule</b><span>lịch đăng</span></div><div><b>Ops</b><span>vận hành</span></div></div><div class="tags"><a class="tag" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener">Mở kênh</a><span class="tag">YouTube</span><span class="tag">Content system</span></div></div>
-            </article>
-            <article class="project-card" data-status="dev app github" data-search="github ducpt88 repository pro video downloader wp ad extension dg media office bot tài chính image tools">
-              <div class="project-art" style="--c1:rgba(255,255,255,.24);--c2:rgba(84,214,255,.3)"><span class="project-shot"><img src="assets/github-profile-preview.png" alt="GitHub Ducpt88 profile" loading="lazy"></span><span class="badge">GitHub</span><span class="glyph">GH</span></div>
-              <div class="content"><div class="title-row"><h3>GitHub Projects</h3><span class="kind">Code</span></div><p>Khu vực tổng hợp mã nguồn và dự án công khai: video downloader, extension, office website, bot tài chính và các tool cập nhật.</p><div class="meta"><div><b>12</b><span>repos</span></div><div><b>Python</b><span>tooling</span></div><div><b>JS/HTML</b><span>web app</span></div></div><div class="tags"><a class="tag" href="https://github.com/Ducpt88" target="_blank" rel="noopener">Mở GitHub</a><span class="tag">Developer</span><span class="tag">Public code</span></div></div>
-            </article>
-            <article class="project-card" data-status="dev app github" data-search="pro video downloader github python tool tải video">
-              <div class="project-art" style="--c1:rgba(84,214,255,.36);--c2:rgba(255,255,255,.22)"><span class="project-shot"><img src="assets/project-pro-video.svg" alt="Pro Video Downloader preview" loading="lazy"></span><span class="badge">Repo</span><span class="glyph">DL</span></div>
-              <div class="content"><div class="title-row"><h3>Pro Video Downloader</h3><span class="kind">Tool</span></div><p>Repo công khai cho nhóm công cụ tải/xử lý video, phù hợp đưa vào bio như một ví dụ năng lực làm tool thực tế.</p><div class="meta"><div><b>Tool</b><span>video</span></div><div><b>GitHub</b><span>repo</span></div><div><b>Public</b><span>demo code</span></div></div><div class="tags"><a class="tag" href="https://github.com/Ducpt88/pro-video-downloader" target="_blank" rel="noopener">Xem repo</a><span class="tag">Downloader</span><span class="tag">Python</span></div></div>
-            </article>
-            <article class="project-card" data-status="extension github dev" data-search="wp ad extension github chrome extension wordpress ads">
-              <div class="project-art" style="--c1:rgba(181,140,255,.38);--c2:rgba(255,122,36,.28)"><span class="project-shot"><img src="assets/project-wp-ad.svg" alt="WP Ad Extension preview" loading="lazy"></span><span class="badge">Repo</span><span class="glyph">WP</span></div>
-              <div class="content"><div class="title-row"><h3>WP Ad Extension</h3><span class="kind">Extension</span></div><p>Ví dụ về hướng extension/plugin phục vụ workflow web, có thể đóng gói thành dịch vụ setup hoặc sản phẩm trả phí.</p><div class="meta"><div><b>WP</b><span>web</span></div><div><b>Ad</b><span>workflow</span></div><div><b>Ext</b><span>tooling</span></div></div><div class="tags"><a class="tag" href="https://github.com/Ducpt88/wp-ad-extension" target="_blank" rel="noopener">Xem repo</a><span class="tag">Extension</span><span class="tag">Web ops</span></div></div>
-            </article>
-            <article class="project-card" data-status="dev app github service" data-search="dg media office github website office company media">
-              <div class="project-art" style="--c1:rgba(100,232,159,.32);--c2:rgba(84,214,255,.28)"><span class="project-shot"><img src="assets/project-dg-media.svg" alt="DG Media Office preview" loading="lazy"></span><span class="badge">Repo</span><span class="glyph">DG</span></div>
-              <div class="content"><div class="title-row"><h3>DG Media Office</h3><span class="kind">Website</span></div><p>Mẫu website/office cho thương hiệu media, phù hợp đưa vào bio để thể hiện năng lực dựng giao diện và trang giới thiệu.</p><div class="meta"><div><b>Web</b><span>office</span></div><div><b>Media</b><span>brand</span></div><div><b>UI</b><span>landing</span></div></div><div class="tags"><a class="tag" href="https://github.com/Ducpt88/dg-media-office" target="_blank" rel="noopener">Xem repo</a><span class="tag">Website</span><span class="tag">Brand page</span></div></div>
-            </article>
-            <article class="project-card" data-status="dev app github ops" data-search="bot tài chính github automation finance bot">
-              <div class="project-art" style="--c1:rgba(255,209,102,.34);--c2:rgba(100,232,159,.26)"><span class="project-shot"><img src="assets/project-bot-finance.svg" alt="Bot Tai Chinh preview" loading="lazy"></span><span class="badge">Repo</span><span class="glyph">BOT</span></div>
-              <div class="content"><div class="title-row"><h3>Bot Tài Chính</h3><span class="kind">Automation</span></div><p>Nhóm ý tưởng bot/tự động hóa theo dữ liệu, thể hiện khả năng xử lý logic, workflow và hệ thống hỗ trợ ra quyết định.</p><div class="meta"><div><b>Bot</b><span>logic</span></div><div><b>Data</b><span>xử lý</span></div><div><b>Ops</b><span>automation</span></div></div><div class="tags"><a class="tag" href="https://github.com/Ducpt88/bot-tai-chinh" target="_blank" rel="noopener">Xem repo</a><span class="tag">Automation</span><span class="tag">Finance</span></div></div>
-            </article>
-            <article class="project-card" data-status="dev app github" data-search="dg image tools updates github image tool cập nhật">
-              <div class="project-art" style="--c1:rgba(255,117,152,.32);--c2:rgba(181,140,255,.3)"><span class="project-shot"><img src="assets/project-image-tools.svg" alt="DG Image Tools preview" loading="lazy"></span><span class="badge">Repo</span><span class="glyph">IMG</span></div>
-              <div class="content"><div class="title-row"><h3>DG Image Tools Updates</h3><span class="kind">Tooling</span></div><p>Khu vực cập nhật tool hình ảnh, phù hợp nhóm sản phẩm hỗ trợ creator và các workflow xử lý nội dung.</p><div class="meta"><div><b>Image</b><span>tool</span></div><div><b>Update</b><span>release</span></div><div><b>Creator</b><span>ops</span></div></div><div class="tags"><a class="tag" href="https://github.com/Ducpt88/dg-image-tools-updates" target="_blank" rel="noopener">Xem repo</a><span class="tag">Image tools</span><span class="tag">Creator</span></div></div>
-            </article>
-            <article class="project-card" data-status="dev app bio" data-search="bio funnel landing page portfolio lead payment link trang giới thiệu bán hàng">
-              <div class="project-art" style="--c1:rgba(255,122,36,.42);--c2:rgba(255,209,102,.32)"><span class="project-shot"><img src="assets/project-bio-funnel.svg" alt="Bio funnel preview" loading="lazy"></span><span class="badge">Bio funnel</span><span class="glyph">BIO</span></div>
-              <div class="content"><div class="title-row"><h3>Trang bio chuyên nghiệp</h3><span class="kind">Website</span></div><p>Trang giới thiệu bản thân, gom link, contact, dự án đang làm và các đường dẫn chuyển đổi thành khách hàng hoặc người mua.</p><div class="meta"><div><b>Bio</b><span>nhận diện</span></div><div><b>Lead</b><span>liên hệ</span></div><div><b>Offer</b><span>sản phẩm</span></div></div><div class="tags"><span class="tag">Thương hiệu cá nhân</span><span class="tag">Lead funnel</span><span class="tag">Website</span></div></div>
-            </article>
-            <article class="project-card" data-status="extension" data-search="chrome extension store license paid tool tiện ích trả phí">
-              <div class="project-art" style="--c1:rgba(181,140,255,.42);--c2:rgba(84,214,255,.3)"><span class="project-shot"><img src="assets/project-paid-extension.svg" alt="Paid extension preview" loading="lazy"></span><span class="badge">Extension</span><span class="glyph">EX</span></div>
-              <div class="content"><div class="title-row"><h3>Dòng extension trả phí</h3><span class="kind">Chrome</span></div><p>Nhóm extension có thể bán theo license, phù hợp cho các tác vụ lặp lại và nhu cầu nhỏ nhưng có giá trị rõ ràng.</p><div class="meta"><div><b>License</b><span>trả phí</span></div><div><b>Store</b><span>checkout</span></div><div><b>Support</b><span>người dùng</span></div></div><div class="tags"><span class="tag">Extension</span><span class="tag">Thanh toán</span><span class="tag">Doanh thu lặp lại</span></div></div>
-            </article>
-            <article class="project-card" data-status="dev app" data-search="code chức năng dev website app dashboard api form filter search">
-              <div class="project-art" style="--c1:rgba(100,232,159,.38);--c2:rgba(84,214,255,.28)"><span class="project-shot"><img src="assets/project-dashboard-dev.svg" alt="Dashboard development preview" loading="lazy"></span><span class="badge">Dev</span><span class="glyph">DEV</span></div>
-              <div class="content"><div class="title-row"><h3>Code chức năng & dashboard</h3><span class="kind">Dev</span></div><p>Xây dựng các chức năng cụ thể như form, tìm kiếm, bộ lọc, trang quản lý, dashboard, API bridge và logic xử lý dữ liệu.</p><div class="meta"><div><b>Code</b><span>tính năng</span></div><div><b>API</b><span>kết nối</span></div><div><b>UI</b><span>giao diện</span></div></div><div class="tags"><span class="tag">Development</span><span class="tag">Dashboard</span><span class="tag">Tính năng tùy chỉnh</span></div></div>
-            </article>
-            <article class="project-card" data-status="ops app" data-search="billing license admin dashboard customers hóa đơn quản lý">
-              <div class="project-art" style="--c1:rgba(100,232,159,.38);--c2:rgba(84,214,255,.28)"><span class="project-shot"><img src="assets/project-license-billing.svg" alt="License billing preview" loading="lazy"></span><span class="badge">Ops</span><span class="glyph">$$</span></div>
-              <div class="content"><div class="title-row"><h3>Hệ thống license & billing</h3><span class="kind">Admin</span></div><p>Hệ thống quản lý license, user, hóa đơn và tình trạng thanh toán cho sản phẩm số mà không cần công khai chi tiết nội bộ.</p><div class="meta"><div><b>CRM</b><span>người dùng</span></div><div><b>Bill</b><span>theo dõi</span></div><div><b>Audit</b><span>nhật ký</span></div></div><div class="tags"><span class="tag">Billing</span><span class="tag">License</span><span class="tag">Quản trị</span></div></div>
-            </article>
-            <article class="project-card" data-status="ops" data-search="automation private workflow browser ops internal tự động hóa nội bộ">
-              <div class="project-art" style="--c1:rgba(255,117,152,.38);--c2:rgba(181,140,255,.3)"><span class="project-shot"><img src="assets/project-private-automation.svg" alt="Private automation preview" loading="lazy"></span><span class="badge">Riêng tư</span><span class="glyph">OPS</span></div>
-              <div class="content"><div class="title-row"><h3>Private Automation Stack</h3><span class="kind">Nội bộ</span></div><p>Bộ công cụ nội bộ để tiết kiệm thời gian, điều phối tác vụ và vận hành sản phẩm. Chỉ hiển thị tên chung, không lộ logic thực tế.</p><div class="meta"><div><b>Internal</b><span>riêng tư</span></div><div><b>Batch</b><span>tác vụ</span></div><div><b>Ops</b><span>hệ thống</span></div></div><div class="tags"><span class="tag">Tự động hóa</span><span class="tag">Riêng tư</span><span class="tag">Ops</span></div></div>
-            </article>
-            <article class="project-card" data-status="bio extension" data-search="mini product landing waitlist checkout template trang sản phẩm">
-              <div class="project-art" style="--c1:rgba(255,209,102,.38);--c2:rgba(100,232,159,.28)"><span class="project-shot"><img src="assets/project-mini-product-page.svg" alt="Mini product page preview" loading="lazy"></span><span class="badge">Template</span><span class="glyph">LP</span></div>
-              <div class="content"><div class="title-row"><h3>Mini Product Pages</h3><span class="kind">Landing</span></div><p>Template landing page cho từng app hoặc extension: giới thiệu ngắn, nút mua, FAQ, waitlist và liên hệ.</p><div class="meta"><div><b>Landing</b><span>trang bán</span></div><div><b>Waitlist</b><span>lead</span></div><div><b>Offer</b><span>chào bán</span></div></div><div class="tags"><span class="tag">Landing</span><span class="tag">Productize</span><span class="tag">Bio link</span></div></div>
-            </article>
-            <article class="project-card" data-status="youtube service bio" data-search="facebook reels ducserving short video content profile social proof">
-              <div class="project-art" style="--c1:rgba(84,214,255,.34);--c2:rgba(255,117,152,.34)"><span class="project-shot"><img src="assets/project-social.svg" alt="Facebook Reels preview" loading="lazy"></span><span class="badge">Social proof</span><span class="glyph">FB</span></div>
-              <div class="content"><div class="title-row"><h3>Kênh Facebook / Reels</h3><span class="kind">Public</span></div><p>Khu vực gắn các nội dung công khai, ví dụ link Reels/Facebook, để người xem thấy bạn có hoạt động thật mà vẫn không lộ quy trình nội bộ.</p><div class="meta"><div><b>Reels</b><span>nội dung</span></div><div><b>Profile</b><span>xác thực</span></div><div><b>Link</b><span>công khai</span></div></div><div class="tags"><a class="tag" href="https://www.facebook.com/ducserving/reels/" target="_blank" rel="noopener">Xem Reels</a><span class="tag">Facebook</span><span class="tag">Social proof</span></div></div>
-            </article>
-            <article class="project-card" data-status="service dev ops" data-search="dịch vụ triển khai setup vận hành tư vấn đóng gói sản phẩm">
-              <div class="project-art" style="--c1:rgba(255,122,36,.36);--c2:rgba(181,140,255,.34)"><span class="project-shot"><img src="assets/project-service-package.svg" alt="Service package preview" loading="lazy"></span><span class="badge">Dịch vụ</span><span class="glyph">SV</span></div>
-              <div class="content"><div class="title-row"><h3>Gói triển khai dịch vụ</h3><span class="kind">Offer</span></div><p>Các gói bạn có thể bán: dựng bio, làm landing page, setup extension, code chức năng, dashboard quản lý hoặc automation theo nhu cầu.</p><div class="meta"><div><b>Setup</b><span>triển khai</span></div><div><b>Dev</b><span>theo yêu cầu</span></div><div><b>Ops</b><span>vận hành</span></div></div><div class="tags"><span class="tag">Service</span><span class="tag">Offer</span><span class="tag">Client work</span></div></div>
-            </article>
-            <article class="project-card" data-status="app service dev" data-search="đang cập nhật dự án mới link facebook demo sản phẩm dịch vụ">
-              <div class="project-art" style="--c1:rgba(255,255,255,.22);--c2:rgba(84,214,255,.26)"><span class="project-shot"><img src="assets/project-new-project-slot.svg" alt="New project slot preview" loading="lazy"></span><span class="badge">Slot mới</span><span class="glyph">+</span></div>
-              <div class="content"><div class="title-row"><h3>Dự án mới sẽ bổ sung</h3><span class="kind">Template</span></div><p>Chỗ trống để thêm app, sản phẩm, dịch vụ hoặc link Facebook/demo bạn gửi sau. Chỉ cần có tên, mô tả ngắn, nhóm dự án và link công khai.</p><div class="meta"><div><b>Tên</b><span>dự án</span></div><div><b>Nhóm</b><span>lọc</span></div><div><b>Link</b><span>nếu có</span></div></div><div class="tags"><span class="tag">Dễ cập nhật</span><span class="tag">Mở rộng</span><span class="tag">Không lộ ngách</span></div></div>
-            </article>
-          </div>
-          <div class="empty" id="empty-state">Không tìm thấy dự án phù hợp với bộ lọc hiện tại.</div>
-        </div>
-      </section>
+        <article class="card tilt-card" data-track-card="card_github">
+          <img class="card-img" src="assets/github-profile-preview.png" alt="GitHub Ducpt88">
+          <span class="tag">Code & tool</span>
+          <h3>GitHub Projects</h3>
+          <p>Repo, tool và automation công khai: video downloader, extension, image tools, dashboard và sản phẩm web.</p>
+          <div class="row"><span class="price">Public</span><a class="btn btn-hero" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="open_github">Mở</a></div>
+        </article>
 
-      <section class="section reveal-on-scroll" id="suggestions">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>Đề xuất nên triển khai tiếp</h2>
-            <p class="section-desc">Mình đã thêm sẵn các hướng chủ động để website không chỉ giới thiệu, mà còn dẫn người xem tới hành động rõ ràng: dùng sản phẩm, xem kênh, xem code hoặc đặt dịch vụ.</p>
-          </div>
-          <div class="suggestion-grid">
-            <article class="suggestion-card">
-              <div class="suggestion-top"><span class="suggestion-icon">01</span><span class="suggestion-status">Ưu tiên cao</span></div>
-              <div><h3>Trang chi tiết cho Verba Studio</h3><p>Tách Verba thành một landing page riêng có demo, bảng giá, câu hỏi thường gặp và nút dùng thử để tăng chuyển đổi.</p></div>
-              <div class="suggestion-actions"><a class="tag" href="https://verbar.io/" target="_blank" rel="noopener">Xem sản phẩm</a><span class="tag">Landing page</span></div>
-            </article>
-            <article class="suggestion-card">
-              <div class="suggestion-top"><span class="suggestion-icon">02</span><span class="suggestion-status">Tăng độ tin cậy</span></div>
-              <div><h3>Hub nội dung YouTube/Facebook</h3><p>Gom video, Reels và bài công khai vào một khu social proof để người xem thấy bạn có hoạt động thật và có hệ thống.</p></div>
-              <div class="suggestion-actions"><a class="tag" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener">YouTube</a><a class="tag" href="https://www.facebook.com/ducserving" target="_blank" rel="noopener">Facebook</a></div>
-            </article>
-            <article class="suggestion-card">
-              <div class="suggestion-top"><span class="suggestion-icon">03</span><span class="suggestion-status">Dễ bán dịch vụ</span></div>
-              <div><h3>Gói dịch vụ rõ giá trị</h3><p>Đóng gói các năng lực thành offer: dựng bio, làm landing page, code chức năng, setup automation, dashboard quản lý.</p></div>
-              <div class="suggestion-actions"><span class="tag">Bio setup</span><span class="tag">Dev thuê</span><span class="tag">Automation</span></div>
-            </article>
-            <article class="suggestion-card">
-              <div class="suggestion-top"><span class="suggestion-icon">04</span><span class="suggestion-status">Nên thêm</span></div>
-              <div><h3>Trang “Hire me / Đặt dịch vụ”</h3><p>Tạo một form nhận yêu cầu gồm loại dự án, ngân sách, thời gian, link tham khảo để người xem liên hệ dễ hơn.</p></div>
-              <div class="suggestion-actions"><span class="tag">Form liên hệ</span><span class="tag">Lead</span><span class="tag">Dịch vụ</span></div>
-            </article>
-            <article class="suggestion-card">
-              <div class="suggestion-top"><span class="suggestion-icon">05</span><span class="suggestion-status">Nên có</span></div>
-              <div><h3>Case study dự án đã làm</h3><p>Mỗi sản phẩm nên có một case study ngắn: vấn đề, giải pháp, tính năng, link dùng thử, trạng thái hiện tại.</p></div>
-              <div class="suggestion-actions"><span class="tag">Case study</span><span class="tag">Portfolio</span><span class="tag">Tin cậy</span></div>
-            </article>
-            <article class="suggestion-card">
-              <div class="suggestion-top"><span class="suggestion-icon">06</span><span class="suggestion-status">Tự động hóa</span></div>
-              <div><h3>File dữ liệu dự án riêng</h3><p>Tách danh sách dự án thành file data để sau này bạn gửi link mới là thêm nhanh, không cần sửa sâu vào giao diện.</p></div>
-              <div class="suggestion-actions"><span class="tag">Dễ cập nhật</span><span class="tag">Data file</span><span class="tag">Scale</span></div>
-            </article>
-          </div>
-          <div class="asset-grid" aria-label="Kiểm kê asset và chi tiết có thể bổ sung">
-            <article class="asset-card"><h3>Logo thương hiệu</h3><p>Đã thêm logo DUCPT dùng cho favicon, header và avatar chính. Verba Studio dùng logo riêng có sẵn.</p><span class="asset-status">Đã bổ sung</span></article>
-            <article class="asset-card"><h3>Ảnh dự án</h3><p>Các card có preview hoặc mockup SVG/PNG. Dự án nào chưa có ảnh thật vẫn giữ mockup để không bị trống.</p><span class="asset-status">Đã phủ đầy</span></article>
-            <article class="asset-card"><h3>Icon tiện ích</h3><p>Nút tìm kiếm, liên hệ, CTA, dịch vụ, hệ sinh thái và trạng thái card đều có icon/badge nhận diện.</p><span class="asset-status">Đã đồng bộ</span></article>
-            <article class="asset-card"><h3>Cần thêm sau</h3><p>Khi có logo riêng từng app, screenshot demo thật, link mua hoặc form đặt dịch vụ, có thể thay ngay vào card tương ứng.</p><span class="asset-status">Gợi ý sẵn</span></article>
-          </div>
-        </div>
-      </section>
+        <article class="card tilt-card" data-track-card="card_pro_video">
+          <img class="card-img" src="assets/project-pro-video.svg" alt="Pro Video Downloader">
+          <span class="tag">Downloader</span>
+          <h3>Pro Video Downloader</h3>
+          <p>Công cụ tải và xử lý video phục vụ workflow nội dung, lưu trữ, tái biên tập và automation.</p>
+          <div class="row"><span class="price">Tool</span><a class="btn btn-hero" href="https://github.com/Ducpt88/pro-video-downloader" target="_blank" rel="noopener" data-track="open_video_tool">Mở</a></div>
+        </article>
 
-      <section class="section reveal-on-scroll" id="about">
-        <div class="wrap">
-          <div class="section-head">
-            <h2>Giới thiệu & liên kết</h2>
-            <p class="section-desc">Khu vực này dùng để viết rõ hơn về bản thân, cách làm việc và những liên kết có thể công khai.</p>
+        <article class="card tilt-card" data-track-card="card_interface_lab">
+          <img class="card-img" src="assets/project-dashboard-dev.svg" alt="Interface Lab">
+          <span class="tag">Website Lab</span>
+          <h3>Interface Lab</h3>
+          <p>Phòng thử giao diện cho DUCPT: các mẫu website, trang sản phẩm và concept thương mại hóa.</p>
+          <div class="row"><span class="price">Demo</span><a class="btn btn-hero" href="/ducpt-interface-lab/" data-track="open_interface_lab">Mở</a></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec wrap" id="stats">
+      <div class="sec-head">
+        <h2>Thống kê và theo dõi click</h2>
+        <p>Giao diện ghi lại click trong trình duyệt để kiểm thử, đồng thời gửi event sang Microsoft Clarity nếu script tải thành công.</p>
+      </div>
+      <div class="stats-band">
+        <div class="stat"><b id="statTotal">0</b><span>Tổng click đã ghi trong trình duyệt này</span></div>
+        <div class="stat"><b id="statUnique">0</b><span>Nút/khu vực khác nhau được click</span></div>
+        <div class="stat"><b id="statLast">--</b><span>Lần click gần nhất</span></div>
+        <div class="stat"><b>Clarity</b><span>Gửi event để xem heatmap và hành vi người dùng thật</span></div>
+      </div>
+    </section>
+
+    <section class="sec wrap" id="showcase">
+      <div class="sec-head">
+        <h2>Showcase</h2>
+        <p>Hai tín hiệu chính để khách hiểu DUCPT vừa build sản phẩm, vừa vận hành nội dung.</p>
+      </div>
+      <div class="showcase">
+        <article class="wide tilt-card">
+          <img src="assets/verba-site-preview.png" alt="Verba Studio preview">
+          <div class="wide-body">
+            <span class="tag">Product signal</span>
+            <h3>Trang sản phẩm thật</h3>
+            <p>Verba Studio và Brain Bot có thể dùng làm nền cho mô hình bán sản phẩm, gói setup hoặc dịch vụ triển khai.</p>
+            <a class="btn btn-glass" href="https://verbar.io/" target="_blank" rel="noopener" data-track="showcase_verba">Xem Verba</a>
           </div>
-          <div class="about-grid">
-            <div class="about-card"><h3>Giới thiệu ngắn</h3><p>Tôi là DUCPT, một builder tập trung vào app nhỏ, extension, automation và các sản phẩm số có khả năng tạo doanh thu. Trang này được thiết kế để giới thiệu tổng quan mà vẫn giữ kín các chi tiết nhạy cảm của ngách đang làm.</p><p>Bạn có thể thay đoạn này bằng phần giới thiệu thật của mình: kinh nghiệm, lĩnh vực quan tâm, cách liên hệ và các offer muốn đẩy lên đầu.</p></div>
-            <div class="links-card"><h3>Liên kết công khai</h3><div class="link-list"><a class="link-item" href="https://verbar.io/" target="_blank" rel="noopener"><span class="link-icon">V</span><span><b>Verba Studio</b><span>Sản phẩm live, quay màn hình và AI transcript</span></span><em>Mở</em></a><a class="link-item" href="https://github.com/Ducpt88" target="_blank" rel="noopener"><span class="link-icon">GH</span><span><b>GitHub</b><span>Mã nguồn và các dự án công khai</span></span><em>Mở</em></a><a class="link-item" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener"><span class="link-icon">YT</span><span><b>Kênh YouTube</b><span>Nội dung và hệ thống vận hành kênh</span></span><em>Mở</em></a><a class="link-item" href="https://www.facebook.com/ducserving" target="_blank" rel="noopener"><span class="link-icon">FB</span><span><b>Facebook cá nhân</b><span>Hồ sơ và nội dung công khai</span></span><em>Mở</em></a><a class="link-item" href="mailto:admin@ducpt.com"><span class="link-icon">@</span><span><b>Email liên hệ</b><span>admin@ducpt.com</span></span><em>Mở</em></a></div></div>
+        </article>
+        <article class="wide tilt-card">
+          <img src="assets/youtube-channel-preview.png" alt="YouTube channel preview">
+          <div class="wide-body">
+            <span class="tag">Content signal</span>
+            <h3>Hệ thống kênh và media</h3>
+            <p>Website không chỉ giới thiệu cá nhân, mà còn chứng minh năng lực xây quy trình nội dung và automation.</p>
+            <a class="btn btn-glass" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="showcase_youtube">Mở kênh</a>
           </div>
-        </div>
-      </section>
-    </main>
+        </article>
+      </div>
+    </section>
+
+    <footer class="wrap">
+      DUCPT Aurora Glass · Theo dõi click · Hiệu ứng ánh sáng theo chuột · Card 3D tilt
+    </footer>
   </div>
+
+  <button class="analytics-toggle btn btn-hero" type="button" data-open-analytics data-track="floating_stats">Thống kê</button>
+  <aside class="analytics-panel" id="analyticsPanel" aria-label="Click analytics panel">
+    <h2>Chỉ số click</h2>
+    <div class="metric-grid">
+      <div class="metric"><b id="panelTotal">0</b><span>Tổng click</span></div>
+      <div class="metric"><b id="panelUnique">0</b><span>Điểm click</span></div>
+    </div>
+    <div id="clickList"></div>
+    <div class="panel-actions">
+      <button class="btn btn-glass" type="button" id="exportStats">Copy JSON</button>
+      <button class="btn btn-glass" type="button" id="resetStats">Reset</button>
+    </div>
+  </aside>
 
   <script>
     const ANALYTICS_CONFIG = {
@@ -534,10 +420,13 @@
       clarityProjectId: "a391372641p533055026"
     };
 
+    const statsKey = "ducpt_aurora_click_stats_v1";
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => [...document.querySelectorAll(selector)];
+
     function loadAnalytics(){
       const gaId = ANALYTICS_CONFIG.googleAnalyticsId.trim();
       const clarityId = ANALYTICS_CONFIG.clarityProjectId.trim();
-
       if(gaId){
         window.dataLayer = window.dataLayer || [];
         window.gtag = function(){ dataLayer.push(arguments); };
@@ -548,7 +437,6 @@
         gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`;
         document.head.appendChild(gaScript);
       }
-
       if(clarityId){
         (function(c,l,a,r,i,t,y){
           c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -558,250 +446,121 @@
       }
     }
 
+    function readStats(){
+      try {
+        return JSON.parse(localStorage.getItem(statsKey)) || { total:0, events:{}, last:null };
+      } catch {
+        return { total:0, events:{}, last:null };
+      }
+    }
+
+    function writeStats(stats){
+      localStorage.setItem(statsKey, JSON.stringify(stats));
+      renderStats(stats);
+    }
+
     function trackEvent(name, params = {}){
-      const cleanParams = Object.fromEntries(
-        Object.entries(params).filter(([, value]) => value !== undefined && value !== null && value !== "")
-      );
+      const cleanName = String(name || "unknown_click").replace(/[^\w.-]+/g,"_").slice(0,64);
+      const stats = readStats();
+      stats.total += 1;
+      stats.events[cleanName] = (stats.events[cleanName] || 0) + 1;
+      stats.last = { name: cleanName, at: new Date().toISOString(), href: params.href || "", text: params.text || "" };
+      writeStats(stats);
+
       if(typeof window.gtag === "function"){
-        window.gtag("event", name, cleanParams);
+        window.gtag("event", "ducpt_click", { click_name: cleanName, ...params });
       }
       if(typeof window.clarity === "function"){
-        window.clarity("event", name);
+        window.clarity("event", `ducpt_click_${cleanName}`);
       }
     }
 
-    if("serviceWorker" in navigator){
-      navigator.serviceWorker.getRegistrations().then(registrations => {
-        registrations.forEach(registration => registration.unregister());
+    function renderStats(stats = readStats()){
+      const unique = Object.keys(stats.events || {}).length;
+      $("#statTotal").textContent = stats.total || 0;
+      $("#statUnique").textContent = unique;
+      $("#panelTotal").textContent = stats.total || 0;
+      $("#panelUnique").textContent = unique;
+      $("#statLast").textContent = stats.last ? new Date(stats.last.at).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"}) : "--";
+      const rows = Object.entries(stats.events || {})
+        .sort((a,b) => b[1] - a[1])
+        .slice(0,12)
+        .map(([name,count]) => `<div class="click-row"><strong>${escapeHtml(name)}</strong><span>${count}</span></div>`)
+        .join("");
+      $("#clickList").innerHTML = rows || '<div class="click-row"><strong>Chưa có click</strong><span>0</span></div>';
+    }
+
+    function escapeHtml(value){
+      return String(value || "").replace(/[&<>"']/g, char => ({
+        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      }[char]));
+    }
+
+    function bindClickTracking(){
+      document.addEventListener("click", (event) => {
+        const target = event.target.closest("[data-track],a,button");
+        if(!target) return;
+        const name = target.dataset.track || target.getAttribute("href") || target.textContent || "click";
+        trackEvent(name, {
+          href: target.getAttribute("href") || "",
+          text: target.textContent.trim().slice(0,80)
+        });
       });
-    }
-    if("caches" in window){
-      caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
-    }
 
-    const menuToggle = document.querySelector("#menu-toggle");
-    const mobileMenu = document.querySelector("#mobile-menu");
-    const heroShade = document.querySelector(".hero-shade");
-    const scrollProgress = document.querySelector("#scroll-progress");
-    const filterButtons = [...document.querySelectorAll(".chip")];
-    const cards = [...document.querySelectorAll(".project-card")];
-    const search = document.querySelector("#project-search");
-    const emptyState = document.querySelector("#empty-state");
-    const revealItems = [...document.querySelectorAll(".reveal-on-scroll")];
-    const navLinks = [...document.querySelectorAll(".nav-center a[href^='#'], .mobile-menu a[href^='#']")];
-    const sections = ["top", "services", "projects", "suggestions", "about"].map(id => document.getElementById(id)).filter(Boolean);
-    let activeFilter = "all";
-    let searchTimer;
-    const checkIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="m5 12 4 4 10-10" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    const waitIcon = '<svg viewBox="0 0 24 24" fill="none"><path d="M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    const projectGlyphs = {
-      "Hệ thống vận hành YouTube": '<svg viewBox="0 0 24 24" fill="none"><path d="M10 9.5v5l4.7-2.5L10 9.5Z" fill="currentColor"/><path d="M3.5 8.5c.2-1.5 1.4-2.7 2.9-2.9C8 5.4 10.2 5.3 12 5.3s4 .1 5.6.3c1.5.2 2.7 1.4 2.9 2.9.1 1 .2 2.2.2 3.5s-.1 2.5-.2 3.5c-.2 1.5-1.4 2.7-2.9 2.9-1.6.2-3.8.3-5.6.3s-4-.1-5.6-.3c-1.5-.2-2.7-1.4-2.9-2.9-.1-1-.2-2.2-.2-3.5s.1-2.5.2-3.5Z" stroke="currentColor" stroke-width="1.8"/></svg>',
-      "GitHub Projects": '<svg class="fill-icon" viewBox="0 0 24 24"><path d="M12 2.8a9.2 9.2 0 0 0-2.9 17.9c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.5-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.5 2.4 1.1 2.9.8.1-.7.4-1.1.7-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1.1a9.6 9.6 0 0 1 5.1 0c1.9-1.4 2.8-1.1 2.8-1.1.6 1.4.2 2.4.1 2.7.7.7 1.1 1.6 1.1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.8v2.6c0 .3.2.6.7.5A9.2 9.2 0 0 0 12 2.8Z"/></svg>',
-      "Pro Video Downloader": '<svg viewBox="0 0 24 24" fill="none"><path d="M12 4v10M8 10l4 4 4-4M5 19h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      "WP Ad Extension": '<svg viewBox="0 0 24 24" fill="none"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z" stroke="currentColor" stroke-width="1.8"/><path d="M7.4 8.2 10 16l2-5.5L14 16l2.6-7.8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      "DG Media Office": '<svg viewBox="0 0 24 24" fill="none"><path d="M4 20V6.5L12 3l8 3.5V20M8 10h2M14 10h2M8 14h2M14 14h2M10 20v-3h4v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      "Bot Tài Chính": '<svg viewBox="0 0 24 24" fill="none"><path d="M8 7V4M16 7V4M6.5 8h11A2.5 2.5 0 0 1 20 10.5v5A4.5 4.5 0 0 1 15.5 20h-7A4.5 4.5 0 0 1 4 15.5v-5A2.5 2.5 0 0 1 6.5 8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M9 13h.01M15 13h.01M9.5 16h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-      "DG Image Tools Updates": '<svg viewBox="0 0 24 24" fill="none"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" stroke="currentColor" stroke-width="1.8"/><path d="m7 17 3.2-3.5 2.3 2.4 2.2-2.2L18 17M8.5 8.8h.01" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      "Trang bio chuyên nghiệp": '<svg viewBox="0 0 24 24" fill="none"><path d="M5 4h14v16H5V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M8 9h8M8 13h5M8 17h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
-      "Dòng extension trả phí": '<svg viewBox="0 0 24 24" fill="none"><path d="M9 4h6v4h4v6h-4v6H9v-6H5V8h4V4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>',
-      "Code chức năng & dashboard": '<svg viewBox="0 0 24 24" fill="none"><path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 4l-4 16" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      "Hệ thống license & billing": '<svg viewBox="0 0 24 24" fill="none"><path d="M4 8h16v10H4V8ZM4 11h16M8 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M16 8V6a4 4 0 0 0-8 0v2" stroke="currentColor" stroke-width="1.8"/></svg>',
-      "Private Automation Stack": '<svg viewBox="0 0 24 24" fill="none"><path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
-      "Mini Product Pages": '<svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M7 9h10M7 13h5M7 16h8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
-      "Kênh Facebook / Reels": '<svg class="fill-icon" viewBox="0 0 24 24"><path d="M14 8.4V7.1c0-.7.5-1.1 1.2-1.1H17V3h-2.7C11.6 3 10 4.6 10 7v1.4H8v3h2V21h4v-9.6h2.7l.5-3H14Z"/></svg>',
-      "Gói triển khai dịch vụ": '<svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M7 7V5h10v2M6 7l1 13h10l1-13M9 11h6M10 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-      "Dự án mới sẽ bổ sung": '<svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>'
-    };
-
-    function applyProjectGlyphs(){
-      cards.forEach(card => {
-        const title = card.querySelector("h3")?.textContent.trim();
-        const glyph = card.querySelector(".glyph");
-        if(title && glyph && projectGlyphs[title]){
-          glyph.innerHTML = projectGlyphs[title];
-          glyph.setAttribute("aria-label", `${title} icon`);
-        }
+      $$("[data-track-card]").forEach(card => {
+        card.addEventListener("click", (event) => {
+          if(event.target.closest("a,button")) return;
+          trackEvent(card.dataset.trackCard, { text: card.querySelector("h3")?.textContent || "" });
+        });
       });
     }
 
-    function addProjectChecks(){
-      cards.forEach(card => {
-        const content = card.querySelector(".content");
-        if(!content || content.querySelector(".card-checks")) return;
-        const hasImage = Boolean(card.querySelector(".project-shot img"));
-        const hasIdentity = Boolean(card.querySelector(".product-logo img, .glyph, .badge"));
-        const primaryLink = card.querySelector(".tags a[href], .content a[href]");
-        const hasLink = Boolean(primaryLink);
-        if(primaryLink){
-          card.dataset.primaryUrl = primaryLink.href;
-          card.dataset.primaryTarget = primaryLink.target || "_self";
-          card.setAttribute("role", "link");
-          card.setAttribute("tabindex", "0");
-          card.setAttribute("aria-label", `Mở ${card.querySelector("h3")?.textContent.trim() || "dự án"}`);
-        }
-        const checks = [
-          { label: "Ảnh", ready: hasImage },
-          { label: "Logo/icon", ready: hasIdentity },
-          { label: "Link", ready: hasLink }
-        ];
-        const row = document.createElement("div");
-        row.className = "card-checks";
-        row.setAttribute("aria-label", "Kiểm tra chi tiết card");
-        row.innerHTML = checks.map(item => `<span class="card-check ${item.ready ? "is-ready" : "is-missing"}">${item.ready ? checkIcon : waitIcon}${item.ready ? item.label : `Cần ${item.label.toLowerCase()}`}</span>`).join("");
-        if(primaryLink){
-          row.insertAdjacentHTML("beforeend", '<span class="open-hint">Mở<svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>');
-        }
-        content.appendChild(row);
-      });
-    }
-
-    if(heroShade){
-      window.addEventListener("mousemove", event => {
-        const x = `${(event.clientX / window.innerWidth) * 100}%`;
-        const y = `${(event.clientY / window.innerHeight) * 100}%`;
-        heroShade.style.setProperty("--mx", x);
-        heroShade.style.setProperty("--my", y);
+    function bindMouseGlow(){
+      window.addEventListener("pointermove", (event) => {
+        document.documentElement.style.setProperty("--mx", `${event.clientX}px`);
+        document.documentElement.style.setProperty("--my", `${event.clientY}px`);
       }, { passive: true });
-    }
 
-    if(scrollProgress){
-      const updateProgress = () => {
-        const max = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = max > 0 ? window.scrollY / max : 0;
-        scrollProgress.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
-      };
-      window.addEventListener("scroll", updateProgress, { passive: true });
-      updateProgress();
-    }
-
-    if(menuToggle && mobileMenu){
-      menuToggle.addEventListener("click", () => {
-        const open = !mobileMenu.classList.contains("open");
-        mobileMenu.classList.toggle("open", open);
-        menuToggle.classList.toggle("open", open);
-        menuToggle.setAttribute("aria-expanded", String(open));
-      });
-
-      mobileMenu.querySelectorAll("a").forEach(link => {
-        link.addEventListener("click", () => {
-          mobileMenu.classList.remove("open");
-          menuToggle.classList.remove("open");
-          menuToggle.setAttribute("aria-expanded", "false");
+      $$(".tilt-card,.card").forEach(card => {
+        card.addEventListener("pointermove", event => {
+          const rect = card.getBoundingClientRect();
+          const x = (event.clientX - rect.left) / rect.width;
+          const y = (event.clientY - rect.top) / rect.height;
+          card.style.setProperty("--gx", `${x * 100}%`);
+          card.style.setProperty("--gy", `${y * 100}%`);
+          card.style.setProperty("--rx", `${(0.5 - y) * 8}deg`);
+          card.style.setProperty("--ry", `${(x - 0.5) * 10}deg`);
+        });
+        card.addEventListener("pointerleave", () => {
+          card.style.setProperty("--rx", "0deg");
+          card.style.setProperty("--ry", "0deg");
         });
       });
     }
 
-    function applyFilters(){
-      const q = (search?.value || "").trim().toLowerCase();
-      let visible = 0;
-      cards.forEach(card => {
-        const statuses = (card.dataset.status || "").split(" ");
-        const statusOk = activeFilter === "all" || statuses.includes(activeFilter);
-        const text = `${card.textContent} ${card.dataset.search || ""}`.toLowerCase();
-        const searchOk = !q || text.includes(q);
-        const show = statusOk && searchOk;
-        card.classList.toggle("is-hidden", !show);
-        if(show) visible++;
+    function bindPanel(){
+      const panel = $("#analyticsPanel");
+      $$("[data-open-analytics]").forEach(button => {
+        button.addEventListener("click", () => panel.classList.toggle("open"));
       });
-      if(emptyState) emptyState.style.display = visible ? "none" : "block";
-    }
-
-    filterButtons.forEach(button => {
-      button.addEventListener("click", () => {
-        filterButtons.forEach(x => x.classList.remove("active"));
-        button.classList.add("active");
-        activeFilter = button.dataset.filter;
-        applyFilters();
-        trackEvent("project_filter", {
-          filter: activeFilter,
-          visible_projects: cards.filter(card => !card.classList.contains("is-hidden")).length
-        });
-      });
-    });
-    if(search) search.addEventListener("input", () => {
-      applyFilters();
-      window.clearTimeout(searchTimer);
-      searchTimer = window.setTimeout(() => {
-        const query = search.value.trim();
-        if(query.length >= 2){
-          trackEvent("project_search", {
-            search_term: query,
-            active_filter: activeFilter,
-            visible_projects: cards.filter(card => !card.classList.contains("is-hidden")).length
-          });
-        }
-      }, 700);
-    });
-
-    document.querySelectorAll("a[href]").forEach(link => {
-      link.addEventListener("click", () => {
-        const href = link.getAttribute("href") || "";
-        const isOutbound = /^https?:\/\//.test(href) && !href.includes(location.hostname);
-        const projectCard = link.closest(".project-card");
-        const label = link.textContent.trim().replace(/\s+/g, " ").slice(0, 80);
-        trackEvent(isOutbound ? "outbound_click" : "internal_click", {
-          link_text: label,
-          link_url: href,
-          project_name: projectCard?.querySelector("h3")?.textContent.trim()
-        });
-      });
-    });
-
-    cards.forEach(card => {
-      card.addEventListener("click", event => {
-        if(event.target.closest("a")) return;
-        trackEvent("project_card_click", {
-          project_name: card.querySelector("h3")?.textContent.trim(),
-          project_type: card.querySelector(".kind")?.textContent.trim(),
-          project_status: card.dataset.status
-        });
-        if(card.dataset.primaryUrl){
-          const target = card.dataset.primaryTarget === "_blank" ? "_blank" : "_self";
-          window.open(card.dataset.primaryUrl, target, target === "_blank" ? "noopener" : undefined);
+      $("#resetStats").addEventListener("click", () => writeStats({ total:0, events:{}, last:null }));
+      $("#exportStats").addEventListener("click", async () => {
+        const payload = JSON.stringify(readStats(), null, 2);
+        try {
+          await navigator.clipboard.writeText(payload);
+          $("#exportStats").textContent = "Đã copy";
+          setTimeout(() => $("#exportStats").textContent = "Copy JSON", 1200);
+        } catch {
+          alert(payload);
         }
       });
-      card.addEventListener("keydown", event => {
-        if((event.key === "Enter" || event.key === " ") && card.dataset.primaryUrl){
-          event.preventDefault();
-          const target = card.dataset.primaryTarget === "_blank" ? "_blank" : "_self";
-          window.open(card.dataset.primaryUrl, target, target === "_blank" ? "noopener" : undefined);
-        }
-      });
-    });
-
-    if("IntersectionObserver" in window){
-      const revealObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting){
-            entry.target.classList.add("is-visible");
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.16 });
-
-      revealItems.forEach(item => revealObserver.observe(item));
-
-      const navObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting){
-            const id = entry.target.id;
-            navLinks.forEach(link => {
-              link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
-            });
-            trackEvent("section_view", { section_id: id });
-          }
-        });
-      }, { rootMargin: "-45% 0px -45% 0px", threshold: 0.01 });
-
-      sections.forEach(section => navObserver.observe(section));
-    }else{
-      revealItems.forEach(item => item.classList.add("is-visible"));
     }
 
     loadAnalytics();
-    applyProjectGlyphs();
-    addProjectChecks();
-    applyFilters();
+    bindClickTracking();
+    bindMouseGlow();
+    bindPanel();
+    renderStats();
   </script>
 </body>
 </html>
