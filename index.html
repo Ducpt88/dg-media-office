@@ -84,6 +84,12 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .card .row{display:flex;align-items:center;justify-content:space-between}
 .price{font-size:23px;font-weight:900}
 .price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
+.price-swap{position:relative;min-width:132px;height:34px;display:inline-grid;align-items:center}
+.price-swap span{grid-area:1/1;transition:.45s var(--ease)}
+.price-swap .alt{color:var(--muted);font-size:16px;text-decoration:line-through;opacity:0;transform:translateY(8px)}
+.price-swap .main{opacity:1;transform:translateY(0)}
+.price-swap:hover .main,.card:hover .price-swap .main{opacity:0;transform:translateY(-8px)}
+.price-swap:hover .alt,.card:hover .price-swap .alt{opacity:1;transform:translateY(0)}
 .badge{position:absolute;top:20px;right:20px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a}
 
 .social-orbit{display:none!important}
@@ -226,13 +232,13 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
   <div class="grid">
     <div class="card"><span class="badge">HOT</span><div class="ico ico-verba" aria-hidden="true"></div><span class="tag">Ứng dụng</span>
       <h3>Verba Studio</h3><p>Phòng thu creator: live đa nền tảng, chroma key, AI transcript tiếng Việt.</p>
-      <div class="row"><span class="price">299.000đ</span><button class="btn btn-hero buy-btn" data-product="Verba Studio" data-price="299.000đ" data-url="https://verbar.io/" data-guide="Mở Verba Studio, chọn chế độ live/record, bật camera/màn hình và dùng AI transcript để tạo nội dung nhanh hơn." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+      <div class="row"><span class="price">199.000đ<small>299k</small></span><button class="btn btn-hero buy-btn" data-product="Verba Studio" data-price="199.000đ" data-url="https://verbar.io/" data-guide="Mở Verba Studio, chọn chế độ live/record, bật camera/màn hình và dùng AI transcript để tạo nội dung nhanh hơn." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
     <div class="card"><span class="badge">NEW</span><div class="ico ico-brain" aria-hidden="true"></div><span class="tag">Bot & AI</span>
       <h3>Knowledge Brain Bot</h3><p>Gom kiến thức đa nguồn, đẩy mindmap, gửi Telegram tự động.</p>
       <div class="row"><span class="price">299.000đ</span><button class="btn btn-hero buy-btn" data-product="Knowledge Brain Bot" data-price="299.000đ" data-url="/brain-bot/" data-guide="Cung cấp bot Telegram, chat ID và nguồn cần quét; bot tạo map kiến thức, file TXT và gửi kết quả về Telegram." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
     <div class="card"><div class="ico ico-pinterest" aria-hidden="true"></div><span class="tag">Extension</span>
       <h3>Pinterest AutoPost</h3><p>Đăng pin ảnh/video tự động chạy nền, lên lịch hàng loạt nhiều board.</p>
-      <div class="row"><span class="price">299.000đ</span><button class="btn btn-hero buy-btn" data-product="Pinterest AutoPost" data-price="299.000đ" data-url="mailto:admin@ducpt.com" data-guide="Gửi thông tin tài khoản, board, lịch đăng và định dạng nội dung cần auto post để DUCPT setup đúng luồng." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+      <div class="row"><span class="price price-swap"><span class="main">249.000đ</span><span class="alt">349.000đ</span></span><button class="btn btn-hero buy-btn" data-product="Pinterest AutoPost" data-price="249.000đ" data-url="mailto:admin@ducpt.com" data-guide="Gửi thông tin tài khoản, board, lịch đăng và định dạng nội dung cần auto post để DUCPT setup đúng luồng." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
   </div>
 </section>
 
@@ -447,7 +453,7 @@ const productArticles={
     visual:"assets/verba-icon-official.svg",
     visualTitle:"Studio creator gọn nhẹ",
     visualText:"Live, ghi hình, transcript và tái biên tập trong cùng một luồng.",
-    offer:"Gói khởi động 299.000đ gồm hướng dẫn cài đặt, cấu hình ban đầu và kịch bản sử dụng cho nhu cầu của bạn.",
+    offer:"Gói khởi động 199.000đ, giá gốc 299k. Bao gồm hướng dẫn cài đặt, cấu hình ban đầu và kịch bản sử dụng cho nhu cầu của bạn.",
     intro:"Verba Studio phù hợp với người làm video, livestream, đào tạo, tư vấn hoặc bán sản phẩm số. Thay vì phải ghép nhiều công cụ rời rạc, bạn có một luồng làm việc rõ ràng: mở studio, ghi hình, lấy transcript tiếng Việt, rồi biến nội dung đó thành bài viết, caption, kịch bản short video hoặc tài liệu bán hàng.",
     proof:[["Nhanh hơn","Giảm thời gian setup nội dung"],["Dễ bán hơn","Có bài, caption và demo rõ ràng"],["Dễ bàn giao","Có quy trình dùng từng bước"]],
     benefits:[
@@ -489,7 +495,7 @@ const productArticles={
     visual:"assets/project-pinterest-autopost.svg",
     visualTitle:"Lịch đăng pin tự động",
     visualText:"Chuẩn bị nội dung một lần, hệ thống đăng đều theo lịch.",
-    offer:"Gói khởi động 299.000đ gồm hướng dẫn cấu hình board, lịch đăng mẫu và format dữ liệu đầu vào.",
+    offer:"Gói extension 249.000đ, giá gốc 349.000đ. Bao gồm hướng dẫn cấu hình board, lịch đăng mẫu và format dữ liệu đầu vào.",
     intro:"Pinterest AutoPost phù hợp với người bán sản phẩm số, affiliate, blog, shop hoặc team content cần nguồn traffic dài hạn. Thay vì đăng từng pin thủ công, bạn chuẩn bị ảnh/video, tiêu đề, mô tả và link đích; hệ thống sẽ hỗ trợ đăng theo lịch để kéo người xem về nơi cần chuyển đổi.",
     proof:[["Đăng đều","Giảm thao tác thủ công"],["Kéo traffic","Đưa người xem về link đích"],["Dễ tối ưu","Theo dõi pin nào hiệu quả"]],
     benefits:[
