@@ -288,6 +288,99 @@
         color: var(--muted);
       }
 
+      .article {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .article h2,
+      .article h3 {
+        margin-top: 0;
+      }
+
+      .article p {
+        margin: 8px 0 0;
+        color: var(--muted);
+      }
+
+      .article-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+        gap: 14px;
+        margin-top: 14px;
+      }
+
+      .detail-box {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #f8fafc;
+        padding: 13px;
+      }
+
+      .detail-box h3 {
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .steps-list {
+        counter-reset: step;
+        display: grid;
+        gap: 9px;
+        margin-top: 12px;
+      }
+
+      .steps-list div {
+        counter-increment: step;
+        position: relative;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fff;
+        padding: 10px 10px 10px 44px;
+      }
+
+      .steps-list div::before {
+        content: counter(step);
+        position: absolute;
+        left: 10px;
+        top: 10px;
+        width: 24px;
+        height: 24px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background: var(--teal);
+        font-weight: 800;
+        font-size: 12px;
+      }
+
+      .steps-list strong {
+        display: block;
+      }
+
+      .feature-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .feature-list div {
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--blue);
+        border-radius: 8px;
+        background: #fff;
+        padding: 10px;
+      }
+
+      .feature-list strong {
+        display: block;
+        margin-bottom: 4px;
+      }
+
       .list {
         margin: 10px 0 0;
         padding-left: 18px;
@@ -356,6 +449,8 @@
       @media (max-width: 860px) {
         .hero,
         .visual-body,
+        .article-grid,
+        .feature-list,
         .grid,
         .pricing,
         .quote {
@@ -438,6 +533,78 @@
             </div>
           </div>
         </div>
+      </section>
+
+      <section class="section">
+        <article class="article">
+          <h2>Bài giới thiệu sản phẩm</h2>
+          <p><strong>AI Knowledge Brain Bot</strong> là hệ thống giúp biến video, bài viết, link kênh, fanpage hoặc file nguồn thành tài liệu học nhanh. Thay vì lưu rời rạc nhiều video và ghi chú, bot tự tổng hợp nội dung thành transcript, tóm tắt, mindmap, wiki và bản TXT gửi thẳng về Telegram.</p>
+          <p>Sản phẩm phù hợp cho người làm đào tạo, content, agency, đội nhóm vận hành kênh, người bán khóa học, người cần theo dõi nhiều nguồn kiến thức nhưng không muốn tự tải, tự đọc và tự ghi chép thủ công mỗi ngày.</p>
+
+          <div class="article-grid">
+            <div class="detail-box">
+              <h3>Sản phẩm giải quyết vấn đề gì?</h3>
+              <ul class="list">
+                <li>Nội dung hay nằm rải rác ở video, fanpage, kênh, group và file riêng.</li>
+                <li>Người dùng mất thời gian xem lại video dài để lấy ý chính.</li>
+                <li>Telegram bị nặng nếu giữ quá nhiều file media gốc.</li>
+                <li>Khách không biết code vẫn cần một cách setup dễ hiểu.</li>
+                <li>Đội nhóm cần một map kiến thức chung để ai mở ra cũng hiểu.</li>
+              </ul>
+            </div>
+
+            <div class="detail-box">
+              <h3>Kết quả sau khi chạy</h3>
+              <ul class="list">
+                <li>Map kiến thức xem được trên điện thoại và máy tính.</li>
+                <li>Bản TXT đọc nhanh ngay trong Telegram.</li>
+                <li>Transcript, tóm tắt, wiki và full script nếu có đủ dữ liệu.</li>
+                <li>Lịch quét tự động theo chu kỳ đã cấu hình.</li>
+                <li>Cơ chế xóa file nặng sau khi đã nạp xong tài liệu.</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 style="margin-top:16px">Các tính năng chính</h3>
+          <div class="feature-list">
+            <div><strong>Nhận nhiều nguồn đầu vào</strong><span>Hỗ trợ link video, fanpage, kênh, page, file audio/video và danh sách nguồn do người dùng nhập.</span></div>
+            <div><strong>Nhận link từ Telegram</strong><span>Khi thành viên gửi link vào Telegram, hệ thống có thể nhận diện link mới để đưa vào danh sách nguồn cần quét.</span></div>
+            <div><strong>Tạo map kiến thức</strong><span>Nội dung sau khi xử lý được đưa vào map để người khác mở ra là hiểu luồng ý chính.</span></div>
+            <div><strong>Gửi bản TXT về Telegram</strong><span>Bot gửi phần text đọc nhanh để người dùng không cần tải file vẫn nắm được nội dung.</span></div>
+            <div><strong>Chạy liên tục theo lịch</strong><span>Có thể bật chế độ watch để bot quét lặp lại theo chu kỳ, không phải bấm thủ công mỗi lần.</span></div>
+            <div><strong>Dọn dung lượng sau khi nạp</strong><span>Sau khi tài liệu đã được tạo, hệ thống có bước cleanup để xóa file media nặng, tránh đầy máy và nặng tài khoản Telegram.</span></div>
+          </div>
+
+          <h3 style="margin-top:16px">Cách dùng cho khách không biết code</h3>
+          <div class="steps-list">
+            <div><strong>Bước 1: Chuẩn bị Telegram bot</strong><span>Khách tạo hoặc cung cấp Telegram bot token và chat ID nơi muốn nhận báo cáo.</span></div>
+            <div><strong>Bước 2: Nhập nguồn cần quét</strong><span>Điền link kênh, fanpage, page, video hoặc danh sách file nguồn vào trang setup.</span></div>
+            <div><strong>Bước 3: Chọn chu kỳ chạy</strong><span>Điền số phút quét lại, giới hạn số bài mỗi vòng và bật tùy chọn xóa file nặng nếu cần.</span></div>
+            <div><strong>Bước 4: Bấm setup và chạy thử</strong><span>Hệ thống lưu cấu hình, chạy thử một vòng, kiểm tra map và gửi kết quả về Telegram.</span></div>
+            <div><strong>Bước 5: Bật chạy liên tục</strong><span>Sau khi audit đạt, bật chế độ chạy nền để bot tự quét và gửi bài đều đặn.</span></div>
+          </div>
+
+          <div class="article-grid">
+            <div class="detail-box">
+              <h3>Luồng xử lý chuẩn</h3>
+              <p>Nguồn đầu vào được đưa vào bot, bot tải hoặc đọc nội dung cần thiết, tạo transcript nếu có video/audio, sau đó tổng hợp thành bản tóm tắt, mindmap, wiki và TXT. Kết quả được đẩy vào map kiến thức và gửi về Telegram.</p>
+            </div>
+            <div class="detail-box">
+              <h3>Luồng lưu trữ và xóa dữ liệu</h3>
+              <p>File nặng chỉ nên giữ trong lúc xử lý. Khi tài liệu đã nạp xong vào map và bản TXT đã gửi về Telegram, hệ thống chạy cleanup để xóa audio/video/raw media, giúp máy nhẹ hơn và tránh tích tụ dữ liệu lâu ngày.</p>
+            </div>
+          </div>
+
+          <h3 style="margin-top:16px">Bàn giao khi thương mại hóa</h3>
+          <ul class="list">
+            <li>Trang giới thiệu sản phẩm để gửi khách: <code>/brain-bot/</code>.</li>
+            <li>Trang setup khách hàng: <code>/customer-setup.html</code>.</li>
+            <li>Trang demo map: <code>/brain-lite.html</code>.</li>
+            <li>File TXT giới thiệu để gửi qua Telegram: <code>BRAIN_BOT_BAN_GIAO_GUI_KHACH.txt</code>.</li>
+            <li>Backend API chạy bot thật, có thể đặt trên máy riêng, VPS hoặc tunnel cố định.</li>
+            <li>Giá bán hiện để “Cập nhật sau” để anh tự điền khi chốt gói.</li>
+          </ul>
+        </article>
       </section>
 
       <section class="section">
