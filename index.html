@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mẫu 1 · Aurora Glass — DUCPT Store</title>
+<title>DUCPT · App, AI Bot & Automation</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -94,7 +94,7 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 @media(max-width:900px){.social-grid{grid-template-columns:1fr}.social-list a{grid-template-columns:52px 1fr}.arrow{display:none}}
 
 footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
-.back{position:fixed;bottom:22px;left:22px;z-index:99}
+.footer-links{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
 .mouse-light{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50vw) var(--my,45vh),rgba(110,231,255,.18),rgba(167,139,250,.10) 36%,transparent 70%);mix-blend-mode:screen}
 .stats-btn{position:fixed;right:22px;bottom:22px;z-index:100}
 .stats-panel{position:fixed;right:22px;bottom:78px;z-index:100;width:min(360px,calc(100vw - 44px));display:none;padding:16px;border-radius:22px;background:rgba(10,14,26,.82);border:1px solid var(--glass-line);backdrop-filter:blur(20px);box-shadow:0 28px 90px rgba(0,0,0,.5)}
@@ -114,36 +114,36 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 
 <nav><div class="nav-inner">
   <span class="logo">DUCPT</span>
-  <a class="lnk" href="#">Trang chủ</a><a class="lnk" href="#sp">Sản phẩm</a><a class="lnk" href="#">Liên hệ</a>
+  <a class="lnk" href="#">Trang chủ</a><a class="lnk" href="#sp">Sản phẩm</a><a class="lnk" href="#social">Kênh</a><a class="lnk" href="mailto:admin@ducpt.com">Liên hệ</a>
   <span class="spacer"></span>
-  <button class="btn btn-glass">🛒 Giỏ hàng</button>
+  <a class="btn btn-glass" href="mailto:admin@ducpt.com" data-track="nav_contact">Liên hệ tư vấn</a>
 </div></nav>
 
 <section class="hero wrap">
-  <div class="float-chip c1">🎬 Verba Studio</div>
-  <div class="float-chip c2">📌 AutoPost</div>
-  <div class="float-chip c3">🧠 AI Bot</div>
-  <div class="pill"><b>●</b> 17+ sản phẩm đang hoạt động</div>
-  <h1>Công cụ số<br><span class="gr">trong suốt như kính</span></h1>
-  <p>App, extension và automation do DUCPT tự xây dựng. Thiết kế glassmorphism — nhẹ nhàng, hiện đại, sang trọng.</p>
+  <div class="float-chip c1">Verba Studio</div>
+  <div class="float-chip c2">Content Ops</div>
+  <div class="float-chip c3">AI Bot</div>
+  <div class="pill"><b>●</b> DUCPT đang xây app, bot AI, website và automation</div>
+  <h1>Hệ sinh thái số<br><span class="gr">cho sản phẩm, nội dung và tự động hóa</span></h1>
+  <p>Tôi xây dựng các công cụ số phục vụ creator, người làm nội dung và đội nhóm vận hành: app live, AI Knowledge Brain Bot, website sản phẩm, dashboard và automation.</p>
   <div class="hero-cta">
-    <button class="btn btn-hero">Khám phá ngay →</button>
-    <button class="btn btn-glass">Xem demo</button>
+    <a class="btn btn-hero" href="#sp" data-track="hero_products">Xem sản phẩm →</a>
+    <a class="btn btn-glass" href="mailto:admin@ducpt.com" data-track="hero_contact">Trao đổi triển khai</a>
   </div>
 </section>
 
 <section class="sec wrap" id="sp">
-  <div class="sec-head"><h2>Sản phẩm nổi bật</h2><p>Chọn công cụ phù hợp với bạn</p></div>
+  <div class="sec-head"><h2>Sản phẩm & hệ thống nổi bật</h2><p>Các công cụ và hệ thống đang được DUCPT xây dựng để đóng gói thành sản phẩm hoặc dịch vụ triển khai.</p></div>
   <div class="grid">
-    <div class="card"><span class="badge">HOT</span><div class="ico">🎬</div><span class="tag">Ứng dụng</span>
+    <div class="card"><span class="badge">LIVE</span><div class="ico">VS</div><span class="tag">Ứng dụng creator</span>
       <h3>Verba Studio</h3><p>Phòng thu creator: live đa nền tảng, chroma key, AI transcript tiếng Việt.</p>
-      <div class="row"><span class="price">199.000đ<small>299k</small></span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
-    <div class="card"><span class="badge">NEW</span><div class="ico">🧠</div><span class="tag">Bot & AI</span>
+      <div class="row"><span class="price">Live product</span><a class="btn btn-hero" href="https://verbar.io/" target="_blank" rel="noopener" data-track="product_verba" style="padding:9px 18px;font-size:13px">Xem</a></div></div>
+    <div class="card"><span class="badge">NEW</span><div class="ico">AI</div><span class="tag">Bot & AI</span>
       <h3>Knowledge Brain Bot</h3><p>Gom kiến thức đa nguồn, đẩy mindmap, gửi Telegram tự động.</p>
-      <div class="row"><span class="price">149.000đ</span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
-    <div class="card"><div class="ico">📌</div><span class="tag">Extension</span>
-      <h3>Pinterest AutoPost</h3><p>Đăng pin ảnh/video tự động chạy nền, lên lịch hàng loạt nhiều board.</p>
-      <div class="row"><span class="price">249.000đ<small>349k</small></span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+      <div class="row"><span class="price">Đang thương mại hóa</span><a class="btn btn-hero" href="/brain-bot/" data-track="product_brain_bot" style="padding:9px 18px;font-size:13px">Xem</a></div></div>
+    <div class="card"><div class="ico">OP</div><span class="tag">Automation</span>
+      <h3>Content & Channel Ops</h3><p>Hệ thống hỗ trợ vận hành nội dung, kênh video, lịch đăng, workflow và báo cáo.</p>
+      <div class="row"><span class="price">Dịch vụ triển khai</span><a class="btn btn-hero" href="mailto:admin@ducpt.com" data-track="product_ops_contact" style="padding:9px 18px;font-size:13px">Liên hệ</a></div></div>
   </div>
 </section>
 
@@ -154,8 +154,8 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
       <img src="assets/youtube-channel-preview.png" alt="Kênh YouTube DUCPT">
       <div class="social-body">
         <span class="tag">YouTube Channel</span>
-        <h3>Kênh video, hướng dẫn và demo sản phẩm</h3>
-        <p>Nơi đăng video vận hành, demo tool, nội dung creator và các workflow thực tế của DUCPT.</p>
+        <h3>Kênh video, hướng dẫn và giới thiệu sản phẩm</h3>
+        <p>Nơi đăng video vận hành, trải nghiệm tool, nội dung creator và các workflow thực tế của DUCPT.</p>
         <span class="btn btn-hero">Mở kênh YouTube</span>
       </div>
     </a>
@@ -184,8 +184,14 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
   </div>
 </section>
 
-<footer>Mẫu 1 — <b>Aurora Glass</b> · glassmorphism, nền cực quang, bo tròn lớn</footer>
-<a class="back btn btn-glass" href="index.html">← Chọn mẫu khác</a>
+<footer>
+  <b>DUCPT</b> · App, AI Bot, Website sản phẩm & Automation
+  <div class="footer-links">
+    <a class="btn btn-glass" href="mailto:admin@ducpt.com" data-track="footer_email">Email</a>
+    <a class="btn btn-glass" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="footer_github">GitHub</a>
+    <a class="btn btn-glass" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="footer_youtube">YouTube</a>
+  </div>
+</footer>
 <button class="stats-btn btn btn-hero" type="button" id="statsToggle">Stats</button>
 <aside class="stats-panel" id="statsPanel" aria-label="Click stats">
   <h3>Click stats</h3>
@@ -198,7 +204,7 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 </aside>
 <script>
 const ANALYTICS_CONFIG={clarityProjectId:"a391372641p533055026"};
-const statsKey="ducpt_aurora_store_clicks_v1";
+const statsKey="ducpt_aurora_clicks_v2";
 function loadClarity(){
   const id=ANALYTICS_CONFIG.clarityProjectId;
   if(!id)return;
