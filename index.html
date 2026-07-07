@@ -125,6 +125,20 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 .stat-box span{font-size:12px;color:var(--muted)}
 .click-row{display:grid;grid-template-columns:1fr auto;gap:10px;padding:8px 0;border-top:1px solid rgba(255,255,255,.1);font-size:13px;color:var(--muted)}
 .click-row strong{color:var(--ink)}
+.checkout-modal{position:fixed;inset:0;z-index:120;display:none;place-items:center;padding:18px;background:rgba(3,7,18,.72);backdrop-filter:blur(14px)}
+.checkout-modal.open{display:grid}
+.checkout-box{width:min(720px,100%);max-height:90vh;overflow:auto;border-radius:26px;background:rgba(10,14,26,.92);border:1px solid var(--glass-line);box-shadow:0 36px 120px rgba(0,0,0,.62);padding:22px}
+.checkout-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.checkout-top h3{font-size:24px;line-height:1.2}
+.close-btn{width:40px;height:40px;border-radius:50%;border:1px solid var(--glass-line);background:var(--glass);color:var(--ink);cursor:pointer}
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.checkout-box label{display:grid;gap:6px;color:var(--muted);font-size:13px;font-weight:700}
+.checkout-box input,.checkout-box textarea,.checkout-box select{width:100%;min-height:42px;border-radius:14px;border:1px solid var(--glass-line);background:rgba(255,255,255,.08);color:var(--ink);padding:0 12px;font:inherit}
+.checkout-box textarea{min-height:90px;padding:10px;resize:vertical}
+.checkout-note{border:1px solid var(--glass-line);border-radius:18px;background:var(--glass);padding:13px;color:var(--muted);margin:12px 0}
+.checkout-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.checkout-status{color:var(--a4);font-size:13px;margin-top:10px}
+@media(max-width:720px){.checkout-grid{grid-template-columns:1fr}.checkout-box{padding:16px}}
 </style>
 </head>
 <body>
@@ -156,13 +170,13 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
   <div class="grid">
     <div class="card"><span class="badge">HOT</span><div class="ico">🎬</div><span class="tag">Ứng dụng</span>
       <h3>Verba Studio</h3><p>Phòng thu creator: live đa nền tảng, chroma key, AI transcript tiếng Việt.</p>
-      <div class="row"><span class="price">199.000đ<small>299k</small></span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+      <div class="row"><span class="price">199.000đ<small>299k</small></span><button class="btn btn-hero buy-btn" data-product="Verba Studio" data-price="199.000đ" data-url="https://verbar.io/" data-guide="Mo Verba Studio, chon che do live/record, bat camera/man hinh va dung AI transcript." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
     <div class="card"><span class="badge">NEW</span><div class="ico">🧠</div><span class="tag">Bot & AI</span>
       <h3>Knowledge Brain Bot</h3><p>Gom kiến thức đa nguồn, đẩy mindmap, gửi Telegram tự động.</p>
-      <div class="row"><span class="price">149.000đ</span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+      <div class="row"><span class="price">149.000đ</span><button class="btn btn-hero buy-btn" data-product="Knowledge Brain Bot" data-price="149.000đ" data-url="/brain-bot/" data-guide="Cung cap Telegram bot, chat ID va link nguon; bot tao map, TXT va gui ve Telegram." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
     <div class="card"><div class="ico">📌</div><span class="tag">Extension</span>
       <h3>Pinterest AutoPost</h3><p>Đăng pin ảnh/video tự động chạy nền, lên lịch hàng loạt nhiều board.</p>
-      <div class="row"><span class="price">249.000đ<small>349k</small></span><button class="btn btn-hero" style="padding:9px 18px;font-size:13px">Mua</button></div></div>
+      <div class="row"><span class="price">249.000đ<small>349k</small></span><button class="btn btn-hero buy-btn" data-product="Pinterest AutoPost" data-price="249.000đ" data-url="mailto:admin@ducpt.com" data-guide="Gui thong tin tai khoan, board, lich dang va dinh dang noi dung can auto post." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
   </div>
 </section>
 
@@ -211,9 +225,41 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
   <div id="clickList"></div>
   <button class="btn btn-glass" type="button" id="resetStats" style="margin-top:10px">Reset</button>
 </aside>
+
+<div class="checkout-modal" id="checkoutModal" aria-label="Checkout">
+  <form class="checkout-box" id="checkoutForm">
+    <div class="checkout-top">
+      <div>
+        <span class="tag">Thanh toán / đặt mua</span>
+        <h3 id="checkoutTitle">Sản phẩm</h3>
+        <p id="checkoutPrice" style="color:var(--muted)"></p>
+      </div>
+      <button class="close-btn" type="button" id="closeCheckout">×</button>
+    </div>
+    <div class="checkout-note" id="checkoutGuide">Bấm mua sản phẩm để xem hướng dẫn nhanh.</div>
+    <div class="checkout-grid">
+      <label>Họ tên<input name="name" required placeholder="Tên của bạn"></label>
+      <label>Số điện thoại / Telegram<input name="contact" required placeholder="@telegram hoặc số điện thoại"></label>
+      <label>Email<input name="email" type="email" placeholder="email nếu có"></label>
+      <label>Hình thức thanh toán<select name="method"><option>Chuyển khoản</option><option>Liên hệ tư vấn</option><option>Thanh toán sau khi setup</option></select></label>
+    </div>
+    <label style="margin-top:12px">Ghi chú<textarea name="note" placeholder="Nhu cầu, tài khoản, nguồn cần setup hoặc câu hỏi thêm"></textarea></label>
+    <input type="hidden" name="product">
+    <input type="hidden" name="price">
+    <input type="hidden" name="url">
+    <div class="checkout-actions">
+      <button class="btn btn-hero" type="submit">Gửi đơn mua</button>
+      <a class="btn btn-glass" id="productMainLink" href="#" target="_blank" rel="noopener">Mở trang sản phẩm</a>
+      <a class="btn btn-glass" id="mailtoOrder" href="mailto:admin@ducpt.com">Gửi qua email</a>
+    </div>
+    <div class="checkout-status" id="checkoutStatus"></div>
+  </form>
+</div>
 <script>
 const ANALYTICS_CONFIG={clarityProjectId:"a391372641p533055026"};
 const statsKey="ducpt_aurora_store_clicks_v1";
+const orderKey="ducpt_orders_v1";
+window.DUCPT_ORDER_API=window.DUCPT_ORDER_API||"";
 function loadClarity(){
   const id=ANALYTICS_CONFIG.clarityProjectId;
   if(!id)return;
@@ -258,6 +304,57 @@ document.addEventListener("click",e=>{
 });
 document.getElementById("statsToggle").addEventListener("click",()=>document.getElementById("statsPanel").classList.toggle("open"));
 document.getElementById("resetStats").addEventListener("click",()=>writeStats({total:0,events:{}}));
+function openCheckout(button){
+  const form=document.getElementById("checkoutForm");
+  const product=button.dataset.product||"San pham";
+  const price=button.dataset.price||"";
+  const url=button.dataset.url||"#";
+  form.product.value=product;
+  form.price.value=price;
+  form.url.value=url;
+  document.getElementById("checkoutTitle").textContent=product;
+  document.getElementById("checkoutPrice").textContent=price ? `Gia: ${price}` : "";
+  document.getElementById("checkoutGuide").textContent=button.dataset.guide||"Sau khi gui don, DUCPT se lien he de hoan tat thanh toan va kich hoat san pham.";
+  document.getElementById("productMainLink").href=url;
+  document.getElementById("mailtoOrder").href=`mailto:admin@ducpt.com?subject=${encodeURIComponent("Dat mua "+product)}&body=${encodeURIComponent("San pham: "+product+"\\nGia: "+price+"\\nLink: "+location.href)}`;
+  document.getElementById("checkoutStatus").textContent="";
+  document.getElementById("checkoutModal").classList.add("open");
+  trackClick({dataset:{track:"open_checkout_"+cleanName(product)},getAttribute:()=>"",textContent:product});
+}
+function closeCheckout(){
+  document.getElementById("checkoutModal").classList.remove("open");
+}
+function readOrders(){
+  try{return JSON.parse(localStorage.getItem(orderKey))||[]}catch{return[]}
+}
+async function saveOrder(order){
+  const orders=readOrders();
+  orders.unshift(order);
+  localStorage.setItem(orderKey,JSON.stringify(orders.slice(0,50)));
+  if(window.DUCPT_ORDER_API){
+    const res=await fetch(window.DUCPT_ORDER_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)});
+    if(!res.ok)throw new Error("API order failed");
+  }
+}
+document.querySelectorAll(".buy-btn").forEach(button=>button.addEventListener("click",()=>openCheckout(button)));
+document.getElementById("closeCheckout").addEventListener("click",closeCheckout);
+document.getElementById("checkoutModal").addEventListener("click",event=>{if(event.target.id==="checkoutModal")closeCheckout()});
+document.getElementById("checkoutForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const form=event.currentTarget;
+  const data=Object.fromEntries(new FormData(form).entries());
+  const order={...data,status:"new",source:"ducpt.com",createdAt:new Date().toISOString(),page:location.href};
+  const status=document.getElementById("checkoutStatus");
+  status.textContent="Dang gui don...";
+  try{
+    await saveOrder(order);
+    trackClick({dataset:{track:"submit_order_"+cleanName(order.product)},getAttribute:()=>"",textContent:order.product});
+    status.textContent=window.DUCPT_ORDER_API?"Da gui don ve he thong quan ly.":"Da luu don tren trinh duyet. Khi dau API database, don se day ve he thong quan ly.";
+    document.getElementById("mailtoOrder").href=`mailto:admin@ducpt.com?subject=${encodeURIComponent("Don mua "+order.product)}&body=${encodeURIComponent(JSON.stringify(order,null,2))}`;
+  }catch(error){
+    status.textContent="Chua gui duoc ve API. Don da luu local, hay bam Gui qua email.";
+  }
+});
 document.querySelectorAll('.card').forEach(c=>c.addEventListener('mousemove',e=>{
   const r=c.getBoundingClientRect();
   c.style.setProperty('--gx',((e.clientX-r.left)/r.width*100)+'%');
