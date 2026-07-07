@@ -76,9 +76,9 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .card:hover::before{opacity:1}
 .card .ico{width:66px;height:66px;border-radius:18px;display:grid;place-items:center;font-size:0;margin-bottom:18px;
   background:rgba(255,255,255,.08) center/56px 56px no-repeat;border:1px solid var(--glass-line);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
-.ico-verba{background-image:url("/verba-icon-official.svg")!important}
-.ico-brain{background-image:url("/project-product-hub.svg")!important}
-.ico-pinterest{background-image:url("/project-pinterest-autopost.svg")!important}
+.ico-verba{background-image:url("assets/png/verba-icon-official.png")!important}
+.ico-brain{background-image:url("assets/png/project-product-hub.png")!important}
+.ico-pinterest{background-image:url("assets/png/project-pinterest-autopost.png")!important}
 .card h3{font-size:20px;font-weight:800;letter-spacing:-.3px}
 .card .tag{color:var(--a1);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px}
 .card p{color:var(--muted);font-size:14.5px;margin:10px 0 20px;min-height:66px}
@@ -122,14 +122,10 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-item[data-track="repo_image_tools"] .social-logo{background-image:url("/repo-dg-image-tools.svg")}
 .social-item[data-track="repo_voice_mic"] .social-logo{background-image:url("/repo-vietnamese-voice-mic.svg")}
 .social-item[data-track="repo_file_manager"] .social-logo{background-image:url("/repo-file-manager-pro.svg")}
-.ico-verba,.ico-brain,.ico-pinterest,.social-item[data-track="social_brain_bot"] .social-logo,.social-item[data-track="repo_pro_video"] .social-logo,.social-item[data-track="repo_wp_ad"] .social-logo,.social-item[data-track="repo_image_tools"] .social-logo,.social-item[data-track="repo_voice_mic"] .social-logo,.social-item[data-track="repo_file_manager"] .social-logo{background-image:none!important;color:#fff;position:relative;overflow:hidden}
-.ico-verba::before,.ico-brain::before,.ico-pinterest::before,.social-item[data-track="social_brain_bot"] .social-logo::before,.social-item[data-track="repo_pro_video"] .social-logo::before,.social-item[data-track="repo_wp_ad"] .social-logo::before,.social-item[data-track="repo_image_tools"] .social-logo::before,.social-item[data-track="repo_voice_mic"] .social-logo::before,.social-item[data-track="repo_file_manager"] .social-logo::before{position:absolute;inset:0;display:grid;place-items:center;font-weight:900;font-size:15px;letter-spacing:-.6px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.28)}
-.ico-verba,.social-item[data-track="social_brain_bot"] .social-logo{background:linear-gradient(135deg,#5eead4,#6ee7ff 48%,#a78bfa)!important}
-.ico-verba::before{content:"V"}
-.ico-brain,.social-item[data-track="social_brain_bot"] .social-logo{background:linear-gradient(135deg,#0d9488,#2563eb 58%,#7c3aed)!important}
-.ico-brain::before,.social-item[data-track="social_brain_bot"] .social-logo::before{content:"AI"}
-.ico-pinterest{background:linear-gradient(135deg,#ef4444,#ec4899 52%,#f97316)!important}
-.ico-pinterest::before{content:"PIN"}
+.social-item[data-track="social_brain_bot"] .social-logo,.social-item[data-track="repo_pro_video"] .social-logo,.social-item[data-track="repo_wp_ad"] .social-logo,.social-item[data-track="repo_image_tools"] .social-logo,.social-item[data-track="repo_voice_mic"] .social-logo,.social-item[data-track="repo_file_manager"] .social-logo{background-image:none!important;color:#fff;position:relative;overflow:hidden}
+.social-item[data-track="social_brain_bot"] .social-logo::before,.social-item[data-track="repo_pro_video"] .social-logo::before,.social-item[data-track="repo_wp_ad"] .social-logo::before,.social-item[data-track="repo_image_tools"] .social-logo::before,.social-item[data-track="repo_voice_mic"] .social-logo::before,.social-item[data-track="repo_file_manager"] .social-logo::before{position:absolute;inset:0;display:grid;place-items:center;font-weight:900;font-size:15px;letter-spacing:-.6px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.28)}
+.social-item[data-track="social_brain_bot"] .social-logo{background:linear-gradient(135deg,#0d9488,#2563eb 58%,#7c3aed)!important}
+.social-item[data-track="social_brain_bot"] .social-logo::before{content:"AI"}
 .social-item[data-track="repo_pro_video"] .social-logo{background:linear-gradient(135deg,#ff4d6d,#7c3aed 52%,#22d3ee)!important}
 .social-item[data-track="repo_pro_video"] .social-logo::before{content:"PV"}
 .social-item[data-track="repo_wp_ad"] .social-logo{background:linear-gradient(135deg,#6ee7ff,#3b82f6 48%,#a78bfa)!important}
@@ -489,7 +485,7 @@ const productArticles={
   "Verba Studio":{
     tag:"Ứng dụng creator",
     subtitle:"Biến một buổi quay hoặc livestream thành nội dung có thể đăng, bán và tái sử dụng ngay.",
-    visual:"/verba-icon-official.svg",
+    visual:"assets/png/verba-icon-official.png",
     visualTitle:"Studio creator gọn nhẹ",
     visualText:"Live, ghi hình, transcript và tái biên tập trong cùng một luồng.",
     offer:"Gói khởi động 199.000đ, giá gốc 299k. Bao gồm hướng dẫn cài đặt, cấu hình ban đầu và kịch bản sử dụng cho nhu cầu của bạn.",
@@ -510,7 +506,7 @@ const productArticles={
   "Knowledge Brain Bot":{
     tag:"Bot AI / Maps",
     subtitle:"Tự động gom video, link, tài liệu thành map kiến thức và file TXT gửi về Telegram.",
-    visual:"/project-product-hub.svg",
+    visual:"assets/png/project-product-hub.png",
     visualTitle:"Map kiến thức + TXT Telegram",
     visualText:"Một luồng để xem cấu trúc, một luồng để đọc nhanh và lưu lại.",
     offer:"Gói khởi động 299.000đ gồm setup nguồn mẫu, cấu hình bot Telegram và hướng dẫn cách thêm nguồn mới.",
@@ -531,7 +527,7 @@ const productArticles={
   "Pinterest AutoPost":{
     tag:"Extension traffic",
     subtitle:"Tự động đăng pin đều đặn để kéo traffic về website, landing page hoặc sản phẩm.",
-    visual:"/project-pinterest-autopost.svg",
+    visual:"assets/png/project-pinterest-autopost.png",
     visualTitle:"Lịch đăng pin tự động",
     visualText:"Chuẩn bị nội dung một lần, hệ thống đăng đều theo lịch.",
     offer:"Gói extension 249.000đ, giá gốc 349.000đ. Bao gồm hướng dẫn cấu hình board, lịch đăng mẫu và format dữ liệu đầu vào.",
