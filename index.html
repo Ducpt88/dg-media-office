@@ -140,11 +140,11 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-item[data-track="repo_voice_mic"] .social-logo::before{content:"MIC"}
 .social-item[data-track="repo_file_manager"] .social-logo{background:linear-gradient(135deg,#facc15,#22c55e 48%,#06b6d4)!important}
 .social-item[data-track="repo_file_manager"] .social-logo::before{content:"FM"}
-.logo-board{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:12px;margin:4px auto 34px;width:min(900px,100%)}
-.logo-card{display:flex;align-items:center;gap:10px;min-height:58px;padding:10px 12px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid var(--glass-line);backdrop-filter:blur(14px);transition:.2s var(--ease)}
+.logo-board{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:0 auto 24px;width:min(760px,100%)}
+.logo-card{display:flex;align-items:center;gap:7px;min-height:36px;padding:6px 9px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid var(--glass-line);backdrop-filter:blur(14px);transition:.2s var(--ease)}
 .logo-card:hover{transform:translateY(-3px);background:rgba(255,255,255,.1)}
-.logo-mark{width:38px;height:38px;flex:0 0 38px;border-radius:12px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:12px;letter-spacing:-.4px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
-.logo-card span:last-child{font-size:12px;font-weight:800;line-height:1.15}
+.logo-mark{width:24px;height:24px;flex:0 0 24px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:900;font-size:8.5px;letter-spacing:-.4px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.logo-card span:last-child{font-size:11px;font-weight:800;line-height:1.1}
 .mark-youtube{background:#ff0000}
 .mark-youtube::before{content:"YT"}
 .mark-github{background:#181717}
@@ -176,6 +176,14 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 @media(max-width:900px){.youtube-tabs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}.youtube-tab{flex:0 0 min(86vw,380px);scroll-snap-align:center}.youtube-tab:last-child{margin-right:24px}}
 
 footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
+.contact-strip{padding:34px 0 18px}
+.contact-strip .sec-head{margin-bottom:16px}
+.contact-strip .sec-head h2{font-size:clamp(21px,3vw,28px)}
+.contact-strip .sec-head p{font-size:14px}
+.connect-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.connect-chip{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.06);border:1px solid var(--glass-line);backdrop-filter:blur(14px);font-size:13px;font-weight:800;color:var(--ink);transition:.2s var(--ease)}
+.connect-chip:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)}
+.connect-chip .logo-mark{width:22px;height:22px;flex-basis:22px;font-size:8px}
 .back{display:none!important}
 .mouse-light{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50vw) var(--my,45vh),rgba(110,231,255,.18),rgba(167,139,250,.10) 36%,transparent 70%);mix-blend-mode:screen}
 .stats-btn{display:none!important}
@@ -373,19 +381,14 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
   </div>
 </section>
 
-<section class="sec wrap" id="contact">
-  <div class="sec-head"><h2>Liên hệ & đặt mua</h2><p>Chọn sản phẩm, thanh toán hoặc nhắn Zalo để được hỗ trợ setup đúng nhu cầu.</p></div>
-  <div class="grid">
-    <a class="card" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="contact_zalo">
-      <div class="ico ico-brain" aria-hidden="true"></div><span class="tag">Zalo</span>
-      <h3>Chat trực tiếp DUCPT</h3><p>Gửi nhu cầu, sản phẩm muốn mua, tài khoản cần setup hoặc câu hỏi trước khi thanh toán.</p>
-      <div class="row"><span class="price">0963249467</span><span class="btn btn-hero" style="padding:9px 18px;font-size:13px">Nhắn ngay</span></div>
-    </a>
-    <a class="card" href="mailto:admin@ducpt.com" data-track="contact_email">
-      <div class="ico ico-verba" aria-hidden="true"></div><span class="tag">Email</span>
-      <h3>Gửi thông tin triển khai</h3><p>Phù hợp khi bạn cần gửi mô tả dài, danh sách nguồn, tài khoản, yêu cầu kỹ thuật hoặc file bàn giao.</p>
-      <div class="row"><span class="price">admin@ducpt.com</span><span class="btn btn-glass" style="padding:9px 18px;font-size:13px">Gửi email</span></div>
-    </a>
+<section class="contact-strip wrap" id="contact">
+  <div class="sec-head"><h2>Các kênh kết nối</h2><p>Chọn kênh bên dưới để trao đổi, xem demo hoặc đặt mua trực tiếp.</p></div>
+  <div class="connect-row" aria-label="Cac kenh ket noi DUCPT">
+    <a class="connect-chip" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="contact_zalo"><span class="logo-mark mark-brain"></span>Zalo 0963249467</a>
+    <a class="connect-chip" href="mailto:admin@ducpt.com" data-track="contact_email"><span class="logo-mark mark-wp"></span>Email</a>
+    <a class="connect-chip" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="contact_youtube"><span class="logo-mark mark-youtube"></span>YouTube</a>
+    <a class="connect-chip" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="contact_github"><span class="logo-mark mark-github"></span>GitHub</a>
+    <a class="connect-chip" href="/#sp" data-track="contact_products"><span class="logo-mark mark-file"></span>Sản phẩm</a>
   </div>
 </section>
 
