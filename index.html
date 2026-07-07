@@ -78,20 +78,31 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
 .badge{position:absolute;top:20px;right:20px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a}
 
-.social-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:24px}
-.social-feature,.social-list a{border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px);overflow:hidden;position:relative;transition:.35s var(--ease)}
-.social-feature:hover,.social-list a:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.28);box-shadow:0 26px 60px rgba(0,0,0,.38)}
-.social-feature img{width:100%;height:310px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
+.social-orbit{position:relative;min-height:760px;display:grid;place-items:center}
+.social-orbit::before,.social-orbit::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none}
+.social-orbit::before{width:min(760px,92vw);height:min(760px,92vw)}
+.social-orbit::after{width:min(560px,74vw);height:min(560px,74vw);border-style:dashed}
+.social-feature,.orbit-item{border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px);overflow:hidden;position:relative;transition:.35s var(--ease)}
+.social-feature{z-index:2;width:min(580px,86vw);box-shadow:0 34px 100px rgba(0,0,0,.42)}
+.social-feature:hover,.orbit-item:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.28);box-shadow:0 26px 60px rgba(0,0,0,.38)}
+.social-feature img{width:100%;height:270px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
 .social-body{padding:24px}
 .social-body h3{font-size:26px;letter-spacing:-.5px}
 .social-body p{color:var(--muted);margin:10px 0 20px}
-.social-list{display:grid;gap:16px}
-.social-list a{display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:14px;padding:18px}
+.orbit-ring{position:absolute;left:50%;top:50%;width:min(760px,92vw);height:min(760px,92vw);transform:translate(-50%,-50%);animation:orbitSpin 28s linear infinite;transform-origin:center}
+.orbit-ring:hover{animation-play-state:paused}
+.orbit-item{position:absolute;width:250px;min-height:126px;display:grid;grid-template-columns:58px 1fr;align-items:center;gap:14px;padding:18px;animation:orbitCounter 28s linear infinite}
+.orbit-item:nth-child(1){left:50%;top:0;transform:translate(-50%,-50%)}
+.orbit-item:nth-child(2){right:0;top:50%;transform:translate(50%,-50%)}
+.orbit-item:nth-child(3){left:50%;bottom:0;transform:translate(-50%,50%)}
+.orbit-item:nth-child(4){left:0;top:50%;transform:translate(-50%,-50%)}
+.orbit-item:nth-child(5){right:8%;top:12%;transform:translate(50%,-50%)}
+@keyframes orbitSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes orbitCounter{to{rotate:-360deg}}
 .social-icon{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:26px;background:linear-gradient(135deg,rgba(110,231,255,.22),rgba(240,166,255,.2));border:1px solid var(--glass-line)}
-.social-list h3{font-size:18px}
-.social-list p{color:var(--muted);font-size:13.5px}
-.arrow{color:var(--a1);font-weight:900}
-@media(max-width:900px){.social-grid{grid-template-columns:1fr}.social-list a{grid-template-columns:52px 1fr}.arrow{display:none}}
+.orbit-item h3{font-size:18px}
+.orbit-item p{color:var(--muted);font-size:13.5px}
+@media(max-width:900px){.social-orbit{min-height:auto;display:block}.social-orbit::before,.social-orbit::after{display:none}.social-feature{width:100%;margin-bottom:16px}.orbit-ring{position:static;width:auto;height:auto;transform:none;animation:none;display:grid;gap:16px}.orbit-item{position:relative;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;width:100%;min-height:0;animation:none;grid-template-columns:52px 1fr}}
 
 footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 .back{position:fixed;bottom:22px;left:22px;z-index:99}
@@ -149,7 +160,7 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 
 <section class="sec wrap" id="social">
   <div class="sec-head"><h2>Nền tảng video & mạng xã hội</h2><p>Theo dõi các kênh nội dung, sản phẩm và cộng đồng đang được DUCPT vận hành.</p></div>
-  <div class="social-grid">
+  <div class="social-orbit">
     <a class="social-feature" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="social_youtube_feature">
       <img src="assets/youtube-channel-preview.png" alt="Kênh YouTube DUCPT">
       <div class="social-body">
@@ -159,26 +170,22 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
         <span class="btn btn-hero">Mở kênh YouTube</span>
       </div>
     </a>
-    <div class="social-list">
-      <a href="https://www.facebook.com/ducserving" target="_blank" rel="noopener" data-track="social_facebook">
+    <div class="orbit-ring" aria-label="Cac nen tang xoay quanh YouTube">
+      <a class="orbit-item" href="https://www.facebook.com/ducserving" target="_blank" rel="noopener" data-track="social_facebook">
         <span class="social-icon">f</span>
         <span><h3>Facebook / Reels</h3><p>Cập nhật nội dung ngắn, bài viết và hoạt động social.</p></span>
-        <span class="arrow">→</span>
       </a>
-      <a href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="social_github">
+      <a class="orbit-item" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="social_github">
         <span class="social-icon">GH</span>
         <span><h3>GitHub Projects</h3><p>Repo, tool, extension và automation đang phát triển.</p></span>
-        <span class="arrow">→</span>
       </a>
-      <a href="/brain-bot/" data-track="social_brain_bot">
+      <a class="orbit-item" href="/brain-bot/" data-track="social_brain_bot">
         <span class="social-icon">AI</span>
         <span><h3>AI Knowledge Brain Bot</h3><p>Trang sản phẩm bot biến video thành map và TXT Telegram.</p></span>
-        <span class="arrow">→</span>
       </a>
-      <a href="https://verbar.io/" target="_blank" rel="noopener" data-track="social_verba">
+      <a class="orbit-item" href="https://verbar.io/" target="_blank" rel="noopener" data-track="social_verba">
         <span class="social-icon">V</span>
         <span><h3>Verba Studio</h3><p>Sản phẩm studio cho creator, live và AI transcript.</p></span>
-        <span class="arrow">→</span>
       </a>
     </div>
   </div>
