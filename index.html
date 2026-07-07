@@ -63,6 +63,10 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .sec-head{text-align:center;margin-bottom:44px}
 .sec-head h2{font-size:clamp(28px,4vw,42px);letter-spacing:-1px;font-weight:800}
 .sec-head p{color:var(--muted);margin-top:8px}
+#social{display:flex;flex-direction:column}
+#social .sec-head{order:0}
+#social .social-flow{order:1}
+#social .social-orbit{order:2}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px}
 .card{border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px);padding:26px;position:relative;overflow:hidden;transition:.35s var(--ease)}
 .card::before{content:"";position:absolute;inset:0;background:radial-gradient(300px 180px at var(--gx,50%) var(--gy,0%),rgba(167,139,250,.18),transparent 70%);opacity:0;transition:.3s}
@@ -78,39 +82,26 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
 .badge{position:absolute;top:20px;right:20px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a}
 
-.social-orbit{position:relative;min-height:560px;display:grid;place-items:center}
-.social-orbit::before,.social-orbit::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none}
-.social-orbit::before{width:min(560px,86vw);height:min(560px,86vw)}
-.social-orbit::after{width:min(410px,68vw);height:min(410px,68vw);border-style:dashed}
-.social-feature,.orbit-item{background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px);overflow:hidden;position:relative;transition:.35s var(--ease)}
-.social-feature{border-radius:24px}
-.social-feature{z-index:2;width:min(390px,78vw);box-shadow:0 24px 70px rgba(0,0,0,.38)}
-.social-feature:hover,.orbit-item:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.28);box-shadow:0 26px 60px rgba(0,0,0,.38)}
-.social-feature img{width:100%;height:178px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
-.social-body{padding:16px}
-.social-body h3{font-size:20px;letter-spacing:-.2px}
-.social-body p{color:var(--muted);margin:8px 0 14px;font-size:14px}
-.orbit-ring{position:absolute;left:50%;top:50%;width:min(560px,86vw);height:min(560px,86vw);transform:translate(-50%,-50%);animation:orbitSpin 28s linear infinite;transform-origin:center}
-.orbit-ring:hover{animation-play-state:paused}
-.orbit-item{position:absolute;width:78px;height:78px;display:grid;place-items:center;border-radius:50%;padding:0;animation:orbitCounter 28s linear infinite;overflow:visible}
-.orbit-item:nth-child(1){left:50%;top:0;transform:translate(-50%,-50%)}
-.orbit-item:nth-child(2){right:0;top:50%;transform:translate(50%,-50%)}
-.orbit-item:nth-child(3){left:50%;bottom:0;transform:translate(-50%,50%)}
-.orbit-item:nth-child(4){left:0;top:50%;transform:translate(-50%,-50%)}
-.orbit-item:nth-child(5){right:8%;top:12%;transform:translate(50%,-50%)}
-@keyframes orbitSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes orbitCounter{to{rotate:-360deg}}
-.social-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#fff center/46px 46px no-repeat;border:1px solid rgba(255,255,255,.32);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05),0 14px 28px rgba(0,0,0,.26);overflow:hidden;font-size:0}
-.social-icon svg{width:42px;height:42px;display:block}
-.social-icon img{width:56px;height:56px;object-fit:contain}
-.orbit-item > span:not(.social-icon),.orbit-item h3,.orbit-item p{display:none!important}
-.orbit-item[data-track="social_facebook"] .social-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231877F2' d='M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.49 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z'/%3E%3C/svg%3E")}
-.orbit-item[data-track="social_github"] .social-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23181717' d='M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.18 1.18.92-.26 1.9-.38 2.88-.39.98.01 1.97.13 2.89.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.16c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z'/%3E%3C/svg%3E")}
-.orbit-item[data-track="social_brain_bot"] .social-icon{background-image:url("assets/project-product-hub.svg")}
-.orbit-item[data-track="social_verba"] .social-icon{background-image:url("assets/verba-icon-official.svg")}
-.social-label{position:absolute;left:50%;top:104%;transform:translateX(-50%) translateY(6px);min-width:132px;border:1px solid var(--glass-line);border-radius:999px;background:rgba(10,14,26,.82);padding:7px 10px;text-align:center;font-size:12px;font-weight:800;color:var(--ink);opacity:0;pointer-events:none;transition:.25s var(--ease);white-space:nowrap}
-.orbit-item:hover .social-label{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:900px){.social-orbit{min-height:auto;display:block}.social-orbit::before,.social-orbit::after{display:none}.social-feature{width:100%;margin-bottom:16px}.orbit-ring{position:static;width:auto;height:auto;transform:none;animation:none;display:flex;justify-content:center;gap:14px;flex-wrap:wrap}.orbit-item{position:relative;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;transform:none!important;width:82px;height:82px;animation:none}.social-icon{width:68px;height:68px}.social-label{display:none}}
+.social-orbit{display:none!important}
+.social-flow{position:relative;min-height:260px;overflow:hidden;display:grid;place-items:center}
+.social-flow::before{content:"";position:absolute;left:50%;top:50%;width:170px;height:170px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(110,231,255,.22),rgba(167,139,250,.12) 46%,transparent 72%);border:1px solid rgba(255,255,255,.13);box-shadow:0 0 70px rgba(110,231,255,.18);pointer-events:none}
+.social-track{position:absolute;left:0;right:0;top:50%;height:150px;transform:translateY(-50%);pointer-events:none}
+.social-item{position:absolute;left:50%;top:50%;width:86px;height:86px;display:grid;place-items:center;border-radius:50%;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(18px);box-shadow:0 18px 42px rgba(0,0,0,.32);transform:translate(-50%,-50%);animation:socialPass 16s var(--ease) infinite;pointer-events:auto}
+.social-item:nth-child(1){animation-delay:-16s}
+.social-item:nth-child(2){animation-delay:-12s}
+.social-item:nth-child(3){animation-delay:-8s}
+.social-item:nth-child(4){animation-delay:-4s}
+.social-item:hover{animation-play-state:paused}
+.social-logo{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:#fff center/48px 48px no-repeat;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);font-size:0;overflow:hidden}
+.social-logo svg{width:44px;height:44px}
+.social-logo img{width:54px;height:54px;object-fit:contain}
+.social-name{position:absolute;top:98px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:800;color:var(--ink);padding:6px 10px;border-radius:999px;background:rgba(10,14,26,.72);border:1px solid var(--glass-line);opacity:.95}
+.social-item[data-track="social_youtube_feature"] .social-logo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 20'%3E%3Cpath fill='%23FF0000' d='M27.4 3.1A3.5 3.5 0 0 0 25 0.6C22.8 0 14 0 14 0S5.2 0 3 0.6A3.5 3.5 0 0 0 .6 3.1C0 5.3 0 10 0 10s0 4.7.6 6.9A3.5 3.5 0 0 0 3 19.4c2.2.6 11 .6 11 .6s8.8 0 11-.6a3.5 3.5 0 0 0 2.4-2.5c.6-2.2.6-6.9.6-6.9s0-4.7-.6-6.9z'/%3E%3Cpath fill='white' d='M11.2 14.3V5.7L18.5 10l-7.3 4.3z'/%3E%3C/svg%3E")}
+.social-item[data-track="social_facebook"] .social-logo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231877F2' d='M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.49 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z'/%3E%3C/svg%3E")}
+.social-item[data-track="social_github"] .social-logo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23181717' d='M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.18 1.18.92-.26 1.9-.38 2.88-.39.98.01 1.97.13 2.89.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.16c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z'/%3E%3C/svg%3E")}
+.social-item[data-track="social_brain_bot"] .social-logo{background-image:url("assets/project-product-hub.svg")}
+@keyframes socialPass{0%{translate:44vw 0;scale:.72;opacity:.36;filter:blur(1px)}38%{translate:0 0;scale:1.45;opacity:1;filter:blur(0)}50%{translate:0 0;scale:1.55;opacity:1;filter:blur(0)}100%{translate:-44vw 0;scale:.72;opacity:.36;filter:blur(1px)}}
+@media(max-width:900px){.social-flow{min-height:220px}.social-item{width:72px;height:72px}.social-logo{width:56px;height:56px;background-size:40px 40px}.social-name{display:none}@keyframes socialPass{0%{translate:42vw 0;scale:.74;opacity:.4}45%{translate:0 0;scale:1.28;opacity:1}100%{translate:-42vw 0;scale:.74;opacity:.4}}}
 
 footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 .back{position:fixed;bottom:22px;left:22px;z-index:99}
@@ -181,6 +172,14 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 </section>
 
 <section class="sec wrap" id="social">
+  <div class="social-flow" aria-label="Cac nen tang chay ngang">
+    <div class="social-track">
+      <a class="social-item" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="social_youtube_feature"><span class="social-logo"></span><span class="social-name">YouTube</span></a>
+      <a class="social-item" href="https://www.facebook.com/ducserving" target="_blank" rel="noopener" data-track="social_facebook"><span class="social-logo"></span><span class="social-name">Facebook</span></a>
+      <a class="social-item" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="social_github"><span class="social-logo"></span><span class="social-name">GitHub</span></a>
+      <a class="social-item" href="/brain-bot/" data-track="social_brain_bot"><span class="social-logo"></span><span class="social-name">Brain Bot</span></a>
+    </div>
+  </div>
   <div class="sec-head"><h2>Nền tảng video & mạng xã hội</h2><p>Theo dõi các kênh nội dung, sản phẩm và cộng đồng đang được DUCPT vận hành.</p></div>
   <div class="social-orbit">
     <a class="social-feature" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="social_youtube_feature">
