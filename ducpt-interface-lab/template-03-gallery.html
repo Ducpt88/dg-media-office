@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DUCPT Product Gallery</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#fafafa;color:#171717;font-family:Inter,Arial,sans-serif;line-height:1.5}a{text-decoration:none;color:inherit}.wrap{max-width:1220px;margin:auto;padding:18px}.nav{display:flex;justify-content:space-between;align-items:center;gap:12px}.brand{display:flex;gap:10px;align-items:center;font-weight:900}.brand img{width:40px;height:40px;border-radius:8px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;background:#171717;color:#fff;padding:0 14px;font-weight:900}.hero{padding:44px 0 24px;display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:end;border-bottom:1px solid #ddd}h1{font-size:58px;line-height:.95;margin:0}.lead{font-size:18px;color:#5f6368}.gallery{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-top:18px}.item{grid-column:span 4;background:#fff;border:1px solid #ddd;border-radius:8px;overflow:hidden;box-shadow:0 10px 25px rgba(0,0,0,.06)}.item.big{grid-column:span 8}.item img{width:100%;height:230px;object-fit:cover;background:#f2f2f2;border-bottom:1px solid #ddd}.item.big img{height:330px}.body{padding:14px}.body span{font-size:12px;text-transform:uppercase;font-weight:900;color:#0f766e}.body h2{margin:6px 0}.body p{color:#5f6368}.meta{display:flex;gap:8px;flex-wrap:wrap}.meta b{border:1px solid #ddd;border-radius:999px;padding:6px 9px;font-size:12px}@media(max-width:860px){.hero{grid-template-columns:1fr}h1{font-size:38px}.item,.item.big{grid-column:1/-1}.item img,.item.big img{height:220px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav class="nav"><a class="brand" href="/"><img src="/assets/ducpt-logo.svg" alt="">DUCPT</a><a class="btn" href="mailto:admin@ducpt.com">Làm việc cùng tôi</a></nav>
+    <section class="hero"><h1>Kho sản phẩm và hệ thống đang xây.</h1><p class="lead">Một giao diện portfolio tập trung vào sản phẩm thật, dùng ảnh preview lớn để người xem hiểu ngay DUCPT đang làm gì.</p></section>
+    <section class="gallery">
+      <article class="item big"><img src="/assets/verba-site-preview.png" alt="Verba"><div class="body"><span>Live product</span><h2>Verba Studio</h2><p>Phòng thu cho creator: live, quay màn hình, camera và AI transcript.</p><div class="meta"><b>Streamer</b><b>Creator</b><b>AI transcript</b></div></div></article>
+      <article class="item"><img src="/assets/project-product-hub.svg" alt="Brain Bot"><div class="body"><span>AI Bot</span><h2>Knowledge Brain Bot</h2><p>Biến video thành mindmap, wiki, TXT và Telegram report.</p><div class="meta"><b>Map</b><b>Telegram</b></div></div></article>
+      <article class="item"><img src="/assets/youtube-channel-preview.png" alt="YouTube"><div class="body"><span>Content Ops</span><h2>YouTube Workflow</h2><p>Quản lý ý tưởng, lịch đăng và quy trình nội dung.</p></div></article>
+      <article class="item"><img src="/assets/github-profile-preview.png" alt="GitHub"><div class="body"><span>Code</span><h2>GitHub Projects</h2><p>Các repo công khai và tool automation.</p></div></article>
+      <article class="item"><img src="/assets/project-private-automation.svg" alt="Automation"><div class="body"><span>Automation</span><h2>Private Stack</h2><p>Hệ thống riêng phục vụ vận hành và kiếm tiền online.</p></div></article>
+    </section>
+  </main>
+</body>
+</html>

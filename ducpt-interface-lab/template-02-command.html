@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DUCPT Command Center</title>
+  <style>
+    *{box-sizing:border-box}body{margin:0;background:#e9eef2;color:#16202a;font-family:Inter,Arial,sans-serif;line-height:1.5}a{text-decoration:none;color:inherit}.app{display:grid;grid-template-columns:250px 1fr;min-height:100dvh}.side{background:#111827;color:#fff;padding:18px;display:flex;flex-direction:column;gap:16px}.logo{display:flex;gap:10px;align-items:center;font-weight:900}.logo img{width:42px;height:42px;border-radius:8px}.side a{padding:11px;border-radius:8px;background:rgba(255,255,255,.08)}.main{padding:18px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:8px;background:#0f766e;color:#fff;padding:0 14px;font-weight:900}h1{font-size:42px;line-height:1;margin:0}.muted{color:#667085}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}.stat,.panel,.project{background:#fff;border:1px solid #d8e1e7;border-radius:8px;padding:14px;box-shadow:0 12px 28px rgba(22,34,51,.08)}.stat b{display:block;font-size:30px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:12px}.project{display:grid;grid-template-columns:110px 1fr auto;gap:12px;align-items:center;margin-top:10px}.project img{width:110px;height:70px;object-fit:cover;border-radius:8px;border:1px solid #d8e1e7}.tag{font-size:12px;font-weight:900;color:#0f766e}.health{display:grid;gap:10px}.bar{height:10px;border-radius:999px;background:#d8e1e7;overflow:hidden}.bar i{display:block;height:100%;background:#0f766e}@media(max-width:900px){.app{grid-template-columns:1fr}.side{display:block}.side nav{display:flex;overflow:auto;gap:8px}.stats,.grid{grid-template-columns:1fr}.project{grid-template-columns:88px 1fr}.project .btn{grid-column:1/-1}.project img{width:88px}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side"><div class="logo"><img src="/assets/ducpt-logo.svg" alt="">DUCPT</div><nav><a href="/">Home</a><a href="/brain-bot/">Brain Bot</a><a href="https://github.com/Ducpt88">GitHub</a></nav></aside>
+    <main class="main">
+      <header class="top"><div><h1>Command Center</h1><p class="muted">Một màn hình để giới thiệu năng lực: sản phẩm, automation, nội dung và hệ thống đang vận hành.</p></div><a class="btn" href="mailto:admin@ducpt.com">Liên hệ</a></header>
+      <section class="stats"><div class="stat"><b>12+</b><span>Dự án</span></div><div class="stat"><b>AI</b><span>Bot & map</span></div><div class="stat"><b>Web</b><span>Product pages</span></div><div class="stat"><b>Ops</b><span>YouTube workflow</span></div></section>
+      <section class="grid"><div class="panel"><h2>Dự án nổi bật</h2><article class="project"><img src="/assets/project-verba-studio.svg" alt=""><div><span class="tag">Sản phẩm</span><h3>Verba Studio</h3><p class="muted">Studio cho creator và streamer.</p></div><a class="btn" href="https://verbar.io/">Mở</a></article><article class="project"><img src="/assets/project-product-hub.svg" alt=""><div><span class="tag">AI Bot</span><h3>AI Knowledge Brain Bot</h3><p class="muted">Video thành map, TXT và Telegram.</p></div><a class="btn" href="/brain-bot/">Mở</a></article><article class="project"><img src="/assets/github-profile-preview.png" alt=""><div><span class="tag">Code</span><h3>GitHub Projects</h3><p class="muted">Repo, tool và automation.</p></div><a class="btn" href="https://github.com/Ducpt88">Mở</a></article></div><aside class="panel health"><h2>Trạng thái năng lực</h2><span>Automation</span><div class="bar"><i style="width:92%"></i></div><span>Product UI</span><div class="bar"><i style="width:88%"></i></div><span>Content Ops</span><div class="bar"><i style="width:84%"></i></div></aside></section>
+    </main>
+  </div>
+</body>
+</html>
