@@ -121,6 +121,24 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-item[data-track="repo_image_tools"] .social-logo{background-image:url("/repo-dg-image-tools.svg")}
 .social-item[data-track="repo_voice_mic"] .social-logo{background-image:url("/repo-vietnamese-voice-mic.svg")}
 .social-item[data-track="repo_file_manager"] .social-logo{background-image:url("/repo-file-manager-pro.svg")}
+.ico-verba,.ico-brain,.ico-pinterest,.social-item[data-track="social_brain_bot"] .social-logo,.social-item[data-track="repo_pro_video"] .social-logo,.social-item[data-track="repo_wp_ad"] .social-logo,.social-item[data-track="repo_image_tools"] .social-logo,.social-item[data-track="repo_voice_mic"] .social-logo,.social-item[data-track="repo_file_manager"] .social-logo{background-image:none!important;color:#fff;position:relative;overflow:hidden}
+.ico-verba::before,.ico-brain::before,.ico-pinterest::before,.social-item[data-track="social_brain_bot"] .social-logo::before,.social-item[data-track="repo_pro_video"] .social-logo::before,.social-item[data-track="repo_wp_ad"] .social-logo::before,.social-item[data-track="repo_image_tools"] .social-logo::before,.social-item[data-track="repo_voice_mic"] .social-logo::before,.social-item[data-track="repo_file_manager"] .social-logo::before{position:absolute;inset:0;display:grid;place-items:center;font-weight:900;font-size:15px;letter-spacing:-.6px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.28)}
+.ico-verba,.social-item[data-track="social_brain_bot"] .social-logo{background:linear-gradient(135deg,#5eead4,#6ee7ff 48%,#a78bfa)!important}
+.ico-verba::before{content:"V"}
+.ico-brain,.social-item[data-track="social_brain_bot"] .social-logo{background:linear-gradient(135deg,#0d9488,#2563eb 58%,#7c3aed)!important}
+.ico-brain::before,.social-item[data-track="social_brain_bot"] .social-logo::before{content:"AI"}
+.ico-pinterest{background:linear-gradient(135deg,#ef4444,#ec4899 52%,#f97316)!important}
+.ico-pinterest::before{content:"PIN"}
+.social-item[data-track="repo_pro_video"] .social-logo{background:linear-gradient(135deg,#ff4d6d,#7c3aed 52%,#22d3ee)!important}
+.social-item[data-track="repo_pro_video"] .social-logo::before{content:"PV"}
+.social-item[data-track="repo_wp_ad"] .social-logo{background:linear-gradient(135deg,#6ee7ff,#3b82f6 48%,#a78bfa)!important}
+.social-item[data-track="repo_wp_ad"] .social-logo::before{content:"WP"}
+.social-item[data-track="repo_image_tools"] .social-logo{background:linear-gradient(135deg,#f0a6ff,#a78bfa 50%,#6ee7ff)!important}
+.social-item[data-track="repo_image_tools"] .social-logo::before{content:"IMG"}
+.social-item[data-track="repo_voice_mic"] .social-logo{background:linear-gradient(135deg,#5eead4,#6ee7ff 50%,#f0a6ff)!important}
+.social-item[data-track="repo_voice_mic"] .social-logo::before{content:"MIC"}
+.social-item[data-track="repo_file_manager"] .social-logo{background:linear-gradient(135deg,#facc15,#22c55e 48%,#06b6d4)!important}
+.social-item[data-track="repo_file_manager"] .social-logo::before{content:"FM"}
 @keyframes socialPass{0%{translate:44vw 0;scale:.7;opacity:.34;filter:blur(1px)}40%{translate:0 0;scale:1.24;opacity:1;filter:blur(0)}50%{translate:0 0;scale:1.34;opacity:1;filter:blur(0)}100%{translate:-44vw 0;scale:.7;opacity:.34;filter:blur(1px)}}
 @media(max-width:900px){.social-flow{min-height:170px}.social-item{width:58px;height:58px}.social-logo{width:46px;height:46px;background-size:36px 36px}.social-name{display:none}@keyframes socialPass{0%{translate:42vw 0;scale:.72;opacity:.36}45%{translate:0 0;scale:1.14;opacity:1}100%{translate:-42vw 0;scale:.72;opacity:.36}}}
 .youtube-tabs{order:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:16px}
