@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 128" role="img" aria-labelledby="title desc">
+  <title id="title">DUCPT Signature logo</title>
+  <desc id="desc">Official horizontal DUCPT logo for website header, documents and sales pages</desc>
+  <defs>
+    <linearGradient id="signature" x1="20" y1="16" x2="225" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#30d7ff"/>
+      <stop offset=".56" stop-color="#38e6c5"/>
+      <stop offset="1" stop-color="#f5c451"/>
+    </linearGradient>
+    <filter id="shadow" x="-16%" y="-18%" width="132%" height="136%">
+      <feDropShadow dx="0" dy="14" stdDeviation="12" flood-color="#000000" flood-opacity=".26"/>
+    </filter>
+  </defs>
+  <g filter="url(#shadow)">
+    <rect x="10" y="24" width="76" height="80" rx="24" fill="#07101d"/>
+    <path d="M28 42h21c16 0 27 8.8 27 22s-11 22-27 22H28V42Zm18 17v10h4c5.2 0 8-1.8 8-5s-2.8-5-8-5h-4Z" fill="url(#signature)"/>
+    <text x="101" y="72" fill="#f7fafc" font-family="Arial, sans-serif" font-size="34" font-weight="900" letter-spacing="1">DUCPT</text>
+    <path d="M102 86h104" stroke="url(#signature)" stroke-width="5" stroke-linecap="round"/>
+  </g>
+</svg>
