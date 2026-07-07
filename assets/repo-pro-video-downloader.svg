@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="38" x2="220" y1="28" y2="226" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff4d6d"/>
+      <stop offset=".52" stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#22d3ee"/>
+    </linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".35"/>
+    </filter>
+  </defs>
+  <rect width="256" height="256" rx="58" fill="#0a0e1a"/>
+  <rect x="18" y="18" width="220" height="220" rx="50" fill="url(#bg)"/>
+  <circle cx="188" cy="64" r="26" fill="#fff" opacity=".18"/>
+  <path d="M68 77a24 24 0 0 1 24-24h72a24 24 0 0 1 24 24v56a24 24 0 0 1-24 24H92a24 24 0 0 1-24-24z" fill="#fff" opacity=".96" filter="url(#s)"/>
+  <path d="M117 86v39l34-19.5z" fill="#7c3aed"/>
+  <path d="M128 170v34m0 0-24-24m24 24 24-24" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="128" y="226" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" font-weight="900" fill="#fff" opacity=".95">PRO VIDEO</text>
+</svg>

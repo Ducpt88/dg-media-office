@@ -73,8 +73,11 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .card::before{content:"";position:absolute;inset:0;background:radial-gradient(300px 180px at var(--gx,50%) var(--gy,0%),rgba(167,139,250,.18),transparent 70%);opacity:0;transition:.3s}
 .card:hover{transform:translateY(-8px);border-color:rgba(255,255,255,.28);box-shadow:0 30px 70px rgba(0,0,0,.45)}
 .card:hover::before{opacity:1}
-.card .ico{width:66px;height:66px;border-radius:18px;display:grid;place-items:center;font-size:30px;margin-bottom:18px;
-  background:linear-gradient(135deg,rgba(110,231,255,.25),rgba(240,166,255,.25));border:1px solid var(--glass-line)}
+.card .ico{width:66px;height:66px;border-radius:18px;display:grid;place-items:center;font-size:0;margin-bottom:18px;
+  background:rgba(255,255,255,.08) center/56px 56px no-repeat;border:1px solid var(--glass-line);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.ico-verba{background-image:url("assets/verba-icon-official.svg")!important}
+.ico-brain{background-image:url("assets/project-product-hub.svg")!important}
+.ico-pinterest{background-image:url("assets/project-pinterest-autopost.svg")!important}
 .card h3{font-size:20px;font-weight:800;letter-spacing:-.3px}
 .card .tag{color:var(--a1);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px}
 .card p{color:var(--muted);font-size:14.5px;margin:10px 0 20px;min-height:66px}
@@ -98,7 +101,7 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-item:nth-child(8){animation-delay:-6s}
 .social-item:nth-child(9){animation-delay:-3s}
 .social-item:hover{animation-play-state:paused}
-.social-logo{width:66px;height:66px;border-radius:50%;display:grid;place-items:center;background:#fff center/48px 48px no-repeat;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);font-size:0;overflow:hidden}
+.social-logo{width:66px;height:66px;border-radius:18px;display:grid;place-items:center;background:#fff center/52px 52px no-repeat;box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);font-size:0;overflow:hidden}
 .social-logo svg{width:44px;height:44px}
 .social-logo img{width:54px;height:54px;object-fit:contain}
 .social-name{position:absolute;top:98px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:12px;font-weight:800;color:var(--ink);padding:6px 10px;border-radius:999px;background:rgba(10,14,26,.72);border:1px solid var(--glass-line);opacity:.95}
@@ -106,11 +109,11 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .social-item[data-track="social_facebook"] .social-logo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%231877F2' d='M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.414c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.49 0-1.956.93-1.956 1.886v2.264h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z'/%3E%3C/svg%3E")}
 .social-item[data-track="social_github"] .social-logo{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23181717' d='M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.2 1.77 1.2 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .98-.31 3.18 1.18.92-.26 1.9-.38 2.88-.39.98.01 1.97.13 2.89.39 2.2-1.49 3.17-1.18 3.17-1.18.64 1.59.24 2.76.12 3.05.74.8 1.18 1.83 1.18 3.09 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.16c0 .31.21.68.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z'/%3E%3C/svg%3E")}
 .social-item[data-track="social_brain_bot"] .social-logo{background-image:url("assets/project-product-hub.svg")}
-.social-item[data-track="repo_pro_video"] .social-logo{background-image:url("assets/repo-pro-video-downloader.png")}
+.social-item[data-track="repo_pro_video"] .social-logo{background-image:url("assets/repo-pro-video-downloader.svg")}
 .social-item[data-track="repo_wp_ad"] .social-logo{background-image:url("assets/repo-wp-ad-extension.svg")}
 .social-item[data-track="repo_image_tools"] .social-logo{background-image:url("assets/repo-dg-image-tools.svg")}
 .social-item[data-track="repo_voice_mic"] .social-logo{background-image:url("assets/repo-vietnamese-voice-mic.svg")}
-.social-item[data-track="repo_file_manager"] .social-logo{background-image:url("assets/repo-file-manager-pro.png")}
+.social-item[data-track="repo_file_manager"] .social-logo{background-image:url("assets/repo-file-manager-pro.svg")}
 @keyframes socialPass{0%{translate:44vw 0;scale:.72;opacity:.36;filter:blur(1px)}38%{translate:0 0;scale:1.45;opacity:1;filter:blur(0)}50%{translate:0 0;scale:1.55;opacity:1;filter:blur(0)}100%{translate:-44vw 0;scale:.72;opacity:.36;filter:blur(1px)}}
 @media(max-width:900px){.social-flow{min-height:220px}.social-item{width:72px;height:72px}.social-logo{width:56px;height:56px;background-size:40px 40px}.social-name{display:none}@keyframes socialPass{0%{translate:42vw 0;scale:.74;opacity:.4}45%{translate:0 0;scale:1.28;opacity:1}100%{translate:-42vw 0;scale:.74;opacity:.4}}}
 .youtube-tabs{order:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:16px}
@@ -205,13 +208,13 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 <section class="sec wrap" id="sp">
   <div class="sec-head"><h2>Sản phẩm nổi bật</h2><p>Chọn công cụ phù hợp với bạn</p></div>
   <div class="grid">
-    <div class="card"><span class="badge">HOT</span><div class="ico">🎬</div><span class="tag">Ứng dụng</span>
+    <div class="card"><span class="badge">HOT</span><div class="ico ico-verba" aria-hidden="true"></div><span class="tag">Ứng dụng</span>
       <h3>Verba Studio</h3><p>Phòng thu creator: live đa nền tảng, chroma key, AI transcript tiếng Việt.</p>
       <div class="row"><span class="price">199.000đ<small>299k</small></span><button class="btn btn-hero buy-btn" data-product="Verba Studio" data-price="199.000đ" data-url="https://verbar.io/" data-guide="Mo Verba Studio, chon che do live/record, bat camera/man hinh va dung AI transcript." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
-    <div class="card"><span class="badge">NEW</span><div class="ico">🧠</div><span class="tag">Bot & AI</span>
+    <div class="card"><span class="badge">NEW</span><div class="ico ico-brain" aria-hidden="true"></div><span class="tag">Bot & AI</span>
       <h3>Knowledge Brain Bot</h3><p>Gom kiến thức đa nguồn, đẩy mindmap, gửi Telegram tự động.</p>
       <div class="row"><span class="price">149.000đ</span><button class="btn btn-hero buy-btn" data-product="Knowledge Brain Bot" data-price="149.000đ" data-url="/brain-bot/" data-guide="Cung cap Telegram bot, chat ID va link nguon; bot tao map, TXT va gui ve Telegram." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
-    <div class="card"><div class="ico">📌</div><span class="tag">Extension</span>
+    <div class="card"><div class="ico ico-pinterest" aria-hidden="true"></div><span class="tag">Extension</span>
       <h3>Pinterest AutoPost</h3><p>Đăng pin ảnh/video tự động chạy nền, lên lịch hàng loạt nhiều board.</p>
       <div class="row"><span class="price">249.000đ<small>349k</small></span><button class="btn btn-hero buy-btn" data-product="Pinterest AutoPost" data-price="249.000đ" data-url="mailto:admin@ducpt.com" data-guide="Gui thong tin tai khoan, board, lich dang va dinh dang noi dung can auto post." style="padding:9px 18px;font-size:13px">Mua</button></div></div>
   </div>
