@@ -78,21 +78,21 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .price small{color:var(--muted);font-weight:500;font-size:13px;text-decoration:line-through;margin-left:6px}
 .badge{position:absolute;top:20px;right:20px;padding:5px 13px;border-radius:999px;font-size:11px;font-weight:800;letter-spacing:1px;background:linear-gradient(90deg,var(--a4),var(--a1));color:#0a0e1a}
 
-.social-orbit{position:relative;min-height:760px;display:grid;place-items:center}
+.social-orbit{position:relative;min-height:560px;display:grid;place-items:center}
 .social-orbit::before,.social-orbit::after{content:"";position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);border:1px solid rgba(255,255,255,.12);border-radius:50%;pointer-events:none}
-.social-orbit::before{width:min(760px,92vw);height:min(760px,92vw)}
-.social-orbit::after{width:min(560px,74vw);height:min(560px,74vw);border-style:dashed}
+.social-orbit::before{width:min(560px,86vw);height:min(560px,86vw)}
+.social-orbit::after{width:min(410px,68vw);height:min(410px,68vw);border-style:dashed}
 .social-feature,.orbit-item{background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(20px);overflow:hidden;position:relative;transition:.35s var(--ease)}
 .social-feature{border-radius:24px}
-.social-feature{z-index:2;width:min(580px,86vw);box-shadow:0 34px 100px rgba(0,0,0,.42)}
+.social-feature{z-index:2;width:min(390px,78vw);box-shadow:0 24px 70px rgba(0,0,0,.38)}
 .social-feature:hover,.orbit-item:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.28);box-shadow:0 26px 60px rgba(0,0,0,.38)}
-.social-feature img{width:100%;height:270px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
-.social-body{padding:24px}
-.social-body h3{font-size:26px;letter-spacing:-.5px}
-.social-body p{color:var(--muted);margin:10px 0 20px}
-.orbit-ring{position:absolute;left:50%;top:50%;width:min(760px,92vw);height:min(760px,92vw);transform:translate(-50%,-50%);animation:orbitSpin 28s linear infinite;transform-origin:center}
+.social-feature img{width:100%;height:178px;object-fit:cover;border-bottom:1px solid var(--glass-line)}
+.social-body{padding:16px}
+.social-body h3{font-size:20px;letter-spacing:-.2px}
+.social-body p{color:var(--muted);margin:8px 0 14px;font-size:14px}
+.orbit-ring{position:absolute;left:50%;top:50%;width:min(560px,86vw);height:min(560px,86vw);transform:translate(-50%,-50%);animation:orbitSpin 28s linear infinite;transform-origin:center}
 .orbit-ring:hover{animation-play-state:paused}
-.orbit-item{position:absolute;width:92px;height:92px;display:grid;place-items:center;border-radius:50%;padding:0;animation:orbitCounter 28s linear infinite;overflow:visible}
+.orbit-item{position:absolute;width:78px;height:78px;display:grid;place-items:center;border-radius:50%;padding:0;animation:orbitCounter 28s linear infinite;overflow:visible}
 .orbit-item:nth-child(1){left:50%;top:0;transform:translate(-50%,-50%)}
 .orbit-item:nth-child(2){right:0;top:50%;transform:translate(50%,-50%)}
 .orbit-item:nth-child(3){left:50%;bottom:0;transform:translate(-50%,50%)}
@@ -100,7 +100,7 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .orbit-item:nth-child(5){right:8%;top:12%;transform:translate(50%,-50%)}
 @keyframes orbitSpin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 @keyframes orbitCounter{to{rotate:-360deg}}
-.social-icon{width:74px;height:74px;border-radius:50%;display:grid;place-items:center;background:#fff center/54px 54px no-repeat;border:1px solid rgba(255,255,255,.32);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05),0 16px 34px rgba(0,0,0,.28);overflow:hidden;font-size:0}
+.social-icon{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;background:#fff center/46px 46px no-repeat;border:1px solid rgba(255,255,255,.32);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05),0 14px 28px rgba(0,0,0,.26);overflow:hidden;font-size:0}
 .social-icon svg{width:42px;height:42px;display:block}
 .social-icon img{width:56px;height:56px;object-fit:contain}
 .orbit-item > span:not(.social-icon),.orbit-item h3,.orbit-item p{display:none!important}
