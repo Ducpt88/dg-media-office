@@ -62,6 +62,18 @@
         white-space: nowrap;
       }
 
+      .api-bridge {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+        align-items: end;
+        margin-top: 14px;
+      }
+
+      .api-bridge .field {
+        margin: 0;
+      }
+
       .layout {
         display: grid;
         grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
@@ -294,7 +306,8 @@
         .shell { padding: 10px; }
         .top,
         .layout,
-        .row {
+        .row,
+        .api-bridge {
           grid-template-columns: 1fr;
         }
         h1 { font-size: 21px; }
@@ -314,6 +327,15 @@
         </div>
         <div class="status-pill" id="health">Checking server...</div>
       </header>
+
+      <section class="card api-bridge" aria-label="API server">
+        <div class="field">
+          <label for="apiBase">API server dang chay bot</label>
+          <input id="apiBase" type="url" placeholder="Vi du: https://ten-tunnel.trycloudflare.com hoac https://api.ducpt.com" />
+          <div class="hint">Neu mo tren ducpt.com thi can gan endpoint backend tai day. Mo truc tiep tren server bot co the de trong.</div>
+        </div>
+        <button type="button" id="saveApiBtn">Luu API</button>
+      </section>
 
       <section class="layout">
         <form class="card" id="setupForm">
@@ -425,6 +447,18 @@ CLEANUP=yes</div>
     <script>
       const $ = (id) => document.getElementById(id);
       const log = $("log");
+      const urlParams = new URLSearchParams(location.search);
+      const apiStorageKey = "brainBotApiBase";
+      const initialApiBase = (urlParams.get("api") || localStorage.getItem(apiStorageKey) || "").trim();
+      $("apiBase").value = initialApiBase;
+
+      function apiBase() {
+        return $("apiBase").value.trim().replace(/\/+$/, "");
+      }
+
+      function apiUrl(path) {
+        return `${apiBase()}${path}`;
+      }
 
       function write(message) {
         log.textContent = `${new Date().toLocaleTimeString()} ${message}\n\n${log.textContent}`.slice(0, 12000);
@@ -454,7 +488,7 @@ CLEANUP=yes</div>
       }
 
       async function api(path, body = {}) {
-        const response = await fetch(path, {
+        const response = await fetch(apiUrl(path), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(body),
@@ -566,13 +600,21 @@ CLEANUP=yes</div>
 
       async function health() {
         try {
-          const response = await fetch("/api/health", { cache: "no-store" });
+          const response = await fetch(apiUrl("/api/health"), { cache: "no-store" });
           const payload = await response.json();
           $("health").textContent = payload.ok ? "Server ready" : "Server issue";
+          $("health").className = payload.ok ? "status-pill ok" : "status-pill bad";
         } catch (error) {
           $("health").textContent = "Server offline";
+          $("health").className = "status-pill bad";
         }
       }
+
+      $("saveApiBtn").addEventListener("click", async () => {
+        localStorage.setItem(apiStorageKey, apiBase());
+        setState("setupState", apiBase() ? `Da luu API: ${apiBase()}` : "Da dung API cung domain.", true);
+        await health();
+      });
 
       $("setupForm").addEventListener("submit", async (event) => {
         event.preventDefault();
