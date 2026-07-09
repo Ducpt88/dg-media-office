@@ -158,6 +158,7 @@ details[open] summary:before{transform:rotate(45deg)}
 .edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .edge{stroke:var(--edge);stroke-width:1.15;fill:none}
 .edge.active{stroke:var(--edge-active);stroke-width:1.8}
+.edge.flow{stroke-dasharray:5 7;animation:edgeFlow 8s linear infinite}
 .node{
   position:absolute;
   left:var(--x);top:var(--y);
@@ -169,6 +170,8 @@ details[open] summary:before{transform:rotate(45deg)}
   color:#3d4440;
   box-shadow:0 0 0 1px rgba(255,255,255,.4),0 7px 18px rgba(70,78,73,.13);
   transition:transform .16s ease,background .16s ease,opacity .16s ease,box-shadow .16s ease;
+  animation:nodeFloat 9s ease-in-out infinite;
+  animation-delay:calc(var(--i,0) * -0.37s);
 }
 .node.small{background:#bfc4c0;box-shadow:none}
 .node.group{background:var(--c)}
@@ -181,6 +184,7 @@ details[open] summary:before{transform:rotate(45deg)}
   background:var(--active);
   z-index:8;
   box-shadow:0 0 0 6px rgba(255,255,255,.46),0 16px 34px rgba(42,48,45,.22);
+  animation:nodePulse 1.8s ease-in-out infinite;
 }
 .node.dim{opacity:.18}
 .label{
@@ -200,6 +204,17 @@ details[open] summary:before{transform:rotate(45deg)}
 }
 .label.core-label{font-size:13px;color:#2d332f;font-weight:900}
 .label.dim{opacity:.22}
+.motion-paused .node,.motion-paused .edge.flow{animation:none}
+@keyframes nodeFloat{
+  0%,100%{translate:0 0}
+  50%{translate:0 -4px}
+}
+@keyframes nodePulse{
+  0%,100%{box-shadow:0 0 0 6px rgba(255,255,255,.46),0 16px 34px rgba(42,48,45,.22)}
+  50%{box-shadow:0 0 0 11px rgba(255,255,255,.32),0 20px 46px rgba(42,48,45,.27)}
+}
+@keyframes edgeFlow{to{stroke-dashoffset:-48}}
+@media(prefers-reduced-motion:reduce){.node,.edge.flow{animation:none}}
 .legend{
   position:absolute;left:18px;bottom:18px;z-index:22;
   display:flex;flex-wrap:wrap;gap:7px;
@@ -296,6 +311,7 @@ details[open] summary:before{transform:rotate(45deg)}
     <div class="stage-actions">
       <button class="icon-btn" id="zoomIn" title="Phong to"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button class="icon-btn" id="zoomOut" title="Thu nho"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      <button class="icon-btn" id="motion" title="Bat/tat hieu ung"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12c3-6 7-6 10 0s5 6 6 0M4 18c2-3 5-3 7 0s6 3 9 0M4 6c2-3 5-3 7 0s6 3 9 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
       <button class="icon-btn" id="reset" title="Can giua"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v5m0 8v5M3 12h5m8 0h5M8 8l8 8m0-8-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     </div>
     <div class="graph-wrap">
@@ -322,50 +338,57 @@ details[open] summary:before{transform:rotate(45deg)}
 
 <script>
 const groups=[
-  {id:"courses",name:"courses",color:"var(--product)"},
-  {id:"products",name:"app-product",color:"var(--product)"},
-  {id:"automation",name:"tool-automation",color:"var(--automation)"},
-  {id:"content",name:"content-engine",color:"var(--content)"},
-  {id:"money",name:"money-motivation",color:"var(--money)"},
-  {id:"sales",name:"sales-crm-growth",color:"var(--sales)"},
-  {id:"sources",name:"sources-proof",color:"var(--source)"}
+  {id:"identity",name:"00-Identity",color:"var(--sales)"},
+  {id:"agents",name:"02-Department-Agents",color:"var(--product)"},
+  {id:"workflow",name:"03-Workflow-Templates",color:"var(--automation)"},
+  {id:"boards",name:"04-Task-Boards",color:"var(--money)"},
+  {id:"registry",name:"08-VerbaHub-MediaMart",color:"var(--content)"},
+  {id:"reports",name:"05-Reports / Memory",color:"var(--source)"}
 ];
 const nodes=[
-  {id:"dg",g:"core",name:"DG BRAND LTD",x:800,y:500,s:48,core:true,tags:["ecosystem","operating system"],purpose:"Loi trung tam ket noi san pham, automation, content, sales va proof thanh mot he sinh thai bo tro nhau.",feeds:["verba","brain","video","money","sales"]},
-  {id:"verba",g:"products",name:"Verba Studio",x:560,y:290,s:28,tags:["LIVE","AI transcript","demo"],purpose:"Phong thu san xuat video/live, transcript tieng Viet, zoom con tro va chat noi.",feeds:["video","case","sales"]},
-  {id:"brain",g:"products",name:"Brain Lite / iMap",x:680,y:250,s:24,tags:["BRAIN","MAP","WIKI"],purpose:"Bien kien thuc roi rac thanh map de hoc lai, tim y tuong va tao brief.",feeds:["content","maps","money"]},
-  {id:"portfolio",g:"products",name:"DUCPT Portfolio",x:650,y:395,s:22,tags:["DUCPT","AI","DEMO"],purpose:"Hub showroom san pham AI va cong cu so cua DUCPT.",feeds:["sales","case"]},
-  {id:"mini",g:"products",name:"Mini Product Pages",x:485,y:395,s:18,tags:["PAGE","OFFER"],purpose:"Trang ban hang nho cho tung san pham, lien ket ve hub va CRM.",feeds:["sales","crm"]},
-  {id:"voice",g:"automation",name:"Voice Adam Clean Denoise",x:1030,y:270,s:22,tags:["VOICE","ADAM","CLEAN"],purpose:"Workflow voice mac dinh cho video: clean transcript, giam nhieu, QA nghe lai.",feeds:["video","money"]},
-  {id:"maps",g:"automation",name:"DG Maps YTB Bot",x:1135,y:380,s:24,tags:["BOT","FOLLOW"],purpose:"Theo doi nguon kien thuc, gom bai moi, tao map/text va bao cao Telegram.",feeds:["brain","content"]},
-  {id:"pin",g:"automation",name:"Pinterest AutoPost",x:1010,y:455,s:20,tags:["PIN","TRAFFIC"],purpose:"Tao traffic dai han tu visual assets va link ve hub.",feeds:["portfolio","sales"]},
-  {id:"gate",g:"automation",name:"Telegram Review Gate",x:910,y:360,s:18,tags:["QA","APPROVE"],purpose:"Cong duyet trung tam truoc khi dang/xuat ban.",feeds:["video","crm"]},
-  {id:"video",g:"content",name:"DUC DG Video Workflow",x:535,y:580,s:30,tags:["STYLE","BEAT"],purpose:"Tu y tuong/script/voice/live demo thanh short video QA-approved.",feeds:["money","case","pin"]},
-  {id:"content",g:"content",name:"Content Bank",x:650,y:685,s:23,tags:["IDEA","SCRIPT"],purpose:"Kho idea, hook, script va proof footage tai su dung cho social va website.",feeds:["video","money"]},
-  {id:"case",g:"content",name:"Case Study Engine",x:690,y:570,s:20,tags:["PROOF","STORY"],purpose:"Bien moi san pham/workflow thanh cau chuyen co van de, giai phap, bang chung.",feeds:["portfolio","sales"]},
-  {id:"clips",g:"content",name:"Clip Factory",x:470,y:700,s:18,tags:["SHORT","BATCH"],purpose:"Cat demo dai thanh nhieu clip nho ve product hoac money topic.",feeds:["money","pin"]},
-  {id:"money",g:"money",name:"Money Philosophy Channel",x:990,y:600,s:30,tags:["MONEY","DISCIPLINE"],purpose:"Luong video tien, dong luc, ky luat va comeback de keo traffic rong hon.",feeds:["sales","content"]},
-  {id:"discipline",g:"money",name:"Discipline Training",x:1130,y:650,s:18,tags:["HABIT","FOCUS"],purpose:"Series ky luat de nuoi niem tin va hanh dong moi ngay.",feeds:["money","crm"]},
-  {id:"wisdom",g:"money",name:"Ancient Wisdom / Stoicism",x:1045,y:755,s:17,tags:["WISDOM","HOOK"],purpose:"Nguon hook trieth ly co chieu sau cho video money/motivation.",feeds:["money","content"]},
-  {id:"sales",g:"sales",name:"Offer / Sales Page",x:800,y:190,s:26,tags:["BUY","BOOK"],purpose:"Chuyen traffic thanh lead/order bang offer, proof va CTA ro.",feeds:["crm"]},
-  {id:"crm",g:"sales",name:"CRM Follow-up",x:930,y:205,s:20,tags:["LEAD","NURTURE"],purpose:"Theo doi lead den tu content, product page, Telegram va social.",feeds:["sales","gate"]},
-  {id:"community",g:"sales",name:"Community / Students",x:690,y:175,s:17,tags:["LEARN","GROUP"],purpose:"Bien hoc vien thanh feedback, proof va noi dung hoi dap moi.",feeds:["case","content"]},
-  {id:"ducpt",g:"sources",name:"ducpt.com",x:760,y:820,s:16,tags:["WEB","SOURCE"],purpose:"Nguon public trung tam cho hub, product, portfolio va demo.",feeds:["portfolio","sales"]},
-  {id:"verbario",g:"sources",name:"verbar.io",x:875,y:805,s:16,tags:["VERBA","SOURCE"],purpose:"Nguon san pham Verba, logo, proof va demo.",feeds:["verba","case"]},
-  {id:"social",g:"sources",name:"YouTube / Facebook / Reels",x:610,y:810,s:18,tags:["SOCIAL","PROOF"],purpose:"Kenh phan phoi video, thu hook va gom tin hieu thi truong.",feeds:["money","content","crm"]},
-  {id:"telegram",g:"sources",name:"Telegram Ops",x:1010,y:820,s:16,tags:["OPS","REPORT"],purpose:"Noi nhan report, duyet ket qua va quan sat pipeline ngay.",feeds:["gate","crm"]},
-  {id:"ltvm",g:"courses",name:"LTVM - Lap Trinh Van Menh",x:1180,y:520,s:14,tags:["course"],purpose:"Node khoa hoc trong wiki, dung lam nguon insight va content.",feeds:["money","content"]},
-  {id:"sss",g:"courses",name:"SSS - Sales Success System",x:1110,y:170,s:14,tags:["course"],purpose:"Node sales/course bo tro cho sales page va CRM.",feeds:["sales","crm"]},
-  {id:"eagle",g:"courses",name:"Eagle Camp",x:420,y:520,s:14,tags:["course"],purpose:"Node dao tao va community, dung lam proof/lesson.",feeds:["community","case"]},
-  {id:"chatgpt",g:"courses",name:"ChatGPT khoa",x:430,y:260,s:14,tags:["course"],purpose:"Node kien thuc AI, lien ket voi product va automation.",feeds:["brain","maps"]}
+  {id:"dg-core",g:"core",name:"DG Core / D-Gin",x:800,y:500,s:50,core:true,tags:["Founder Operating AI","DG Media Holding"],purpose:"Bo nao van hanh cho mascot D-Gin: phan viec, ghi nho, workflow, report va ket noi muc tieu DG Media Holding.",feeds:["team-leader","dispatch","registry","daily-report"]},
+  {id:"identity",g:"identity",name:"Mascot Core",x:640,y:210,s:22,tags:["D-Gin","Identity"],purpose:"Dinh danh thuong hieu DG Media Holding, slogan va vai tro mascot D-Gin.",feeds:["dg-core"]},
+  {id:"dispatch",g:"identity",name:"Dispatch Rules",x:800,y:180,s:26,tags:["P0-P3","Routing"],purpose:"Luat phan nhiem vu: Founder -> Team Leader -> agent/phong ban -> workflow -> report.",feeds:["team-leader","daily-workflow","team-workflow"]},
+  {id:"memory",g:"reports",name:"Memory Rules",x:960,y:205,s:18,tags:["rule","memory"],purpose:"Noi luu rule moi hoac loi lap lai de DG Core lan sau lam dung hon.",feeds:["dg-core","daily-report"]},
+  {id:"founder",g:"agents",name:"Founder Office",x:590,y:330,s:23,tags:["strategy","approval"],purpose:"Trung tam quyet dinh: chien luoc, uu tien, duyet video/chien dich/chi phi lon.",feeds:["team-leader","finance"]},
+  {id:"team-leader",g:"agents",name:"Team Leader",x:735,y:350,s:31,tags:["task breakdown","owner"],purpose:"Tang trung gian giua Founder Office va cac phong ban agent; gan owner, deadline, P0-P3 va bao cao.",feeds:["ops","brand-video","product-code","finance"]},
+  {id:"ops",g:"agents",name:"Operations Team",x:900,y:350,s:22,tags:["daily ops","deadline"],purpose:"Dieu phoi viec hang ngay, owner, deadline, viec ton/treo va bao cao.",feeds:["inbox","today","waiting-review"]},
+  {id:"brand-video",g:"agents",name:"Brand Video Studio",x:490,y:470,s:25,tags:["MP4","QA"],purpose:"Lam video thuong hieu, PR san pham, review dich vu va video keo binh luan.",feeds:["brand-workflow","video-registry"]},
+  {id:"youtube",g:"agents",name:"YouTube Studio",x:600,y:610,s:20,tags:["hook","thumbnail"],purpose:"San xuat va toi uu YouTube/video: hook, script, title, thumbnail brief, upload checklist.",feeds:["brand-workflow","social-registry"]},
+  {id:"content-social",g:"agents",name:"Content Social",x:745,y:665,s:20,tags:["caption","calendar"],purpose:"Quan ly Facebook, TikTok, YouTube Shorts, Page va lich dang.",feeds:["social-registry","video-registry"]},
+  {id:"product-code",g:"agents",name:"Product Code",x:1035,y:460,s:25,tags:["app","website","automation"],purpose:"Xu ly app, website, code, automation va bug; tao spec, test checklist va release report.",feeds:["app-workflow","app-registry"]},
+  {id:"finance",g:"agents",name:"Finance Control",x:1005,y:610,s:22,tags:["ROI","budget"],purpose:"Quan ly doanh thu, chi phi, cong no, ROI va ngan sach theo ky.",feeds:["finance-workflow","finance-link"]},
+  {id:"verba-ops",g:"agents",name:"Verba Hub Ops",x:1130,y:370,s:24,tags:["tool status","hub"],purpose:"Trung tam tong quan VerbaApps, VerbaHub, Verba Studio, app quan ly va tool dang trien khai.",feeds:["app-registry","verba-studio","verba-hub"]},
+  {id:"mediamart",g:"agents",name:"MediaMart Registry",x:1120,y:545,s:22,tags:["asset map","channel map"],purpose:"Kho tong quan tai san media: app, website, social channel, video/clip/template, ROI link.",feeds:["website-registry","social-registry","video-registry"]},
+  {id:"team-workflow",g:"workflow",name:"Team Assignment Workflow",x:420,y:305,s:17,tags:["owner","deadline"],purpose:"Doc task, xac dinh phong ban, gan owner, deadline, output va review gate.",feeds:["team-leader","today"]},
+  {id:"daily-workflow",g:"workflow",name:"Daily Task Workflow",x:390,y:615,s:17,tags:["Top 3","daily"],purpose:"Sang chon Top 3, trua kiem tra nghen, toi tong ket va tao daily report.",feeds:["today","daily-report"]},
+  {id:"brand-workflow",g:"workflow",name:"Brand Video Workflow",x:420,y:760,s:20,tags:["brief","scene map","QA"],purpose:"Nhan brief, boc san pham, viet script, map canh, render, QA, review gate va publish.",feeds:["brand-video","waiting-review"]},
+  {id:"app-workflow",g:"workflow",name:"App Website Workflow",x:1180,y:250,s:20,tags:["spec","test","deploy"],purpose:"Dung cho app, website, tool, automation, bug va deploy: tim repo, doc README/config, sua/test, report.",feeds:["product-code","app-registry"]},
+  {id:"finance-workflow",g:"workflow",name:"Finance Review Workflow",x:1210,y:700,s:18,tags:["snapshot","ROI"],purpose:"Gom so lieu, tach doanh thu/chi phi/cong no, gan voi kenh/du an, tinh ROI va canh bao.",feeds:["finance","finance-link"]},
+  {id:"inbox",g:"boards",name:"Inbox",x:660,y:805,s:15,tags:["task board"],purpose:"Moi nhiem vu moi di vao Inbox truoc khi phan loai.",feeds:["team-leader","today"]},
+  {id:"today",g:"boards",name:"Today",x:780,y:835,s:17,tags:["task board"],purpose:"Danh sach viec can lam trong ngay sau khi Team Leader chot.",feeds:["waiting-review","daily-report"]},
+  {id:"this-week",g:"boards",name:"This Week",x:900,y:825,s:15,tags:["task board"],purpose:"Viec can xong trong tuan, nhan tu Backlog/Today.",feeds:["today"]},
+  {id:"waiting-review",g:"boards",name:"Waiting Review",x:1015,y:790,s:16,tags:["review gate"],purpose:"Viec can founder/leader duyet truoc khi publish/chay.",feeds:["founder","done"]},
+  {id:"done",g:"boards",name:"Done",x:1130,y:805,s:14,tags:["archive"],purpose:"Noi chot viec da xong va co the dua vao report/memory.",feeds:["daily-report"]},
+  {id:"daily-report",g:"reports",name:"Daily Report Template",x:870,y:710,s:18,tags:["report","summary"],purpose:"Mau bao cao ngay/tuan gui len Founder Office: xong gi, ton gi, can quyet gi.",feeds:["founder","memory"]},
+  {id:"app-registry",g:"registry",name:"App / Tool Registry",x:1310,y:430,s:25,tags:["registry","tool"],purpose:"Registry gan cac he thong da co vao DG Core: APP QUAN LY DG MEDIA, VerbaApps, VerbaHub, Verba Studio, DG Media Holding, Agent DBH.",feeds:["verba-apps","verba-studio","agent-dbh"]},
+  {id:"verba-apps",g:"registry",name:"VerbaApps",x:1435,y:310,s:17,tags:["E:/VerbaApps"],purpose:"Nhom app Verba trong registry, owner Verba Hub Ops.",feeds:["verba-hub","verba-studio"]},
+  {id:"verba-hub",g:"registry",name:"VerbaHub",x:1450,y:430,s:16,tags:["hub"],purpose:"Hub trung gian trong E:/VerbaApps/VerbaHub, owner Verba Hub Ops.",feeds:["verba-ops"]},
+  {id:"verba-studio",g:"registry",name:"Verba Studio",x:1435,y:545,s:18,tags:["studio media"],purpose:"Studio media trong registry, owner Brand Video Studio.",feeds:["brand-video","video-registry"]},
+  {id:"agent-dbh",g:"registry",name:"Agent DBH",x:1350,y:650,s:17,tags:["Integrated"],purpose:"Team daily ops, task, report, trao doi cong viec; trang thai Integrated.",feeds:["ops","team-leader"]},
+  {id:"website-registry",g:"registry",name:"Website Registry",x:1320,y:760,s:16,tags:["website","landing"],purpose:"Website, landing page, WordPress, Tecatool; owner MediaMart Registry.",feeds:["mediamart"]},
+  {id:"social-registry",g:"registry",name:"Social Channel Registry",x:520,y:860,s:16,tags:["YouTube","Facebook","TikTok"],purpose:"YouTube, Facebook, TikTok, Page, Shorts; owner Content Social.",feeds:["content-social","youtube"]},
+  {id:"video-registry",g:"registry",name:"Video / Clip Registry",x:345,y:875,s:16,tags:["MP4","shorts","template"],purpose:"MP4, shorts, brand video, template; owner Brand Video Studio.",feeds:["brand-video","mediamart"]},
+  {id:"finance-link",g:"registry",name:"Finance Link",x:1230,y:835,s:16,tags:["ROI","channel"],purpose:"Doanh thu, chi phi, ROI theo kenh; owner Finance Control.",feeds:["finance"]}
 ];
 const links=[
-  ["dg","verba"],["dg","brain"],["dg","video"],["dg","money"],["dg","sales"],["dg","maps"],["dg","content"],
-  ["verba","video"],["verba","case"],["brain","content"],["brain","maps"],["portfolio","sales"],["mini","sales"],
-  ["voice","video"],["maps","content"],["pin","portfolio"],["gate","video"],["gate","crm"],["video","money"],["video","case"],
-  ["content","video"],["content","money"],["case","sales"],["clips","money"],["clips","pin"],["money","sales"],["discipline","money"],
-  ["wisdom","money"],["sales","crm"],["community","case"],["community","content"],["ducpt","portfolio"],["verbario","verba"],
-  ["social","money"],["social","content"],["social","crm"],["telegram","gate"],["ltvm","money"],["sss","sales"],["eagle","community"],["chatgpt","brain"]
+  ["dg-core","identity"],["dg-core","dispatch"],["dg-core","team-leader"],["dg-core","mediamart"],["dg-core","app-registry"],["dg-core","daily-report"],["dg-core","memory"],
+  ["dispatch","team-leader"],["dispatch","team-workflow"],["dispatch","daily-workflow"],["founder","team-leader"],["team-leader","ops"],["team-leader","brand-video"],["team-leader","youtube"],["team-leader","content-social"],["team-leader","product-code"],["team-leader","finance"],["team-leader","verba-ops"],["team-leader","mediamart"],
+  ["ops","inbox"],["ops","today"],["ops","waiting-review"],["inbox","team-leader"],["today","waiting-review"],["waiting-review","founder"],["waiting-review","done"],["done","daily-report"],["daily-workflow","today"],["daily-workflow","daily-report"],["team-workflow","team-leader"],
+  ["brand-video","brand-workflow"],["brand-video","video-registry"],["youtube","brand-workflow"],["youtube","social-registry"],["content-social","social-registry"],["content-social","video-registry"],["product-code","app-workflow"],["product-code","app-registry"],["finance","finance-workflow"],["finance","finance-link"],
+  ["verba-ops","app-registry"],["verba-ops","verba-apps"],["verba-ops","verba-hub"],["mediamart","website-registry"],["mediamart","social-registry"],["mediamart","video-registry"],["mediamart","finance-link"],
+  ["app-registry","verba-apps"],["app-registry","verba-hub"],["app-registry","verba-studio"],["app-registry","agent-dbh"],["verba-apps","verba-hub"],["verba-hub","verba-studio"],["verba-studio","brand-video"],["agent-dbh","ops"],["website-registry","mediamart"],["social-registry","content-social"],["video-registry","brand-video"],["finance-link","finance"],
+  ["brand-workflow","waiting-review"],["app-workflow","app-registry"],["finance-workflow","finance-link"],["daily-report","founder"],["memory","dg-core"]
 ];
 const groupColor=id=>groups.find(g=>g.id===id)?.color||"var(--node)";
 const byId=id=>nodes.find(n=>n.id===id);
@@ -401,21 +424,22 @@ function curve(a,b,active){
   const bend=Math.min(90,Math.hypot(dx,dy)*.12);
   const cx=mx-dy/Math.max(1,Math.hypot(dx,dy))*bend;
   const cy=my+dx/Math.max(1,Math.hypot(dx,dy))*bend;
-  return `<path class="edge ${active?"active":""}" d="M${x1} ${y1} Q${cx} ${cy} ${x2} ${y2}"/>`;
+  return `<path class="edge flow ${active?"active":""}" d="M${x1} ${y1} Q${cx} ${cy} ${x2} ${y2}"/>`;
 }
 function renderGraph(){
   edges.innerHTML=links.map(([a,b])=>{
     const na=byId(a),nb=byId(b);
+    if(!na||!nb)return "";
     const active=activeId&&(a===activeId||b===activeId);
     return curve(na,nb,active);
   }).join("");
-  nodeHost.innerHTML=nodes.map(n=>{
+  nodeHost.innerHTML=nodes.map((n,index)=>{
     const dim=(!isVisible(n)||!isRelated(n))&&!n.core;
     const c=n.core?"#202523":groupColor(n.g);
     const klass=["node",n.core?"core":n.s<=16?"small":n.s>=24?"group":"",activeId===n.id?"active":"",dim?"dim":""].join(" ");
     const labelClass=["label",n.core?"core-label":"",dim?"dim":""].join(" ");
     const offset=`${Math.max(14,n.s/2+10)}px`;
-    return `<button class="${klass}" data-node="${n.id}" style="--x:${n.x}px;--y:${n.y}px;--s:${n.s}px;--c:${c}" title="${esc(n.name)}"></button><span class="${labelClass}" style="--x:${n.x}px;--y:${n.y}px;--offset:${offset}">${esc(n.name)}</span>`;
+    return `<button class="${klass}" data-node="${n.id}" style="--x:${n.x}px;--y:${n.y}px;--s:${n.s}px;--c:${c};--i:${index}" title="${esc(n.name)}"></button><span class="${labelClass}" style="--x:${n.x}px;--y:${n.y}px;--offset:${offset}">${esc(n.name)}</span>`;
   }).join("");
   nodeHost.querySelectorAll("[data-node]").forEach(btn=>btn.onclick=()=>selectNode(btn.dataset.node));
 }
@@ -443,7 +467,7 @@ function applyView(animate=false){
   graph.style.setProperty("--pan-y",panY+"px");
 }
 function graphBounds(){
-  const pad=wrap.clientWidth<720?280:110;
+  const pad=wrap.clientWidth<720?420:110;
   const minX=Math.min(...nodes.map(n=>n.x-n.s/2))-pad;
   const maxX=Math.max(...nodes.map(n=>n.x+n.s/2))+pad;
   const minY=Math.min(...nodes.map(n=>n.y-n.s/2))-pad;
@@ -453,9 +477,9 @@ function graphBounds(){
 function fitGraph(){
   const box=graphBounds();
   const rect=wrap.getBoundingClientRect();
-  const bottomReserve=rect.width<720?92:46;
+  const bottomReserve=rect.width<720?92:96;
   const scale=Math.min((rect.width-32)/box.w,(rect.height-bottomReserve-26)/box.h,1.08);
-  zoom=Math.max(rect.width<720?.24:.36,scale);
+  zoom=Math.max(rect.width<720?.16:.36,scale);
   panX=(rect.width-box.w*zoom)/2-box.minX*zoom;
   panY=(rect.height-bottomReserve-box.h*zoom)/2-box.minY*zoom;
   applyView(true);
@@ -466,7 +490,7 @@ function zoomAt(clientX,clientY,nextZoom){
   const y=clientY-rect.top;
   const gx=(x-panX)/zoom;
   const gy=(y-panY)/zoom;
-  zoom=Math.max(wrap.clientWidth<720?.22:.32,Math.min(1.6,nextZoom));
+  zoom=Math.max(wrap.clientWidth<720?.16:.32,Math.min(1.6,nextZoom));
   panX=x-gx*zoom;
   panY=y-gy*zoom;
   applyView(false);
@@ -476,6 +500,7 @@ document.getElementById("closeInfo").onclick=()=>{info.classList.remove("open");
 document.getElementById("toggleInfo").onclick=()=>{activeId?info.classList.toggle("open"):selectNode("dg")};
 document.getElementById("zoomIn").onclick=()=>{const r=wrap.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,zoom*1.12)};
 document.getElementById("zoomOut").onclick=()=>{const r=wrap.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,zoom/1.12)};
+document.getElementById("motion").onclick=e=>{document.body.classList.toggle("motion-paused");e.currentTarget.classList.toggle("active")};
 document.getElementById("reset").onclick=()=>{filter="all";query="";activeId=null;document.getElementById("search").value="";info.classList.remove("open");renderAll(false);fitGraph()};
 wrap.addEventListener("wheel",e=>{
   e.preventDefault();
