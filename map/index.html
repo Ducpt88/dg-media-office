@@ -145,14 +145,15 @@ details[open] summary:before{transform:rotate(45deg)}
   display:grid;gap:7px;
 }
 .stage-actions .icon-btn{background:rgba(250,250,247,.8);border:1px solid #d6d9d3;backdrop-filter:blur(10px)}
-.graph-wrap{position:absolute;inset:46px 0 0;overflow:hidden}
+.graph-wrap{position:absolute;inset:46px 0 0;overflow:hidden;cursor:grab;touch-action:none}
+.graph-wrap.dragging{cursor:grabbing}
 .graph{
   position:absolute;
-  left:50%;top:50%;
+  left:0;top:0;
   width:1600px;height:980px;
-  transform:translate(-50%,-50%) scale(var(--zoom,.86));
-  transform-origin:center;
-  transition:transform .2s ease;
+  transform:translate(var(--pan-x,0px),var(--pan-y,0px)) scale(var(--zoom,.86));
+  transform-origin:0 0;
+  transition:transform .18s ease;
 }
 .edges{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .edge{stroke:var(--edge);stroke-width:1.15;fill:none}
@@ -264,7 +265,7 @@ details[open] summary:before{transform:rotate(45deg)}
   .sidebar{display:none}
   .stage{height:100vh}
   .mobile-tree{display:grid;position:absolute;left:12px;top:58px;z-index:25;background:rgba(250,250,247,.84);border:1px solid #d6d9d3;backdrop-filter:blur(10px)}
-  .graph{--zoom:.5;left:41%}
+  .graph{--zoom:.5}
   .legend{left:10px;right:10px;bottom:10px;max-width:none}
   .info{left:10px;right:10px;bottom:78px;width:auto}
   .topbar{justify-content:flex-start;padding-left:54px}
@@ -369,7 +370,8 @@ const links=[
 const groupColor=id=>groups.find(g=>g.id===id)?.color||"var(--node)";
 const byId=id=>nodes.find(n=>n.id===id);
 let activeId=null,filter="all",query="",zoom=.86;
-const tree=document.getElementById("tree"),edges=document.getElementById("edges"),nodeHost=document.getElementById("nodes"),legend=document.getElementById("legend"),graph=document.getElementById("graph"),info=document.getElementById("info");
+const tree=document.getElementById("tree"),edges=document.getElementById("edges"),nodeHost=document.getElementById("nodes"),legend=document.getElementById("legend"),graph=document.getElementById("graph"),info=document.getElementById("info"),wrap=document.querySelector(".graph-wrap");
+let panX=0,panY=0,isDragging=false,dragStartX=0,dragStartY=0,startPanX=0,startPanY=0,hasFitted=false;
 function esc(s){return String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]))}
 function initial(name){return String(name).split(/\s+/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()}
 function isRelated(id){
@@ -434,13 +436,79 @@ function renderAll(updateInfo=true){
   renderTree();renderLegend();renderGraph();
   if(updateInfo&&activeId)selectNode(activeId);
 }
+function applyView(animate=false){
+  graph.style.transition=animate?"transform .24s ease":"none";
+  graph.style.setProperty("--zoom",zoom);
+  graph.style.setProperty("--pan-x",panX+"px");
+  graph.style.setProperty("--pan-y",panY+"px");
+}
+function graphBounds(){
+  const pad=wrap.clientWidth<720?280:110;
+  const minX=Math.min(...nodes.map(n=>n.x-n.s/2))-pad;
+  const maxX=Math.max(...nodes.map(n=>n.x+n.s/2))+pad;
+  const minY=Math.min(...nodes.map(n=>n.y-n.s/2))-pad;
+  const maxY=Math.max(...nodes.map(n=>n.y+n.s/2))+pad;
+  return {minX,maxX,minY,maxY,w:maxX-minX,h:maxY-minY};
+}
+function fitGraph(){
+  const box=graphBounds();
+  const rect=wrap.getBoundingClientRect();
+  const bottomReserve=rect.width<720?92:46;
+  const scale=Math.min((rect.width-32)/box.w,(rect.height-bottomReserve-26)/box.h,1.08);
+  zoom=Math.max(rect.width<720?.24:.36,scale);
+  panX=(rect.width-box.w*zoom)/2-box.minX*zoom;
+  panY=(rect.height-bottomReserve-box.h*zoom)/2-box.minY*zoom;
+  applyView(true);
+}
+function zoomAt(clientX,clientY,nextZoom){
+  const rect=wrap.getBoundingClientRect();
+  const x=clientX-rect.left;
+  const y=clientY-rect.top;
+  const gx=(x-panX)/zoom;
+  const gy=(y-panY)/zoom;
+  zoom=Math.max(wrap.clientWidth<720?.22:.32,Math.min(1.6,nextZoom));
+  panX=x-gx*zoom;
+  panY=y-gy*zoom;
+  applyView(false);
+}
 document.getElementById("search").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();renderAll(false)});
 document.getElementById("closeInfo").onclick=()=>{info.classList.remove("open");activeId=null;renderAll(false)};
 document.getElementById("toggleInfo").onclick=()=>{activeId?info.classList.toggle("open"):selectNode("dg")};
-document.getElementById("zoomIn").onclick=()=>{zoom=Math.min(1.25,zoom+.08);graph.style.setProperty("--zoom",zoom)};
-document.getElementById("zoomOut").onclick=()=>{zoom=Math.max(.48,zoom-.08);graph.style.setProperty("--zoom",zoom)};
-document.getElementById("reset").onclick=()=>{zoom=.86;filter="all";query="";activeId=null;document.getElementById("search").value="";graph.style.setProperty("--zoom",zoom);info.classList.remove("open");renderAll(false)};
+document.getElementById("zoomIn").onclick=()=>{const r=wrap.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,zoom*1.12)};
+document.getElementById("zoomOut").onclick=()=>{const r=wrap.getBoundingClientRect();zoomAt(r.left+r.width/2,r.top+r.height/2,zoom/1.12)};
+document.getElementById("reset").onclick=()=>{filter="all";query="";activeId=null;document.getElementById("search").value="";info.classList.remove("open");renderAll(false);fitGraph()};
+wrap.addEventListener("wheel",e=>{
+  e.preventDefault();
+  const factor=e.deltaY<0?1.1:.9;
+  zoomAt(e.clientX,e.clientY,zoom*factor);
+},{passive:false});
+wrap.addEventListener("pointerdown",e=>{
+  if(e.button!==undefined&&e.button!==0)return;
+  isDragging=true;
+  wrap.classList.add("dragging");
+  dragStartX=e.clientX;dragStartY=e.clientY;
+  startPanX=panX;startPanY=panY;
+  wrap.setPointerCapture(e.pointerId);
+});
+wrap.addEventListener("pointermove",e=>{
+  if(!isDragging)return;
+  panX=startPanX+e.clientX-dragStartX;
+  panY=startPanY+e.clientY-dragStartY;
+  applyView(false);
+});
+function stopDrag(e){
+  if(!isDragging)return;
+  isDragging=false;
+  wrap.classList.remove("dragging");
+  if(e&&e.pointerId!==undefined)wrap.releasePointerCapture(e.pointerId);
+}
+wrap.addEventListener("pointerup",stopDrag);
+wrap.addEventListener("pointercancel",stopDrag);
+window.addEventListener("resize",()=>fitGraph());
 renderAll(false);
+fitGraph();
+requestAnimationFrame(fitGraph);
+setTimeout(fitGraph,120);
 </script>
 </body>
 </html>
