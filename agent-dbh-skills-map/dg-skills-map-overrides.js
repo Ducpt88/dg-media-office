@@ -769,6 +769,16 @@
 /* Real public activity board: read the actual DG Task Board and file update time.
    This intentionally avoids rotating sample hours or guessing progress. */
 (function dgRealActivityBoard() {
+  // LENH FOUNDER (2026-07-11, dot cuoi): trang ngoai phai dung NGUYEN bang HOAT DONG
+  // goc cua app (giong het Ban do dieu khien) — KHONG thay bang tu che nua.
+  // Tat toan bo ham nay + go class an bang goc neu con sot tu ban cache cu.
+  document.querySelectorAll(".dg-native-activity-hidden")
+    .forEach(el => el.classList.remove("dg-native-activity-hidden"));
+  const _old = document.getElementById("dg-live-activity");
+  if (_old) _old.remove();
+  return;
+
+  /* eslint-disable no-unreachable */
   const ADMIN = /(\?|&)admin=1/.test(location.search);
   if (ADMIN) return;
   window.__dgRealActivityBoardActive = true;
@@ -915,32 +925,34 @@
         + '</div>';
       return;
     }
+    // LENH FOUNDER 2026-07-11 (dot cuoi): trang ngoai dung BANG GOP 4 dong
+    // (Dang chay / Cho duyet / Cho chay / Da xong + so muc), KHONG dung danh sach chi tiet.
     const counts = boardTasks.reduce((acc, task) => {
       const key = STATUS_CLASS[task.status] || "wait";
       acc[key] = (acc[key] || 0) + 1;
       return acc;
     }, {});
     const lanes = [
-      { cls: "run", status: "Dang chay", title: "Van hanh he thong", count: counts.run || 0, progress: 82 },
-      { cls: "review", status: "Cho duyet", title: "Kiem tra chat luong", count: counts.review || 0, progress: 64 },
-      { cls: "wait", status: "Cho chay", title: "Hang doi tu dong", count: counts.wait || 0, progress: 38 },
-      { cls: "done", status: "Da xong", title: "Ban giao ket qua", count: counts.done || 0, progress: 100 }
-    ].filter(lane => lane.count > 0).slice(0, 4);
+      { cls: "run", status: "Đang chạy", title: "Vận hành hệ thống", count: counts.run || 0, progress: 82 },
+      { cls: "review", status: "Chờ duyệt", title: "Kiểm tra chất lượng", count: counts.review || 0, progress: 64 },
+      { cls: "wait", status: "Chờ chạy", title: "Hàng đợi tự động", count: counts.wait || 0, progress: 38 },
+      { cls: "done", status: "Đã xong", title: "Bàn giao kết quả", count: counts.done || 0, progress: 100 }
+    ].filter(lane => lane.count > 0);
     const visibleLanes = lanes.length ? lanes : [
-      { cls: "run", status: "Online", title: "Nhan vien auto dang truc", count: boardTasks.length, progress: 76 }
+      { cls: "run", status: "Online", title: "Nhân viên auto đang trực", count: boardTasks.length, progress: 76 }
     ];
     const rows = visibleLanes.map(lane => {
       const progressStyle = "--dg-progress: " + lane.progress + "%; --dg-progress-opacity: .9;";
       return '<div class="dg-live-task ' + lane.cls + '" style="' + progressStyle + '">'
         + '<span class="st">' + esc(lane.status) + '</span>'
         + '<span class="tt">' + esc(lane.title) + '</span>'
-        + '<span class="pg">' + esc(lane.count + " muc") + '</span>'
+        + '<span class="pg">' + esc(lane.count + " mục") + '</span>'
         + '</div>';
     }).join("");
     host.innerHTML = '<div class="dg-live-board">'
       + '<div class="dg-live-board-head"><b>HOẠT ĐỘNG</b><span>Cập nhật bảng: ' + esc(loadedLabel) + '</span></div>'
       + '<div class="dg-live-table">'
-      + '<div class="dg-live-table-header"><span>Trang thai</span><span>Khu vuc</span><span>So muc</span></div>'
+      + '<div class="dg-live-table-header"><span>Trạng thái</span><span>Khu vực</span><span>Số mục</span></div>'
       + rows
       + '</div></div>';
   }
