@@ -206,6 +206,15 @@ body.platform{--bg:#f8fafc;--ink:#14213d;--muted:#667085;--glass:#fff;--glass-li
 .checkout-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .checkout-status{color:var(--a4);font-size:13px;margin-top:10px}
 @media(max-width:720px){.checkout-grid{grid-template-columns:1fr}.checkout-box{padding:16px}}
+.customer-login-modal{position:fixed;inset:0;z-index:125;display:none;place-items:center;padding:18px;background:rgba(3,7,18,.72);backdrop-filter:blur(14px)}
+.customer-login-modal.open{display:grid}
+.customer-login-box{width:min(520px,100%);border-radius:26px;background:rgba(10,14,26,.94);border:1px solid var(--glass-line);box-shadow:0 36px 120px rgba(0,0,0,.62);padding:22px}
+.customer-login-box h3{font-size:24px;line-height:1.2}
+.customer-login-box p{color:var(--muted);font-size:13px;margin-top:6px}
+.customer-login-box label{display:grid;gap:6px;margin-top:13px;color:var(--muted);font-size:12px;font-weight:800}
+.customer-login-box input{width:100%;min-height:44px;border-radius:14px;border:1px solid var(--glass-line);background:rgba(255,255,255,.08);color:var(--ink);padding:0 12px;font:inherit}
+.google-login-btn{width:100%;margin-top:14px;padding:12px 14px;border:1px solid var(--glass-line);border-radius:999px;background:rgba(255,255,255,.08);color:var(--ink);font-weight:900;cursor:pointer}
+.customer-login-status{min-height:20px;margin-top:10px;color:var(--a4);font-size:12px}
 .zalo-float{position:fixed;right:18px;bottom:18px;z-index:90;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#0068ff;color:white;border:1px solid rgba(255,255,255,.35);box-shadow:0 14px 34px rgba(0,104,255,.34);font-weight:900;font-size:13px;letter-spacing:-.4px}
 .zalo-float::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(0,104,255,.45);animation:zaloPulse 1.8s ease-out infinite}
 @keyframes zaloPulse{to{transform:scale(1.35);opacity:0}}
@@ -271,7 +280,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
   <span class="logo"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></span>
   <a class="lnk" href="/khoa-hoc/">Khóa học</a><a class="lnk" href="/bai-viet/">Bài viết</a><a class="lnk" href="/dich-vu/">Dịch vụ đào tạo</a><a class="lnk" href="/cong-cu-ai/">Công cụ AI</a><a class="lnk" href="/map/">Bản đồ nhân sự</a><a class="lnk" href="/ve-chung-toi/">Về chúng tôi</a>
   <span class="spacer"></span>
-  <a class="btn btn-glass nav-login" href="/dang-nhap/">Đăng nhập</a><a class="btn nav-signup" href="/dang-ky/">Đăng ký miễn phí</a>
+  <a class="btn btn-glass nav-login" href="#customer-login" data-open-customer-login>Đăng nhập</a><a class="btn nav-signup" href="/dang-ky/">Đăng ký miễn phí</a>
 </div></nav>
 
 <section class="hero wrap">
@@ -392,7 +401,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
     <article class="how-step"><i>4</i><b>Tải & setup</b><span>Làm theo hướng dẫn đúng sản phẩm và thiết bị.</span></article>
     <article class="how-step"><i>5</i><b>Kiểm tra & hỗ trợ</b><span>Chạy health check, nghiệm thu và gửi yêu cầu hỗ trợ.</span></article>
   </div>
-  <div class="portal-callout"><div><h3>Đã mua sản phẩm?</h3><p>Đăng nhập để xem bộ cài, mã kích hoạt, tiến độ setup và tài liệu dành riêng cho bạn.</p></div><a class="btn btn-hero" href="/dang-nhap/" data-track="open_customer_portal">Vào Customer Portal →</a></div>
+  <div class="portal-callout"><div><h3>Đã mua sản phẩm?</h3><p>Đăng nhập để xem bộ cài, mã kích hoạt, tiến độ setup và tài liệu dành riêng cho bạn.</p></div><a class="btn btn-hero" href="#customer-login" data-open-customer-login data-track="open_customer_portal">Vào Customer Portal →</a></div>
 </section>
 
 <section class="contact-strip wrap" id="contact">
@@ -409,6 +418,24 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
 <footer><div class="site-footer"><div class="footer-grid"><section class="footer-brand"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"><p>Nền tảng học và ứng dụng AI thực chiến dành cho cá nhân và doanh nghiệp Việt Nam.</p><div class="footer-social"><a href="https://ducpt.com">◎</a><a href="https://www.youtube.com/@ducdg2">▶</a><a href="https://zalo.me/0963249467">◯</a></div></section><section class="footer-col"><h3>Khóa học</h3><a href="/khoa-hoc/">Tất cả khóa học</a><a href="/khoa-hoc/">AI nền tảng</a><a href="/khoa-hoc/">AI cho Creator</a><a href="/khoa-hoc/">Automation</a></section><section class="footer-col"><h3>Dịch vụ</h3><a href="/dich-vu/">Đào tạo doanh nghiệp</a><a href="/cong-cu-ai/">Công cụ AI</a><a href="/bai-viet/">Bài viết</a><a href="/map/">Bản đồ nhân sự</a><a href="/ve-chung-toi/">Về chúng tôi</a></section><section class="footer-col"><h3>Hỗ trợ</h3><a href="https://zalo.me/0963249467">Liên hệ</a><a href="/khoa-hoc/">Đăng ký học</a><a href="/dang-nhap/">Đăng nhập</a><a href="/map/">Bản đồ nhân sự</a><a href="./index.html#how">Hướng dẫn setup</a></section><section class="footer-col"><h3>Kết nối</h3><a href="https://www.facebook.com/ducserving">Facebook</a><a href="https://www.youtube.com/@ducdg2">YouTube</a><a href="https://zalo.me/0963249467">Zalo</a><a href="mailto:admin@ducpt.com">Email</a></section></div><div class="footer-bottom"><span>© 2026 DUCPT. Bảo lưu mọi quyền.</span><span>Made with ❤️ in Vietnam</span></div></div></footer>
 <a class="zalo-float" id="zaloFloat" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="zalo_float" aria-label="Chat Zalo DUCPT">Zalo</a>
 <button class="stats-btn btn btn-hero" type="button" id="statsToggle">Stats</button>
+<div class="customer-login-modal" id="customerLoginModal" aria-label="Đăng nhập Sản phẩm của tôi">
+  <form class="customer-login-box" id="customerLoginForm">
+    <div class="checkout-top">
+      <div>
+        <span class="tag">Customer Portal</span>
+        <h3>Đăng nhập Sản phẩm của tôi</h3>
+        <p>Dùng Google hoặc email và mã truy cập được gửi sau khi thanh toán thành công.</p>
+      </div>
+      <button class="close-btn" type="button" id="closeCustomerLogin">×</button>
+    </div>
+    <button class="google-login-btn" type="button" id="homeGoogleLogin">Đăng nhập bằng Google</button>
+    <label>Email<input name="email" type="email" required autocomplete="email" placeholder="email@example.com"></label>
+    <label>Mã truy cập<input name="code" required autocomplete="one-time-code" placeholder="VD: DG-XXXX-XXXX"></label>
+    <button class="btn btn-hero" type="submit" style="width:100%;margin-top:16px">Vào Sản phẩm của tôi</button>
+    <div class="customer-login-status" id="customerLoginStatus"></div>
+    <p style="font-size:11px">Chưa nhận mã? <a href="https://zalo.me/0963249467" style="color:var(--a1)">Liên hệ DUCPT</a> kèm mã đơn thanh toán.</p>
+  </form>
+</div>
 <aside class="stats-panel" id="statsPanel" aria-label="Click stats">
   <h3>Click stats</h3>
   <div class="stat-grid">
@@ -513,6 +540,8 @@ if(location.pathname.endsWith("/index.html")){
 window.DUCPT_ORDER_API=window.DUCPT_ORDER_API||"";
 window.DUCPT_ZALO_URL=window.DUCPT_ZALO_URL||zaloUrl;
 window.DUCPT_SEPAY_URL=window.DUCPT_SEPAY_URL||defaultSepayUrl;
+window.DUCPT_PORTAL_API=window.DUCPT_PORTAL_API||"";
+window.DUCPT_GOOGLE_AUTH_URL=window.DUCPT_GOOGLE_AUTH_URL||"";
 const productArticles={
   "Verba Studio":{
     tag:"Ứng dụng creator",
@@ -729,6 +758,47 @@ document.getElementById("closeProduct").addEventListener("click",closeProductDet
 document.getElementById("productModal").addEventListener("click",event=>{if(event.target.id==="productModal")closeProductDetail()});
 document.getElementById("closeCheckout").addEventListener("click",closeCheckout);
 document.getElementById("checkoutModal").addEventListener("click",event=>{if(event.target.id==="checkoutModal")closeCheckout()});
+function openCustomerLogin(){
+  document.getElementById("customerLoginStatus").textContent="";
+  document.getElementById("customerLoginModal").classList.add("open");
+  trackClick({dataset:{track:"open_customer_login"},getAttribute:()=>"",textContent:"customer_login"});
+}
+function closeCustomerLogin(){
+  document.getElementById("customerLoginModal").classList.remove("open");
+}
+document.querySelectorAll("[data-open-customer-login]").forEach(link=>link.addEventListener("click",event=>{
+  event.preventDefault();
+  openCustomerLogin();
+}));
+document.getElementById("closeCustomerLogin").addEventListener("click",closeCustomerLogin);
+document.getElementById("customerLoginModal").addEventListener("click",event=>{if(event.target.id==="customerLoginModal")closeCustomerLogin()});
+document.getElementById("homeGoogleLogin").addEventListener("click",()=>{
+  const status=document.getElementById("customerLoginStatus");
+  if(window.DUCPT_GOOGLE_AUTH_URL){
+    location.href=window.DUCPT_GOOGLE_AUTH_URL;
+    return;
+  }
+  status.textContent="Đăng nhập Google đang chờ kết nối máy chủ OAuth. Hiện tại hãy dùng email + mã truy cập hoặc liên hệ DUCPT.";
+});
+document.getElementById("customerLoginForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const status=document.getElementById("customerLoginStatus");
+  status.textContent="Đang xác minh tài khoản...";
+  const body=Object.fromEntries(new FormData(event.currentTarget).entries());
+  if(!window.DUCPT_PORTAL_API){
+    status.textContent="Portal đang chờ kết nối máy chủ xác thực. Vui lòng liên hệ DUCPT để nhận mã và link kích hoạt.";
+    return;
+  }
+  try{
+    const res=await fetch(`${window.DUCPT_PORTAL_API}/api/customer/portal/login`,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(body)});
+    const data=await res.json();
+    if(!res.ok||!data.ok)throw new Error(data.error||"Không xác minh được tài khoản");
+    sessionStorage.setItem("ducptPortalSession",data.sessionToken||"");
+    location.href="/dang-nhap/";
+  }catch(error){
+    status.textContent=error.message;
+  }
+});
 document.getElementById("checkoutForm").addEventListener("submit",async event=>{
   event.preventDefault();
   const form=event.currentTarget;
