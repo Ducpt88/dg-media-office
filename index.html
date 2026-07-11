@@ -155,14 +155,16 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .mark-file::before{content:"FM"}
 @keyframes socialPass{0%{translate:44vw 0;scale:.7;opacity:.34;filter:blur(1px)}40%{translate:0 0;scale:1.24;opacity:1;filter:blur(0)}50%{translate:0 0;scale:1.34;opacity:1;filter:blur(0)}100%{translate:-44vw 0;scale:.7;opacity:.34;filter:blur(1px)}}
 @media(max-width:900px){.social-flow{min-height:170px}.social-item{width:58px;height:58px}.social-logo{width:46px;height:46px;background-size:36px 36px}.social-name{display:none}@keyframes socialPass{0%{translate:42vw 0;scale:.72;opacity:.36}45%{translate:0 0;scale:1.14;opacity:1}100%{translate:-42vw 0;scale:.72;opacity:.36}}}
-.youtube-tabs{order:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:16px}
-.youtube-tab{min-width:0;border-radius:24px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(18px);overflow:hidden;box-shadow:0 22px 60px rgba(0,0,0,.26)}
-.youtube-frame{aspect-ratio:16/9;background:rgba(255,255,255,.06)}
+.youtube-tabs{order:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:20px}
+.youtube-tab{min-width:0;border-radius:26px;background:linear-gradient(180deg,#fff,#f8fbff);border:1px solid #dbeafe;backdrop-filter:blur(18px);overflow:hidden;box-shadow:0 18px 48px rgba(37,99,235,.12);transition:transform .25s var(--ease),box-shadow .25s var(--ease),border-color .25s var(--ease)}
+.youtube-tab:hover{transform:translateY(-4px);border-color:#bfdbfe;box-shadow:0 26px 66px rgba(37,99,235,.18)}
+.youtube-frame{aspect-ratio:16/9;background:linear-gradient(135deg,#dbeafe,#ede9fe);padding:8px}
 .youtube-frame iframe{width:100%;height:100%;border:0;display:block}
-.youtube-meta{padding:14px 16px 16px}
-.youtube-meta .tag{color:#ff6b6b;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:1.4px}
-.youtube-meta h3{font-size:16px;line-height:1.35;margin-top:5px}
-.youtube-meta p{color:var(--muted);font-size:13px;margin-top:6px}
+.youtube-frame iframe{border-radius:18px;box-shadow:0 10px 28px rgba(15,23,42,.14)}
+.youtube-meta{padding:16px 18px 18px}
+.youtube-meta .tag{display:inline-flex;align-items:center;gap:6px;color:#2563eb;background:#eff6ff;border:1px solid #dbeafe;border-radius:999px;padding:5px 9px;font-size:10.5px;font-weight:900;text-transform:uppercase;letter-spacing:1.1px}
+.youtube-meta h3{font-size:17px;line-height:1.35;margin-top:10px;color:#14213d}
+.youtube-meta p{color:#667085;font-size:13px;margin-top:7px}
 .youtube-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .youtube-actions .btn{padding:9px 14px;font-size:12.5px}
 @media(max-width:900px){.youtube-tabs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;margin-left:-24px;margin-right:-24px;padding-left:24px;padding-right:24px}.youtube-tab{flex:0 0 min(86vw,380px);scroll-snap-align:center}.youtube-tab:last-child{margin-right:24px}}
@@ -206,19 +208,22 @@ body.platform{--bg:#f8fafc;--ink:#14213d;--muted:#667085;--glass:#fff;--glass-li
 .checkout-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .checkout-status{color:var(--a4);font-size:13px;margin-top:10px}
 @media(max-width:720px){.checkout-grid{grid-template-columns:1fr}.checkout-box{padding:16px}}
-.customer-login-modal{position:fixed;inset:0;z-index:125;display:none;place-items:center;padding:18px;background:rgba(15,23,42,.52);backdrop-filter:blur(10px)}
+.customer-login-modal{position:fixed;inset:0;z-index:125;display:none;place-items:center;padding:18px;background:linear-gradient(135deg,rgba(15,23,42,.58),rgba(37,99,235,.34));backdrop-filter:blur(12px)}
 .customer-login-modal.open{display:grid}
-.customer-login-box{width:min(520px,100%);border-radius:24px;background:#fff;color:#14213d;border:1px solid #dbeafe;box-shadow:0 28px 90px rgba(15,23,42,.22);padding:24px}
-.customer-login-box .tag{color:#2563eb}
-.customer-login-box h3{font-size:26px;line-height:1.16;color:#14213d}
+.customer-login-box{width:min(540px,100%);border-radius:28px;background:linear-gradient(180deg,#fff,#f8fbff);color:#14213d;border:1px solid #bfdbfe;box-shadow:0 32px 100px rgba(15,23,42,.28);padding:26px;position:relative;overflow:hidden}
+.customer-login-box::before{content:"";position:absolute;inset:0 0 auto;height:7px;background:linear-gradient(90deg,#2563eb,#7c3aed,#22d3ee)}
+.customer-login-box .checkout-top{align-items:center;margin-bottom:12px}
+.customer-login-box .tag{display:inline-flex;color:#2563eb;background:#eff6ff;border:1px solid #dbeafe;border-radius:999px;padding:5px 10px}
+.customer-login-box h3{font-size:28px;line-height:1.12;color:#14213d;margin-top:8px}
 .customer-login-box p{color:#667085;font-size:13px;margin-top:6px}
 .customer-login-box label{display:grid;gap:6px;margin-top:13px;color:#475467;font-size:12px;font-weight:900}
-.customer-login-box input{width:100%;min-height:48px;border-radius:14px;border:1px solid #dbe3ef;background:#f8fafc;color:#14213d;padding:0 14px;font:inherit;outline:0}
+.customer-login-box input{width:100%;min-height:50px;border-radius:15px;border:1px solid #dbe3ef;background:#fff;color:#14213d;padding:0 14px;font:inherit;outline:0;box-shadow:0 7px 18px rgba(16,24,40,.04)}
 .customer-login-box input:focus{border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.1)}
-.google-login-btn{width:100%;margin-top:16px;padding:13px 14px;border:1px solid #dbe3ef;border-radius:999px;background:#fff;color:#14213d;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(16,24,40,.06)}
+.google-login-btn{width:100%;margin-top:16px;padding:14px 14px;border:1px solid #c7d2fe;border-radius:999px;background:#fff;color:#14213d;font-weight:900;cursor:pointer;box-shadow:0 10px 24px rgba(37,99,235,.1)}
+.google-login-btn::before{content:"G";display:inline-grid;place-items:center;width:22px;height:22px;margin-right:8px;border-radius:50%;background:#eff6ff;color:#2563eb}
 .customer-login-status{min-height:20px;margin-top:10px;color:#2563eb;font-size:12px}
 .customer-login-box .close-btn{background:#eff6ff;color:#2563eb;border:1px solid #dbeafe}
-.customer-login-box .btn-hero{box-shadow:0 12px 26px rgba(37,99,235,.24)}
+.customer-login-box .btn-hero{min-height:50px;box-shadow:0 14px 30px rgba(37,99,235,.26)}
 .zalo-float{position:fixed;right:18px;bottom:18px;z-index:90;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#0068ff;color:white;border:1px solid rgba(255,255,255,.35);box-shadow:0 14px 34px rgba(0,104,255,.34);font-weight:900;font-size:13px;letter-spacing:-.4px}
 .zalo-float::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(0,104,255,.45);animation:zaloPulse 1.8s ease-out infinite}
 @keyframes zaloPulse{to{transform:scale(1.35);opacity:0}}
