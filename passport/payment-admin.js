@@ -34,7 +34,18 @@
     set("paidMetric", paid.length); set("customerMetric", new Set(learners.map(x => x.contact || x.name).filter(Boolean)).size);
     set("newCustomerMetric", learners.length); set("activeCustomerMetric", learners.length);
     const totals = paid.reduce((sum, item) => { const currency = item.currency || "VND"; sum[currency] = (sum[currency] || 0) + Number(item.amount || 0); return sum; }, {});
-    const revenue = document.querySelector('[data-kpi="revenue"]'); if (revenue) revenue.textContent = ["VND", "USD"].filter(currency => totals[currency]).map(currency => money(totals[currency], currency)).join(" · ") || money(0, "VND");
+    let fx = { usdToVnd: 25000, baseCurrency: "VND" }; try { fx = Object.assign(fx, JSON.parse(localStorage.getItem("ducpt_settings_v1") || "{}")); } catch {}
+    const rate = Number(fx.usdToVnd) > 0 ? Number(fx.usdToVnd) : 25000;
+    const totalVnd = (totals.VND || 0) + (totals.USD || 0) * rate;
+    const revenueText = fx.baseCurrency === "USD" ? money(totalVnd / rate, "USD") : money(totalVnd, "VND");
+    const revenue = document.querySelector('[data-kpi="revenue"]'); if (revenue) revenue.textContent = revenueText;
+    const pendingCount = records.filter(item => !/paid|success/i.test(item.status || "")).length;
+    const setAll = (sel, value) => document.querySelectorAll(sel).forEach(node => { node.textContent = value; });
+    setAll('[data-cockpit="revenue"]', revenueText);
+    setAll('[data-cockpit="paid"]', paid.length);
+    setAll('[data-cockpit="pending"]', pendingCount);
+    setAll('[data-cockpit="customers"]', new Set(learners.map(x => x.contact || x.name).filter(Boolean)).size);
+    setAll('[data-cockpit="learners"]', learners.length);
     const rows = document.getElementById("customerRows");
     const header = rows?.previousElementSibling; if (header && !header.querySelector('[data-actions-head]')) header.insertAdjacentHTML("beforeend", '<span data-actions-head>Thao tác</span>');
     if (rows) rows.innerHTML = learners.slice().reverse().map(x => `<div class="row"><span>${x.name || "Học viên"}</span><span>${x.contact || "Chưa cập nhật"}</span><span>${x.product || "Khóa học"}</span><span>${x.paymentSource === "app" ? "App" : "Xác nhận thực tế"}</span><span>${x.entitlement ? "Đã mở" : "Đang khóa"}</span><span class="customer-actions"><button type="button" data-edit="${x.orderId}">Sửa</button><button type="button" class="delete" data-delete="${x.orderId}">Xóa</button></span></div>`).join("");
@@ -53,5 +64,7 @@
     if (edit) { const item = records.find(x => x.orderId === edit.dataset.edit); if (!item) return; editingOrderId = item.orderId; ["name","contact","product","amount","currency","paymentSource","status"].forEach(name => { const field=form.elements[name]; if(field) field.value=item[name] ?? ""; }); form.querySelector('button[type="submit"]').textContent="Lưu thay đổi"; form.scrollIntoView({behavior:"smooth",block:"start"}); }
     if (remove && confirm("Xóa học viên và giao dịch này?")) { records = records.filter(x => x.orderId !== remove.dataset.delete); localStorage.setItem(key, JSON.stringify(records)); if(editingOrderId===remove.dataset.delete) editingOrderId=""; render(); }
   });
+  window.addEventListener("ducpt:settings", render);
+  document.getElementById("cockpitRefresh")?.addEventListener("click", render);
   render();
 })();
