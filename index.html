@@ -179,6 +179,8 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 .back{display:none!important}
 .how-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:24px}.how-step{position:relative;padding:18px 15px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(18px)}.how-step i{display:grid;place-items:center;width:34px;height:34px;margin-bottom:12px;border-radius:12px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#08101d;font-style:normal;font-weight:900}.how-step b{display:block;font-size:14px}.how-step span{display:block;margin-top:6px;color:var(--muted);font-size:12.5px}.how-step:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:26px;z-index:2;color:var(--a1);font-weight:900}.portal-callout{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-top:18px;padding:22px;border-radius:22px;background:linear-gradient(120deg,rgba(110,231,255,.12),rgba(167,139,250,.12));border:1px solid var(--glass-line)}.portal-callout p{color:var(--muted);font-size:14px;margin-top:5px}@media(max-width:900px){.how-flow{grid-template-columns:1fr 1fr}.how-step:not(:last-child)::after{display:none}}@media(max-width:600px){.how-flow{grid-template-columns:1fr}.portal-callout{align-items:flex-start;flex-direction:column}}
 @media(max-width:600px){nav{padding:0 10px}.nav-inner{gap:10px;padding:10px 12px}.nav-inner a.lnk{display:none}.logo img{width:92px}.nav-inner .btn{padding:9px 11px;font-size:11px}}
+/* DUCPT learning-platform skin: inspired by modern education IA, not copied. */
+body.platform{--bg:#f8fafc;--ink:#14213d;--muted:#667085;--glass:#fff;--glass-line:#e6eaf0;--a1:#2563eb;--a2:#7c3aed;--a3:#0ea5e9;--a4:#0f766e;background:var(--bg)}body.platform .aurora{opacity:.12}body.platform .mouse-light{display:none}body.platform nav{top:0;margin-top:0;max-width:none;padding:0;border-bottom:1px solid var(--glass-line);background:rgba(255,255,255,.9);backdrop-filter:blur(18px)}body.platform .nav-inner{max-width:1140px;margin:auto;padding:12px 0;border:0;background:transparent;backdrop-filter:none}body.platform .logo img{filter:invert(1);width:108px}body.platform .nav-inner a.lnk{color:#344054;font-size:13px;font-weight:700}body.platform .nav-inner a.lnk:hover{color:#2563eb;background:#eff6ff}body.platform .nav-login{color:#344054!important}body.platform .nav-signup{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff!important;box-shadow:0 8px 24px rgba(37,99,235,.2)}body.platform .hero{padding:105px 0 90px;min-height:76vh;display:grid;place-items:center;background:radial-gradient(circle at 50% 20%,rgba(37,99,235,.1),transparent 45%)}body.platform .hero p{max-width:720px}body.platform .pill{background:#fff;color:#475467;box-shadow:0 8px 28px rgba(16,24,40,.06)}body.platform .card,body.platform .youtube-tab,body.platform .connect-chip,body.platform .how-step,body.platform .portal-callout{box-shadow:0 12px 34px rgba(16,24,40,.07)}body.platform .card:hover{box-shadow:0 22px 50px rgba(16,24,40,.13)}body.platform .social-name{background:#fff;color:#14213d}body.platform .checkout-box,body.platform .product-box{background:#fff;color:#14213d}body.platform .checkout-box input,body.platform .checkout-box textarea,body.platform .checkout-box select{background:#f8fafc;color:#14213d}body.platform footer{border-top:1px solid var(--glass-line);background:#fff}@media(max-width:1050px){body.platform .nav-inner{padding:12px 18px}body.platform .nav-inner a.lnk{display:none}}
 .mouse-light{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50vw) var(--my,45vh),rgba(110,231,255,.18),rgba(167,139,250,.10) 36%,transparent 70%);mix-blend-mode:screen}
 .stats-btn{display:none!important}
 .stats-panel{position:fixed;right:22px;bottom:78px;z-index:100;width:min(360px,calc(100vw - 44px));display:none;padding:16px;border-radius:22px;background:rgba(10,14,26,.82);border:1px solid var(--glass-line);backdrop-filter:blur(20px);box-shadow:0 28px 90px rgba(0,0,0,.5)}
@@ -245,27 +247,27 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 @media(max-width:820px){.product-hero,.product-layout{grid-template-columns:1fr}.product-proof{grid-template-columns:1fr}.product-box{padding:16px}.product-visual{min-height:220px}.zalo-float{right:12px;bottom:14px;width:44px;height:44px;font-size:12px}}
 </style>
 </head>
-<body>
+<body class="platform">
 <div class="aurora"><i></i><i></i><i></i></div>
 <div class="mouse-light" aria-hidden="true"></div>
 
 <nav><div class="nav-inner">
   <span class="logo"><img src="assets/ducpt-signature.svg" alt="DUCPT"></span>
-  <a class="lnk" href="/">Trang chủ</a><a class="lnk" href="/#sp">Sản phẩm</a><a class="lnk" href="/#how">Cách triển khai</a><a class="lnk" href="/#contact">Liên hệ</a>
+  <a class="lnk" href="/khoa-hoc.html">Khóa học</a><a class="lnk" href="/bai-viet.html">Bài viết</a><a class="lnk" href="/dich-vu.html">Dịch vụ đào tạo</a><a class="lnk" href="/#sp">Công cụ AI</a><a class="lnk" href="/ve-chung-toi.html">Về chúng tôi</a>
   <span class="spacer"></span>
-  <a class="btn btn-glass" href="/customer-portal.html">Đăng nhập khách hàng</a>
+  <a class="btn btn-glass nav-login" href="/customer-portal.html">Đăng nhập</a><a class="btn nav-signup" href="/#sp">Đăng ký miễn phí</a>
 </div></nav>
 
 <section class="hero wrap">
   <div class="float-chip c1">🎬 Verba Studio</div>
   <div class="float-chip c2">📌 AutoPost</div>
   <div class="float-chip c3">🧠 AI Bot</div>
-  <div class="pill"><b>●</b> 17+ sản phẩm đang hoạt động</div>
-  <h1>Công cụ số<br><span class="gr">trong suốt như kính</span></h1>
-  <p>App, extension và automation do DUCPT tự xây dựng. Thiết kế glassmorphism — nhẹ nhàng, hiện đại, sang trọng.</p>
+  <div class="pill"><b>●</b> Nền tảng học và ứng dụng AI thực chiến</div>
+  <h1>Làm chủ công cụ AI,<br><span class="gr">tăng tốc công việc mỗi ngày</span></h1>
+  <p>Khóa học dễ áp dụng, công cụ AI do DUCPT phát triển và dịch vụ đào tạo theo đúng nhu cầu cá nhân hoặc doanh nghiệp.</p>
   <div class="hero-cta">
-    <button class="btn btn-hero">Khám phá ngay →</button>
-    <button class="btn btn-glass">Xem demo</button>
+    <a class="btn btn-hero" href="/khoa-hoc.html">Khám phá khóa học →</a>
+    <a class="btn btn-glass" href="/#sp">Dùng thử công cụ AI</a>
   </div>
 </section>
 
