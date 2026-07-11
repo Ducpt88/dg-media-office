@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /passport/
 Disallow: /admin/
 Disallow: /dang-nhap/
 Disallow: /customer-portal.html
