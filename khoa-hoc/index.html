@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
   <style>
     .course-hero{padding:78px 20px 46px;background:radial-gradient(circle at 50% 0,rgba(37,99,235,.16),transparent 48%),linear-gradient(180deg,#f8fbff,#fff)}
-    .course-hero .inner{max-width:1140px;margin:auto;display:grid;grid-template-columns:1.08fr .92fr;gap:28px;align-items:center}
+    .course-hero .inner{max-width:1140px;margin:auto}
     .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     .course-hero h1{margin:16px 0 14px;font-size:clamp(36px,5.6vw,62px);line-height:1.05;letter-spacing:-.05em}
     .course-hero p{max-width:660px;color:#667085;font-size:17px}
@@ -17,16 +17,6 @@
     .primary-btn,.ghost-btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:999px;font-weight:900}
     .primary-btn{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 14px 32px rgba(37,99,235,.22)}
     .ghost-btn{border:1px solid #dbeafe;background:#fff;color:#2563eb}
-    .hero-panel{padding:18px;border:1px solid #dbeafe;border-radius:28px;background:#fff;box-shadow:0 24px 70px rgba(37,99,235,.12)}
-    .panel-top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}
-    .panel-top strong{font-size:18px}
-    .panel-badge{padding:7px 10px;border-radius:999px;background:#ecfdf5;color:#059669;font-size:12px;font-weight:900}
-    .featured-card{padding:18px;border-radius:22px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff}
-    .featured-card h3{margin:10px 0 8px;font-size:24px;line-height:1.15}
-    .featured-card p{color:rgba(255,255,255,.86);font-size:14px}
-    .mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
-    .mini-stats span{padding:12px;border-radius:16px;background:rgba(255,255,255,.14);font-size:12px}
-    .mini-stats b{display:block;font-size:18px}
     .course-shell{max-width:1140px;margin:auto;padding:34px 20px 64px}
     .course-toolbar{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-bottom:20px;padding:14px;border:1px solid #e6eaf0;border-radius:24px;background:#fff;box-shadow:0 12px 34px rgba(16,24,40,.06)}
     .search-box{min-height:48px;border:1px solid #dbe3ef;border-radius:16px;padding:0 15px;color:#14213d;background:#f8fafc;font:inherit;outline:0}
@@ -52,16 +42,11 @@
     .price{font-size:18px;font-weight:900;color:#14213d}
     .price small{display:block;color:#98a2b3;font-size:11px;text-decoration:line-through}
     .course-bottom a{padding:10px 13px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:12px;font-weight:900}
-    .packaging{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
-    .pack-box{padding:22px;border:1px solid #e6eaf0;border-radius:24px;background:#fff;box-shadow:0 12px 34px rgba(16,24,40,.06)}
-    .pack-box h3{margin:0 0 10px;font-size:20px}
-    .pack-box p,.pack-box li{color:#667085;font-size:14px}
-    .pack-box ul{margin:0;padding-left:18px}
     .final-cta{margin-top:28px;padding:34px;border-radius:28px;text-align:center;color:#fff;background:linear-gradient(120deg,#2563eb,#7c3aed,#0891b2);box-shadow:0 24px 70px rgba(37,99,235,.2)}
     .final-cta h2{margin:0 0 8px;font-size:30px}
     .final-cta p{margin:0 auto;max-width:650px;color:rgba(255,255,255,.86)}
     .final-cta a{display:inline-flex;margin-top:18px;padding:12px 20px;border-radius:999px;background:#fff;color:#2563eb;font-weight:900}
-    @media(max-width:900px){.course-hero .inner,.packaging{grid-template-columns:1fr}.course-toolbar{grid-template-columns:1fr}.course-grid{grid-template-columns:1fr}.section-title{display:block}.filter-row{overflow:auto;flex-wrap:nowrap}.filter-chip{white-space:nowrap}.mini-stats{grid-template-columns:1fr 1fr 1fr}}
+    @media(max-width:900px){.course-toolbar{grid-template-columns:1fr}.course-grid{grid-template-columns:1fr}.section-title{display:block}.filter-row{overflow:auto;flex-wrap:nowrap}.filter-chip{white-space:nowrap}}
   </style>
 </head>
 <body>
@@ -71,22 +56,13 @@
     <div class="inner">
       <div>
         <span class="eyebrow">Thư viện khóa học DUCPT</span>
-        <h1>Đóng gói khóa học AI thành sản phẩm bán được</h1>
-        <p>Trang này được thiết kế giống một catalog khóa học chuyên nghiệp: có danh mục, cấp độ, giá, lợi ích, lộ trình và nút đăng ký rõ ràng để anh có thể đưa khóa học lên bán ngay.</p>
+        <h1>Học AI thực chiến ngay trên DUCPT</h1>
+        <p>Đây là khu vực để anh đẩy khóa học lên website. Thành viên có thể xem danh sách khóa học, chọn đúng nội dung cần học và vào học trực tiếp qua tài khoản của mình.</p>
         <div class="hero-actions">
           <a class="primary-btn" href="#course-list">Xem khóa học</a>
-          <a class="ghost-btn" href="https://zalo.me/0963249467">Tư vấn đóng gói</a>
+          <a class="ghost-btn" href="/dang-nhap/">Đăng nhập để học</a>
         </div>
       </div>
-      <aside class="hero-panel">
-        <div class="panel-top"><strong>Gói nổi bật</strong><span class="panel-badge">Sẵn sàng bán</span></div>
-        <div class="featured-card">
-          <span class="level">Creator / Automation</span>
-          <h3>AI Content & Workflow thực chiến</h3>
-          <p>Học cách biến ý tưởng thành nội dung, video, tài liệu bán hàng và quy trình tự động dùng được hằng ngày.</p>
-          <div class="mini-stats"><span><b>12+</b>Bài học</span><span><b>4</b>Module</span><span><b>Zalo</b>Hỗ trợ</span></div>
-        </div>
-      </aside>
     </div>
   </section>
 
@@ -104,7 +80,7 @@
 
     <div class="section-title" id="course-list">
       <h2>Danh sách khóa học</h2>
-      <p>Mỗi khóa học được trình bày như một sản phẩm: nêu rõ đầu ra, cấp độ, nội dung nhận được và hành động đăng ký.</p>
+      <p>Mỗi khóa học có nội dung, cấp độ và nút vào học rõ ràng để thành viên truy cập nhanh sau khi đăng nhập.</p>
     </div>
 
     <section class="course-grid">
@@ -114,7 +90,7 @@
           <h3>AI cho người mới bắt đầu</h3>
           <p>Nắm tư duy dùng AI, viết prompt rõ ràng và tạo workflow cá nhân để làm việc nhanh hơn.</p>
           <div class="meta-list"><span>Prompt tiếng Việt dễ áp dụng</span><span>Bài tập theo công việc thật</span><span>Tài liệu mẫu sau khóa học</span></div>
-          <div class="course-bottom"><div class="price">499.000đ<small>699.000đ</small></div><a href="https://zalo.me/0963249467">Đăng ký</a></div>
+          <div class="course-bottom"><div class="price">499.000đ<small>699.000đ</small></div><a href="/dang-nhap/">Vào học</a></div>
         </div>
       </article>
       <article class="course-card">
@@ -123,7 +99,7 @@
           <h3>AI cho Content Creator</h3>
           <p>Tạo ý tưởng, kịch bản, caption, hình ảnh và video ngắn theo một quy trình có thể lặp lại.</p>
           <div class="meta-list"><span>Lịch nội dung 30 ngày</span><span>Khung kịch bản video ngắn</span><span>Checklist đăng tải đa nền tảng</span></div>
-          <div class="course-bottom"><div class="price">799.000đ<small>1.200.000đ</small></div><a href="https://zalo.me/0963249467">Đăng ký</a></div>
+          <div class="course-bottom"><div class="price">799.000đ<small>1.200.000đ</small></div><a href="/dang-nhap/">Vào học</a></div>
         </div>
       </article>
       <article class="course-card">
@@ -132,7 +108,7 @@
           <h3>Automation & Bot thực chiến</h3>
           <p>Kết nối công cụ, dữ liệu, Telegram/Zalo và quy trình tự động để tiết kiệm thời gian vận hành.</p>
           <div class="meta-list"><span>Thiết kế luồng tự động</span><span>Ứng dụng cho bán hàng và nội dung</span><span>Hỗ trợ setup theo nhu cầu</span></div>
-          <div class="course-bottom"><div class="price">1.500.000đ<small>2.000.000đ</small></div><a href="https://zalo.me/0963249467">Đăng ký</a></div>
+          <div class="course-bottom"><div class="price">1.500.000đ<small>2.000.000đ</small></div><a href="/dang-nhap/">Vào học</a></div>
         </div>
       </article>
       <article class="course-card">
@@ -141,7 +117,7 @@
           <h3>Đóng gói khóa học để bán</h3>
           <p>Biến kiến thức thành gói học rõ giá trị: landing page, bài học, tài liệu, form mua và chăm sóc học viên.</p>
           <div class="meta-list"><span>Khung module/bài học</span><span>Mẫu mô tả khóa học</span><span>Luồng bán hàng cơ bản</span></div>
-          <div class="course-bottom"><div class="price">Theo dự án</div><a href="https://zalo.me/0963249467">Tư vấn</a></div>
+          <div class="course-bottom"><div class="price">Thành viên</div><a href="/dang-nhap/">Vào học</a></div>
         </div>
       </article>
       <article class="course-card">
@@ -150,7 +126,7 @@
           <h3>Đào tạo AI cho đội nhóm</h3>
           <p>Workshop riêng theo phòng ban: marketing, bán hàng, vận hành, chăm sóc khách hàng và quản trị nội dung.</p>
           <div class="meta-list"><span>Lộ trình theo mục tiêu</span><span>Bài tập theo dữ liệu nội bộ an toàn</span><span>Báo cáo sau buổi đào tạo</span></div>
-          <div class="course-bottom"><div class="price">Liên hệ</div><a href="https://zalo.me/0963249467">Nhận báo giá</a></div>
+          <div class="course-bottom"><div class="price">Thành viên</div><a href="/dang-nhap/">Vào học</a></div>
         </div>
       </article>
       <article class="course-card">
@@ -159,35 +135,15 @@
           <h3>Kèm riêng xây workflow AI</h3>
           <p>Làm trực tiếp trên công việc của học viên: chọn công cụ, viết quy trình, tối ưu và bàn giao tài liệu dùng lại.</p>
           <div class="meta-list"><span>Kèm theo ca thực tế</span><span>Ưu tiên kết quả đầu ra</span><span>Ghi chú và checklist riêng</span></div>
-          <div class="course-bottom"><div class="price">Theo buổi</div><a href="https://zalo.me/0963249467">Đặt lịch</a></div>
+          <div class="course-bottom"><div class="price">Thành viên</div><a href="/dang-nhap/">Vào học</a></div>
         </div>
       </article>
     </section>
 
-    <div class="section-title">
-      <h2>Khung đóng gói khóa học</h2>
-      <p>Phần này giúp trang không chỉ đẹp mà còn bán được: học viên hiểu mình sẽ nhận gì và bước tiếp theo là gì.</p>
-    </div>
-    <section class="packaging">
-      <div class="pack-box">
-        <h3>Mỗi khóa nên có</h3>
-        <ul>
-          <li>Tên khóa học rõ vấn đề và kết quả.</li>
-          <li>3–5 module chính, mỗi module có bài thực hành.</li>
-          <li>Tài liệu mẫu, checklist, file prompt hoặc template.</li>
-          <li>Giá, ưu đãi, hình thức hỗ trợ và nút đăng ký.</li>
-        </ul>
-      </div>
-      <div class="pack-box">
-        <h3>Luồng bán hàng đề xuất</h3>
-        <p>Khách xem khóa học → bấm đăng ký/Zalo → nhận tư vấn hoặc thanh toán → được cấp mã vào “Sản phẩm của tôi” → xem tài liệu, link học và tiến độ hỗ trợ.</p>
-      </div>
-    </section>
-
     <section class="final-cta">
-      <h2>Muốn đưa khóa học mới lên trang này?</h2>
-      <p>Chỉ cần gửi tên khóa, mô tả, giá, số bài, ảnh/video demo và tài liệu đi kèm. DUCPT có thể đóng gói thành card sản phẩm ngay trên website.</p>
-      <a href="https://zalo.me/0963249467">Gửi thông tin khóa học</a>
+      <h2>Khu học tập dành cho thành viên DUCPT</h2>
+      <p>Sau khi đăng nhập, thành viên sẽ truy cập khóa học đã được cấp quyền, xem bài học, tài liệu và nội dung đi kèm ngay trên website.</p>
+      <a href="/dang-nhap/">Đăng nhập để vào học</a>
     </section>
   </main>
 
