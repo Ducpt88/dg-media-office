@@ -206,15 +206,19 @@ body.platform{--bg:#f8fafc;--ink:#14213d;--muted:#667085;--glass:#fff;--glass-li
 .checkout-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
 .checkout-status{color:var(--a4);font-size:13px;margin-top:10px}
 @media(max-width:720px){.checkout-grid{grid-template-columns:1fr}.checkout-box{padding:16px}}
-.customer-login-modal{position:fixed;inset:0;z-index:125;display:none;place-items:center;padding:18px;background:rgba(3,7,18,.72);backdrop-filter:blur(14px)}
+.customer-login-modal{position:fixed;inset:0;z-index:125;display:none;place-items:center;padding:18px;background:rgba(15,23,42,.52);backdrop-filter:blur(10px)}
 .customer-login-modal.open{display:grid}
-.customer-login-box{width:min(520px,100%);border-radius:26px;background:rgba(10,14,26,.94);border:1px solid var(--glass-line);box-shadow:0 36px 120px rgba(0,0,0,.62);padding:22px}
-.customer-login-box h3{font-size:24px;line-height:1.2}
-.customer-login-box p{color:var(--muted);font-size:13px;margin-top:6px}
-.customer-login-box label{display:grid;gap:6px;margin-top:13px;color:var(--muted);font-size:12px;font-weight:800}
-.customer-login-box input{width:100%;min-height:44px;border-radius:14px;border:1px solid var(--glass-line);background:rgba(255,255,255,.08);color:var(--ink);padding:0 12px;font:inherit}
-.google-login-btn{width:100%;margin-top:14px;padding:12px 14px;border:1px solid var(--glass-line);border-radius:999px;background:rgba(255,255,255,.08);color:var(--ink);font-weight:900;cursor:pointer}
-.customer-login-status{min-height:20px;margin-top:10px;color:var(--a4);font-size:12px}
+.customer-login-box{width:min(520px,100%);border-radius:24px;background:#fff;color:#14213d;border:1px solid #dbeafe;box-shadow:0 28px 90px rgba(15,23,42,.22);padding:24px}
+.customer-login-box .tag{color:#2563eb}
+.customer-login-box h3{font-size:26px;line-height:1.16;color:#14213d}
+.customer-login-box p{color:#667085;font-size:13px;margin-top:6px}
+.customer-login-box label{display:grid;gap:6px;margin-top:13px;color:#475467;font-size:12px;font-weight:900}
+.customer-login-box input{width:100%;min-height:48px;border-radius:14px;border:1px solid #dbe3ef;background:#f8fafc;color:#14213d;padding:0 14px;font:inherit;outline:0}
+.customer-login-box input:focus{border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.google-login-btn{width:100%;margin-top:16px;padding:13px 14px;border:1px solid #dbe3ef;border-radius:999px;background:#fff;color:#14213d;font-weight:900;cursor:pointer;box-shadow:0 8px 20px rgba(16,24,40,.06)}
+.customer-login-status{min-height:20px;margin-top:10px;color:#2563eb;font-size:12px}
+.customer-login-box .close-btn{background:#eff6ff;color:#2563eb;border:1px solid #dbeafe}
+.customer-login-box .btn-hero{box-shadow:0 12px 26px rgba(37,99,235,.24)}
 .zalo-float{position:fixed;right:18px;bottom:18px;z-index:90;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#0068ff;color:white;border:1px solid rgba(255,255,255,.35);box-shadow:0 14px 34px rgba(0,104,255,.34);font-weight:900;font-size:13px;letter-spacing:-.4px}
 .zalo-float::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:1px solid rgba(0,104,255,.45);animation:zaloPulse 1.8s ease-out infinite}
 @keyframes zaloPulse{to{transform:scale(1.35);opacity:0}}
