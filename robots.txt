@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /dang-nhap/
+Disallow: /customer-portal.html
+Disallow: /admin-dashboard.html
+
+Sitemap: https://ducpt.com/sitemap.xml
