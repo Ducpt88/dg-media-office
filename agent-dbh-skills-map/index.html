@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./icon.png" />
+    <title>Agent DG MEDIA — Trợ lý Tự động hóa</title>
+    <meta name="description" content="Agent DG MEDIA - Ứng dụng trợ lý tự động hóa desktop, lên lịch và điều khiển ứng dụng hằng ngày" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      @font-face {
+        font-family: 'SF Pro Display';
+        src: local('SF Pro Display'), local('.SF NS Display'), local('-apple-system'), local('BlinkMacSystemFont');
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'SF Pro Text';
+        src: local('SF Pro Text'), local('.SF NS Text'), local('-apple-system'), local('BlinkMacSystemFont');
+        font-weight: 100 900;
+        font-style: normal;
+      }
+    </style>
+    <script src="./dg-core-seed.js"></script>
+    <script type="module" crossorigin src="./assets/index-BeKOOk0q.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/react-BrspnNLa.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-crwyeMQ7.css">
+    <link rel="stylesheet" href="./dg-skills-map-overrides.css">
+    <style>
+      html,body,#root{min-height:100%;background:#151722}
+      body{pointer-events:none;user-select:none}
+      .public-view-lock{position:fixed;inset:0;z-index:2147483647;cursor:not-allowed;background:transparent}
+      .public-view-badge{position:fixed;top:12px;right:12px;z-index:2147483647;padding:8px 12px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);font:800 11px Inter,system-ui;box-shadow:0 12px 28px rgba(37,99,235,.32)}
+    </style>
+    <script defer src="./dg-skills-map-overrides.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <div class="public-view-lock" aria-label="Chế độ chỉ xem, không thể thao tác"></div>
+    <div class="public-view-badge">● CHỈ XEM</div>
+    <script>
+      ["click","dblclick","pointerdown","pointerup","touchstart","touchmove","keydown","contextmenu","wheel","dragstart"].forEach(type=>addEventListener(type,event=>{event.preventDefault();event.stopPropagation()},{capture:true,passive:false}));
+    </script>
+  </body>
+</html>

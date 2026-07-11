@@ -1,0 +1,1118 @@
+/* DG wrapper overrides: keep Agent DBH app intact, only simplify this embedded view. */
+
+.titlebar {
+  min-height: 30px !important;
+  height: 30px !important;
+}
+
+.titlebar__logo {
+  height: 30px !important;
+  padding-left: 8px !important;
+}
+
+.titlebar__logo span {
+  font-size: 10px !important;
+}
+
+.titlebar__controls .titlebar__btn {
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 12px !important;
+}
+
+.app-layout {
+  height: calc(100vh - 30px) !important;
+}
+
+.main-content {
+  padding: 6px 8px !important;
+  overflow: hidden !important;
+}
+
+.dg-top-collapse-toggle {
+  position: fixed;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 99999;
+  width: 34px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(56, 189, 248, .36);
+  border-radius: 0 0 9px 9px;
+  background: rgba(13, 18, 29, .92);
+  color: #38bdf8;
+  font: 800 14px/1 Inter, Arial, sans-serif;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .3);
+  user-select: none;
+}
+
+.dg-top-collapse-toggle:hover {
+  border-color: #4ade80;
+  color: #4ade80;
+}
+
+body.dg-top-collapsed .titlebar,
+body.dg-top-collapsed .dg-compact-skills-header {
+  display: none !important;
+}
+
+body.dg-top-collapsed .app-layout {
+  height: 100vh !important;
+}
+
+body.dg-top-collapsed .main-content {
+  padding: 0 !important;
+}
+
+body.dg-top-collapsed .dg-skills-map-stage {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  transform-origin: center center !important;
+}
+
+body.dg-top-collapsed .dg-map-fit-stage > canvas,
+body.dg-top-collapsed canvas {
+  display: block !important;
+}
+
+body.dg-top-collapsed .dg-map-fit-stage > canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.dg-top-collapsed .dg-top-collapse-toggle {
+  top: 0;
+  border-radius: 0 0 9px 9px;
+}
+
+/* Skills Map command header: collapse the big intro into one compact row. */
+.dg-compact-skills-header {
+  min-height: 0 !important;
+  margin: 0 0 6px !important;
+  padding: 7px 10px !important;
+  border-radius: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+
+.dg-compact-skills-header .page-header__title {
+  font-size: 18px !important;
+  line-height: 1.1 !important;
+  margin: 0 !important;
+  white-space: nowrap !important;
+}
+
+.dg-compact-skills-header .page-header__subtitle {
+  display: none !important;
+}
+
+.dg-compact-skills-header > div {
+  margin-top: 0 !important;
+  flex-shrink: 0 !important;
+}
+
+.dg-compact-skills-header button {
+  min-height: 24px !important;
+  padding: 4px 9px !important;
+  border-radius: 7px !important;
+  font-size: 10px !important;
+  line-height: 1 !important;
+}
+
+.dg-skills-map-stage {
+  height: calc(100vh - 84px) !important;
+  min-height: 650px !important;
+  border-radius: 8px !important;
+}
+
+.dg-org-member-orbit {
+  display: none !important;
+}
+
+/* Compact the floating Skills Map action bar. */
+div[style*="position: absolute"][style*="top: 12px"][style*="right: 12px"] {
+  top: 6px !important;
+  right: 6px !important;
+  gap: 4px !important;
+  flex-wrap: nowrap !important;
+}
+
+div[style*="position: absolute"][style*="top: 12px"][style*="right: 12px"] button {
+  min-height: 24px !important;
+  padding: 4px 8px !important;
+  border-radius: 7px !important;
+  font-size: 10px !important;
+  line-height: 1.1 !important;
+}
+
+/* Compact the selected node side editor. */
+div[style*="position: absolute"][style*="left: 12px"][style*="width: 280px"] {
+  top: 8px !important;
+  left: 8px !important;
+  width: 260px !important;
+  padding: 10px !important;
+  max-height: 72vh !important;
+}
+
+div[style*="position: absolute"][style*="left: 12px"][style*="width: 280px"] input,
+div[style*="position: absolute"][style*="left: 12px"][style*="width: 280px"] textarea,
+div[style*="position: absolute"][style*="left: 12px"][style*="width: 280px"] button {
+  font-size: 10px !important;
+}
+
+.dg-hidden-admin-field {
+  display: none !important;
+}
+
+/* Che chu nhay cam bang CSS (khong dung textContent -> khong pha DOM cua React) */
+.dg-generic-doing,
+.dg-generic-done {
+  font-size: 0 !important;
+  color: transparent !important;
+}
+
+.dg-generic-doing::after,
+.dg-generic-done::after {
+  font-size: 12px;
+  color: #7d93a5;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.dg-generic-doing::after { content: "Đang xử lý một đầu việc trong phòng ban…"; }
+.dg-generic-done::after { content: "Đã xử lý xong một đầu việc ✔"; }
+
+/* Bang HOAT DONG cua rieng minh (React khong quan ly node nay) */
+#dg-live-activity {
+  position: absolute;
+  left: 16px;
+  bottom: 16px;
+  z-index: 40;
+  background: #101820;
+  border: 1px solid #1f2e3d;
+  border-radius: 12px;
+}
+
+.dg-native-activity-hidden {
+  display: none !important;
+}
+
+/* ===== Sidebar thu gọn: xem toàn màn hình nhưng vẫn thấy tổng quan ===== */
+
+body.dg-sidebar-collapsed .sidebar {
+  display: none !important;
+}
+
+.dg-sidebar-collapse-btn {
+  margin: 0 0 8px;
+  width: 100%;
+  padding: 7px 8px;
+  font-size: 10.5px;
+  background: #1a2233;
+  color: #9fb3c8;
+  border: 1px solid #263143;
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.dg-sidebar-collapse-btn:hover {
+  color: #4ade80;
+  border-color: #4ade80;
+}
+
+.dg-mini-overview {
+  position: fixed;
+  left: 8px !important;
+  top: 8px !important;
+  z-index: 99999;
+  display: flex !important;
+  align-items: center;
+  gap: 7px;
+  background: #121420f2;
+  border: 1px solid #263143;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 11.5px;
+  color: #cfe3f5;
+  cursor: pointer;
+  font-family: Inter, Arial, sans-serif;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, .45);
+  user-select: none;
+  overflow: hidden;
+}
+
+body.dg-top-collapsed .dg-mini-overview {
+  left: 8px !important;
+  top: 8px !important;
+}
+
+@media (max-width: 760px) {
+  .dg-mini-overview {
+    left: 8px !important;
+    top: 8px !important;
+  }
+}
+
+.dg-mini-overview::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #38bdf8, #4ade80, #f5b84b);
+  transform: translateX(calc(var(--dg-mini-progress, 0) * 1% - 100%));
+  transition: transform .9s linear;
+}
+
+body.dg-sidebar-collapsed .dg-mini-overview {
+  display: flex !important;
+}
+
+.dg-mini-overview b {
+  color: #4ade80;
+}
+
+.dg-mini-overview .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  display: inline-block;
+  box-shadow: 0 0 10px rgba(74, 222, 128, .65);
+  animation: dg-mini-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes dg-mini-pulse {
+  0%, 100% { transform: scale(.72); opacity: .55; }
+  50% { transform: scale(1.14); opacity: 1; }
+}
+
+.dg-mini-overview:hover {
+  border-color: #4ade80;
+}
+
+/* ===== Che do TRANG CHU (public view): chi hien thi, chay nen, khong thao tac ===== */
+
+body.dg-public-view #root {
+  pointer-events: auto !important;
+  user-select: none !important;
+}
+
+body.dg-public-view .titlebar,
+body.dg-public-view .dg-compact-skills-header {
+  display: none !important;
+}
+
+body.dg-public-view .app-layout {
+  height: 100vh !important;
+  padding-top: 0 !important;
+}
+
+body.dg-public-view .main-content {
+  padding: 0 !important;
+  height: 100vh !important;
+  overflow: hidden !important;
+}
+
+body.dg-public-view .dg-skills-map-stage {
+  height: 100vh !important;
+  width: 100vw !important;
+  min-height: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  background: #0b1014 !important;
+}
+
+body.dg-public-view .dg-map-fit-stage {
+  position: fixed !important;
+  inset: 0 !important;
+  height: 100vh !important;
+  width: 100vw !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  transform-origin: center center !important;
+}
+
+body.dg-public-view .dg-map-fit-stage > canvas,
+body.dg-public-view canvas {
+  display: block !important;
+}
+
+body.dg-public-view .dg-map-fit-stage > canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+body.dg-public-view canvas {
+  pointer-events: none !important;
+}
+
+body.dg-public-view .dg-compact-skills-header button,
+body.dg-public-view div[style*="position: absolute"][style*="top: 12px"][style*="right: 12px"],
+body.dg-public-view #dg-ops-dock-toggle,
+body.dg-public-view #dg-ops-dock,
+body.dg-public-view .bottom-bar,
+body.dg-public-view .dg-mini-overview,
+body.dg-public-view .dg-sidebar-collapse-btn,
+body.dg-public-view .sidebar {
+  display: none !important;
+}
+
+.dg-live-host {
+  width: min(430px, calc(100vw - 24px)) !important;
+  max-height: min(360px, calc(100vh - 112px)) !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+  padding: 10px 11px !important;
+  pointer-events: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(56, 189, 248, .75) rgba(255, 255, 255, .08);
+}
+
+.dg-live-board {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  color: #dbe7f0;
+  font-family: Inter, Arial, sans-serif;
+}
+
+.dg-live-board-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  min-width: 0;
+  padding-bottom: 7px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+
+.dg-live-board-head b {
+  color: #38bdf8;
+  font-size: 11px;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+
+.dg-live-board-head span {
+  color: #9fb3c8;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.dg-live-table {
+  display: grid;
+  gap: 6px;
+}
+
+.dg-live-table-header,
+.dg-live-task {
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr) 62px;
+  align-items: center;
+  gap: 7px;
+}
+
+.dg-live-table-header {
+  color: #7d93a5;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.dg-live-task {
+  position: relative;
+  min-height: 36px;
+  padding: 6px 7px 9px;
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, .04);
+  overflow: hidden;
+}
+
+.dg-live-task::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  right: auto;
+  bottom: 4px;
+  width: var(--dg-progress, 0%);
+  max-width: calc(100% - 14px);
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #38bdf8, #22c55e);
+  opacity: var(--dg-progress-opacity, .2);
+}
+
+.dg-live-task .st {
+  color: #38bdf8;
+  font-size: 10px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.dg-live-task .tt {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #eef6ff;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.dg-live-task .pg,
+.dg-live-task .up {
+  color: #9fb3c8;
+  font-size: 9.5px;
+  white-space: nowrap;
+}
+
+.dg-live-task.review .st { color: #f59e0b; }
+.dg-live-task.done .st { color: #22c55e; }
+.dg-live-task.wait .st { color: #a9b8c8; }
+.dg-live-task.blocked .st { color: #fb5a72; }
+
+.dg-live-empty {
+  padding: 10px 2px 3px;
+  color: #9fb3c8;
+  font-size: 11px;
+}
+
+.dg-live-host::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dg-live-host::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, .07);
+  border-radius: 999px;
+}
+
+.dg-live-host::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, .85);
+  border-radius: 999px;
+}
+
+.dg-live-original-row {
+  position: relative !important;
+  display: grid !important;
+  grid-template-columns: 34px minmax(0, 1fr) 56px !important;
+  align-items: center !important;
+  gap: 6px !important;
+  min-height: 24px !important;
+  padding: 0 0 5px !important;
+  margin: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  overflow: hidden !important;
+}
+
+.dg-live-original-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: auto;
+  bottom: 2px;
+  width: var(--dg-progress, 18%);
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #38bdf8, #22c55e);
+  box-shadow: 0 0 10px rgba(56, 189, 248, .38);
+}
+
+.dg-live-original-row:not(:first-child),
+.dg-live-host .dg-hide-extra-row {
+  display: none !important;
+}
+
+.dg-live-original-row [data-dg-role="time"],
+.dg-live-original-row [data-dg-role="owner"],
+.dg-live-original-row [data-dg-role="title"] {
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  line-height: 1.1 !important;
+}
+
+.dg-live-original-row [data-dg-role="time"] {
+  color: #38bdf8 !important;
+  font-size: 9.5px !important;
+  font-weight: 800 !important;
+}
+
+.dg-live-original-row [data-dg-role="title"] {
+  color: #eef6ff !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+}
+
+.dg-live-original-row [data-dg-role="owner"] {
+  color: #9fb3c8 !important;
+  font-size: 9.5px !important;
+  text-align: right !important;
+}
+
+.dg-live-original-row.review::after {
+  background: linear-gradient(90deg, #f59e0b, #facc15);
+}
+
+.dg-live-original-row.blocked::after {
+  background: linear-gradient(90deg, #fb5a72, #f97316);
+}
+
+.dg-live-original-row.wait::after {
+  background: linear-gradient(90deg, #64748b, #94a3b8);
+}
+
+.dg-live-original-row.done::after {
+  background: linear-gradient(90deg, #22c55e, #86efac);
+}
+
+.dg-live-host #dg-live-activity {
+  position: static;
+  width: 100%;
+  max-height: none;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  color: #dbe7f0;
+  font-family: Inter, Arial, sans-serif;
+  pointer-events: auto;
+  backdrop-filter: none;
+}
+
+#dg-live-activity.dg-live-fallback {
+  position: fixed;
+  left: 16px;
+  bottom: 14px;
+  z-index: 99990;
+  width: min(340px, calc(100vw - 32px));
+  max-height: 44vh;
+  overflow: hidden;
+  background: rgba(12, 15, 25, .86);
+  border: 1px solid rgba(56, 189, 248, .34);
+  border-radius: 9px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, .46);
+  padding: 10px;
+  color: #dbe7f0;
+  font-family: Inter, Arial, sans-serif;
+  pointer-events: none;
+  backdrop-filter: blur(10px);
+}
+
+.dg-live-head {
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 2px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+  margin-bottom: 8px;
+  font-size: 11px;
+  letter-spacing: .08em;
+  color: #a9b8c8;
+}
+
+.dg-live-head b {
+  color: #dbe7f0;
+  font-size: 12px;
+}
+
+#dg-live-list {
+  display: grid;
+  gap: 0;
+}
+
+.dg-live-row {
+  display: grid;
+  gap: 5px;
+  padding: 7px 8px;
+  background: rgba(255, 255, 255, .035);
+  border: 1px solid rgba(255, 255, 255, .07);
+  border-radius: 7px;
+}
+
+.dg-live-meta {
+  display: grid;
+  grid-template-columns: 42px 66px minmax(0, 1fr);
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: #7d93a5;
+}
+
+.dg-live-meta span {
+  color: #38bdf8;
+  font-weight: 800;
+}
+
+.dg-live-meta strong {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #dbe7f0;
+  font-size: 10.5px;
+}
+
+.dg-live-title {
+  min-width: 0;
+  color: #eef6ff;
+  font-size: 11.5px;
+  line-height: 1.28;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dg-live-bar {
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .08);
+}
+
+.dg-live-bar i {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #38bdf8, #22c55e);
+  transition: width .45s ease;
+}
+
+.dg-live-row.review .dg-live-meta span { color: #f59e0b; }
+.dg-live-row.blocked .dg-live-meta span { color: #fb5a72; }
+.dg-live-row.wait .dg-live-meta span { color: #a9b8c8; }
+.dg-live-row.done .dg-live-meta span { color: #22c55e; }
+.dg-live-row.review .dg-live-bar i { background: linear-gradient(90deg, #f59e0b, #facc15); }
+.dg-live-row.blocked .dg-live-bar i { background: linear-gradient(90deg, #fb5a72, #f97316); }
+.dg-live-row.wait .dg-live-bar i { background: linear-gradient(90deg, #64748b, #94a3b8); }
+.dg-live-row.done .dg-live-bar i { background: linear-gradient(90deg, #22c55e, #86efac); }
+
+.dg-live-empty {
+  padding: 10px;
+  color: #7d93a5;
+  font-size: 11.5px;
+}
+
+/* ===== Nut VAN HANH noi tren trang chu Skills Map ===== */
+
+#dg-vanhanh-btn {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: max(76px, env(safe-area-inset-bottom));
+  z-index: 99998;
+  background: linear-gradient(135deg, #38bdf8, #7c5cff);
+  color: #04121c;
+  font-weight: 700;
+  font-size: 12px;
+  border-radius: 999px;
+  padding: 8px 18px;
+  min-width: 118px;
+  text-align: center;
+  cursor: pointer;
+  font-family: Inter, Arial, sans-serif;
+  box-shadow: 0 8px 24px rgba(56, 189, 248, .35);
+  user-select: none;
+  transition: transform .15s ease, box-shadow .15s ease;
+  pointer-events: auto;
+}
+
+body.dg-top-collapsed #dg-vanhanh-btn {
+  bottom: max(78px, env(safe-area-inset-bottom));
+}
+
+#dg-vanhanh-btn:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 12px 30px rgba(56, 189, 248, .5);
+}
+
+.dg-node-admin-tools {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.1);
+}
+
+.dg-node-admin-tools button {
+  width: 100%;
+  min-height: 30px !important;
+  border-radius: 7px !important;
+  border: 1px solid #263143 !important;
+  background: #1a2233 !important;
+  color: #cfe3f5 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  cursor: pointer;
+}
+
+.dg-node-admin-tools select {
+  width: 100%;
+  min-height: 30px;
+  border-radius: 7px;
+  border: 1px solid #263143;
+  background: #0b1014;
+  color: #cfe3f5;
+  padding: 5px 7px;
+  font: 11px Inter, Arial, sans-serif;
+}
+
+.dg-node-admin-tools button.danger {
+  border-color: rgba(251, 90, 114, .5) !important;
+  color: #fecdd3 !important;
+  background: rgba(251, 90, 114, .1) !important;
+}
+
+.dg-node-admin-tools .hint {
+  color: #7d93a5;
+  font-size: 10.5px;
+  line-height: 1.35;
+}
+
+.dg-admin-map-inventory {
+  display: none !important;
+  position: fixed;
+  left: 14px;
+  top: 72px;
+  z-index: 99997;
+  width: min(320px, calc(100vw - 28px));
+  border: 1px solid rgba(56, 189, 248, .26);
+  border-radius: 8px;
+  background: rgba(9, 14, 21, .92);
+  color: #cfe3f5;
+  font-family: Inter, Arial, sans-serif;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, .34);
+  backdrop-filter: blur(12px);
+  pointer-events: auto;
+}
+
+.dg-admin-map-inventory-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: 12px;
+}
+
+.dg-admin-map-inventory-head button {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid #263143;
+  background: #121a27;
+  color: #cfe3f5;
+  cursor: pointer;
+}
+
+.dg-admin-map-inventory-body {
+  display: grid;
+  gap: 7px;
+  padding: 9px;
+}
+
+.dg-admin-map-inventory select {
+  width: 100%;
+  min-height: 32px;
+  border-radius: 7px;
+  border: 1px solid #263143;
+  background: #0b1014;
+  color: #cfe3f5;
+  padding: 5px 7px;
+  font: 11px Inter, Arial, sans-serif;
+}
+
+.dg-admin-map-inventory-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.dg-admin-map-inventory-actions button {
+  min-height: 30px;
+  border-radius: 7px;
+  border: 1px solid #263143;
+  background: #1a2233;
+  color: #cfe3f5;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.dg-admin-map-inventory-actions button.danger {
+  border-color: rgba(251, 90, 114, .5);
+  color: #fecdd3;
+  background: rgba(251, 90, 114, .1);
+}
+
+.dg-admin-map-inventory .hint {
+  color: #7d93a5;
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.dg-admin-map-inventory.is-collapsed .dg-admin-map-inventory-body {
+  display: none;
+}
+
+body.dg-top-collapsed .dg-admin-map-inventory {
+  top: 48px;
+}
+
+@media (max-width: 720px) {
+  .dg-admin-map-inventory {
+    top: 60px;
+    width: min(280px, calc(100vw - 24px));
+  }
+}
+
+/* ===== DG Ops Dock: tab nhiem vu ben phai + che do toan man hinh ===== */
+
+#dg-ops-dock-toggle {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 99998;
+  background: #121420f2;
+  border: 1px solid #263143;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  padding: 10px 8px;
+  font-size: 12px;
+  color: #cfe3f5;
+  cursor: pointer;
+  writing-mode: vertical-rl;
+  letter-spacing: 1px;
+  font-family: Inter, Arial, sans-serif;
+  user-select: none;
+}
+
+#dg-ops-dock-toggle:hover { color: #38bdf8; border-color: #38bdf8; }
+
+.dg-admin-edit-strip {
+  display: grid;
+  gap: 7px;
+  margin-bottom: 10px;
+  padding: 9px;
+  border: 1px solid rgba(56, 189, 248, .24);
+  border-radius: 9px;
+  background: rgba(56, 189, 248, .07);
+  color: #cfe3f5;
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.dg-admin-edit-strip b {
+  color: #38bdf8;
+}
+
+.dg-admin-edit-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.dg-admin-edit-actions button {
+  background: #1a2233;
+  border: 1px solid #263143;
+  color: #cfe3f5;
+  border-radius: 7px;
+  padding: 6px 8px;
+  font-size: 10.5px;
+  cursor: pointer;
+}
+
+.dg-admin-edit-actions button:hover {
+  color: #4ade80;
+  border-color: #4ade80;
+}
+
+#dg-ops-dock {
+  position: fixed;
+  left: 100%;
+  top: 36px;
+  bottom: 6px;
+  width: 330px;
+  z-index: 99997;
+  background: #10141ef8;
+  border: 1px solid #263143;
+  border-radius: 12px 0 0 12px;
+  padding: 10px;
+  font-family: Inter, Arial, sans-serif;
+  color: #dbe7f0;
+  overflow-y: auto;
+  transition: left .25s ease, width .25s ease;
+}
+
+body.dg-dock-open #dg-ops-dock,
+#dg-ops-dock.dg-open {
+  left: max(6px, calc(100% - 336px));
+  width: min(330px, calc(100% - 12px));
+}
+
+#dg-ops-dock.dg-full {
+  left: 6px !important;
+  width: calc(100% - 12px);
+  border-radius: 12px;
+}
+
+.dg-dock-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: #38bdf8;
+  margin-bottom: 8px;
+}
+
+.dg-dock-btns button {
+  background: #1a2233;
+  border: 1px solid #263143;
+  color: #9fb3c8;
+  border-radius: 7px;
+  padding: 4px 8px;
+  font-size: 10.5px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.dg-dock-btns button:hover { color: #38bdf8; border-color: #38bdf8; }
+
+.dg-dock-agents {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.dg-dock-agent {
+  background: #1a2233;
+  border: 1px solid #263143;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 10.5px;
+  color: #9fb3c8;
+  cursor: pointer;
+}
+
+.dg-dock-agent b { color: #38bdf8; }
+.dg-dock-agent:hover { border-color: #38bdf8; }
+.dg-dock-agent.sel { border-color: #38bdf8; color: #38bdf8; background: #14202e; }
+
+.dg-dock-sub { font-size: 11px; color: #7d93a5; margin: 6px 0; }
+.dg-link { color: #38bdf8; cursor: pointer; }
+
+.dg-dock-task {
+  background: #151f28;
+  border: 1px solid #263143;
+  border-radius: 9px;
+  padding: 8px;
+  margin-bottom: 7px;
+}
+
+.dg-dock-task .tt { font-size: 12px; line-height: 1.35; margin-bottom: 4px; }
+.dg-dock-task .tm { font-size: 10.5px; color: #7d93a5; margin-bottom: 6px; }
+.dg-dock-task .pr { font-weight: bold; }
+.dg-dock-task .pr.P0 { color: #f87171; } .dg-dock-task .pr.P1 { color: #fb923c; }
+.dg-dock-task .pr.P2 { color: #38bdf8; } .dg-dock-task .pr.P3 { color: #64748b; }
+
+.dg-dock-task select, .dg-dock-form input, .dg-dock-form select, .dg-dock-form textarea {
+  width: 100%;
+  background: #0b1014;
+  color: #cfe3f5;
+  border: 1px solid #263143;
+  border-radius: 7px;
+  padding: 6px;
+  font-size: 11px;
+  font-family: inherit;
+  margin-bottom: 6px;
+}
+
+.dg-dock-form .row { display: flex; gap: 6px; }
+.dg-dock-form textarea { min-height: 52px; resize: vertical; }
+
+.dg-dock-form button {
+  width: 100%;
+  background: #38bdf8;
+  color: #04222f;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dg-dock-form button:hover { background: #5cc9f9; }
+
+/* O "Codex tu chay" trong form giao viec */
+.dg-dock-chk {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 2px 0 8px;
+  font-size: 11px;
+  color: #cfe3f5;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.dg-dock-chk input {
+  width: auto;
+  margin: 2px 0 0;
+  accent-color: #22c55e;
+  flex-shrink: 0;
+}
+
+.dg-dock-chk em { font-style: normal; color: #7d93a5; }
+
+.dg-dock-hint {
+  font-size: 11.5px;
+  color: #7d93a5;
+  line-height: 1.6;
+  padding: 8px;
+}
+
+.dg-dock-hint button {
+  background: #1a2233;
+  border: 1px solid #263143;
+  color: #38bdf8;
+  border-radius: 7px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+#dg-ops-dock.dg-full .dg-dock-tasks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px;
+}
+
+#dg-ops-dock.dg-full .dg-dock-tasks .dg-dock-sub { grid-column: 1 / -1; }
+#dg-ops-dock.dg-full .dg-dock-form { max-width: 560px; margin-top: 10px; }
