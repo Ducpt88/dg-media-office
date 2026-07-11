@@ -3,6 +3,7 @@
   const seed = { orderId:"MANUAL-20260711-001", name:"Học viên chưa cập nhật tên", contact:"", product:"Khóa học 1", amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", entitlement:true, createdAt:"2026-07-11T00:00:00+07:00" };
   let records = [];
   try { records = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
+  records = records.map((item, index) => item.orderId ? item : {...item, orderId:`LEGACY-${item.createdAt || Date.now()}-${index}`});
   if (!records.some(item => item.orderId === seed.orderId)) records.push(seed);
   localStorage.setItem(key, JSON.stringify(records));
   let editingOrderId = "";
