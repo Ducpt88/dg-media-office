@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vietnamese Voice Mic – Coding bằng giọng nói | DUCPT</title>
+  <meta name="description" content="Hướng dẫn cài đặt và dùng Vietnamese Voice Mic để nhập prompt, mô tả lỗi, review code bằng giọng nói tiếng Việt trong Cursor, VS Code, Codex và ChatGPT.">
+  <meta name="keywords" content="Vietnamese Voice Mic, coding bằng giọng nói, voice coding tiếng Việt, dùng giọng nói trong Cursor, dùng giọng nói trong VS Code">
+  <meta name="author" content="Hoàng Văn Đức">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <meta name="theme-color" content="#14213d">
+  <link rel="canonical" href="https://ducpt.com/bai-viet/vietnamese-voice-mic-coding-bang-giong-noi/">
+  <link rel="alternate" hreflang="vi" href="https://ducpt.com/bai-viet/vietnamese-voice-mic-coding-bang-giong-noi/">
+
+  <meta property="og:type" content="article">
+  <meta property="og:locale" content="vi_VN">
+  <meta property="og:site_name" content="DUCPT">
+  <meta property="og:title" content="Vietnamese Voice Mic: Coding bằng giọng nói tiếng Việt">
+  <meta property="og:description" content="Biến lời nói thành prompt và văn bản trong Cursor, VS Code, Codex, ChatGPT để làm việc nhanh hơn trên Windows.">
+  <meta property="og:url" content="https://ducpt.com/bai-viet/vietnamese-voice-mic-coding-bang-giong-noi/">
+  <meta property="og:image" content="https://ducpt.com/assets/png/repo-vietnamese-voice-mic.png">
+  <meta property="og:image:alt" content="Biểu tượng ứng dụng Vietnamese Voice Mic">
+  <meta property="article:published_time" content="2026-07-11T08:00:00+07:00">
+  <meta property="article:modified_time" content="2026-07-11T08:00:00+07:00">
+  <meta property="article:author" content="Hoàng Văn Đức">
+  <meta property="article:section" content="Công cụ AI">
+  <meta property="article:tag" content="Vietnamese Voice Mic">
+  <meta property="article:tag" content="Voice coding">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Vietnamese Voice Mic: Coding bằng giọng nói tiếng Việt">
+  <meta name="twitter:description" content="Hướng dẫn cài đặt, sử dụng và tối ưu quy trình voice coding trên Windows.">
+  <meta name="twitter:image" content="https://ducpt.com/assets/png/repo-vietnamese-voice-mic.png">
+
+  <link rel="icon" type="image/svg+xml" href="/assets/hvd-monogram.svg">
+  <link rel="apple-touch-icon" href="/assets/hvd-monogram.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
+  <link rel="stylesheet" href="/article-pages.css?v=20260711">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": "https://ducpt.com/bai-viet/vietnamese-voice-mic-coding-bang-giong-noi/#article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://ducpt.com/bai-viet/vietnamese-voice-mic-coding-bang-giong-noi/"
+    },
+    "headline": "Vietnamese Voice Mic: Dùng giọng nói tiếng Việt để coding nhanh và hiệu quả hơn",
+    "description": "Hướng dẫn cài đặt và dùng Vietnamese Voice Mic để nhập prompt, mô tả lỗi, review code bằng giọng nói tiếng Việt trong Cursor, VS Code, Codex và ChatGPT.",
+    "image": "https://ducpt.com/assets/png/repo-vietnamese-voice-mic.png",
+    "datePublished": "2026-07-11T08:00:00+07:00",
+    "dateModified": "2026-07-11T08:00:00+07:00",
+    "inLanguage": "vi-VN",
+    "isAccessibleForFree": true,
+    "author": {
+      "@type": "Person",
+      "name": "Hoàng Văn Đức",
+      "url": "https://ducpt.com/ve-chung-toi/"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "DUCPT",
+      "url": "https://ducpt.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://ducpt.com/assets/hvd-horizontal.svg"
+      }
+    },
+    "keywords": [
+      "Vietnamese Voice Mic",
+      "coding bằng giọng nói",
+      "voice coding tiếng Việt",
+      "dùng giọng nói trong Cursor",
+      "dùng giọng nói trong VS Code"
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "@id": "https://ducpt.com/bai-viet/vietnamese-voice-mic-coding-bang-giong-noi/#faq",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Vietnamese Voice Mic có dùng được với Cursor và VS Code không?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Có. Ứng dụng hoạt động với ô chat hoặc ô nhập liệu trên Windows nên có thể dùng trong Cursor, VS Code và nhiều công cụ AI coding khác."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vietnamese Voice Mic có tự gửi prompt không?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Không. Ứng dụng nhận diện rồi dán văn bản vào ô đã chọn. Người dùng vẫn kiểm tra, chỉnh sửa và chủ động nhấn gửi."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vietnamese Voice Mic có cần Internet không?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Có. Phiên bản hiện tại dùng Google Speech Recognition để nhận diện tiếng Việt nên cần kết nối Internet."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Dữ liệu cá nhân có được đưa lên GitHub không?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Theo tài liệu dự án, context cá nhân, transcript phục hồi và cấu hình local được lưu trên máy, không đưa lên GitHub. Tuy nhiên, không nên đọc mật khẩu, API key, OTP hoặc dữ liệu nhạy cảm vào dịch vụ nhận diện trực tuyến."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vietnamese Voice Mic có dùng được trên macOS không?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bản phát hành hiện tại dành cho Windows. Repository chưa cung cấp gói cài đặt chính thức cho macOS."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Trang chủ",
+        "item": "https://ducpt.com/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Bài viết",
+        "item": "https://ducpt.com/bai-viet/"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": "Vietnamese Voice Mic",
+        "item": "https://ducpt.com/bai-viet/vietnamese-voice-mic-coding-bang-giong-noi/"
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav" aria-label="Điều hướng chính">
+      <a href="/" aria-label="DUCPT - Trang chủ"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></a>
+      <a href="/khoa-hoc/">Khóa học</a>
+      <a class="active" href="/bai-viet/" aria-current="page">Bài viết</a>
+      <a href="/dich-vu/">Dịch vụ đào tạo</a>
+      <a href="/cong-cu-ai/">Công cụ AI</a>
+      <a href="/ve-chung-toi/">Về chúng tôi</a>
+      <span class="grow"></span>
+      <a class="login" href="/dang-nhap/">Đăng nhập</a>
+      <a class="signup" href="/dang-ky/">Đăng ký miễn phí</a>
+    </nav>
+  </header>
+
+  <nav class="breadcrumb" aria-label="Đường dẫn">
+    <a href="/">Trang chủ</a> <span aria-hidden="true">›</span>
+    <a href="/bai-viet/">Bài viết</a> <span aria-hidden="true">›</span>
+    <span aria-current="page">Vietnamese Voice Mic</span>
+  </nav>
+
+  <section class="article-hero" aria-labelledby="article-title">
+    <div class="article-hero-inner">
+      <span class="article-kicker">Công cụ AI · Voice coding</span>
+      <h1 id="article-title">Vietnamese Voice Mic: Dùng giọng nói tiếng Việt để coding nhanh và hiệu quả hơn</h1>
+      <p class="article-deck">Hướng dẫn từ cài đặt đến quy trình thực chiến để bạn nói prompt, mô tả lỗi, review code và viết tài liệu ngay trong Cursor, VS Code, Codex hoặc ChatGPT trên Windows.</p>
+      <div class="article-meta" aria-label="Thông tin bài viết">
+        <span>Tác giả: Hoàng Văn Đức</span>
+        <span>Đăng ngày <time datetime="2026-07-11">11/07/2026</time></span>
+        <span>Khoảng 15 phút đọc</span>
+        <span>Cập nhật theo bản v1.1.1</span>
+      </div>
+      <div class="article-quick-cta">
+        <a class="article-button" href="https://github.com/Ducpt88/VietnameseVoiceMic/releases/download/v1.1.1/VietnameseVoiceMic-windows.zip" target="_blank" rel="noopener noreferrer">Tải Vietnamese Voice Mic cho Windows</a>
+        <a class="article-button secondary" href="#cach-su-dung">Xem hướng dẫn sử dụng</a>
+      </div>
+    </div>
+  </section>
+
+  <main class="article-layout" id="noi-dung">
+    <article class="article-body">
+      <p><strong>Khi làm việc với công cụ AI coding, phần tốn thời gian không phải lúc nào cũng là viết code.</strong> Bạn còn phải gõ yêu cầu, mô tả lỗi, giải thích bối cảnh và phản hồi kết quả. Vietnamese Voice Mic biến lời nói tiếng Việt thành văn bản rồi đưa trực tiếp vào đúng ô nhập, giúp giảm việc gõ lặp lại và giữ liền mạch luồng suy nghĩ.</p>
+
+      <div class="article-callout">
+        <strong>Cách dùng ngắn gọn:</strong> mở ứng dụng, giữ <code>Alt</code> và click chuột trái vào ô cần nhập, nói yêu cầu, chờ nhận diện rồi kiểm tra transcript trước khi gửi.
+      </div>
+
+      <section aria-labelledby="vietnamese-voice-mic-la-gi">
+        <h2 id="vietnamese-voice-mic-la-gi">Vietnamese Voice Mic là gì?</h2>
+        <p>Vietnamese Voice Mic là ứng dụng chạy nền trên Windows, được tối ưu để nhập tiếng Việt bằng giọng nói vào ô chat hoặc ô nhập liệu. Công cụ nhận diện giọng nói qua Google Speech Recognition, tự phát hiện lúc bạn bắt đầu và ngừng nói, sau đó dán transcript trở lại cửa sổ đã chọn.</p>
+        <p>Ứng dụng hữu ích trong nhiều tình huống:</p>
+        <ul>
+          <li>Giao việc cho AI trong Cursor, VS Code và các IDE có trợ lý lập trình.</li>
+          <li>Nhập prompt trong Codex, ChatGPT, Claude hoặc công cụ AI trên trình duyệt.</li>
+          <li>Ghi chú công việc trong Notion, Trello, Linear và ứng dụng quản lý dự án.</li>
+          <li>Soạn email, tài liệu, biểu mẫu và các nội dung tiếng Việt dài.</li>
+        </ul>
+        <p>Vietnamese Voice Mic không tự viết code thay bạn. Công cụ rút ngắn bước chuyển ý tưởng thành văn bản để bạn giao tiếp với AI và ghi lại công việc nhanh hơn.</p>
+      </section>
+
+      <section aria-labelledby="loi-ich-voice-coding">
+        <h2 id="loi-ich-voice-coding">Vì sao voice coding giúp tối ưu tiến độ?</h2>
+
+        <h3>Mô tả yêu cầu tự nhiên và đầy đủ hơn</h3>
+        <p>Khi nói, bạn thường diễn đạt được cả mục tiêu, bối cảnh, điều kiện và kết quả mong muốn. Một prompt có đủ bốn phần này giúp AI hiểu việc tốt hơn một câu gõ vội và giảm số vòng hỏi lại.</p>
+
+        <h3>Giảm thời gian gõ giải thích dài</h3>
+        <p>Mô tả lỗi giao diện, review một luồng nghiệp vụ, viết tài liệu hay giao nhiều bước cho AI thường cần hàng trăm từ. Đọc thành câu rồi chỉnh vài chi tiết kỹ thuật có thể nhanh hơn việc gõ từ đầu.</p>
+
+        <h3>Giữ liền mạch luồng suy nghĩ</h3>
+        <p>Bạn có thể quan sát code hoặc giao diện và mô tả vấn đề ngay khi nhìn thấy, thay vì liên tục chuyển sự chú ý giữa màn hình và bàn phím.</p>
+
+        <h3>Dễ phục hồi nội dung vừa nói</h3>
+        <p>Transcript mới nhất được giữ trong clipboard. Nếu nội dung bị dán nhầm hoặc ô nhập thay đổi, bạn có thể dùng <code>Ctrl + V</code> để dán lại mà không phải đọc lại từ đầu.</p>
+      </section>
+
+      <section aria-labelledby="tinh-nang-noi-bat">
+        <h2 id="tinh-nang-noi-bat">Tính năng nổi bật</h2>
+        <ul>
+          <li>Kích hoạt bằng <strong><code>Alt + click chuột trái</code></strong> ngay tại ô muốn nhập.</li>
+          <li>Ghi nhớ cửa sổ và vị trí ban đầu để dán transcript đúng chỗ.</li>
+          <li>Nhận diện tiếng Việt bằng Google Speech Recognition.</li>
+          <li>Tự phát hiện khi người dùng bắt đầu và ngừng nói bằng VAD WebRTC/RMS.</li>
+          <li>Xử lý đoạn nói dài bằng cách chia tại vùng âm lượng thấp, nhận diện song song rồi ghép lại.</li>
+          <li>Hiển thị trạng thái đang nghe, đang nhận diện và đã có văn bản trên HUD.</li>
+          <li>Không tự dán nếu cửa sổ mục tiêu đã đóng, giúp hạn chế đưa nội dung nhầm nơi.</li>
+          <li>Lưu transcript mới nhất trong clipboard, file phục hồi và lịch sử cục bộ.</li>
+          <li>Hỗ trợ cập nhật qua GitHub Releases.</li>
+          <li>Context và từ điển cá nhân được lưu trên máy, không đưa lên GitHub.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="yeu-cau-he-thong">
+        <h2 id="yeu-cau-he-thong">Yêu cầu hệ thống</h2>
+        <ul>
+          <li>Máy tính chạy Windows 10 hoặc Windows 11.</li>
+          <li>Microphone đang hoạt động và đã được Windows cấp quyền.</li>
+          <li>Kết nối Internet để sử dụng Google Speech Recognition.</li>
+          <li>Nên dùng tai nghe hoặc đặt microphone gần miệng khi môi trường có nhiều tiếng ồn.</li>
+        </ul>
+      </section>
+
+      <section aria-labelledby="cai-dat">
+        <h2 id="cai-dat">Cách tải và cài Vietnamese Voice Mic</h2>
+        <ol>
+          <li>Đi đến <a href="#tai-ung-dung">phần tải ứng dụng ở cuối bài</a>.</li>
+          <li>Tải file <code>VietnameseVoiceMic-windows.zip</code> từ GitHub Releases chính thức.</li>
+          <li>Giải nén toàn bộ file ZIP vào một thư mục cố định, ví dụ <code>D:\Apps\VietnameseVoiceMic</code>.</li>
+          <li>Mở thư mục vừa giải nén và chạy <code>VietnameseVoiceMic.exe</code>.</li>
+          <li>Nếu Windows hiển thị cảnh báo, kiểm tra nguồn tải là repository <code>Ducpt88/VietnameseVoiceMic</code> trước khi tiếp tục.</li>
+          <li>Cho phép ứng dụng sử dụng microphone nếu Windows yêu cầu.</li>
+        </ol>
+        <div class="article-callout">
+          <strong>Lưu ý:</strong> không chạy file trực tiếp bên trong cửa sổ xem ZIP. Hãy giải nén đầy đủ để các file cấu hình, lịch sử và chức năng cập nhật hoạt động đúng.
+        </div>
+      </section>
+
+      <section aria-labelledby="cach-su-dung">
+        <h2 id="cach-su-dung">Cách sử dụng Vietnamese Voice Mic</h2>
+        <ol>
+          <li>Mở Vietnamese Voice Mic và để ứng dụng chạy nền.</li>
+          <li>Mở Cursor, VS Code, Codex, ChatGPT hoặc ứng dụng có ô nhập văn bản.</li>
+          <li><strong>Giữ phím <code>Alt</code> và click chuột trái</strong> đúng vào ô muốn nhập.</li>
+          <li>Khi vòng tròn hiển thị <strong>ĐANG NGHE</strong>, bắt đầu nói rõ ràng với tốc độ vừa phải.</li>
+          <li>Khi bạn ngừng nói, ứng dụng chuyển sang trạng thái <strong>ĐANG NHẬN DIỆN</strong>.</li>
+          <li>Sau khi xử lý, transcript được tự động dán vào vị trí đã chọn.</li>
+          <li>Đọc lại nội dung, sửa tên hàm, đường dẫn, câu lệnh hoặc thuật ngữ rồi mới gửi.</li>
+        </ol>
+        <p>Trong lúc đang nghe, bạn có thể nhấn <code>Esc</code> để kết thúc thu và yêu cầu ứng dụng xử lý phần âm thanh đã ghi.</p>
+      </section>
+
+      <section aria-labelledby="voice-coding-thuc-chien">
+        <h2 id="voice-coding-thuc-chien">4 cách dùng giọng nói khi coding</h2>
+
+        <h3>1. Nói prompt giao việc cho AI</h3>
+        <p>Thay vì nói một câu chung chung như “sửa code này”, hãy đọc prompt theo cấu trúc:</p>
+        <blockquote>
+          <p><strong>Bối cảnh → mục tiêu → phạm vi → điều kiện → cách kiểm tra.</strong></p>
+        </blockquote>
+        <p>Ví dụ:</p>
+        <blockquote>
+          <p>“Dự án này dùng React và TypeScript. Hãy sửa form đăng nhập để hiển thị lỗi ngay dưới từng trường. Không thay đổi API hiện tại. Sau khi sửa, chạy kiểm tra TypeScript và test liên quan, sau đó tóm tắt các file đã thay đổi.”</p>
+        </blockquote>
+
+        <h3>2. Mô tả lỗi trong lúc quan sát màn hình</h3>
+        <p>Nhìn trực tiếp vào giao diện và mô tả vị trí, điều kiện xuất hiện lỗi cùng hành vi mong muốn:</p>
+        <blockquote>
+          <p>“Ở màn hình điện thoại, nút thanh toán đang tràn ra ngoài khung khoảng 20 pixel. Lỗi chỉ xuất hiện khi chiều rộng dưới 375 pixel. Kiểm tra CSS của checkout footer và sửa nhưng không làm thay đổi giao diện desktop.”</p>
+        </blockquote>
+        <p>Sau khi transcript xuất hiện, bổ sung tên file hoặc selector chính xác bằng bàn phím nếu cần.</p>
+
+        <h3>3. Review code bằng giọng nói</h3>
+        <p>Khi review, hãy nói lần lượt file hoặc chức năng đang xem, điều bạn nghi ngờ, hành vi mong muốn và cách cần kiểm tra.</p>
+        <blockquote>
+          <p>“Kiểm tra hàm đồng bộ đơn hàng trong file service. Tôi nghi ngờ request bị gửi hai lần khi người dùng bấm nút liên tục. Hãy tìm nguyên nhân, giải thích trước, sau đó đề xuất cách chống duplicate request và thêm test hồi quy.”</p>
+        </blockquote>
+
+        <h3>4. Viết tài liệu và báo cáo tiến độ</h3>
+        <p>Ứng dụng phù hợp để đọc nhanh nội dung README, mô tả pull request, ghi chú phát hành, checklist kiểm thử và báo cáo cuối ngày. Với commit message hoặc lệnh terminal, nên nói phần ý tưởng rồi tự nhập cú pháp chính xác bằng bàn phím.</p>
+      </section>
+
+      <section aria-labelledby="quy-trinh-hieu-qua">
+        <h2 id="quy-trinh-hieu-qua">Quy trình voice coding hiệu quả</h2>
+
+        <h3>Bước 1: Chọn đúng ô nhập</h3>
+        <p>Giữ <code>Alt</code> và click trực tiếp vào ô chat của công cụ đang dùng. Tránh click sang cửa sổ khác trong khi ứng dụng đang nghe nếu bạn muốn transcript được dán tự động.</p>
+
+        <h3>Bước 2: Chia yêu cầu thành từng lượt có mục tiêu</h3>
+        <p>Với nhiệm vụ lớn, hãy chia thành bốn lượt:</p>
+        <ol>
+          <li>Yêu cầu AI khảo sát và giải thích.</li>
+          <li>Yêu cầu lập phương án.</li>
+          <li>Yêu cầu thực hiện thay đổi.</li>
+          <li>Yêu cầu chạy kiểm tra và báo cáo.</li>
+        </ol>
+        <p>Cách này giúp transcript dễ kiểm soát và AI ít bỏ sót yêu cầu.</p>
+
+        <h3>Bước 3: Nói phần tự nhiên, gõ phần kỹ thuật</h3>
+        <p>Giọng nói phù hợp với mục tiêu, bối cảnh và logic. Bàn phím vẫn chính xác hơn với tên biến, tên hàm, đường dẫn file, URL, regular expression và lệnh terminal.</p>
+        <blockquote>
+          <p>Quy tắc thực dụng: <strong>nói 80% nội dung, gõ và chỉnh 20% chi tiết kỹ thuật</strong>.</p>
+        </blockquote>
+
+        <h3>Bước 4: Kiểm tra trước khi gửi</h3>
+        <ul>
+          <li>Tên công nghệ và thuật ngữ đã đúng chưa?</li>
+          <li>Có thiếu từ phủ định như “không” hay không?</li>
+          <li>Có vô tình yêu cầu AI xóa hoặc thay đổi ngoài phạm vi không?</li>
+          <li>Tên file, URL và câu lệnh đã chính xác chưa?</li>
+        </ul>
+
+        <h3>Bước 5: Lưu mẫu prompt thường dùng</h3>
+        <p>Tạo sẵn các khung “sửa lỗi”, “review code”, “viết test” và “tối ưu hiệu năng”. Khi dùng giọng nói, bạn chỉ cần bổ sung bối cảnh cụ thể của nhiệm vụ.</p>
+      </section>
+
+      <section aria-labelledby="cau-hinh-microphone">
+        <h2 id="cau-hinh-microphone">Cấu hình microphone</h2>
+        <p>Cấu hình chính nằm trong file <code>voice-mic-settings.json</code>. Ví dụ:</p>
+        <pre><code>{
+  "preferred_microphone": "USB Audio Device",
+  "microphone_name_hints": [
+    "USB Audio Device",
+    "Microphone",
+    "Headset"
+  ],
+  "enable_particle_effect": true,
+  "enable_context_memory": true
+}</code></pre>
+        <p>Để ứng dụng tự chọn microphone dựa trên danh sách gợi ý, đặt:</p>
+        <pre><code>"preferred_microphone": ""</code></pre>
+        <p>Sau khi sửa cấu hình, lưu file và khởi động lại ứng dụng.</p>
+      </section>
+
+      <section aria-labelledby="toi-uu-nhan-dien">
+        <h2 id="toi-uu-nhan-dien">Tối ưu nhận diện thuật ngữ coding</h2>
+        <p>Tên framework, thư viện và biến tiếng Anh có thể bị nhận sai. Bạn có thể:</p>
+        <ul>
+          <li>Nói chậm hơn ở phần thuật ngữ và ngắt nhẹ trước, sau tên riêng.</li>
+          <li>Thêm từ thường dùng vào <code>speech_context_terms</code> trong cấu hình hoặc context của ứng dụng.</li>
+          <li>Lưu từ điển cá nhân trong file local để không đưa dữ liệu riêng lên GitHub.</li>
+          <li>Dùng giọng nói cho phần mô tả, sau đó gõ lại chính xác tên biến hoặc đường dẫn.</li>
+        </ul>
+        <div class="article-callout">
+          <strong>Bảo mật:</strong> không đọc mật khẩu, API key, mã OTP, dữ liệu khách hàng hoặc thông tin bí mật vào công cụ nhận diện trực tuyến.
+        </div>
+      </section>
+
+      <section aria-labelledby="phuc-hoi-transcript">
+        <h2 id="phuc-hoi-transcript">Khôi phục nội dung khi dán lỗi</h2>
+        <p>Nếu transcript bị dán sai vị trí hoặc cửa sổ mục tiêu không còn hoạt động:</p>
+        <ul>
+          <li>Nhấn <code>Ctrl + V</code> để dán lại transcript mới nhất từ clipboard.</li>
+          <li>Mở <code>voice-last.txt</code> để xem nội dung nhận diện gần nhất.</li>
+          <li>Mở <code>voice-transcripts.jsonl</code> để xem lịch sử transcript trên máy.</li>
+          <li>Mở <code>voice-last.wav</code> nếu cần nghe lại đoạn âm thanh vừa thu.</li>
+        </ul>
+        <p>Các file phục hồi được lưu cục bộ và nằm trong <code>.gitignore</code> của dự án.</p>
+      </section>
+
+      <section aria-labelledby="tu-khoi-dong">
+        <h2 id="tu-khoi-dong">Cho ứng dụng tự chạy cùng Windows</h2>
+        <p>Nếu chạy Vietnamese Voice Mic từ mã nguồn, mở PowerShell tại thư mục dự án và dùng:</p>
+        <pre><code>powershell -ExecutionPolicy Bypass -File .\install-startup.ps1</code></pre>
+        <p>Để gỡ tự khởi động:</p>
+        <pre><code>powershell -ExecutionPolicy Bypass -File .\uninstall-startup.ps1</code></pre>
+        <p>Chỉ bật tự khởi động nếu bạn sử dụng voice coding thường xuyên. Việc để ứng dụng sẵn sàng sẽ giảm một thao tác trước mỗi phiên làm việc.</p>
+      </section>
+
+      <section aria-labelledby="xu-ly-loi">
+        <h2 id="xu-ly-loi">Xử lý lỗi thường gặp</h2>
+
+        <h3>Giữ Alt và click nhưng ứng dụng không nghe</h3>
+        <p>Hãy chắc chắn bạn vẫn giữ <code>Alt</code> tại đúng thời điểm click chuột trái. Kiểm tra ứng dụng đang chạy và microphone đã được Windows cấp quyền.</p>
+
+        <h3>Ứng dụng không nhận giọng nói</h3>
+        <p>Kiểm tra microphone mặc định trong Windows và giá trị <code>preferred_microphone</code>. Thử ghi âm bằng Voice Recorder để xác nhận mic hoạt động.</p>
+
+        <h3>Transcript bị cắt câu quá sớm</h3>
+        <p>Nói liền mạch hơn và hạn chế dừng quá lâu giữa câu. Người chạy từ mã nguồn có thể tăng <code>WEBRTC_VOICE_END_SECONDS</code> và <code>RMS_VOICE_END_SECONDS</code> trong <code>voice_mic_icon.py</code>.</p>
+
+        <h3>Ứng dụng nhận sai nhiều từ</h3>
+        <p>Đưa microphone gần hơn, giảm tiếng nền và bổ sung thuật ngữ thường dùng vào context. Luôn đọc lại transcript trước khi gửi yêu cầu cho AI.</p>
+
+        <h3>Transcript không được dán đúng chỗ</h3>
+        <p>Hãy <code>Alt + click</code> trực tiếp vào đúng ô input trước khi nói. Nếu cửa sổ đã đóng, ứng dụng không tự dán để tránh đưa nội dung nhầm nơi; dùng <code>Ctrl + V</code> để phục hồi thủ công.</p>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Câu hỏi thường gặp</h2>
+
+        <h3>Vietnamese Voice Mic có dùng được với Cursor và VS Code không?</h3>
+        <p>Có. Ứng dụng hoạt động với ô chat hoặc ô nhập liệu trên Windows nên có thể dùng trong Cursor, VS Code và nhiều công cụ AI coding khác.</p>
+
+        <h3>Ứng dụng có tự gửi prompt không?</h3>
+        <p>Không. Ứng dụng nhận diện rồi dán văn bản vào ô đã chọn. Bạn vẫn có cơ hội kiểm tra, chỉnh sửa và chủ động nhấn gửi.</p>
+
+        <h3>Vietnamese Voice Mic có cần Internet không?</h3>
+        <p>Có. Phiên bản hiện tại dùng Google Speech Recognition để nhận diện tiếng Việt nên cần kết nối Internet.</p>
+
+        <h3>Dữ liệu cá nhân có được đưa lên GitHub không?</h3>
+        <p>Theo tài liệu dự án, context cá nhân, transcript phục hồi và cấu hình local được lưu trên máy, không đưa lên GitHub. Tuy nhiên, việc nhận diện sử dụng dịch vụ trực tuyến nên không được đọc thông tin nhạy cảm.</p>
+
+        <h3>Ứng dụng có dùng được trên macOS không?</h3>
+        <p>Bản phát hành hiện tại dành cho Windows. Repository chưa cung cấp gói cài đặt chính thức cho macOS.</p>
+      </section>
+
+      <section class="download-box" id="tai-ung-dung" aria-labelledby="download-title">
+        <h2 id="download-title">Tải Vietnamese Voice Mic cho Windows</h2>
+        <p>Phiên bản được kiểm tra khi viết bài: <strong>v1.1.1</strong>, phát hành ngày 10/07/2026. Gói Windows có dung lượng khoảng 46,6 MB.</p>
+        <p><a class="article-button" href="https://github.com/Ducpt88/VietnameseVoiceMic/releases/download/v1.1.1/VietnameseVoiceMic-windows.zip" target="_blank" rel="noopener noreferrer">Tải trực tiếp VietnameseVoiceMic-windows.zip</a></p>
+        <p><a href="https://github.com/Ducpt88/VietnameseVoiceMic/releases/latest" target="_blank" rel="noopener noreferrer">Xem phiên bản mới nhất trên GitHub Releases</a></p>
+        <p><a href="https://github.com/Ducpt88/VietnameseVoiceMic" target="_blank" rel="noopener noreferrer">Xem mã nguồn và tài liệu chính thức</a></p>
+      </section>
+
+      <p class="article-updated"><small>Cập nhật và kiểm tra liên kết tải ngày <time datetime="2026-07-11">11/07/2026</time>. Khi dự án có bản mới, hãy ưu tiên trang “Latest release”.</small></p>
+    </article>
+
+    <aside class="article-aside" aria-label="Mục lục bài viết">
+      <strong>Mục lục</strong>
+      <a href="#vietnamese-voice-mic-la-gi">Vietnamese Voice Mic là gì?</a>
+      <a href="#loi-ich-voice-coding">Lợi ích của voice coding</a>
+      <a href="#tinh-nang-noi-bat">Tính năng nổi bật</a>
+      <a href="#cai-dat">Cách cài đặt</a>
+      <a href="#cach-su-dung">Cách sử dụng</a>
+      <a href="#voice-coding-thuc-chien">4 cách dùng khi coding</a>
+      <a href="#quy-trinh-hieu-qua">Quy trình hiệu quả</a>
+      <a href="#cau-hinh-microphone">Cấu hình microphone</a>
+      <a href="#xu-ly-loi">Xử lý lỗi</a>
+      <a href="#faq-title">Câu hỏi thường gặp</a>
+      <a href="#tai-ung-dung"><strong>Tải ứng dụng ↓</strong></a>
+    </aside>
+  </main>
+
+  <section class="related" aria-labelledby="related-title">
+    <h2 id="related-title">Bài viết liên quan</h2>
+    <div class="related-grid">
+      <article class="related-card">
+        <h3>Pro Video Downloader</h3>
+        <p>Hướng dẫn tải video YouTube, TikTok, Facebook và nhiều nền tảng bằng công cụ miễn phí.</p>
+        <a href="/bai-viet/pro-video-downloader-tai-video-youtube-tiktok-facebook/">Xem hướng dẫn →</a>
+      </article>
+      <article class="related-card">
+        <h3>Khám phá thêm kiến thức AI</h3>
+        <p>Các hướng dẫn thực chiến về AI, automation và cách tối ưu quy trình làm việc.</p>
+        <a href="/bai-viet/">Xem tất cả bài viết →</a>
+      </article>
+    </div>
+  </section>
+
+  <footer>
+    <div class="site-footer">
+      <div class="footer-grid">
+        <section class="footer-brand">
+          <img src="/assets/hvd-horizontal.svg" alt="DUCPT">
+          <p>Nền tảng học và ứng dụng AI thực chiến dành cho cá nhân và doanh nghiệp Việt Nam.</p>
+          <div class="footer-social" aria-label="Mạng xã hội">
+            <a href="https://ducpt.com" aria-label="Website DUCPT">◎</a>
+            <a href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener noreferrer" aria-label="YouTube DUCPT">▶</a>
+            <a href="https://zalo.me/0963249467" target="_blank" rel="noopener noreferrer" aria-label="Zalo DUCPT">◯</a>
+          </div>
+        </section>
+        <section class="footer-col">
+          <h3>Khóa học</h3>
+          <a href="/khoa-hoc/">Tất cả khóa học</a>
+          <a href="/khoa-hoc/">AI nền tảng</a>
+          <a href="/khoa-hoc/">AI cho Creator</a>
+          <a href="/khoa-hoc/">Automation</a>
+        </section>
+        <section class="footer-col">
+          <h3>Dịch vụ</h3>
+          <a href="/dich-vu/">Đào tạo doanh nghiệp</a>
+          <a href="/cong-cu-ai/">Công cụ AI</a>
+          <a href="/bai-viet/">Bài viết</a>
+          <a href="/ve-chung-toi/">Về chúng tôi</a>
+        </section>
+        <section class="footer-col">
+          <h3>Hỗ trợ</h3>
+          <a href="https://zalo.me/0963249467" target="_blank" rel="noopener noreferrer">Liên hệ</a>
+          <a href="/khoa-hoc/">Đăng ký học</a>
+          <a href="/dang-nhap/">Đăng nhập</a>
+          <a href="/#how">Hướng dẫn setup</a>
+        </section>
+        <section class="footer-col">
+          <h3>Kết nối</h3>
+          <a href="https://www.facebook.com/ducserving" target="_blank" rel="noopener noreferrer">Facebook</a>
+          <a href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener noreferrer">YouTube</a>
+          <a href="https://zalo.me/0963249467" target="_blank" rel="noopener noreferrer">Zalo</a>
+          <a href="https://zalo.me/0963249467" target="_blank" rel="noopener noreferrer">Email</a>
+        </section>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 DUCPT. Bảo lưu mọi quyền.</span>
+        <span>Made with ❤️ in Vietnam</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
