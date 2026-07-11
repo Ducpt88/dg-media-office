@@ -177,6 +177,8 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 .connect-chip:hover{transform:translateY(-2px);background:rgba(255,255,255,.1)}
 .connect-chip .logo-mark{width:22px;height:22px;flex-basis:22px;font-size:8px}
 .back{display:none!important}
+.how-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin-top:24px}.how-step{position:relative;padding:18px 15px;border-radius:20px;background:var(--glass);border:1px solid var(--glass-line);backdrop-filter:blur(18px)}.how-step i{display:grid;place-items:center;width:34px;height:34px;margin-bottom:12px;border-radius:12px;background:linear-gradient(135deg,var(--a1),var(--a2));color:#08101d;font-style:normal;font-weight:900}.how-step b{display:block;font-size:14px}.how-step span{display:block;margin-top:6px;color:var(--muted);font-size:12.5px}.how-step:not(:last-child)::after{content:"→";position:absolute;right:-12px;top:26px;z-index:2;color:var(--a1);font-weight:900}.portal-callout{display:flex;justify-content:space-between;gap:20px;align-items:center;margin-top:18px;padding:22px;border-radius:22px;background:linear-gradient(120deg,rgba(110,231,255,.12),rgba(167,139,250,.12));border:1px solid var(--glass-line)}.portal-callout p{color:var(--muted);font-size:14px;margin-top:5px}@media(max-width:900px){.how-flow{grid-template-columns:1fr 1fr}.how-step:not(:last-child)::after{display:none}}@media(max-width:600px){.how-flow{grid-template-columns:1fr}.portal-callout{align-items:flex-start;flex-direction:column}}
+@media(max-width:600px){nav{padding:0 10px}.nav-inner{gap:10px;padding:10px 12px}.nav-inner a.lnk{display:none}.logo img{width:92px}.nav-inner .btn{padding:9px 11px;font-size:11px}}
 .mouse-light{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(420px circle at var(--mx,50vw) var(--my,45vh),rgba(110,231,255,.18),rgba(167,139,250,.10) 36%,transparent 70%);mix-blend-mode:screen}
 .stats-btn{display:none!important}
 .stats-panel{position:fixed;right:22px;bottom:78px;z-index:100;width:min(360px,calc(100vw - 44px));display:none;padding:16px;border-radius:22px;background:rgba(10,14,26,.82);border:1px solid var(--glass-line);backdrop-filter:blur(20px);box-shadow:0 28px 90px rgba(0,0,0,.5)}
@@ -249,9 +251,9 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
 
 <nav><div class="nav-inner">
   <span class="logo"><img src="assets/ducpt-signature.svg" alt="DUCPT"></span>
-  <a class="lnk" href="/">Trang chủ</a><a class="lnk" href="/#sp">Sản phẩm</a><a class="lnk" href="/#contact">Liên hệ</a>
+  <a class="lnk" href="/">Trang chủ</a><a class="lnk" href="/#sp">Sản phẩm</a><a class="lnk" href="/#how">Cách triển khai</a><a class="lnk" href="/#contact">Liên hệ</a>
   <span class="spacer"></span>
-  <a class="btn btn-glass" href="/#sp">Giỏ hàng</a>
+  <a class="btn btn-glass" href="/customer-portal.html">Đăng nhập khách hàng</a>
 </div></nav>
 
 <section class="hero wrap">
@@ -361,6 +363,18 @@ footer{padding:50px 0;text-align:center;color:var(--muted);font-size:14px}
       </a>
     </div>
   </div>
+</section>
+
+<section class="sec wrap" id="how">
+  <div class="sec-head"><h2>Từ thanh toán đến sử dụng</h2><p>Quy trình rõ ràng cho mọi sản phẩm DUCPT — khách không phải tự mò cách cài đặt.</p></div>
+  <div class="how-flow">
+    <article class="how-step"><i>1</i><b>Chọn sản phẩm</b><span>Xem tính năng, thiết bị hỗ trợ và gói phù hợp.</span></article>
+    <article class="how-step"><i>2</i><b>Thanh toán</b><span>Tạo đơn với mã riêng và nhận xác nhận từ hệ thống.</span></article>
+    <article class="how-step"><i>3</i><b>Mở tài khoản</b><span>Đơn Paid được cấp quyền Customer Portal.</span></article>
+    <article class="how-step"><i>4</i><b>Tải & setup</b><span>Làm theo hướng dẫn đúng sản phẩm và thiết bị.</span></article>
+    <article class="how-step"><i>5</i><b>Kiểm tra & hỗ trợ</b><span>Chạy health check, nghiệm thu và gửi yêu cầu hỗ trợ.</span></article>
+  </div>
+  <div class="portal-callout"><div><h3>Đã mua sản phẩm?</h3><p>Đăng nhập để xem bộ cài, mã kích hoạt, tiến độ setup và tài liệu dành riêng cho bạn.</p></div><a class="btn btn-hero" href="/customer-portal.html" data-track="open_customer_portal">Vào Customer Portal →</a></div>
 </section>
 
 <section class="contact-strip wrap" id="contact">
