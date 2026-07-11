@@ -279,6 +279,18 @@ body.platform .btn-hero{background:linear-gradient(90deg,#2563eb,#7c3aed);color:
 body.platform .btn-hero:hover{box-shadow:0 16px 42px rgba(37,99,235,.32)}
 body.platform .pill b,body.platform .card .tag,body.platform .product-price,body.platform .product-proof b,body.platform .product-offer strong{color:#2563eb}
 body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff}
+.office-public{position:relative}
+.office-public-card{overflow:hidden;border:1px solid #dbeafe;border-radius:30px;background:#fff;box-shadow:0 24px 70px rgba(37,99,235,.12)}
+.office-public-top{display:flex;justify-content:space-between;gap:14px;align-items:center;padding:18px 20px;border-bottom:1px solid #e6eaf0;background:linear-gradient(90deg,#f8fbff,#fff)}
+.office-public-top h3{margin:0;font-size:20px;color:#14213d}
+.office-public-top p{margin:4px 0 0;color:#667085;font-size:13px}
+.office-public-badge{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:#eff6ff;color:#2563eb;border:1px solid #dbeafe;font-size:11px;font-weight:900;white-space:nowrap}
+.office-public-framebox{position:relative;min-height:560px;background:#07101d}
+.office-public-frame{display:block;width:100%;height:66vh;min-height:560px;border:0;pointer-events:none;user-select:none}
+.office-public-lock{position:absolute;inset:0;z-index:3;cursor:not-allowed;background:linear-gradient(180deg,rgba(255,255,255,0),rgba(15,23,42,.02))}
+.office-public-label{position:absolute;top:14px;right:14px;z-index:4;padding:8px 12px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);font-size:11px;font-weight:900;box-shadow:0 10px 24px rgba(37,99,235,.28)}
+.office-public-note{padding:12px 18px;color:#667085;background:#f8fafc;border-top:1px solid #e6eaf0;font-size:12px}
+@media(max-width:760px){.office-public-top{display:block}.office-public-badge{margin-top:10px}.office-public-frame,.office-public-framebox{min-height:430px;height:56vh}}
 </style>
 </head>
 <body class="platform">
@@ -287,7 +299,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
 
 <nav><div class="nav-inner">
   <span class="logo"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></span>
-  <a class="lnk" href="/khoa-hoc/">Khóa học</a><a class="lnk" href="/bai-viet/">Bài viết</a><a class="lnk" href="/dich-vu/">Dịch vụ đào tạo</a><a class="lnk" href="/cong-cu-ai/">Công cụ AI</a><a class="lnk" href="/map/">Bản đồ nhân sự</a><a class="lnk" href="/ve-chung-toi/">Về chúng tôi</a>
+  <a class="lnk" href="/khoa-hoc/">Khóa học</a><a class="lnk" href="/bai-viet/">Bài viết</a><a class="lnk" href="/dich-vu/">Dịch vụ đào tạo</a><a class="lnk" href="/cong-cu-ai/">Công cụ AI</a><a class="lnk" href="/ve-chung-toi/">Về chúng tôi</a>
   <span class="spacer"></span>
   <a class="btn btn-glass nav-login" href="#customer-login" data-open-customer-login>Đăng nhập</a><a class="btn nav-signup" href="/dang-ky/">Đăng ký miễn phí</a>
 </div></nav>
@@ -401,6 +413,22 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
   </div>
 </section>
 
+<section class="sec wrap office-public" id="office-map">
+  <div class="sec-head"><h2>Bản đồ nhân sự & tiến độ làm việc</h2><p>Khung xem trực quan để khách theo dõi cách phòng ban vận hành. Chỉ xem, không thể thao tác hay chỉnh sửa.</p></div>
+  <div class="office-public-card">
+    <div class="office-public-top">
+      <div><h3>Phòng ban làm việc DUCPT</h3><p>Hiển thị tổng quan vai trò, luồng việc và tiến độ ở chế độ an toàn.</p></div>
+      <span class="office-public-badge">● CHỈ XEM · KHÓA TƯƠNG TÁC</span>
+    </div>
+    <div class="office-public-framebox">
+      <iframe class="office-public-frame" src="/map/?embed=1" title="Bản đồ nhân sự DUCPT - chỉ xem" tabindex="-1" loading="lazy" sandbox="allow-scripts" referrerpolicy="same-origin"></iframe>
+      <div class="office-public-lock" aria-label="Lớp khóa tương tác: khách chỉ xem, không thể bấm kéo hoặc chỉnh sửa"></div>
+      <div class="office-public-label">● CHỈ XEM</div>
+    </div>
+    <div class="office-public-note">Khung này đã khóa click, kéo, chạm, phím tắt và nút bên trong iframe. Nội dung public chỉ hiển thị tổng quan, không chứa thông tin cá nhân hoặc dữ liệu vận hành nhạy cảm.</div>
+  </div>
+</section>
+
 <section class="sec wrap" id="how">
   <div class="sec-head"><h2>Từ thanh toán đến sử dụng</h2><p>Quy trình rõ ràng cho mọi sản phẩm DUCPT — khách không phải tự mò cách cài đặt.</p></div>
   <div class="how-flow">
@@ -424,7 +452,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
   </div>
 </section>
 
-<footer><div class="site-footer"><div class="footer-grid"><section class="footer-brand"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"><p>Nền tảng học và ứng dụng AI thực chiến dành cho cá nhân và doanh nghiệp Việt Nam.</p><div class="footer-social"><a href="https://ducpt.com">◎</a><a href="https://www.youtube.com/@ducdg2">▶</a><a href="https://zalo.me/0963249467">◯</a></div></section><section class="footer-col"><h3>Khóa học</h3><a href="/khoa-hoc/">Tất cả khóa học</a><a href="/khoa-hoc/">AI nền tảng</a><a href="/khoa-hoc/">AI cho Creator</a><a href="/khoa-hoc/">Automation</a></section><section class="footer-col"><h3>Dịch vụ</h3><a href="/dich-vu/">Đào tạo doanh nghiệp</a><a href="/cong-cu-ai/">Công cụ AI</a><a href="/bai-viet/">Bài viết</a><a href="/map/">Bản đồ nhân sự</a><a href="/ve-chung-toi/">Về chúng tôi</a></section><section class="footer-col"><h3>Hỗ trợ</h3><a href="https://zalo.me/0963249467">Liên hệ</a><a href="/khoa-hoc/">Đăng ký học</a><a href="/dang-nhap/">Đăng nhập</a><a href="/map/">Bản đồ nhân sự</a><a href="./index.html#how">Hướng dẫn setup</a></section><section class="footer-col"><h3>Kết nối</h3><a href="https://www.facebook.com/ducserving">Facebook</a><a href="https://www.youtube.com/@ducdg2">YouTube</a><a href="https://zalo.me/0963249467">Zalo</a><a href="mailto:admin@ducpt.com">Email</a></section></div><div class="footer-bottom"><span>© 2026 DUCPT. Bảo lưu mọi quyền.</span><span>Made with ❤️ in Vietnam</span></div></div></footer>
+<footer><div class="site-footer"><div class="footer-grid"><section class="footer-brand"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"><p>Nền tảng học và ứng dụng AI thực chiến dành cho cá nhân và doanh nghiệp Việt Nam.</p><div class="footer-social"><a href="https://ducpt.com">◎</a><a href="https://www.youtube.com/@ducdg2">▶</a><a href="https://zalo.me/0963249467">◯</a></div></section><section class="footer-col"><h3>Khóa học</h3><a href="/khoa-hoc/">Tất cả khóa học</a><a href="/khoa-hoc/">AI nền tảng</a><a href="/khoa-hoc/">AI cho Creator</a><a href="/khoa-hoc/">Automation</a></section><section class="footer-col"><h3>Dịch vụ</h3><a href="/dich-vu/">Đào tạo doanh nghiệp</a><a href="/cong-cu-ai/">Công cụ AI</a><a href="/bai-viet/">Bài viết</a><a href="/ve-chung-toi/">Về chúng tôi</a></section><section class="footer-col"><h3>Hỗ trợ</h3><a href="https://zalo.me/0963249467">Liên hệ</a><a href="/khoa-hoc/">Đăng ký học</a><a href="/dang-nhap/">Đăng nhập</a><a href="./index.html#how">Hướng dẫn setup</a></section><section class="footer-col"><h3>Kết nối</h3><a href="https://www.facebook.com/ducserving">Facebook</a><a href="https://www.youtube.com/@ducdg2">YouTube</a><a href="https://zalo.me/0963249467">Zalo</a><a href="mailto:admin@ducpt.com">Email</a></section></div><div class="footer-bottom"><span>© 2026 DUCPT. Bảo lưu mọi quyền.</span><span>Made with ❤️ in Vietnam</span></div></div></footer>
 <a class="zalo-float" id="zaloFloat" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="zalo_float" aria-label="Chat Zalo DUCPT">Zalo</a>
 <button class="stats-btn btn btn-hero" type="button" id="statsToggle">Stats</button>
 <div class="customer-login-modal" id="customerLoginModal" aria-label="Đăng nhập Sản phẩm của tôi">

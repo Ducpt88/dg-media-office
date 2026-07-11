@@ -4,25 +4,68 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<meta name="referrer" content="no-referrer">
-<title>Khu vực được bảo vệ · DUCPT</title>
+<meta name="referrer" content="same-origin">
+<title>Bản đồ nhân sự · Chỉ xem · DUCPT</title>
 <style>
-:root{--ink:#14213d;--muted:#667085;--line:#dbeafe;--blue:#2563eb;--purple:#7c3aed}
+:root{--bg:#07101d;--panel:#0f1b2d;--line:rgba(255,255,255,.12);--ink:#eaf2ff;--muted:#91a4be;--blue:#60a5fa;--purple:#a78bfa;--green:#34d399;--orange:#fbbf24}
 *{box-sizing:border-box}
-body{min-height:100vh;display:grid;place-items:center;margin:0;padding:22px;background:radial-gradient(circle at 50% 0,rgba(37,99,235,.16),transparent 48%),radial-gradient(circle at 84% 18%,rgba(124,58,237,.13),transparent 34%),#f8fafc;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
-.box{width:min(560px,100%);padding:34px;text-align:center;border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.94);box-shadow:0 22px 58px rgba(16,24,40,.1)}
-.mark{display:inline-flex;align-items:center;gap:8px;margin-bottom:14px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--blue);background:#eff6ff;font-size:12px;font-weight:900;letter-spacing:.02em}
-h1{margin:0;font-size:clamp(28px,5vw,38px);line-height:1.1;letter-spacing:-.03em}
-p{margin:14px auto 0;max-width:440px;color:var(--muted);line-height:1.65}
-a{display:inline-flex;margin-top:22px;padding:12px 18px;border-radius:999px;color:#fff;background:linear-gradient(90deg,var(--blue),var(--purple));font-weight:900;text-decoration:none;box-shadow:0 10px 28px rgba(37,99,235,.22)}
+html,body{height:100%;margin:0;overflow:hidden;background:radial-gradient(circle at 50% 0,rgba(96,165,250,.18),transparent 48%),radial-gradient(circle at 90% 18%,rgba(167,139,250,.16),transparent 38%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;user-select:none}
+body{pointer-events:none}
+.board{height:100%;padding:22px;display:grid;grid-template-rows:auto 1fr auto;gap:16px}
+.top{display:flex;justify-content:space-between;gap:14px;align-items:center}
+.brand{display:flex;gap:12px;align-items:center}
+.mark{display:grid;place-items:center;width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#2563eb,#7c3aed);font-weight:900;box-shadow:0 12px 30px rgba(37,99,235,.28)}
+h1{margin:0;font-size:22px;letter-spacing:-.04em}
+p{margin:3px 0 0;color:var(--muted);font-size:12px}
+.badge{padding:8px 12px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);color:#dbeafe;font-size:11px;font-weight:900}
+.map{position:relative;min-height:0;border:1px solid var(--line);border-radius:28px;background:rgba(15,27,45,.72);box-shadow:inset 0 0 0 1px rgba(255,255,255,.04),0 28px 80px rgba(0,0,0,.28);overflow:hidden}
+.map::before{content:"";position:absolute;inset:9% 8%;border:1px dashed rgba(255,255,255,.12);border-radius:30px}
+.map::after{content:"";position:absolute;left:9%;right:9%;top:50%;height:1px;background:linear-gradient(90deg,transparent,rgba(96,165,250,.42),transparent)}
+.lane{position:absolute;inset:auto 28px 22px;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+.phase{padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.06)}
+.phase b{display:block;font-size:12px}
+.phase span{display:block;margin-top:4px;color:var(--muted);font-size:10px}
+.node{position:absolute;width:190px;padding:14px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.1),rgba(255,255,255,.055));box-shadow:0 18px 44px rgba(0,0,0,.22);backdrop-filter:blur(12px)}
+.node h2{margin:0;font-size:15px}
+.node small{display:inline-flex;margin-top:8px;padding:5px 8px;border-radius:999px;background:rgba(96,165,250,.14);color:#bfdbfe;font-size:10px;font-weight:800}
+.node p{line-height:1.45}
+.n1{left:7%;top:14%}.n2{left:34%;top:9%}.n3{right:7%;top:15%}.n4{left:17%;top:48%}.n5{right:18%;top:47%}
+.hub{position:absolute;left:50%;top:43%;transform:translate(-50%,-50%);width:160px;height:160px;border-radius:50%;display:grid;place-items:center;text-align:center;background:radial-gradient(circle,#2563eb,#7c3aed);box-shadow:0 0 0 14px rgba(96,165,250,.08),0 28px 70px rgba(37,99,235,.32)}
+.hub b{display:block;font-size:18px}.hub span{display:block;color:#dbeafe;font-size:11px}
+.line{position:absolute;height:2px;transform-origin:left center;background:linear-gradient(90deg,rgba(96,165,250,.08),rgba(96,165,250,.64),rgba(167,139,250,.08));border-radius:99px}
+.l1{left:22%;top:24%;width:19%;rotate:-6deg}.l2{left:48%;top:23%;width:24%;rotate:7deg}.l3{left:29%;top:55%;width:22%;rotate:-16deg}.l4{left:54%;top:55%;width:22%;rotate:15deg}
+.progress{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.metric{padding:12px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.06)}
+.metric span{display:block;color:var(--muted);font-size:10px}.metric b{display:block;margin-top:4px;font-size:20px}
+.safe{color:var(--green)}.warn{color:var(--orange)}
+@media(max-width:760px){.board{padding:14px}.top{display:block}.badge{display:inline-flex;margin-top:10px}.node{width:150px;padding:11px}.node h2{font-size:13px}.hub{width:122px;height:122px}.lane{display:none}.progress{grid-template-columns:1fr 1fr}.n1{left:4%;top:16%}.n2{left:50%;top:10%;transform:translateX(-50%)}.n3{right:4%;top:31%}.n4{left:5%;top:56%}.n5{right:5%;top:60%}}
 </style>
 </head>
-<body>
-<main class="box">
-  <span class="mark">● CHỈ XEM QUA PASSPORT</span>
-  <h1>Nội dung vận hành được bảo vệ</h1>
-  <p>Bản đồ nhân sự không được cung cấp qua URL công khai. Vui lòng đăng nhập Passport để yêu cầu phiên xem chỉ đọc có thời hạn.</p>
-  <a href="/passport/">Mở Passport</a>
+<body aria-label="Bản đồ nhân sự DUCPT ở chế độ chỉ xem">
+<main class="board">
+  <header class="top">
+    <div class="brand"><div class="mark">DG</div><div><h1>Bản đồ nhân sự & tiến độ làm việc</h1><p>Chế độ public chỉ xem · Không hiển thị dữ liệu cá nhân hoặc thông tin vận hành nhạy cảm</p></div></div>
+    <div class="badge">● CHỈ XEM · KHÔNG TƯƠNG TÁC</div>
+  </header>
+  <section class="map" aria-hidden="true">
+    <div class="hub"><div><b>DUCPT</b><span>Phòng ban trung tâm</span></div></div>
+    <div class="line l1"></div><div class="line l2"></div><div class="line l3"></div><div class="line l4"></div>
+    <article class="node n1"><h2>Nội dung & khóa học</h2><p>Lên bài học, tài liệu, video và cập nhật chương trình.</p><small>Đang chạy</small></article>
+    <article class="node n2"><h2>Sản phẩm AI</h2><p>Phát triển công cụ, kiểm thử luồng và ghi nhận phản hồi.</p><small>Ưu tiên</small></article>
+    <article class="node n3"><h2>Khách hàng</h2><p>Theo dõi yêu cầu, hỗ trợ sau mua và trạng thái kích hoạt.</p><small>Giám sát</small></article>
+    <article class="node n4"><h2>Marketing</h2><p>Video, bài viết, social và nội dung giới thiệu sản phẩm.</p><small>Đồng bộ</small></article>
+    <article class="node n5"><h2>Vận hành</h2><p>Lịch triển khai, checklist, kiểm tra chất lượng và báo cáo.</p><small>Ổn định</small></article>
+    <div class="lane"><div class="phase"><b>Ý tưởng</b><span>Ghi nhận đầu vào</span></div><div class="phase"><b>Đang làm</b><span>Triển khai task</span></div><div class="phase"><b>Kiểm tra</b><span>Review chất lượng</span></div><div class="phase"><b>Bàn giao</b><span>Xuất bản/kích hoạt</span></div><div class="phase"><b>Theo dõi</b><span>Cập nhật tiến độ</span></div></div>
+  </section>
+  <footer class="progress">
+    <div class="metric"><span>Trạng thái xem</span><b class="safe">Read-only</b></div>
+    <div class="metric"><span>Tương tác</span><b>Đã khóa</b></div>
+    <div class="metric"><span>Dữ liệu cá nhân</span><b class="safe">Không công khai</b></div>
+    <div class="metric"><span>Cập nhật</span><b class="warn">Theo phiên bản</b></div>
+  </footer>
 </main>
+<script>
+["click","dblclick","pointerdown","pointerup","touchstart","touchmove","keydown","contextmenu","wheel","dragstart"].forEach(type=>addEventListener(type,event=>{event.preventDefault();event.stopPropagation()},{capture:true,passive:false}));
+</script>
 </body>
 </html>
