@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
@@ -10,89 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-      @font-face {
-        font-family: 'SF Pro Display';
-        src: local('SF Pro Display'), local('.SF NS Display'), local('-apple-system'), local('BlinkMacSystemFont');
-        font-weight: 100 900;
-        font-style: normal;
-      }
-      @font-face {
-        font-family: 'SF Pro Text';
-        src: local('SF Pro Text'), local('.SF NS Text'), local('-apple-system'), local('BlinkMacSystemFont');
-        font-weight: 100 900;
-        font-style: normal;
-      }
+      @font-face { font-family: 'SF Pro Display'; src: local('SF Pro Display'), local('.SF NS Display'), local('-apple-system'), local('BlinkMacSystemFont'); font-weight: 100 900; font-style: normal; }
+      @font-face { font-family: 'SF Pro Text'; src: local('SF Pro Text'), local('.SF NS Text'), local('-apple-system'), local('BlinkMacSystemFont'); font-weight: 100 900; font-style: normal; }
     </style>
-    <script src="./dg-core-seed.js"></script>
-    <script>
-      /* Public map: omit the large coloured workstation/agent outline rings. */
-      (()=>{
-        const proto=window.CanvasRenderingContext2D&&CanvasRenderingContext2D.prototype;
-        if(!proto)return;
-        const fill=proto.fill,stroke=proto.stroke,arc=proto.arc,beginPath=proto.beginPath,setLineDash=proto.setLineDash;
-        const zoneFill=value=>typeof value==="string"&&/^#[0-9a-f]{6}(08|10|18)$/i.test(value);
-        const zoneStroke=value=>typeof value==="string"&&/^#[0-9a-f]{6}(15|30|88)$/i.test(value);
-        proto.beginPath=function(){this.__dgLargeCircle=false;return beginPath.apply(this,arguments)};
-        proto.arc=function(x,y,r){if(Number(r)>=25)this.__dgLargeCircle=true;return arc.apply(this,arguments)};
-        proto.setLineDash=function(parts){this.__dgZoneDash=Array.isArray(parts)&&parts.length===2&&parts[0]===6&&parts[1]===4;return setLineDash.apply(this,arguments)};
-        proto.fill=function(){if(this.__dgZoneDash||this.__dgLargeCircle||zoneFill(this.fillStyle))return;return fill.apply(this,arguments)};
-        proto.stroke=function(){if(this.__dgZoneDash||this.__dgLargeCircle||zoneStroke(this.strokeStyle))return;return stroke.apply(this,arguments)};
-      })();
-    </script>
-    <script type="module" crossorigin src="./assets/index-BeKOOk0q.js"></script>
+    <script src="./dg-core-seed.js?v=dg-public27-20260710"></script>
+    <script type="module" crossorigin src="./assets/index-BeKOOk0q.js?v=dg-public27-20260710"></script>
     <link rel="modulepreload" crossorigin href="./assets/react-BrspnNLa.js">
     <link rel="stylesheet" crossorigin href="./assets/index-crwyeMQ7.css">
-    <link rel="stylesheet" href="./dg-skills-map-overrides.css">
-    <style>
-      html,body,#root{min-height:100%;background:#151722}
-      body{pointer-events:none;user-select:none}
-      .public-view-lock{position:fixed;inset:0;z-index:2147483646;cursor:not-allowed;background:transparent}
-      .public-view-badge{position:fixed;top:12px;right:12px;z-index:2147483647;padding:8px 12px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);font:800 11px Inter,system-ui;box-shadow:0 12px 28px rgba(37,99,235,.32)}
-      #publicActivityToggle{position:fixed;z-index:2147483647;width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(56,189,248,.55);border-radius:8px;background:rgba(8,14,28,.94);color:#67e8f9;font:900 18px/1 Inter,system-ui;cursor:pointer;pointer-events:auto;box-shadow:0 8px 22px rgba(0,0,0,.42)}
-      #publicActivityToggle:hover{background:#132238;color:#fff}
-    </style>
-    <script defer src="./dg-skills-map-overrides.js?v=20260711-native-feed"></script>
+    <link rel="stylesheet" href="./dg-skills-map-overrides.css?v=dg-public27-20260710">
+    <script defer src="./dg-skills-map-overrides.js?v=dg-public27-20260710"></script>
   </head>
-  <body>
-    <div id="root"></div>
-    <div class="public-view-lock" aria-label="Chế độ chỉ xem, không thể thao tác"></div>
-    <div class="public-view-badge">● CHỈ XEM</div>
-    <button id="publicActivityToggle" type="button" aria-expanded="true" aria-label="Thu gọn hoạt động" title="Thu gọn hoạt động">⌄</button>
-    <script>
-      const activityToggle=document.getElementById("publicActivityToggle");
-      let activityCollapsed=localStorage.getItem("ducpt_public_activity_collapsed")==="1";
-      function activityPanel(){
-        const custom=document.getElementById("dg-live-activity");
-        if(custom)return custom;
-        return [...document.querySelectorAll("div")].find(el=>{
-          const text=(el.innerText||el.textContent||"").toUpperCase(),r=el.getBoundingClientRect();
-          return r.left<90&&r.top>100&&r.width>=180&&r.width<520&&/HOẠT ĐỘNG|HOAT DONG/.test(text);
-        });
-      }
-      function syncActivity(){
-        const panel=activityPanel();
-        if(!panel)return;
-        panel.style.transition="transform .22s ease,opacity .22s ease";
-        panel.style.transform=activityCollapsed?`translateY(${Math.max(0,panel.getBoundingClientRect().height-42)}px)`:"";
-        panel.style.opacity=activityCollapsed?".92":"";
-        const r=panel.getBoundingClientRect();
-        activityToggle.style.left=Math.max(8,r.right-40)+"px";
-        activityToggle.style.top=Math.max(8,r.top+7)+"px";
-        activityToggle.textContent=activityCollapsed?"⌃":"⌄";
-        activityToggle.setAttribute("aria-expanded",String(!activityCollapsed));
-        activityToggle.setAttribute("aria-label",activityCollapsed?"Mở hoạt động":"Thu gọn hoạt động");
-        activityToggle.title=activityCollapsed?"Mở hoạt động":"Thu gọn hoạt động";
-      }
-      activityToggle.addEventListener("click",event=>{
-        event.preventDefault();event.stopPropagation();
-        activityCollapsed=!activityCollapsed;
-        localStorage.setItem("ducpt_public_activity_collapsed",activityCollapsed?"1":"0");
-        syncActivity();
-      });
-      ["click","dblclick","pointerdown","pointerup","touchstart","touchmove","keydown","contextmenu","wheel","dragstart"].forEach(type=>addEventListener(type,event=>{if(event.target===activityToggle)return;event.preventDefault();event.stopPropagation()},{capture:true,passive:false}));
-      addEventListener("load",()=>{syncActivity();setTimeout(syncActivity,800)});
-      addEventListener("resize",syncActivity);
-      new MutationObserver(()=>syncActivity()).observe(document.getElementById("root"),{childList:true,subtree:true});
-    </script>
-  </body>
+  <body><div id="root"></div></body>
 </html>

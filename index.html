@@ -298,6 +298,10 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
 .office-public-lock{position:absolute;inset:0;z-index:3;pointer-events:none;background:transparent}
 .office-public-label{position:absolute;top:14px;right:14px;z-index:4;padding:8px 12px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);font-size:11px;font-weight:900;box-shadow:0 10px 24px rgba(37,99,235,.28)}
 .office-public-note{padding:12px 18px;color:#667085;background:#f8fafc;border-top:1px solid #e6eaf0;font-size:12px}
+/* Skills Map is now the live department workspace, not the legacy read-only preview. */
+.office-public-lock,.office-public-label,.office-public-badge,.office-public-note{display:none!important}
+.office-public-frame{pointer-events:auto!important}
+.office-public-framebox{background:#080812}
 @media(max-width:760px){.office-public-top{display:block}.office-public-badge{margin-top:10px}.office-public-frame,.office-public-framebox{min-height:430px;height:56vh}}
 </style>
 </head>
