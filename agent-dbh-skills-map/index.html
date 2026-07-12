@@ -29,11 +29,14 @@
       (()=>{
         const proto=window.CanvasRenderingContext2D&&CanvasRenderingContext2D.prototype;
         if(!proto)return;
-        const fill=proto.fill,stroke=proto.stroke;
+        const fill=proto.fill,stroke=proto.stroke,arc=proto.arc,beginPath=proto.beginPath,setLineDash=proto.setLineDash;
         const zoneFill=value=>typeof value==="string"&&/^#[0-9a-f]{6}(08|10|18)$/i.test(value);
         const zoneStroke=value=>typeof value==="string"&&/^#[0-9a-f]{6}(15|30|88)$/i.test(value);
-        proto.fill=function(){if(zoneFill(this.fillStyle))return;return fill.apply(this,arguments)};
-        proto.stroke=function(){if(zoneStroke(this.strokeStyle))return;return stroke.apply(this,arguments)};
+        proto.beginPath=function(){this.__dgLargeCircle=false;return beginPath.apply(this,arguments)};
+        proto.arc=function(x,y,r){if(Number(r)>=25)this.__dgLargeCircle=true;return arc.apply(this,arguments)};
+        proto.setLineDash=function(parts){this.__dgZoneDash=Array.isArray(parts)&&parts.length===2&&parts[0]===6&&parts[1]===4;return setLineDash.apply(this,arguments)};
+        proto.fill=function(){if(this.__dgZoneDash||zoneFill(this.fillStyle))return;return fill.apply(this,arguments)};
+        proto.stroke=function(){if(this.__dgZoneDash||this.__dgLargeCircle||zoneStroke(this.strokeStyle))return;return stroke.apply(this,arguments)};
       })();
     </script>
     <script type="module" crossorigin src="./assets/index-BeKOOk0q.js"></script>
