@@ -314,7 +314,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
   <p>Khóa học dễ áp dụng, công cụ AI do DUCPT phát triển và dịch vụ đào tạo theo đúng nhu cầu cá nhân hoặc doanh nghiệp.</p>
   <div class="hero-cta">
     <a class="btn btn-hero" href="/khoa-hoc/">Khám phá khóa học →</a>
-    <a class="btn btn-glass" href="/cong-cu-ai/">Dùng thử công cụ AI</a>
+    <a class="btn btn-glass" href="./#sp">Dùng thử công cụ AI</a>
   </div>
 </section>
 
@@ -447,7 +447,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
   <div class="sec-head"><h2>Các kênh kết nối</h2><p>Chọn kênh bên dưới để trao đổi, xem demo hoặc đặt mua trực tiếp.</p></div>
   <div class="connect-row" aria-label="Cac kenh ket noi DUCPT">
     <a class="connect-chip" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="contact_zalo"><span class="logo-mark mark-brain"></span>Zalo 0963249467</a>
-    <a class="connect-chip" href="mailto:admin@ducpt.com" data-track="contact_email"><span class="logo-mark mark-wp"></span>Email</a>
+    <a class="connect-chip" href="https://zalo.me/0963249467" data-track="contact_email"><span class="logo-mark mark-wp"></span>Email</a>
     <a class="connect-chip" href="https://www.youtube.com/@ducdg2" target="_blank" rel="noopener" data-track="contact_youtube"><span class="logo-mark mark-youtube"></span>YouTube</a>
     <a class="connect-chip" href="https://github.com/Ducpt88" target="_blank" rel="noopener" data-track="contact_github"><span class="logo-mark mark-github"></span>GitHub</a>
     <a class="connect-chip" href="./#sp" data-track="contact_products"><span class="logo-mark mark-file"></span>Sản phẩm</a>
@@ -562,7 +562,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
       <button class="btn btn-hero" type="submit">Gửi đơn mua</button>
       <a class="btn btn-glass" id="productMainLink" href="#" target="_blank" rel="noopener">Mở trang sản phẩm</a>
       <a class="btn btn-glass" id="checkoutSepayLink" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="checkout_sepay">Mở SePay</a>
-      <a class="btn btn-glass" id="mailtoOrder" href="mailto:admin@ducpt.com">Gửi qua email</a>
+      <a class="btn btn-glass" id="mailtoOrder" href="https://zalo.me/0963249467">Gửi qua email</a>
     </div>
     <div class="checkout-status" id="checkoutStatus"></div>
   </form>
@@ -708,7 +708,7 @@ function openCheckout(button){
   document.getElementById("checkoutGuide").textContent=button.dataset.guide||"Sau khi gửi đơn, DUCPT sẽ liên hệ để hoàn tất thanh toán và kích hoạt sản phẩm.";
   document.getElementById("productMainLink").href=url;
   document.getElementById("checkoutSepayLink").href=sepayUrlFor(product,price);
-  document.getElementById("mailtoOrder").href=`mailto:admin@ducpt.com?subject=${encodeURIComponent("Đặt mua "+product)}&body=${encodeURIComponent("Sản phẩm: "+product+"\\nGiá: "+price+"\\nLink: "+location.href)}`;
+  document.getElementById("mailtoOrder").href=`https://zalo.me/0963249467?subject=${encodeURIComponent("Đặt mua "+product)}&body=${encodeURIComponent("Sản phẩm: "+product+"\\nGiá: "+price+"\\nLink: "+location.href)}`;
   document.getElementById("checkoutStatus").textContent="";
   document.getElementById("checkoutModal").classList.add("open");
   trackClick({dataset:{track:"open_checkout_"+cleanName(product)},getAttribute:()=>"",textContent:product});
@@ -849,7 +849,7 @@ document.getElementById("checkoutForm").addEventListener("submit",async event=>{
     await saveOrder(order);
     trackClick({dataset:{track:"submit_order_"+cleanName(order.product)},getAttribute:()=>"",textContent:order.product});
     status.textContent=window.DUCPT_ORDER_API?"Đã gửi đơn về hệ thống quản lý.":"Đã lưu đơn trên trình duyệt. Khi đấu API database, đơn sẽ đẩy về hệ thống quản lý.";
-    document.getElementById("mailtoOrder").href=`mailto:admin@ducpt.com?subject=${encodeURIComponent("Đơn mua "+order.product)}&body=${encodeURIComponent(JSON.stringify(order,null,2))}`;
+    document.getElementById("mailtoOrder").href=`https://zalo.me/0963249467?subject=${encodeURIComponent("Đơn mua "+order.product)}&body=${encodeURIComponent(JSON.stringify(order,null,2))}`;
   }catch(error){
     status.textContent="Chưa gửi được về API. Đơn đã lưu local, hãy bấm Gửi qua email hoặc Chat Zalo.";
   }
