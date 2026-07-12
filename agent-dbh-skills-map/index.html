@@ -24,6 +24,16 @@
       }
     </style>
     <script src="./dg-core-seed.js"></script>
+    <script>
+      /* Public map: omit the large coloured workstation/agent outline rings. */
+      (()=>{
+        const proto=window.CanvasRenderingContext2D&&CanvasRenderingContext2D.prototype;
+        if(!proto)return;
+        const arc=proto.arc,stroke=proto.stroke;
+        proto.arc=function(x,y,r){this.__dgLargeRing=Number(r)>=34&&Number(r)<=82;return arc.apply(this,arguments)};
+        proto.stroke=function(){if(this.__dgLargeRing){this.__dgLargeRing=false;return}return stroke.apply(this,arguments)};
+      })();
+    </script>
     <script type="module" crossorigin src="./assets/index-BeKOOk0q.js"></script>
     <link rel="modulepreload" crossorigin href="./assets/react-BrspnNLa.js">
     <link rel="stylesheet" crossorigin href="./assets/index-crwyeMQ7.css">
@@ -31,8 +41,10 @@
     <style>
       html,body,#root{min-height:100%;background:#151722}
       body{pointer-events:none;user-select:none}
-      .public-view-lock{position:fixed;inset:0;z-index:2147483647;cursor:not-allowed;background:transparent}
+      .public-view-lock{position:fixed;inset:0;z-index:2147483646;cursor:not-allowed;background:transparent}
       .public-view-badge{position:fixed;top:12px;right:12px;z-index:2147483647;padding:8px 12px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);font:800 11px Inter,system-ui;box-shadow:0 12px 28px rgba(37,99,235,.32)}
+      #publicActivityToggle{position:fixed;z-index:2147483647;width:32px;height:32px;display:grid;place-items:center;border:1px solid rgba(56,189,248,.55);border-radius:8px;background:rgba(8,14,28,.94);color:#67e8f9;font:900 18px/1 Inter,system-ui;cursor:pointer;pointer-events:auto;box-shadow:0 8px 22px rgba(0,0,0,.42)}
+      #publicActivityToggle:hover{background:#132238;color:#fff}
     </style>
     <script defer src="./dg-skills-map-overrides.js?v=20260711-native-feed"></script>
   </head>
@@ -40,8 +52,42 @@
     <div id="root"></div>
     <div class="public-view-lock" aria-label="Chế độ chỉ xem, không thể thao tác"></div>
     <div class="public-view-badge">● CHỈ XEM</div>
+    <button id="publicActivityToggle" type="button" aria-expanded="true" aria-label="Thu gọn hoạt động" title="Thu gọn hoạt động">⌄</button>
     <script>
-      ["click","dblclick","pointerdown","pointerup","touchstart","touchmove","keydown","contextmenu","wheel","dragstart"].forEach(type=>addEventListener(type,event=>{event.preventDefault();event.stopPropagation()},{capture:true,passive:false}));
+      const activityToggle=document.getElementById("publicActivityToggle");
+      let activityCollapsed=localStorage.getItem("ducpt_public_activity_collapsed")==="1";
+      function activityPanel(){
+        const custom=document.getElementById("dg-live-activity");
+        if(custom)return custom;
+        return [...document.querySelectorAll("div")].find(el=>{
+          const text=(el.innerText||el.textContent||"").toUpperCase(),r=el.getBoundingClientRect();
+          return r.left<90&&r.top>100&&r.width>=180&&r.width<520&&/HOẠT ĐỘNG|HOAT DONG/.test(text);
+        });
+      }
+      function syncActivity(){
+        const panel=activityPanel();
+        if(!panel)return;
+        panel.style.transition="transform .22s ease,opacity .22s ease";
+        panel.style.transform=activityCollapsed?`translateY(${Math.max(0,panel.getBoundingClientRect().height-42)}px)`:"";
+        panel.style.opacity=activityCollapsed?".92":"";
+        const r=panel.getBoundingClientRect();
+        activityToggle.style.left=Math.max(8,r.right-40)+"px";
+        activityToggle.style.top=Math.max(8,r.top+7)+"px";
+        activityToggle.textContent=activityCollapsed?"⌃":"⌄";
+        activityToggle.setAttribute("aria-expanded",String(!activityCollapsed));
+        activityToggle.setAttribute("aria-label",activityCollapsed?"Mở hoạt động":"Thu gọn hoạt động");
+        activityToggle.title=activityCollapsed?"Mở hoạt động":"Thu gọn hoạt động";
+      }
+      activityToggle.addEventListener("click",event=>{
+        event.preventDefault();event.stopPropagation();
+        activityCollapsed=!activityCollapsed;
+        localStorage.setItem("ducpt_public_activity_collapsed",activityCollapsed?"1":"0");
+        syncActivity();
+      });
+      ["click","dblclick","pointerdown","pointerup","touchstart","touchmove","keydown","contextmenu","wheel","dragstart"].forEach(type=>addEventListener(type,event=>{if(event.target===activityToggle)return;event.preventDefault();event.stopPropagation()},{capture:true,passive:false}));
+      addEventListener("load",()=>{syncActivity();setTimeout(syncActivity,800)});
+      addEventListener("resize",syncActivity);
+      new MutationObserver(()=>syncActivity()).observe(document.getElementById("root"),{childList:true,subtree:true});
     </script>
   </body>
 </html>
