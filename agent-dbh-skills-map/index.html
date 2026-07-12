@@ -29,11 +29,11 @@
       (()=>{
         const proto=window.CanvasRenderingContext2D&&CanvasRenderingContext2D.prototype;
         if(!proto)return;
-        const arc=proto.arc,stroke=proto.stroke,drawImage=proto.drawImage;
-        proto.arc=function(x,y,r){this.__dgLargeRing=Number(r)>=34&&Number(r)<=82;return arc.apply(this,arguments)};
-        proto.stroke=function(){if(this.__dgLargeRing){this.__dgLargeRing=false;return}return stroke.apply(this,arguments)};
-        /* The app composites workstation boxes and coloured agent zones from an off-screen canvas. */
-        proto.drawImage=function(source){if(source instanceof HTMLCanvasElement)return;return drawImage.apply(this,arguments)};
+        const fill=proto.fill,stroke=proto.stroke;
+        const zoneFill=value=>typeof value==="string"&&/^#[0-9a-f]{6}(08|10|18)$/i.test(value);
+        const zoneStroke=value=>typeof value==="string"&&/^#[0-9a-f]{6}(15|30|88)$/i.test(value);
+        proto.fill=function(){if(zoneFill(this.fillStyle))return;return fill.apply(this,arguments)};
+        proto.stroke=function(){if(zoneStroke(this.strokeStyle))return;return stroke.apply(this,arguments)};
       })();
     </script>
     <script type="module" crossorigin src="./assets/index-BeKOOk0q.js"></script>
