@@ -35,7 +35,7 @@
         proto.beginPath=function(){this.__dgLargeCircle=false;return beginPath.apply(this,arguments)};
         proto.arc=function(x,y,r){if(Number(r)>=25)this.__dgLargeCircle=true;return arc.apply(this,arguments)};
         proto.setLineDash=function(parts){this.__dgZoneDash=Array.isArray(parts)&&parts.length===2&&parts[0]===6&&parts[1]===4;return setLineDash.apply(this,arguments)};
-        proto.fill=function(){if(this.__dgZoneDash||zoneFill(this.fillStyle))return;return fill.apply(this,arguments)};
+        proto.fill=function(){if(this.__dgZoneDash||this.__dgLargeCircle||zoneFill(this.fillStyle))return;return fill.apply(this,arguments)};
         proto.stroke=function(){if(this.__dgZoneDash||this.__dgLargeCircle||zoneStroke(this.strokeStyle))return;return stroke.apply(this,arguments)};
       })();
     </script>
