@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Hệ sinh thái sản phẩm DUCPT</title>
+  <desc id="desc">Ảnh bìa giới thiệu sáu công cụ DUCPT: DG Image Tools, Quick Email, Pinterest AutoPost, File Manager, Verba Studio và X4 Control.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#07111f"/>
+      <stop offset=".52" stop-color="#10243a"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" x2="1">
+      <stop offset="0" stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#a78bfa"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#020617" flood-opacity=".42"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1025" cy="55" r="210" fill="#2563eb" opacity=".18"/>
+  <circle cx="145" cy="575" r="240" fill="#0d9488" opacity=".16"/>
+  <path d="M0 500 C170 430 255 560 420 500 C580 440 660 350 820 390 C980 430 1030 530 1200 455 L1200 630 L0 630Z" fill="#0f766e" opacity=".18"/>
+
+  <g transform="translate(70 70)">
+    <rect x="0" y="0" width="1060" height="490" rx="34" fill="rgba(255,255,255,.055)" stroke="rgba(255,255,255,.16)"/>
+    <text x="44" y="68" fill="#67e8f9" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="900" letter-spacing="3">DUCPT PRODUCT ECOSYSTEM</text>
+    <text x="44" y="128" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="56" font-weight="900">Bộ công cụ AI, Windows</text>
+    <text x="44" y="188" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="56" font-weight="900">và extension thực chiến</text>
+    <text x="48" y="232" fill="#b6c3d3" font-family="Inter,Arial,sans-serif" font-size="22">Từ tài sản nội dung, email, traffic đến phòng thu và điều khiển workflow.</text>
+
+    <g transform="translate(44 284)" filter="url(#shadow)">
+      <g>
+        <rect width="150" height="132" rx="24" fill="#0b1727" stroke="#1f9bd0"/>
+        <circle cx="75" cy="42" r="23" fill="url(#cyan)"/>
+        <text x="75" y="50" text-anchor="middle" fill="#07111f" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="900">DG</text>
+        <text x="75" y="89" text-anchor="middle" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="900">Image Tools</text>
+        <text x="75" y="113" text-anchor="middle" fill="#67e8f9" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="800">APP + BUILD EXE</text>
+      </g>
+      <g transform="translate(172 0)">
+        <rect width="150" height="132" rx="24" fill="#101820" stroke="#334155"/>
+        <circle cx="75" cy="42" r="23" fill="#e0f2fe"/>
+        <text x="75" y="50" text-anchor="middle" fill="#2563eb" font-family="Inter,Arial,sans-serif" font-size="19" font-weight="900">@</text>
+        <text x="75" y="89" text-anchor="middle" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="900">Quick Email</text>
+        <text x="75" y="113" text-anchor="middle" fill="#67e8f9" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="800">32 EMAIL</text>
+      </g>
+      <g transform="translate(344 0)">
+        <rect width="150" height="132" rx="24" fill="#141827" stroke="#6d5dfc"/>
+        <circle cx="75" cy="42" r="23" fill="#e11d48"/>
+        <text x="75" y="50" text-anchor="middle" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="900">P</text>
+        <text x="75" y="89" text-anchor="middle" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="900">AutoPost</text>
+        <text x="75" y="113" text-anchor="middle" fill="#fbbf24" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="800">EXTENSION</text>
+      </g>
+      <g transform="translate(516 0)">
+        <rect width="150" height="132" rx="24" fill="#101820" stroke="#334155"/>
+        <circle cx="75" cy="42" r="23" fill="#fef3c7"/>
+        <text x="75" y="50" text-anchor="middle" fill="#0f766e" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="900">FM</text>
+        <text x="75" y="89" text-anchor="middle" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="900">File Manager</text>
+        <text x="75" y="113" text-anchor="middle" fill="#67e8f9" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="800">WINDOWS</text>
+      </g>
+      <g transform="translate(688 0)">
+        <rect width="150" height="132" rx="24" fill="#101820" stroke="#334155"/>
+        <circle cx="75" cy="42" r="23" fill="#6366f1"/>
+        <text x="75" y="50" text-anchor="middle" fill="#fff" font-family="Inter,Arial,sans-serif" font-size="22" font-weight="900">V</text>
+        <text x="75" y="89" text-anchor="middle" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="900">Verba Studio</text>
+        <text x="75" y="113" text-anchor="middle" fill="#67e8f9" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="800">CREATOR</text>
+      </g>
+      <g transform="translate(860 0)">
+        <rect width="150" height="132" rx="24" fill="#111827" stroke="#f59e0b"/>
+        <circle cx="75" cy="42" r="23" fill="#f8fafc"/>
+        <text x="75" y="50" text-anchor="middle" fill="#0f172a" font-family="Inter,Arial,sans-serif" font-size="18" font-weight="900">X4</text>
+        <text x="75" y="89" text-anchor="middle" fill="#f8fafc" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="900">X4 Control</text>
+        <text x="75" y="113" text-anchor="middle" fill="#67e8f9" font-family="Inter,Arial,sans-serif" font-size="11" font-weight="800">MANAGER</text>
+      </g>
+    </g>
+  </g>
+</svg>

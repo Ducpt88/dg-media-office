@@ -86,6 +86,11 @@ h1 .gr{background:linear-gradient(90deg,var(--a1),var(--a2),var(--a3),var(--a1))
 .ico-brain{background-image:url("/assets/png/project-product-hub.png")!important}
 .ico-pinterest{background-image:url("/assets/png/project-pinterest-autopost.png")!important;background-image:image-set(url("/assets/png/project-pinterest-autopost.webp") type("image/webp"),url("/assets/png/project-pinterest-autopost.png") type("image/png"))!important}
 .ico-claude-dual{background-image:url("/assets/claude-dual-workspace.svg")!important}
+.ico-image-tools{background-image:url("/assets/png/repo-dg-image-tools.png")!important}
+.ico-file-manager{background-image:url("/assets/png/repo-file-manager-pro.png")!important}
+.ico-quick-email,.ico-x4-control{font-size:22px!important;font-weight:900;color:#07101d;background:linear-gradient(135deg,var(--a1),var(--a2))!important}
+.ico-quick-email::before{content:"QE"}
+.ico-x4-control::before{content:"X4"}
 .product-card{cursor:pointer}.product-card:focus-visible{outline:3px solid #2563eb;outline-offset:4px}.product-card .row{gap:10px}.product-card-actions{display:flex;gap:8px;align-items:center}.product-card-actions .btn{white-space:nowrap}.product-video{display:none;margin:0 0 18px;aspect-ratio:16/9;border:1px solid var(--glass-line);border-radius:20px;overflow:hidden;background:#07101d}.product-video.show{display:block}.product-video iframe{width:100%;height:100%;border:0}.product-fit{margin-top:18px;padding:14px;border:1px solid var(--glass-line);border-radius:16px;background:rgba(37,99,235,.06)}.product-fit h4{margin:0 0 8px}.product-fit p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
 .card h3{font-size:20px;font-weight:800;letter-spacing:-.3px}
 .card .tag{color:var(--a1);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px}
@@ -294,13 +299,13 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
 .office-public-top p{margin:4px 0 0;color:#667085;font-size:13px}
 .office-public-badge{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:#eff6ff;color:#2563eb;border:1px solid #dbeafe;font-size:11px;font-weight:900;white-space:nowrap}
 .office-public-framebox{position:relative;min-height:560px;background:#07101d}
-.office-public-frame{display:block;width:100%;height:66vh;min-height:560px;border:0;pointer-events:auto;user-select:none}
+.office-public-frame{display:block;width:100%;height:66vh;min-height:560px;border:0;pointer-events:none;user-select:none}
 .office-public-lock{position:absolute;inset:0;z-index:3;pointer-events:none;background:transparent}
 .office-public-label{position:absolute;top:14px;right:14px;z-index:4;padding:8px 12px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#2563eb,#7c3aed);font-size:11px;font-weight:900;box-shadow:0 10px 24px rgba(37,99,235,.28)}
 .office-public-note{padding:12px 18px;color:#667085;background:#f8fafc;border-top:1px solid #e6eaf0;font-size:12px}
-/* Skills Map is now the live department workspace, not the legacy read-only preview. */
+/* Public map is display-only. Editing remains available on the dedicated admin map. */
 .office-public-lock,.office-public-label,.office-public-badge,.office-public-note{display:none!important}
-.office-public-frame{pointer-events:auto!important}
+.office-public-frame{pointer-events:none!important}
 .office-public-framebox{background:#080812}
 @media(max-width:760px){.office-public-top{display:block}.office-public-badge{margin-top:10px}.office-public-frame,.office-public-framebox{min-height:430px;height:56vh}}
 </style>
@@ -330,13 +335,13 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
 </section>
 
 <section class="sec wrap office-public" id="office-map">
-  <div class="sec-head"><h2>Bản đồ nhân sự & tiến độ làm việc</h2><p>Giao diện phòng ban làm việc DUCPT được nhúng trực tiếp từ bản đồ agent và hỗ trợ tương tác.</p></div>
+  <div class="sec-head"><h2>Bản đồ nhân sự & tiến độ làm việc</h2><p>Giao diện phòng ban làm việc DUCPT được nhúng trực tiếp từ bản đồ agent ở chế độ chỉ xem.</p></div>
   <div class="office-public-card">
     <div class="office-public-top">
-      <div><h3>Phòng ban làm việc DUCPT</h3><p>Hiển thị bản đồ agent/phòng ban, vai trò, luồng việc và tiến độ.</p></div>
+      <div><h3>Phòng ban làm việc DUCPT</h3><p>Hiển thị bản đồ agent/phòng ban, vai trò, luồng việc và tiến độ ở chế độ an toàn.</p></div>
     </div>
     <div class="office-public-framebox">
-      <iframe class="office-public-frame" src="/agent-dbh-skills-map/index.html?v=20260712-rgba-node-circles" title="Bản đồ nhân sự DUCPT" loading="eager" sandbox="allow-scripts allow-same-origin" referrerpolicy="same-origin"></iframe>
+      <iframe class="office-public-frame" src="/agent-dbh-skills-map/index.html?v=20260712-public-lock-no-activity" title="Bản đồ nhân sự DUCPT (chỉ xem)" loading="eager" tabindex="-1" sandbox="allow-scripts allow-same-origin" referrerpolicy="same-origin"></iframe>
     </div>
   </div>
 </section>
@@ -353,6 +358,18 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
     <article class="card product-card" tabindex="0" data-product-card="Pinterest AutoPost"><div class="ico ico-pinterest" role="img" aria-label="Logo Pinterest AutoPost"></div><span class="tag">Extension</span>
       <h3>Pinterest AutoPost</h3><p>Đăng pin ảnh/video tự động chạy nền, lên lịch hàng loạt nhiều board.</p>
       <div class="row"><span class="price price-swap"><span class="main">249.000đ</span><span class="alt">349.000đ</span></span><button class="btn btn-hero buy-btn" data-product="Pinterest AutoPost" data-price="249.000đ" data-url="https://zalo.me/0963249467" data-guide="Gửi thông tin tài khoản, board, lịch đăng và định dạng nội dung cần auto post để DUCPT setup đúng luồng." style="padding:9px 18px;font-size:13px">Xem chi tiết</button></div></article>
+    <article class="card product-card" tabindex="0" data-product-card="DG Image Tools"><div class="ico ico-image-tools" role="img" aria-label="Logo DG Image Tools"></div><span class="tag">App + Build EXE</span>
+      <h3>DG Image Tools</h3><p>Xử lý ảnh, thumbnail và asset marketing cho bài viết, video, landing page.</p>
+      <div class="row"><span class="price">Liên hệ</span><a class="btn btn-hero" href="/bai-viet/he-sinh-thai-cong-cu-ducpt-ai-windows-extension/" style="padding:9px 18px;font-size:13px">Xem hệ sinh thái</a></div></article>
+    <article class="card product-card" tabindex="0" data-product-card="Quick Email"><div class="ico ico-quick-email" role="img" aria-label="Logo Quick Email"></div><span class="tag">App Windows</span>
+      <h3>Quick Email</h3><p>Gửi email nhanh cho khách quan tâm, tài liệu demo và thông báo cập nhật.</p>
+      <div class="row"><span class="price">Liên hệ</span><a class="btn btn-hero" href="https://zalo.me/0963249467" style="padding:9px 18px;font-size:13px">Nhận app</a></div></article>
+    <article class="card product-card" tabindex="0" data-product-card="File Manager"><div class="ico ico-file-manager" role="img" aria-label="Logo File Manager"></div><span class="tag">App Windows</span>
+      <h3>File Manager</h3><p>Gom, dọn, phân loại file và chuẩn hóa tài sản nội dung trên Windows.</p>
+      <div class="row"><span class="price">199.000đ</span><a class="btn btn-hero" href="/cong-cu-ai/file-manager-pro/" style="padding:9px 18px;font-size:13px">Xem sản phẩm</a></div></article>
+    <article class="card product-card" tabindex="0" data-product-card="X4 Control"><div class="ico ico-x4-control" role="img" aria-label="Logo X4 Control"></div><span class="tag">Manager</span>
+      <h3>X4 Control</h3><p>Điều khiển workflow, theo dõi trạng thái và gom các bước vận hành lặp lại.</p>
+      <div class="row"><span class="price">Liên hệ</span><a class="btn btn-hero" href="https://zalo.me/0963249467" style="padding:9px 18px;font-size:13px">Tư vấn</a></div></article>
     <article class="card product-card" tabindex="0" data-product-card="Claude Dual Workspace"><div class="ico ico-claude-dual" role="img" aria-label="Logo Claude Dual Workspace"></div><span class="tag">Windows · Productivity</span><h3>Claude Dual Workspace</h3><p>Làm việc đồng thời với hai tài khoản Claude trên một màn hình, giảm thao tác chuyển cửa sổ và giữ đúng ngữ cảnh.</p><div class="row"><span class="price">99.000đ</span><button class="btn btn-hero buy-btn" data-product="Claude Dual Workspace" data-price="99.000đ" data-url="/claude-dual-workspace.html" data-guide="Cài ứng dụng trên Windows, chọn hai cửa sổ Claude và ghép tự động theo bố cục trái–phải." style="padding:9px 18px;font-size:13px">Xem chi tiết</button></div></article>
   </div>
 </section>
