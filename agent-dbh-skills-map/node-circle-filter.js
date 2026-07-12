@@ -7,8 +7,23 @@
   const fill = proto.fill;
   const stroke = proto.stroke;
 
-  const nodeFill = value => typeof value === "string" && /^#[0-9a-f]{6}(10|18)$/i.test(value);
-  const nodeStroke = value => typeof value === "string" && /^#[0-9a-f]{6}(30|88)$/i.test(value);
+  function alphaOf(value) {
+    if (typeof value !== "string") return 1;
+    const hex = value.match(/^#[0-9a-f]{6}([0-9a-f]{2})$/i);
+    if (hex) return parseInt(hex[1], 16) / 255;
+    const rgba = value.match(/^rgba\([^,]+,[^,]+,[^,]+,\s*([\d.]+)\)$/i);
+    return rgba ? Number(rgba[1]) : 1;
+  }
+
+  const nodeFill = value => {
+    const alpha = alphaOf(value);
+    return alpha >= 0.055 && alpha <= 0.105;
+  };
+
+  const nodeStroke = value => {
+    const alpha = alphaOf(value);
+    return (alpha >= 0.17 && alpha <= 0.20) || (alpha >= 0.52 && alpha <= 0.55);
+  };
 
   proto.beginPath = function () {
     this.__dgNodeCircleRadius = 0;
@@ -21,12 +36,12 @@
   };
 
   proto.fill = function () {
-    if (this.__dgNodeCircleRadius >= 25 && nodeFill(this.fillStyle)) return;
+    if (this.__dgNodeCircleRadius >= 40 && nodeFill(this.fillStyle)) return;
     return fill.apply(this, arguments);
   };
 
   proto.stroke = function () {
-    if (this.__dgNodeCircleRadius >= 25 && nodeStroke(this.strokeStyle)) return;
+    if (this.__dgNodeCircleRadius >= 40 && nodeStroke(this.strokeStyle)) return;
     return stroke.apply(this, arguments);
   };
 })();
