@@ -21,11 +21,13 @@
         if (!proto) return;
         const fill = proto.fill, stroke = proto.stroke, arc = proto.arc;
         const beginPath = proto.beginPath, setLineDash = proto.setLineDash;
+        const dotFill = value => typeof value === "string" && /^#[0-9a-f]{6}(08|10|18)$/i.test(value);
+        const dotStroke = value => typeof value === "string" && /^#[0-9a-f]{6}(15|30|88)$/i.test(value);
         proto.beginPath = function () { this.__dgLargeCircle = false; return beginPath.apply(this, arguments); };
         proto.arc = function (x, y, radius) { if (Number(radius) >= 25) this.__dgLargeCircle = true; return arc.apply(this, arguments); };
         proto.setLineDash = function (parts) { this.__dgZoneDash = Array.isArray(parts) && parts.length === 2 && parts[0] === 6 && parts[1] === 4; return setLineDash.apply(this, arguments); };
-        proto.fill = function () { if (this.__dgZoneDash || this.__dgLargeCircle) return; return fill.apply(this, arguments); };
-        proto.stroke = function () { if (this.__dgZoneDash || this.__dgLargeCircle) return; return stroke.apply(this, arguments); };
+        proto.fill = function () { if (this.__dgZoneDash || dotFill(this.fillStyle)) return; return fill.apply(this, arguments); };
+        proto.stroke = function () { if (this.__dgZoneDash || this.__dgLargeCircle || dotStroke(this.strokeStyle)) return; return stroke.apply(this, arguments); };
       })();
     </script>
     <script type="module" crossorigin src="./assets/index-BeKOOk0q.js?v=dg-public27-20260710"></script>
