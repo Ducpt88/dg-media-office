@@ -3,6 +3,11 @@
 <head><link rel="icon" type="image/svg+xml" href="/assets/hvd-monogram.svg"><link rel="apple-touch-icon" href="/assets/hvd-monogram.svg"><meta name="theme-color" content="#14213d">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="https://ducpt.com/khoa-hoc/">
+  <meta property="og:title" content="Khóa học AI & Doanh nghiệp một người · DUCPT">
+  <meta property="og:description" content="Khóa học thực chiến giúp cá nhân xây mô hình doanh nghiệp một người bằng AI, automation, nội dung và hệ thống vận hành.">
+  <meta property="og:image" content="https://ducpt.com/assets/course/doanh-nghiep-1-nguoi.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Khóa học DUCPT","itemListElement":[{"@type":"ListItem","position":1,"item":{"@type":"Course","name":"Doanh nghiệp một người","description":"Khóa học thực chiến giúp cá nhân xây mô hình doanh nghiệp một người bằng AI, automation, nội dung, sản phẩm số và hệ thống vận hành tinh gọn.","provider":{"@type":"Organization","name":"DUCPT","sameAs":"https://ducpt.com/"},"url":"https://ducpt.com/khoa-hoc/doanh-nghiep-mot-nguoi/","image":"https://ducpt.com/assets/course/doanh-nghiep-1-nguoi.png","offers":{"@type":"Offer","price":"0","priceCurrency":"VND","availability":"https://schema.org/InStock","url":"https://zalo.me/0963249467","description":"Giá khóa học: Liên hệ để được tư vấn theo nhu cầu."}}}]}</script>
   <title>Khóa học AI · DUCPT</title>
   <meta name="description" content="Thư viện khóa học AI, content, automation và đóng gói sản phẩm số thực chiến của DUCPT.">
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -27,7 +32,12 @@
     .section-title p{max-width:520px;margin:0;color:#667085;font-size:14px}
     .course-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
     .course-card{display:flex;flex-direction:column;min-height:100%;overflow:hidden;border:1px solid #e6eaf0;border-radius:26px;background:#fff;box-shadow:0 14px 38px rgba(16,24,40,.07);transition:.22s}
+    .course-card.featured-course{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.1fr) minmax(340px,.9fr);min-height:420px}
     .course-card:hover{transform:translateY(-4px);box-shadow:0 26px 64px rgba(37,99,235,.14);border-color:#bfdbfe}
+    .course-image{position:relative;min-height:360px;overflow:hidden;background:#0b1220}
+    .course-image img{width:100%;height:100%;object-fit:cover;display:block}
+    .course-image::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,18,32,.08),rgba(11,18,32,.55))}
+    .course-image-badge{position:absolute;left:18px;bottom:18px;z-index:2;padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.92);color:#14213d;font-size:12px;font-weight:900;box-shadow:0 12px 28px rgba(0,0,0,.25)}
     .thumb{min-height:150px;padding:18px;color:#fff;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;flex-direction:column;justify-content:space-between}
     .thumb.alt{background:linear-gradient(135deg,#0891b2,#2563eb 58%,#7c3aed)}
     .thumb.gold{background:linear-gradient(135deg,#f59e0b,#2563eb 54%,#7c3aed)}
@@ -40,13 +50,15 @@
     .meta-list span::before{content:"✓";margin-right:7px;color:#2563eb;font-weight:900}
     .course-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:12px;border-top:1px solid #eef2f7}
     .price{font-size:18px;font-weight:900;color:#14213d}
+    .featured-course .course-body{padding:26px}.featured-course h3{font-size:32px}.featured-course .price{font-size:26px}.featured-course .course-bottom a{background:#14213d;color:#fff}
     .price small{display:block;color:#98a2b3;font-size:11px;text-decoration:line-through}
     .course-bottom a{padding:10px 13px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:12px;font-weight:900}
     .final-cta{margin-top:28px;padding:34px;border-radius:28px;text-align:center;color:#fff;background:linear-gradient(120deg,#2563eb,#7c3aed,#0891b2);box-shadow:0 24px 70px rgba(37,99,235,.2)}
     .final-cta h2{margin:0 0 8px;font-size:30px}
     .final-cta p{margin:0 auto;max-width:650px;color:rgba(255,255,255,.86)}
     .final-cta a{display:inline-flex;margin-top:18px;padding:12px 20px;border-radius:999px;background:#fff;color:#2563eb;font-weight:900}
-    @media(max-width:900px){.course-toolbar{grid-template-columns:1fr}.course-grid{grid-template-columns:1fr}.section-title{display:block}.filter-row{overflow:auto;flex-wrap:nowrap}.filter-chip{white-space:nowrap}}
+    @media(max-width:900px){.course-toolbar{grid-template-columns:1fr}.course-grid{grid-template-columns:1fr}.course-card.featured-course{grid-template-columns:1fr}.course-image{min-height:240px}.section-title{display:block}.filter-row{overflow:auto;flex-wrap:nowrap}.filter-chip{white-space:nowrap}}
+    @media(max-width:620px){body{overflow-x:hidden}.nav{flex-wrap:nowrap!important;max-width:100%;overflow:hidden}.nav>a:first-child{margin-right:6px!important}.nav a:not(:first-child):not(.active):not(.login){display:none!important}.nav .login{margin-left:auto}.featured-course h3{font-size:26px}.course-bottom{align-items:flex-start;flex-direction:column}.course-bottom a{width:100%;justify-content:center;text-align:center}}
   </style>
 </head>
 <body>
@@ -84,6 +96,18 @@
     </div>
 
     <section class="course-grid">
+      <article class="course-card featured-course">
+        <a class="course-image" href="/khoa-hoc/doanh-nghiep-mot-nguoi/">
+          <img src="/assets/course/doanh-nghiep-1-nguoi.png" alt="Khóa học Doanh nghiệp một người của DUCPT" width="1600" height="900" loading="eager">
+          <span class="course-image-badge">Khóa học trọng tâm · Doanh nghiệp một người</span>
+        </a>
+        <div class="course-body">
+          <h3>Doanh nghiệp một người</h3>
+          <p>Khóa học dành cho cá nhân muốn xây một hệ thống kinh doanh tinh gọn: dùng AI để tạo nội dung, đóng gói sản phẩm số, tự động hóa bán hàng và vận hành như một đội nhóm nhỏ.</p>
+          <div class="meta-list"><span>Tư duy vận hành một người nhưng có hệ thống</span><span>AI, automation, content và sản phẩm số đi cùng nhau</span><span>Tư liệu, checklist và bài học có thể đẩy lên website</span><span>Phù hợp creator, freelancer, chủ shop và người xây thương hiệu cá nhân</span></div>
+          <div class="course-bottom"><div class="price">Liên hệ<small>Tư vấn theo mục tiêu học</small></div><a href="/khoa-hoc/doanh-nghiep-mot-nguoi/">Xem khóa học</a></div>
+        </div>
+      </article>
       <article class="course-card">
         <div class="thumb"><span class="level">Cơ bản</span><b>AI 01</b></div>
         <div class="course-body">
