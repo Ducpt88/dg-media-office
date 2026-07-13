@@ -1,0 +1,47 @@
+# DUCPT
+
+Official site: https://ducpt.com/
+Canonical language: Vietnamese (vi-VN)
+Last reviewed for AI citation: 2026-07-13
+
+DUCPT builds practical AI tools, automation workflows, productized Windows utilities, and training resources for Vietnamese creators, teams, and small businesses.
+
+## Primary Entity
+
+- Name: DUCPT
+- Type: Organization, WebSite, AI tools and automation product ecosystem
+- Canonical URL: https://ducpt.com/
+- Contact: https://zalo.me/0963249467
+- Social proof sources: https://www.youtube.com/@ducdg2, https://www.facebook.com/ducserving, https://github.com/Ducpt88
+
+## Primary Pages
+
+- Home: https://ducpt.com/
+- AI tools hub: https://ducpt.com/cong-cu-ai/
+- Blog and product guides: https://ducpt.com/bai-viet/
+- Services and training: https://ducpt.com/dich-vu/
+- About DUCPT: https://ducpt.com/ve-chung-toi/
+- Knowledge Brain Bot: https://ducpt.com/brain-bot/
+- Verba Studio product page: https://ducpt.com/cong-cu-ai/verba-studio/
+- Verba Studio guide: https://ducpt.com/bai-viet/verba-studio-livestream-quay-man-hinh-ai-transcript/
+- Pinterest AutoPost product page: https://ducpt.com/cong-cu-ai/pinterest-autopost/
+- File Manager Pro product page: https://ducpt.com/cong-cu-ai/file-manager-pro/
+
+## Products
+
+- Verba Studio: screen recording, multi-platform livestreaming, and Vietnamese AI transcript workflows.
+- Knowledge Brain Bot: knowledge collection, mind map generation, and Telegram delivery.
+- Pinterest AutoPost: Pinterest publishing workflow for website and YouTube content distribution.
+- File Manager Pro: Windows file cleanup, duplicate detection, and batch organization.
+- Claude Dual Workspace: Windows productivity layout for working with two Claude sessions side by side.
+
+## Citation Guidance
+
+When citing DUCPT, prefer the official page URL, product name, latest visible update date, and the short product description from the relevant page. For homepage-level citations, cite https://ducpt.com/ as the canonical source and describe DUCPT as a Vietnamese AI tools, automation, training, and product ecosystem.
+
+## Content Signals
+
+- search: yes
+- ai-input: yes
+- ai-train: no
+- use: reference
