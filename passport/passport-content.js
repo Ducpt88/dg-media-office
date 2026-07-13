@@ -1085,6 +1085,7 @@
   const seed = { course: { title: "Doanh nghiệp một người", price: "Liên hệ", contact: "Zalo 0963249467", goal: "Khóa học giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, tạo nội dung kéo khách, bán sản phẩm dịch vụ số và vận hành gọn bằng AI.", cover: "/assets/hvd-horizontal.svg" }, lessons: [] };
   const githubDefaults = { owner: "Ducpt88", repo: "dg-media-office", branch: "main", path: "passport/course-videos.json" };
   let data = JSON.parse(JSON.stringify(seed));
+  let legacyAssets = [];
   let editingId = "";
   let viewMode = "admin";
 
@@ -1092,7 +1093,7 @@
     if (document.getElementById("ytc-final-style")) return;
     const style = document.createElement("style");
     style.id = "ytc-final-style";
-    style.textContent = ".ytc-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}.ytc-panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}.ytc-form{display:grid;gap:10px}.ytc-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ytc-form input,.ytc-form textarea,.ytc-form select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ytc-form textarea{min-height:90px;resize:vertical}.ytc-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ytc-import{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}.ytc-view-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.ytc-view-switch button{border:0;border-radius:9px;background:transparent;padding:8px 10px;color:var(--muted);font-weight:900;cursor:pointer}.ytc-view-switch button.is-active{background:#fff;color:#1d4ed8;box-shadow:0 1px 6px rgba(16,24,40,.08)}.ytc-lessons{display:grid;gap:10px}.ytc-lesson{display:grid;grid-template-columns:70px minmax(0,1fr) 120px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-lesson.is-editing{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.08)}.ytc-lesson img{width:70px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:#e2e8f0}.ytc-lesson b{display:block;margin-bottom:4px}.ytc-lesson span,.ytc-note{display:block;color:var(--muted);font-size:11px;line-height:1.5}.ytc-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}.ytc-preview-list{display:grid;gap:12px}.ytc-preview-card{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.ytc-preview-card img{width:150px;aspect-ratio:16/9;border-radius:10px;object-fit:cover;background:#e2e8f0}.ytc-preview-card p{margin:5px 0;color:var(--muted);font-size:12px;line-height:1.5}.ytc-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.ytc-guide div{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-guide b{display:block;margin-bottom:4px}@media(max-width:900px){.ytc-grid{grid-template-columns:1fr}.ytc-import,.ytc-lesson,.ytc-preview-card{grid-template-columns:1fr}.ytc-lesson img,.ytc-preview-card img{width:100%}.ytc-guide{grid-template-columns:1fr}}";
+    style.textContent = ".ytc-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}.ytc-panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}.ytc-form{display:grid;gap:10px}.ytc-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ytc-form input,.ytc-form textarea,.ytc-form select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ytc-form textarea{min-height:90px;resize:vertical}.ytc-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ytc-import{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}.ytc-view-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.ytc-view-switch button{border:0;border-radius:9px;background:transparent;padding:8px 10px;color:var(--muted);font-weight:900;cursor:pointer}.ytc-view-switch button.is-active{background:#fff;color:#1d4ed8;box-shadow:0 1px 6px rgba(16,24,40,.08)}.ytc-lessons{display:grid;gap:10px}.ytc-lesson{display:grid;grid-template-columns:70px minmax(0,1fr) 120px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-lesson.is-editing{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.08)}.ytc-lesson img{width:70px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:#e2e8f0}.ytc-lesson b{display:block;margin-bottom:4px}.ytc-lesson span,.ytc-note{display:block;color:var(--muted);font-size:11px;line-height:1.5}.ytc-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}.ytc-preview-list{display:grid;gap:12px}.ytc-preview-card{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.ytc-preview-card img{width:150px;aspect-ratio:16/9;border-radius:10px;object-fit:cover;background:#e2e8f0}.ytc-preview-card p{margin:5px 0;color:var(--muted);font-size:12px;line-height:1.5}.ytc-asset-list{display:grid;gap:10px}.ytc-asset{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-asset b{display:block;overflow-wrap:anywhere}.ytc-asset small{display:block;color:var(--muted);margin-top:4px}.ytc-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.ytc-guide div{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-guide b{display:block;margin-bottom:4px}@media(max-width:900px){.ytc-grid{grid-template-columns:1fr}.ytc-import,.ytc-lesson,.ytc-preview-card,.ytc-asset{grid-template-columns:1fr}.ytc-lesson img,.ytc-preview-card img{width:100%}.ytc-guide{grid-template-columns:1fr}}";
     document.head.appendChild(style);
   }
 
@@ -1112,6 +1113,7 @@
         data = JSON.parse(JSON.stringify(seed));
       }
     }
+    await loadLegacyAssets();
     draw();
   }
 
@@ -1124,6 +1126,7 @@
       <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quản lý học viên & video khóa học</h2><div class="pc-hint">Dán link YouTube, sửa mô tả, sắp xếp bài học và xuất bản lên trang /khoa-hoc/. Trên ducpt.com, nút Lưu sẽ commit file JSON thẳng vào GitHub nếu không có API server.</div></div><div class="pc-right"><span class="pc-saved" data-saved></span><div class="ytc-view-switch"><button class="${viewMode==="admin"?"is-active":""}" data-view-mode="admin" type="button">Góc nhìn quản trị</button><button class="${viewMode==="student"?"is-active":""}" data-view-mode="student" type="button">Góc nhìn học viên</button></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Mở trang học</a><button class="btn primary" data-save-all type="button">Lưu tất cả</button></div></div>
       <div class="cs-metrics"><article class="card metric"><span>Tổng bài</span><strong>${data.lessons.length}</strong><small>${publishedCount} đang hiển thị</small></article><article class="card metric"><span>Nguồn video</span><strong>YouTube</strong><small>Không công khai để giảm chi phí</small></article><article class="card metric"><span>Mô tả</span><strong>Tự sửa</strong><small>oEmbed không trả mô tả đầy đủ</small></article><article class="card metric"><span>Lưu trữ</span><strong>JSON</strong><small>passport/course-videos.json</small></article></div>
       ${viewMode === "student" ? studentPreviewHtml() : adminEditorHtml(lesson)}
+      ${legacyAssetsHtml()}
       <article class="ytc-panel ytc-form" style="margin-top:14px"><h3 style="margin:0">Kết nối GitHub để lưu trực tiếp trên ducpt.com</h3><div class="pc-hint">Chỉ cần điền token trên trình duyệt của anh. Token nằm trong localStorage máy anh, không đưa vào repo. Cần quyền Contents: Read and write cho repo Ducpt88/dg-media-office.</div><label>GitHub token<input data-github-field="token" type="password" value="${esc(githubConfig().token)}" placeholder="github_pat_..."></label><div class="ytc-grid"><label>Owner<input data-github-field="owner" value="${esc(githubConfig().owner)}"></label><label>Repo<input data-github-field="repo" value="${esc(githubConfig().repo)}"></label></div><div class="ytc-grid"><label>Branch<input data-github-field="branch" value="${esc(githubConfig().branch)}"></label><label>File path<input data-github-field="path" value="${esc(githubConfig().path)}"></label></div><div class="ytc-actions"><button class="btn" data-save-github-config type="button">Lưu kết nối GitHub</button><button class="btn" data-test-github type="button">Kiểm tra kết nối</button></div></article>
       <article class="ytc-panel" style="margin-top:14px"><h3 style="margin:0">Cần gì khi thêm một video khóa học?</h3><div class="ytc-guide"><div><b>1. Link YouTube</b><span class="ytc-note">Nên để không công khai. Video riêng tư sẽ không xem được khi nhúng trên website.</span></div><div><b>2. Tiêu đề</b><span class="ytc-note">Có thể đồng bộ từ YouTube, nhưng vẫn nên sửa lại cho đúng bài học.</span></div><div><b>3. Mô tả / outline</b><span class="ytc-note">Nhập mục tiêu, nội dung chính, bài tập và link tài liệu kèm theo.</span></div><div><b>4. Trạng thái</b><span class="ytc-note">Draft để soạn, published để học viên học, hidden để tạm ẩn.</span></div></div></article>`;
     bind(view);
@@ -1132,6 +1135,21 @@
   function emptyLesson() {
     const n = data.lessons.length + 1;
     return { id: "", lessonNo: n, sort: n, youtubeUrl: "", youtubeId: "", title: "", description: "", thumbnail: "", duration: "", status: "draft" };
+  }
+
+  async function loadLegacyAssets() {
+    try {
+      const res = await fetch("/api/passport/assets", { cache: "no-store" });
+      const payload = await res.json();
+      legacyAssets = payload.ok ? payload.data.filter((item) => String(item.type || "").startsWith("video/")) : [];
+    } catch {
+      legacyAssets = [];
+    }
+  }
+
+  function legacyAssetsHtml() {
+    if (!legacyAssets.length) return "";
+    return `<article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Video đã tải lên trước đây</h3><div class="pc-hint">Các file này vẫn còn trong thư mục passport/uploads trên máy/server local. Chúng không bị xóa, chỉ không thể đưa nguyên file lớn lên GitHub Pages. Nếu muốn dùng trên website thật, hãy đưa video lên YouTube không công khai rồi dán link vào phần bài học.</div></div><span class="ytc-status">${legacyAssets.length} file</span></div><div class="ytc-asset-list">${legacyAssets.map((asset) => `<div class="ytc-asset"><div><b>${esc(asset.name || asset.fileName)}</b><small>${esc(asset.fileName)} · ${formatBytes(asset.size)} · ${esc(asset.type || "video")}</small></div><a class="btn" href="${esc(asset.url)}" target="_blank" rel="noreferrer">Xem file</a></div>`).join("")}</div></article>`;
   }
 
   function adminEditorHtml(lesson) {
@@ -1157,6 +1175,14 @@
 
   function statusLabel(status) {
     return status === "published" ? "Đang hiển thị" : status === "hidden" ? "Tạm ẩn" : "Bản nháp";
+  }
+
+  function formatBytes(bytes) {
+    const value = Number(bytes || 0);
+    if (!value) return "0 B";
+    const units = ["B", "KB", "MB", "GB"];
+    const index = Math.min(Math.floor(Math.log(value) / Math.log(1024)), units.length - 1);
+    return `${(value / Math.pow(1024, index)).toFixed(index ? 1 : 0)} ${units[index]}`;
   }
 
   function bind(view) {
