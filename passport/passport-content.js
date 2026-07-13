@@ -475,3 +475,340 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mount);
   else mount();
 })();
+
+/* One-person business course staging area */
+(() => {
+  "use strict";
+
+  const view = document.getElementById("courseAdmin");
+  if (!view) return;
+
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const key = "ducpt_one_person_business_course_v2";
+  const seed = {
+    title: "Doanh nghiệp một người",
+    price: "1.990.000đ",
+    contact: "Nhập SĐT/Zalo của bạn",
+    site: "",
+    goal: "Giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, xây hệ nội dung kéo khách, bán khóa/dịch vụ số và vận hành gọn bằng công cụ AI.",
+    cover: "/assets/hvd-horizontal.svg",
+    lessons: [
+      ["Tư liệu Pheme Studio - Voice to Text", "Video/tư liệu từ E:\\Videos Pheme Studio. Dùng để xem lại, bóc tách nội dung và chuyển thành outline bài học cho khóa Doanh nghiệp một người.", "Sẵn sàng"],
+      ["Đóng gói offer và định giá", "Thiết kế gói học/tư vấn, bonus, bảo hành, khung giá và ưu đãi mở bán.", "Bản nháp"],
+      ["Hệ thống nội dung kéo khách", "Lịch nội dung, hook, case study, lead magnet và kênh phân phối.", "Bản nháp"],
+      ["Trang bán hàng và quy trình liên hệ", "Landing page, CTA, form liên hệ, script tư vấn và follow-up.", "Bản nháp"],
+      ["Vận hành một mình bằng AI", "Quản lý file, lịch nhắc, khách hàng, báo cáo và tự động hóa công việc lặp lại.", "Bản nháp"]
+    ].map((x, i) => ({ id: `l${i + 1}`, title: x[0], detail: x[1], status: x[2] }))
+  };
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .opb-hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(300px,.85fr);gap:18px;margin-bottom:16px}
+    .opb-panel{padding:18px;border:1px solid var(--line);border-radius:17px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}
+    .opb-hero h2{margin:0 0 10px;font-size:30px;letter-spacing:-.04em}.opb-hero p{color:var(--muted);line-height:1.65}
+    .opb-cover{position:relative;overflow:hidden;min-height:260px;border-radius:16px;background:#eef2ff;display:grid;place-items:center}.opb-cover img{width:100%;height:100%;min-height:260px;object-fit:cover}.opb-cover input{position:absolute;inset:auto 14px 14px auto;width:auto;max-width:220px;background:#fff}
+    .opb-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}.opb-form{display:grid;gap:10px}.opb-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.opb-form input,.opb-form textarea,.opb-form select{padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:#fff;font:inherit;width:100%}.opb-form textarea{min-height:96px}
+    .opb-price{display:inline-flex;margin:8px 0 12px;padding:8px 12px;border-radius:999px;color:#065f46;background:#ecfdf5;font-weight:900}
+    .opb-lessons,.opb-assets{display:grid;gap:10px}.opb-lesson{display:grid;grid-template-columns:34px minmax(0,1fr) 135px;gap:10px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.opb-num{display:grid;place-items:center;width:34px;height:34px;border-radius:10px;color:#fff;background:linear-gradient(135deg,#2563eb,#7c3aed);font-weight:900}.opb-lesson h3{margin:0 0 4px;font-size:14px}.opb-lesson p{margin:0;color:var(--muted);font-size:12px}
+    .opb-upload{margin-top:14px}.opb-upload-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:12px}.opb-assets{grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}.opb-asset{overflow:hidden;border:1px solid var(--line);border-radius:14px;background:#fff}.opb-preview{height:135px;display:grid;place-items:center;background:#f1f5f9;color:#2563eb;font-weight:900}.opb-preview img,.opb-preview video{width:100%;height:100%;object-fit:cover}.opb-asset b{display:block;padding:10px 10px 2px;overflow-wrap:anywhere}.opb-asset span{display:block;padding:0 10px 10px;color:var(--muted);font-size:11px}
+    .opb-derived{display:grid;gap:10px;margin-top:12px}.opb-derived-row{display:grid;grid-template-columns:88px minmax(0,1fr) 120px;gap:10px;align-items:center;padding:11px;border:1px solid var(--line);border-radius:14px;background:#fff}.opb-derived-row strong{display:block}.opb-derived-row span{color:var(--muted);font-size:11px}.opb-derived-row a{text-align:center}
+    .opb-duration{display:inline-flex;margin-top:5px;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}.opb-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}.opb-guide-item{padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.opb-guide-item b{display:block;margin-bottom:4px}.opb-guide-item span{display:block;color:var(--muted);font-size:11px;line-height:1.5}
+    @media(max-width:900px){.opb-hero,.opb-grid{grid-template-columns:1fr}.opb-lesson{grid-template-columns:34px minmax(0,1fr)}.opb-lesson select{grid-column:1/-1}}
+  `;
+  document.head.appendChild(style);
+
+  let data = load();
+  let assets = [];
+
+  function load() {
+    try { return { ...seed, ...JSON.parse(localStorage.getItem(key) || "{}") }; } catch { return { ...seed }; }
+  }
+
+  function save() {
+    localStorage.setItem(key, JSON.stringify(data));
+  }
+
+  function draw() {
+    view.innerHTML = `
+      <div class="opb-hero">
+        <div class="opb-panel">
+          <p class="pc-hint">Mục quản lý khóa học</p>
+          <h2>${esc(data.title)}</h2>
+          <span class="opb-price">${esc(data.price)}</span>
+          <p>${esc(data.goal)}</p>
+          <div class="pc-right"><button class="btn primary" data-opb-save type="button">Lưu khóa học</button><a class="btn" href="${esc(data.site || "#")}" target="_blank" rel="noreferrer">Website chính</a></div>
+        </div>
+        <div class="opb-cover"><img id="opbCover" src="${esc(data.cover)}" alt="Ảnh bìa khóa học"><input id="opbCoverInput" type="file" accept="image/*"></div>
+      </div>
+      <div class="opb-grid">
+        <div class="opb-panel opb-form">
+          <label>Tên khóa học<input data-opb-field="title" value="${esc(data.title)}"></label>
+          <label>Giá khóa học<input data-opb-field="price" value="${esc(data.price)}"></label>
+          <label>SĐT/Zalo liên hệ<input data-opb-field="contact" value="${esc(data.contact)}"></label>
+          <label>Link website chính<input data-opb-field="site" value="${esc(data.site)}" placeholder="https://..."></label>
+          <label>Mục tiêu khóa học<textarea data-opb-field="goal">${esc(data.goal)}</textarea></label>
+        </div>
+        <div class="opb-panel">
+          <div class="pc-tools"><div><h2 style="margin:0">Lộ trình học</h2><div class="pc-hint">Sửa trực tiếp từng bài, đổi trạng thái rồi bấm Lưu khóa học.</div></div><button class="btn" data-opb-add type="button">+ Thêm bài</button></div>
+          <div class="opb-lessons">${data.lessons.map((lesson, i) => lessonHtml(lesson, i)).join("")}</div>
+        </div>
+      </div>
+      <div class="opb-panel opb-upload">
+        <div class="opb-upload-head"><div><h2 style="margin:0">Danh sách buổi đã đưa lên website</h2><div class="pc-hint">Tự phân tích từ tên file trong passport/uploads, ưu tiên các file bắt đầu bằng buoi-01, buoi-02...</div></div><button class="btn" data-opb-refresh type="button">Làm mới</button></div>
+        <div class="opb-derived" id="opbDerived"></div>
+      </div>
+      <div class="opb-panel opb-upload">
+        <div class="opb-upload-head"><div><h2 style="margin:0">Tư liệu và video</h2><div class="pc-hint">File được upload vào thư mục passport/uploads để xem trước trên trang local.</div></div><input id="opbAssetInput" type="file" multiple accept="video/*,image/*,.pdf,.doc,.docx,.ppt,.pptx,.zip"></div>
+        <div class="opb-assets" id="opbAssets"></div>
+      </div>
+      <div class="opb-panel opb-upload">
+        <div class="pc-tools"><div><h2 style="margin:0">Xuất dữ liệu</h2><div class="pc-hint">Dùng JSON này để đưa thông tin khóa học lên website chính.</div></div><button class="btn" data-opb-export type="button">Xuất JSON</button></div>
+        <textarea id="opbExport" style="width:100%;min-height:150px;border:1px solid var(--line);border-radius:12px;padding:12px"></textarea>
+      </div>
+      <div class="opb-panel opb-upload">
+        <div class="opb-upload-head"><div><h2 style="margin:0">Can gi khi them mot video khoa hoc?</h2><div class="pc-hint">Checklist nay giup ban chuan bi du thong tin truoc khi dua video len website chinh.</div></div></div>
+        <div class="opb-guide">
+          <div class="opb-guide-item"><b>1. So buoi / thu tu</b><span>Dat ten file dang buoi-01-ten-bai.webm hoac buoi-02-ten-bai.mp4 de he thong tu sap xep.</span></div>
+          <div class="opb-guide-item"><b>2. Tieu de bai hoc</b><span>Ten ngan, ro ket qua hoc vien nhan duoc sau khi xem video.</span></div>
+          <div class="opb-guide-item"><b>3. Muc tieu video</b><span>Video nay giup hoc vien lam duoc gi: hieu khai niem, lam bai tap, tao offer, dung trang ban...</span></div>
+          <div class="opb-guide-item"><b>4. Mo ta / outline</b><span>3-7 y chinh trong video de tao mo ta, muc luc va tai lieu di kem.</span></div>
+          <div class="opb-guide-item"><b>5. Tai lieu di kem</b><span>PDF, prompt, template, checklist, file bai tap, link cong cu hoac vi du thuc hanh.</span></div>
+          <div class="opb-guide-item"><b>6. Trang thai xuat ban</b><span>Ban nhap, can chinh, san sang, da public. De biet video nao con thieu.</span></div>
+          <div class="opb-guide-item"><b>7. Anh thumbnail</b><span>Anh dai dien 16:9 giup danh sach khoa hoc de nhin va ban hang tot hon.</span></div>
+          <div class="opb-guide-item"><b>8. Gia / CTA lien he</b><span>Neu video thuoc khoa tra phi, can gia khoa hoc va nut lien he/Zalo ro rang.</span></div>
+        </div>
+      </div>`;
+    bind();
+    loadAssets();
+  }
+
+  function lessonHtml(lesson, i) {
+    return `<div class="opb-lesson" data-index="${i}">
+      <div class="opb-num">${i + 1}</div>
+      <div><h3 contenteditable="true" data-lesson-field="title">${esc(lesson.title)}</h3><p contenteditable="true" data-lesson-field="detail">${esc(lesson.detail)}</p></div>
+      <select data-lesson-field="status">${["Sẵn sàng", "Cần video", "Cần tư liệu", "Bản nháp"].map((s) => `<option${s === lesson.status ? " selected" : ""}>${s}</option>`).join("")}</select>
+    </div>`;
+  }
+
+  function bind() {
+    view.querySelector("[data-opb-save]").addEventListener("click", collectAndSave);
+    view.querySelector("[data-opb-add]").addEventListener("click", () => {
+      data.lessons.push({ id: "l" + Date.now(), title: "Bài học mới", detail: "Nhập nội dung bài học.", status: "Bản nháp" });
+      save(); draw();
+    });
+    view.querySelector("[data-opb-export]").addEventListener("click", () => {
+      collect();
+      document.getElementById("opbExport").value = JSON.stringify({ course: data, derivedLessons: deriveLessonsFromAssets(), assets: assets.map(withDuration) }, null, 2);
+    });
+    view.querySelector("[data-opb-refresh]").addEventListener("click", loadAssets);
+    document.getElementById("opbCoverInput").addEventListener("change", async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      data.cover = await toDataUrl(file);
+      save(); draw();
+    });
+    document.getElementById("opbAssetInput").addEventListener("change", uploadAssets);
+  }
+
+  function collect() {
+    view.querySelectorAll("[data-opb-field]").forEach((el) => data[el.dataset.opbField] = el.value.trim());
+    view.querySelectorAll(".opb-lesson").forEach((row) => {
+      const i = Number(row.dataset.index);
+      row.querySelectorAll("[data-lesson-field]").forEach((el) => data.lessons[i][el.dataset.lessonField] = (el.value || el.textContent || "").trim());
+    });
+  }
+
+  function collectAndSave() {
+    collect(); save(); draw();
+  }
+
+  async function uploadAssets(e) {
+    const files = Array.from(e.target.files || []);
+    if (!files.length) return;
+    const box = document.getElementById("opbAssets");
+    box.innerHTML = `<div class="opb-asset"><div class="opb-preview">Đang tải</div><b>Đang upload file</b><span>Vui lòng chờ...</span></div>`;
+    for (const file of files) {
+      const res = await fetch(`/api/passport/upload?name=${encodeURIComponent(file.name)}`, { method: "POST", headers: { "Content-Type": file.type || "application/octet-stream" }, body: file });
+      const payload = await res.json();
+      if (!payload.ok) alert(payload.error || "Upload lỗi");
+    }
+    e.target.value = "";
+    loadAssets();
+  }
+
+  async function loadAssets() {
+    try {
+      const res = await fetch("/api/passport/assets");
+      const payload = await res.json();
+      assets = payload.ok ? payload.data : [];
+    } catch {
+      assets = [];
+    }
+    renderAssetsWithDuration();
+    renderDerivedLessonsWithDuration();
+  }
+
+  function renderAssetsWithDuration() {
+    const box = document.getElementById("opbAssets");
+    if (!box) return;
+    if (!assets.length) {
+      box.innerHTML = `<div class="opb-asset"><div class="opb-preview">Chua co file</div><b>Tai video, anh hoac tai lieu len</b><span>Danh sach se hien o day.</span></div>`;
+      return;
+    }
+    box.innerHTML = assets.map((asset, index) => `<div class="opb-asset"><div class="opb-preview">${previewWithDuration(asset, index)}</div><b>${esc(asset.name)}</b><span>${format(asset.size)} - ${esc(asset.type)}</span><span class="opb-duration" data-duration-text="${index}">${durationText(asset.url)}</span></div>`).join("");
+    syncVideoDurations();
+  }
+
+  function renderDerivedLessonsWithDuration() {
+    const box = document.getElementById("opbDerived");
+    if (!box) return;
+    const lessons = deriveLessonsFromAssets().map((lesson) => ({ ...lesson, duration: durationValue(lesson.url) }));
+    if (!lessons.length) {
+      box.innerHTML = `<div class="opb-derived-row"><strong>Chua co</strong><span>Dat ten file theo dang buoi-01-ten-bai.mp4 de he thong tu phan tich.</span><span></span></div>`;
+      return;
+    }
+    box.innerHTML = lessons.map((lesson) => `
+      <div class="opb-derived-row">
+        <strong>Buoi ${lesson.number}</strong>
+        <div><strong>${esc(lesson.title)}</strong><span>${esc(lesson.fileName)} - ${format(lesson.size)}</span><span class="opb-duration">${lesson.duration ? formatDuration(lesson.duration) : "Thoi luong: dong bo theo file goc"}</span></div>
+        <a class="btn" href="${esc(lesson.url)}" target="_blank" rel="noreferrer">Xem</a>
+      </div>
+    `).join("");
+  }
+
+  function renderAssets() {
+    const box = document.getElementById("opbAssets");
+    if (!box) return;
+    if (!assets.length) {
+      box.innerHTML = `<div class="opb-asset"><div class="opb-preview">Chưa có file</div><b>Tải video, ảnh hoặc tài liệu lên</b><span>Danh sách sẽ hiện ở đây.</span></div>`;
+      return;
+    }
+    box.innerHTML = assets.map((a) => `<div class="opb-asset"><div class="opb-preview">${preview(a)}</div><b>${esc(a.name)}</b><span>${format(a.size)} · ${esc(a.type)}</span></div>`).join("");
+  }
+
+  function deriveLessonsFromAssets() {
+    return assets
+      .map((asset) => {
+        const match = String(asset.fileName || asset.name || "").match(/buoi[-_ ]?(\d{1,3})[-_ ]?(.*)\.(mp4|webm|mov|mkv)$/i);
+        if (!match) return null;
+        return {
+          number: Number(match[1]),
+          title: titleFromFile(match[2]) || asset.name,
+          fileName: asset.fileName,
+          url: asset.url,
+          type: asset.type,
+          size: asset.size
+        };
+      })
+      .filter(Boolean)
+      .sort((a, b) => a.number - b.number);
+  }
+
+  function renderDerivedLessons() {
+    const box = document.getElementById("opbDerived");
+    if (!box) return;
+    const lessons = deriveLessonsFromAssets();
+    if (!lessons.length) {
+      box.innerHTML = `<div class="opb-derived-row"><strong>Chưa có</strong><span>Đặt tên file theo dạng buoi-01-ten-bai.mp4 để hệ thống tự phân tích.</span><span></span></div>`;
+      return;
+    }
+    box.innerHTML = lessons.map((lesson) => `
+      <div class="opb-derived-row">
+        <strong>Buổi ${lesson.number}</strong>
+        <div><strong>${esc(lesson.title)}</strong><span>${esc(lesson.fileName)} · ${format(lesson.size)}</span></div>
+        <a class="btn" href="${esc(lesson.url)}" target="_blank" rel="noreferrer">Xem</a>
+      </div>
+    `).join("");
+  }
+
+  function titleFromFile(value) {
+    return String(value || "")
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+
+  function previewWithDuration(asset, index) {
+    if ((asset.type || "").startsWith("image/")) return `<img src="${esc(asset.url)}" alt="${esc(asset.name)}">`;
+    if ((asset.type || "").startsWith("video/")) return `<video src="${esc(asset.url)}" controls preload="metadata" data-video-index="${index}"></video>`;
+    return "FILE";
+  }
+
+  function syncVideoDurations() {
+    document.querySelectorAll("[data-video-index]").forEach((video) => {
+      const index = Number(video.dataset.videoIndex);
+      const asset = assets[index];
+      if (!asset) return;
+      const update = () => {
+        if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+        setDuration(asset.url, video.duration);
+        const label = document.querySelector(`[data-duration-text="${index}"]`);
+        if (label) label.textContent = formatDuration(video.duration);
+        renderDerivedLessonsWithDuration();
+      };
+      video.addEventListener("loadedmetadata", update, { once: true });
+      if (Number.isFinite(video.duration) && video.duration > 0) update();
+    });
+  }
+
+  function durationValue(url) {
+    try {
+      const map = JSON.parse(sessionStorage.getItem("opb_video_durations_v1") || "{}");
+      return Number(map[url]) || 0;
+    } catch {
+      return 0;
+    }
+  }
+
+  function setDuration(url, seconds) {
+    try {
+      const map = JSON.parse(sessionStorage.getItem("opb_video_durations_v1") || "{}");
+      map[url] = seconds;
+      sessionStorage.setItem("opb_video_durations_v1", JSON.stringify(map));
+    } catch {}
+  }
+
+  function durationText(url) {
+    const seconds = durationValue(url);
+    return seconds ? formatDuration(seconds) : "Thoi luong: dong bo theo file goc";
+  }
+
+  function withDuration(asset) {
+    return { ...asset, duration: durationValue(asset.url), durationLabel: durationText(asset.url) };
+  }
+
+  function formatDuration(seconds) {
+    const total = Math.max(0, Math.round(seconds));
+    const hours = Math.floor(total / 3600);
+    const minutes = Math.floor((total % 3600) / 60);
+    const secs = total % 60;
+    if (hours) return `${hours}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+    return `${minutes}:${String(secs).padStart(2, "0")}`;
+  }
+
+  function preview(a) {
+    if ((a.type || "").startsWith("image/")) return `<img src="${esc(a.url)}" alt="${esc(a.name)}">`;
+    if ((a.type || "").startsWith("video/")) return `<video src="${esc(a.url)}" controls preload="metadata"></video>`;
+    return "FILE";
+  }
+
+  function toDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result || ""));
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function format(bytes) {
+    if (!bytes) return "0 B";
+    const units = ["B", "KB", "MB", "GB"];
+    const idx = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+    return `${(bytes / Math.pow(1024, idx)).toFixed(idx ? 1 : 0)} ${units[idx]}`;
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", draw);
+  else setTimeout(draw, 0);
+})();
