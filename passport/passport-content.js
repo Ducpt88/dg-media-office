@@ -1083,6 +1083,7 @@
   "use strict";
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const seed = { course: { title: "Doanh nghiep mot nguoi", price: "Lien he", contact: "Zalo 0963249467", goal: "Khoa hoc giup hoc vien dong goi nang luc ca nhan thanh offer ro rang, tao noi dung keo khach, ban san pham dich vu so va van hanh gon bang AI.", cover: "/assets/hvd-horizontal.svg" }, lessons: [] };
+  const githubDefaults = { owner: "Ducpt88", repo: "dg-media-office", branch: "main", path: "passport/course-videos.json" };
   let data = JSON.parse(JSON.stringify(seed));
   let editingId = "";
 
@@ -1103,7 +1104,12 @@
       const payload = await res.json();
       data = payload.ok ? payload.data : seed;
     } catch {
-      data = JSON.parse(JSON.stringify(seed));
+      try {
+        const res = await fetch("/passport/course-videos.json", { cache: "no-store" });
+        data = await res.json();
+      } catch {
+        data = JSON.parse(JSON.stringify(seed));
+      }
     }
     draw();
   }
@@ -1114,11 +1120,12 @@
     const lesson = data.lessons.find((item) => item.id === editingId) || emptyLesson();
     const publishedCount = data.lessons.filter((item) => item.status === "published").length;
     view.innerHTML = `
-      <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quan ly khoa hoc YouTube</h2><div class="pc-hint">Dan link YouTube, dong bo tieu de/thumbnail, sua mo ta va xuat ban len trang /khoa-hoc/. Du lieu luu vao server JSON, khong day video len GitHub.</div></div><div class="pc-right"><span class="pc-saved" data-saved></span><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem trang hoc</a><button class="btn primary" data-save-all type="button">Luu tat ca</button></div></div>
+      <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quan ly khoa hoc YouTube</h2><div class="pc-hint">Dan link YouTube, sua mo ta va xuat ban len trang /khoa-hoc/. Tren ducpt.com, nut Luu se commit file JSON thang vao GitHub neu API server khong co.</div></div><div class="pc-right"><span class="pc-saved" data-saved></span><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem trang hoc</a><button class="btn primary" data-save-all type="button">Luu tat ca</button></div></div>
       <div class="cs-metrics"><article class="card metric"><span>Tong bai</span><strong>${data.lessons.length}</strong><small>${publishedCount} dang hien</small></article><article class="card metric"><span>Nguon video</span><strong>YouTube</strong><small>Unlisted de giam chi phi</small></article><article class="card metric"><span>Mo ta</span><strong>Tu sua</strong><small>oEmbed khong tra mo ta day du</small></article><article class="card metric"><span>Luu tru</span><strong>JSON</strong><small>passport/course-videos.json</small></article></div>
       <div class="ytc-grid" style="margin-top:14px"><article class="ytc-panel ytc-form"><h3 style="margin:0">Thong tin khoa hoc</h3><label>Ten khoa hoc<input data-course-field="title" value="${esc(data.course.title)}"></label><label>Gia / CTA<input data-course-field="price" value="${esc(data.course.price)}"></label><label>Lien he<input data-course-field="contact" value="${esc(data.course.contact)}"></label><label>Link anh bia<input data-course-field="cover" value="${esc(data.course.cover)}"></label><label>Muc tieu khoa hoc<textarea data-course-field="goal">${esc(data.course.goal)}</textarea></label></article>
       <article class="ytc-panel"><h3 style="margin:0">Them video YouTube</h3><div class="ytc-import"><input class="searchbox" data-youtube-url placeholder="Dan link YouTube vao day"><button class="btn primary" data-import-youtube type="button">Dong bo</button></div><form class="ytc-form" data-lesson-form><input type="hidden" name="id" value="${esc(lesson.id)}"><label>Link YouTube<input name="youtubeUrl" value="${esc(lesson.youtubeUrl)}" placeholder="https://www.youtube.com/watch?v=..."></label><label>So buoi<input name="lessonNo" type="number" min="1" value="${esc(lesson.lessonNo)}"></label><label>Thu tu sap xep<input name="sort" type="number" min="1" value="${esc(lesson.sort)}"></label><label>Tieu de<input name="title" required value="${esc(lesson.title)}"></label><label>Thoi luong hien thi<input name="duration" value="${esc(lesson.duration)}" placeholder="Vi du: 18:35 hoac de trong"></label><label>Trang thai<select name="status"><option value="draft"${lesson.status==="draft"?" selected":""}>Draft - chua hien</option><option value="published"${lesson.status==="published"?" selected":""}>Published - hien cho hoc vien</option><option value="hidden"${lesson.status==="hidden"?" selected":""}>Hidden - tam an</option></select></label><label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}"></label><label>Mo ta bai hoc<textarea name="description" placeholder="Nhap outline, muc tieu, bai tap, link tai lieu...">${esc(lesson.description)}</textarea></label><div class="ytc-actions"><button class="btn primary" type="submit">${lesson.id ? "Luu bai hoc" : "Them bai hoc"}</button><button class="btn" data-new-lesson type="button">Lam moi</button></div></form></article></div>
       <article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Danh sach bai hoc</h3><div class="pc-hint">Bai published se hien tren website hoc vien. Draft/hidden chi nam trong Passport.</div></div></div><div class="ytc-lessons">${lessonListHtml()}</div></article>
+      <article class="ytc-panel ytc-form" style="margin-top:14px"><h3 style="margin:0">Ket noi GitHub de luu truc tiep tren ducpt.com</h3><div class="pc-hint">Chi can dien token tren trinh duyet cua anh. Token nam trong localStorage may anh, khong dua vao repo. Can quyen Contents: Read and write cho repo Ducpt88/dg-media-office.</div><label>GitHub token<input data-github-field="token" type="password" value="${esc(githubConfig().token)}" placeholder="github_pat_..."></label><div class="ytc-grid"><label>Owner<input data-github-field="owner" value="${esc(githubConfig().owner)}"></label><label>Repo<input data-github-field="repo" value="${esc(githubConfig().repo)}"></label></div><div class="ytc-grid"><label>Branch<input data-github-field="branch" value="${esc(githubConfig().branch)}"></label><label>File path<input data-github-field="path" value="${esc(githubConfig().path)}"></label></div><div class="ytc-actions"><button class="btn" data-save-github-config type="button">Luu ket noi GitHub</button><button class="btn" data-test-github type="button">Kiem tra ket noi</button></div></article>
       <article class="ytc-panel" style="margin-top:14px"><h3 style="margin:0">Can gi khi them mot video khoa hoc?</h3><div class="ytc-guide"><div><b>1. Link YouTube</b><span class="ytc-note">Nen de unlisted. Private se khong xem duoc khi nhung tren website.</span></div><div><b>2. Tieu de</b><span class="ytc-note">Dong bo tu YouTube duoc, nhung van sua lai cho dung bai hoc.</span></div><div><b>3. Mo ta / outline</b><span class="ytc-note">Nhap muc tieu, noi dung chinh, bai tap va link tai lieu kem theo.</span></div><div><b>4. Trang thai</b><span class="ytc-note">Draft de soan, published de hoc vien hoc, hidden de tam an.</span></div></div></article>`;
     bind(view);
   }
@@ -1137,6 +1144,8 @@
     view.querySelector("[data-save-all]").addEventListener("click", saveAll);
     view.querySelector("[data-import-youtube]").addEventListener("click", importYoutube);
     view.querySelector("[data-new-lesson]").addEventListener("click", () => { editingId = ""; draw(); });
+    view.querySelector("[data-save-github-config]").addEventListener("click", () => { saveGithubConfig(view); flash("Da luu ket noi GitHub tren trinh duyet nay"); });
+    view.querySelector("[data-test-github]").addEventListener("click", testGithubConnection);
     view.querySelector("[data-lesson-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       collectCourse(view);
@@ -1184,7 +1193,16 @@
       draw();
       flash("Da dong bo tieu de va thumbnail");
     } catch (error) {
-      flash(error.message || "Loi dong bo YouTube");
+      const youtubeId = youtubeIdFromUrl(youtubeUrl);
+      if (!youtubeId) return flash(error.message || "Loi dong bo YouTube");
+      const existing = data.lessons.find((lesson) => lesson.youtubeId === youtubeId);
+      const item = { id: `yt-${youtubeId}`, youtubeUrl: `https://www.youtube.com/watch?v=${youtubeId}`, youtubeId, title: existing?.title || "Bai hoc moi", description: existing?.description || "", thumbnail: `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`, status: existing?.status || "draft" };
+      const next = { ...(existing || {}), ...item, lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, duration: existing ? existing.duration : "", updatedAt: new Date().toISOString() };
+      if (existing) data.lessons[data.lessons.indexOf(existing)] = next; else data.lessons.push(next);
+      editingId = next.id;
+      input.value = "";
+      draw();
+      flash("Da tao bai tu link YouTube. Sua tieu de neu can.");
     }
   }
 
@@ -1200,8 +1218,79 @@
       draw();
       flash("Da luu len server");
     } catch (error) {
-      flash(error.message || "Chua luu duoc");
+      try {
+        await saveToGitHub();
+        draw();
+        flash("Da commit len GitHub. Website se cap nhat sau khi Pages deploy.");
+      } catch (githubError) {
+        flash(githubError.message || error.message || "Chua luu duoc");
+      }
     }
+  }
+
+  function githubConfig() {
+    try { return { ...githubDefaults, ...JSON.parse(localStorage.getItem("ducpt_github_course_config_v1") || "{}") }; }
+    catch { return { ...githubDefaults }; }
+  }
+
+  function saveGithubConfig(view) {
+    const cfg = githubConfig();
+    view.querySelectorAll("[data-github-field]").forEach((el) => { cfg[el.dataset.githubField] = el.value.trim(); });
+    localStorage.setItem("ducpt_github_course_config_v1", JSON.stringify(cfg));
+  }
+
+  async function testGithubConnection() {
+    const view = document.getElementById("courseAdmin");
+    saveGithubConfig(view);
+    const cfg = githubConfig();
+    if (!cfg.token) return flash("Can dien GitHub token truoc");
+    const file = await githubFetchFile(cfg);
+    flash(file.sha ? "Ket noi GitHub OK" : "Da ket noi, file chua co SHA");
+  }
+
+  async function saveToGitHub() {
+    const view = document.getElementById("courseAdmin");
+    saveGithubConfig(view);
+    const cfg = githubConfig();
+    if (!cfg.token) throw new Error("Website live can GitHub token de luu truc tiep");
+    const current = await githubFetchFile(cfg);
+    const body = {
+      message: `Update course videos ${new Date().toISOString()}`,
+      content: base64EncodeUtf8(JSON.stringify(data, null, 2) + "\n"),
+      branch: cfg.branch,
+      committer: { name: "DUCPT Passport", email: "passport@ducpt.com" }
+    };
+    if (current.sha) body.sha = current.sha;
+    const res = await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${cfg.path.split("/").map(encodeURIComponent).join("/")}`, {
+      method: "PUT",
+      headers: {
+        "accept": "application/vnd.github+json",
+        "authorization": `Bearer ${cfg.token}`,
+        "content-type": "application/json",
+        "x-github-api-version": "2022-11-28"
+      },
+      body: JSON.stringify(body)
+    });
+    const payload = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(payload.message || `GitHub save failed: ${res.status}`);
+  }
+
+  async function githubFetchFile(cfg) {
+    const res = await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${cfg.path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(cfg.branch)}`, {
+      headers: {
+        "accept": "application/vnd.github+json",
+        "authorization": `Bearer ${cfg.token}`,
+        "x-github-api-version": "2022-11-28"
+      }
+    });
+    if (res.status === 404) return {};
+    const payload = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(payload.message || `GitHub read failed: ${res.status}`);
+    return payload;
+  }
+
+  function base64EncodeUtf8(text) {
+    return btoa(unescape(encodeURIComponent(text)));
   }
 
   function youtubeIdFromUrl(value) {
