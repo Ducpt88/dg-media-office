@@ -476,6 +476,271 @@
   else mount();
 })();
 
+/* YouTube course manager - runs last and replaces the older local upload course panel. */
+(() => {
+  "use strict";
+
+  const view = document.getElementById("courseAdmin");
+  if (!view) return;
+
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const seed = {
+    course: {
+      title: "Doanh nghiep mot nguoi",
+      price: "Lien he",
+      contact: "Zalo 0963249467",
+      goal: "Khoa hoc giup hoc vien dong goi nang luc ca nhan thanh offer ro rang, tao noi dung keo khach, ban san pham dich vu so va van hanh gon bang AI.",
+      cover: "/assets/hvd-horizontal.svg"
+    },
+    lessons: []
+  };
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .ytc-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}
+    .ytc-panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}
+    .ytc-form{display:grid;gap:10px}.ytc-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}
+    .ytc-form input,.ytc-form textarea,.ytc-form select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}
+    .ytc-form textarea{min-height:90px;resize:vertical}.ytc-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .ytc-import{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}
+    .ytc-lessons{display:grid;gap:10px}.ytc-lesson{display:grid;grid-template-columns:70px minmax(0,1fr) 120px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}
+    .ytc-lesson.is-editing{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.08)}.ytc-lesson img{width:70px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:#e2e8f0}
+    .ytc-lesson b{display:block;margin-bottom:4px}.ytc-lesson span,.ytc-note{display:block;color:var(--muted);font-size:11px;line-height:1.5}.ytc-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}
+    .ytc-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.ytc-guide div{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-guide b{display:block;margin-bottom:4px}
+    @media(max-width:900px){.ytc-grid{grid-template-columns:1fr}.ytc-import,.ytc-lesson{grid-template-columns:1fr}.ytc-lesson img{width:100%}.ytc-guide{grid-template-columns:1fr}}
+  `;
+  document.head.appendChild(style);
+
+  let data = JSON.parse(JSON.stringify(seed));
+  let editingId = "";
+
+  const emptyLesson = () => ({
+    id: "",
+    lessonNo: data.lessons.length + 1,
+    sort: data.lessons.length + 1,
+    youtubeUrl: "",
+    youtubeId: "",
+    title: "",
+    description: "",
+    thumbnail: "",
+    duration: "",
+    status: "draft"
+  });
+
+  async function load() {
+    try {
+      const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
+      const payload = await res.json();
+      data = payload.ok ? payload.data : seed;
+    } catch {
+      data = JSON.parse(JSON.stringify(seed));
+    }
+    draw();
+  }
+
+  function draw() {
+    const lesson = data.lessons.find((item) => item.id === editingId) || emptyLesson();
+    const publishedCount = data.lessons.filter((item) => item.status === "published").length;
+    view.innerHTML = `
+      <div class="pc-tools">
+        <div><h2 style="margin:0 0 4px">Quan ly khoa hoc YouTube</h2><div class="pc-hint">Dan link YouTube, dong bo tieu de/thumbnail, sua mo ta va xuat ban len trang /khoa-hoc/. Du lieu luu vao server JSON, khong day video len GitHub.</div></div>
+        <div class="pc-right"><span class="pc-saved" data-saved></span><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem trang hoc</a><button class="btn primary" data-save-all type="button">Luu tat ca</button></div>
+      </div>
+      <div class="cs-metrics">
+        <article class="card metric"><span>Tong bai</span><strong>${data.lessons.length}</strong><small>${publishedCount} dang hien</small></article>
+        <article class="card metric"><span>Nguon video</span><strong>YouTube</strong><small>Unlisted de giam chi phi</small></article>
+        <article class="card metric"><span>Mo ta</span><strong>Tu sua</strong><small>oEmbed khong tra mo ta day du</small></article>
+        <article class="card metric"><span>Luu tru</span><strong>JSON</strong><small>passport/course-videos.json</small></article>
+      </div>
+      <div class="ytc-grid" style="margin-top:14px">
+        <article class="ytc-panel ytc-form">
+          <h3 style="margin:0">Thong tin khoa hoc</h3>
+          <label>Ten khoa hoc<input data-course-field="title" value="${esc(data.course.title)}"></label>
+          <label>Gia / CTA<input data-course-field="price" value="${esc(data.course.price)}"></label>
+          <label>Lien he<input data-course-field="contact" value="${esc(data.course.contact)}"></label>
+          <label>Link anh bia<input data-course-field="cover" value="${esc(data.course.cover)}"></label>
+          <label>Muc tieu khoa hoc<textarea data-course-field="goal">${esc(data.course.goal)}</textarea></label>
+        </article>
+        <article class="ytc-panel">
+          <h3 style="margin:0">Them video YouTube</h3>
+          <div class="ytc-import"><input class="searchbox" data-youtube-url placeholder="Dan link YouTube vao day"><button class="btn primary" data-import-youtube type="button">Dong bo</button></div>
+          <form class="ytc-form" data-lesson-form>
+            <input type="hidden" name="id" value="${esc(lesson.id)}">
+            <label>Link YouTube<input name="youtubeUrl" value="${esc(lesson.youtubeUrl)}" placeholder="https://www.youtube.com/watch?v=..."></label>
+            <label>So buoi<input name="lessonNo" type="number" min="1" value="${esc(lesson.lessonNo)}"></label>
+            <label>Thu tu sap xep<input name="sort" type="number" min="1" value="${esc(lesson.sort)}"></label>
+            <label>Tieu de<input name="title" required value="${esc(lesson.title)}"></label>
+            <label>Thoi luong hien thi<input name="duration" value="${esc(lesson.duration)}" placeholder="Vi du: 18:35 hoac de trong"></label>
+            <label>Trang thai<select name="status"><option value="draft"${lesson.status==="draft"?" selected":""}>Draft - chua hien</option><option value="published"${lesson.status==="published"?" selected":""}>Published - hien cho hoc vien</option><option value="hidden"${lesson.status==="hidden"?" selected":""}>Hidden - tam an</option></select></label>
+            <label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}"></label>
+            <label>Mo ta bai hoc<textarea name="description" placeholder="Nhap outline, muc tieu, bai tap, link tai lieu...">${esc(lesson.description)}</textarea></label>
+            <div class="ytc-actions"><button class="btn primary" type="submit">${lesson.id ? "Luu bai hoc" : "Them bai hoc"}</button><button class="btn" data-new-lesson type="button">Lam moi</button></div>
+          </form>
+        </article>
+      </div>
+      <article class="ytc-panel" style="margin-top:14px">
+        <div class="pc-tools"><div><h3 style="margin:0">Danh sach bai hoc</h3><div class="pc-hint">Bai published se hien tren website hoc vien. Draft/hidden chi nam trong Passport.</div></div></div>
+        <div class="ytc-lessons">${lessonListHtml()}</div>
+      </article>
+      <article class="ytc-panel" style="margin-top:14px">
+        <h3 style="margin:0">Can gi khi them mot video khoa hoc?</h3>
+        <div class="ytc-guide">
+          <div><b>1. Link YouTube</b><span class="ytc-note">Nen de unlisted. Private se khong xem duoc khi nhung tren website.</span></div>
+          <div><b>2. Tieu de</b><span class="ytc-note">Dong bo tu YouTube duoc, nhung van sua lai cho dung bai hoc.</span></div>
+          <div><b>3. Mo ta / outline</b><span class="ytc-note">Nhap muc tieu, noi dung chinh, bai tap va link tai lieu kem theo.</span></div>
+          <div><b>4. Trang thai</b><span class="ytc-note">Draft de soan, published de hoc vien hoc, hidden de tam an.</span></div>
+        </div>
+      </article>`;
+    bind();
+  }
+
+  function lessonListHtml() {
+    if (!data.lessons.length) return `<div class="cs-empty">Chua co bai hoc. Dan link YouTube va bam Dong bo de tao bai dau tien.</div>`;
+    return data.lessons
+      .slice()
+      .sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999))
+      .map((item) => `<div class="ytc-lesson ${item.id === editingId ? "is-editing" : ""}" data-lesson-id="${esc(item.id)}">
+        <img src="${esc(item.thumbnail || (item.youtubeId ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg` : ""))}" alt="">
+        <div><b>${esc(item.lessonNo)}. ${esc(item.title)}</b><span>${esc(item.youtubeUrl || "Chua co link")}</span><span>${esc(item.description || "Chua co mo ta")}</span></div>
+        <div class="ytc-actions"><span class="ytc-status">${esc(item.status)}</span><button class="btn" data-edit-lesson type="button">Sua</button><button class="btn delete" data-delete-lesson type="button">Xoa</button></div>
+      </div>`).join("");
+  }
+
+  function bind() {
+    view.querySelector("[data-save-all]").addEventListener("click", saveAll);
+    view.querySelector("[data-import-youtube]").addEventListener("click", importYoutube);
+    view.querySelector("[data-new-lesson]").addEventListener("click", () => { editingId = ""; draw(); });
+    view.querySelector("[data-lesson-form]").addEventListener("submit", (event) => {
+      event.preventDefault();
+      collectCourse();
+      const rec = Object.fromEntries(new FormData(event.currentTarget).entries());
+      const youtubeId = youtubeIdFromUrl(rec.youtubeUrl);
+      const id = rec.id || `lesson-${Date.now()}`;
+      const old = data.lessons.find((item) => item.id === id) || {};
+      const next = {
+        ...old,
+        id,
+        lessonNo: Number(rec.lessonNo) || data.lessons.length + 1,
+        sort: Number(rec.sort) || Number(rec.lessonNo) || data.lessons.length + 1,
+        youtubeUrl: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : rec.youtubeUrl.trim(),
+        youtubeId,
+        title: rec.title.trim(),
+        duration: rec.duration.trim(),
+        status: rec.status,
+        thumbnail: rec.thumbnail.trim() || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : ""),
+        description: rec.description.trim(),
+        updatedAt: new Date().toISOString()
+      };
+      const index = data.lessons.findIndex((item) => item.id === id);
+      if (index >= 0) data.lessons[index] = next; else data.lessons.push(next);
+      editingId = next.id;
+      saveAll();
+    });
+    view.querySelectorAll("[data-edit-lesson]").forEach((button) => button.addEventListener("click", (event) => {
+      editingId = event.target.closest("[data-lesson-id]").dataset.lessonId;
+      draw();
+    }));
+    view.querySelectorAll("[data-delete-lesson]").forEach((button) => button.addEventListener("click", (event) => {
+      if (!confirm("Xoa bai hoc nay?")) return;
+      const id = event.target.closest("[data-lesson-id]").dataset.lessonId;
+      data.lessons = data.lessons.filter((item) => item.id !== id);
+      if (editingId === id) editingId = "";
+      saveAll();
+    }));
+  }
+
+  function collectCourse() {
+    view.querySelectorAll("[data-course-field]").forEach((el) => {
+      data.course[el.dataset.courseField] = el.value.trim();
+    });
+    data.course.updatedAt = new Date().toISOString();
+  }
+
+  async function importYoutube() {
+    const input = view.querySelector("[data-youtube-url]");
+    const youtubeUrl = input.value.trim();
+    if (!youtubeUrl) return flash("Hay dan link YouTube truoc");
+    flash("Dang dong bo YouTube...");
+    try {
+      const res = await fetch("/api/passport/course-videos/import-youtube", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ youtubeUrl })
+      });
+      const payload = await res.json();
+      if (!payload.ok) throw new Error(payload.error || "Khong dong bo duoc");
+      const item = payload.data;
+      const existing = data.lessons.find((lesson) => lesson.youtubeId === item.youtubeId);
+      const next = {
+        ...(existing || {}),
+        ...item,
+        id: existing?.id || item.id,
+        lessonNo: existing?.lessonNo || data.lessons.length + 1,
+        sort: existing?.sort || data.lessons.length + 1,
+        duration: existing?.duration || "",
+        description: existing?.description || "",
+        status: existing?.status || "draft",
+        updatedAt: new Date().toISOString()
+      };
+      if (existing) data.lessons[data.lessons.indexOf(existing)] = next; else data.lessons.push(next);
+      editingId = next.id;
+      input.value = "";
+      draw();
+      flash("Da dong bo tieu de va thumbnail");
+    } catch (error) {
+      flash(error.message || "Loi dong bo YouTube");
+    }
+  }
+
+  async function saveAll() {
+    collectCourse();
+    data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
+    try {
+      const res = await fetch("/api/passport/course-videos/save", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(data)
+      });
+      const payload = await res.json();
+      if (!payload.ok) throw new Error(payload.error || "Khong luu duoc");
+      data = payload.data;
+      draw();
+      flash("Da luu len server");
+    } catch (error) {
+      flash(error.message || "Chua luu duoc");
+    }
+  }
+
+  function youtubeIdFromUrl(value) {
+    const text = String(value || "").trim();
+    if (/^[A-Za-z0-9_-]{11}$/.test(text)) return text;
+    try {
+      const url = new URL(text);
+      if (url.hostname.includes("youtu.be")) return cleanId(url.pathname.slice(1));
+      if (url.pathname.startsWith("/shorts/")) return cleanId(url.pathname.split("/")[2]);
+      if (url.pathname.startsWith("/embed/")) return cleanId(url.pathname.split("/")[2]);
+      return cleanId(url.searchParams.get("v"));
+    } catch {
+      return "";
+    }
+  }
+
+  function cleanId(value) {
+    const match = String(value || "").match(/[A-Za-z0-9_-]{11}/);
+    return match ? match[0] : "";
+  }
+
+  function flash(message) {
+    const el = view.querySelector("[data-saved]");
+    if (!el) return;
+    el.textContent = message;
+    setTimeout(() => { el.textContent = ""; }, 3500);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", load);
+  else setTimeout(load, 10);
+})();
+
 /* One-person business course staging area */
 (() => {
   "use strict";
@@ -811,4 +1076,159 @@
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", draw);
   else setTimeout(draw, 0);
+})();
+
+/* Final course manager override: YouTube links + server JSON persistence. */
+(() => {
+  "use strict";
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const seed = { course: { title: "Doanh nghiep mot nguoi", price: "Lien he", contact: "Zalo 0963249467", goal: "Khoa hoc giup hoc vien dong goi nang luc ca nhan thanh offer ro rang, tao noi dung keo khach, ban san pham dich vu so va van hanh gon bang AI.", cover: "/assets/hvd-horizontal.svg" }, lessons: [] };
+  let data = JSON.parse(JSON.stringify(seed));
+  let editingId = "";
+
+  function mountStyle() {
+    if (document.getElementById("ytc-final-style")) return;
+    const style = document.createElement("style");
+    style.id = "ytc-final-style";
+    style.textContent = ".ytc-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}.ytc-panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}.ytc-form{display:grid;gap:10px}.ytc-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ytc-form input,.ytc-form textarea,.ytc-form select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ytc-form textarea{min-height:90px;resize:vertical}.ytc-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ytc-import{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}.ytc-lessons{display:grid;gap:10px}.ytc-lesson{display:grid;grid-template-columns:70px minmax(0,1fr) 120px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-lesson.is-editing{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.08)}.ytc-lesson img{width:70px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:#e2e8f0}.ytc-lesson b{display:block;margin-bottom:4px}.ytc-lesson span,.ytc-note{display:block;color:var(--muted);font-size:11px;line-height:1.5}.ytc-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}.ytc-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.ytc-guide div{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-guide b{display:block;margin-bottom:4px}@media(max-width:900px){.ytc-grid{grid-template-columns:1fr}.ytc-import,.ytc-lesson{grid-template-columns:1fr}.ytc-lesson img{width:100%}.ytc-guide{grid-template-columns:1fr}}";
+    document.head.appendChild(style);
+  }
+
+  async function load() {
+    const view = document.getElementById("courseAdmin");
+    if (!view) return;
+    mountStyle();
+    try {
+      const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
+      const payload = await res.json();
+      data = payload.ok ? payload.data : seed;
+    } catch {
+      data = JSON.parse(JSON.stringify(seed));
+    }
+    draw();
+  }
+
+  function draw() {
+    const view = document.getElementById("courseAdmin");
+    if (!view) return;
+    const lesson = data.lessons.find((item) => item.id === editingId) || emptyLesson();
+    const publishedCount = data.lessons.filter((item) => item.status === "published").length;
+    view.innerHTML = `
+      <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quan ly khoa hoc YouTube</h2><div class="pc-hint">Dan link YouTube, dong bo tieu de/thumbnail, sua mo ta va xuat ban len trang /khoa-hoc/. Du lieu luu vao server JSON, khong day video len GitHub.</div></div><div class="pc-right"><span class="pc-saved" data-saved></span><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem trang hoc</a><button class="btn primary" data-save-all type="button">Luu tat ca</button></div></div>
+      <div class="cs-metrics"><article class="card metric"><span>Tong bai</span><strong>${data.lessons.length}</strong><small>${publishedCount} dang hien</small></article><article class="card metric"><span>Nguon video</span><strong>YouTube</strong><small>Unlisted de giam chi phi</small></article><article class="card metric"><span>Mo ta</span><strong>Tu sua</strong><small>oEmbed khong tra mo ta day du</small></article><article class="card metric"><span>Luu tru</span><strong>JSON</strong><small>passport/course-videos.json</small></article></div>
+      <div class="ytc-grid" style="margin-top:14px"><article class="ytc-panel ytc-form"><h3 style="margin:0">Thong tin khoa hoc</h3><label>Ten khoa hoc<input data-course-field="title" value="${esc(data.course.title)}"></label><label>Gia / CTA<input data-course-field="price" value="${esc(data.course.price)}"></label><label>Lien he<input data-course-field="contact" value="${esc(data.course.contact)}"></label><label>Link anh bia<input data-course-field="cover" value="${esc(data.course.cover)}"></label><label>Muc tieu khoa hoc<textarea data-course-field="goal">${esc(data.course.goal)}</textarea></label></article>
+      <article class="ytc-panel"><h3 style="margin:0">Them video YouTube</h3><div class="ytc-import"><input class="searchbox" data-youtube-url placeholder="Dan link YouTube vao day"><button class="btn primary" data-import-youtube type="button">Dong bo</button></div><form class="ytc-form" data-lesson-form><input type="hidden" name="id" value="${esc(lesson.id)}"><label>Link YouTube<input name="youtubeUrl" value="${esc(lesson.youtubeUrl)}" placeholder="https://www.youtube.com/watch?v=..."></label><label>So buoi<input name="lessonNo" type="number" min="1" value="${esc(lesson.lessonNo)}"></label><label>Thu tu sap xep<input name="sort" type="number" min="1" value="${esc(lesson.sort)}"></label><label>Tieu de<input name="title" required value="${esc(lesson.title)}"></label><label>Thoi luong hien thi<input name="duration" value="${esc(lesson.duration)}" placeholder="Vi du: 18:35 hoac de trong"></label><label>Trang thai<select name="status"><option value="draft"${lesson.status==="draft"?" selected":""}>Draft - chua hien</option><option value="published"${lesson.status==="published"?" selected":""}>Published - hien cho hoc vien</option><option value="hidden"${lesson.status==="hidden"?" selected":""}>Hidden - tam an</option></select></label><label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}"></label><label>Mo ta bai hoc<textarea name="description" placeholder="Nhap outline, muc tieu, bai tap, link tai lieu...">${esc(lesson.description)}</textarea></label><div class="ytc-actions"><button class="btn primary" type="submit">${lesson.id ? "Luu bai hoc" : "Them bai hoc"}</button><button class="btn" data-new-lesson type="button">Lam moi</button></div></form></article></div>
+      <article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Danh sach bai hoc</h3><div class="pc-hint">Bai published se hien tren website hoc vien. Draft/hidden chi nam trong Passport.</div></div></div><div class="ytc-lessons">${lessonListHtml()}</div></article>
+      <article class="ytc-panel" style="margin-top:14px"><h3 style="margin:0">Can gi khi them mot video khoa hoc?</h3><div class="ytc-guide"><div><b>1. Link YouTube</b><span class="ytc-note">Nen de unlisted. Private se khong xem duoc khi nhung tren website.</span></div><div><b>2. Tieu de</b><span class="ytc-note">Dong bo tu YouTube duoc, nhung van sua lai cho dung bai hoc.</span></div><div><b>3. Mo ta / outline</b><span class="ytc-note">Nhap muc tieu, noi dung chinh, bai tap va link tai lieu kem theo.</span></div><div><b>4. Trang thai</b><span class="ytc-note">Draft de soan, published de hoc vien hoc, hidden de tam an.</span></div></div></article>`;
+    bind(view);
+  }
+
+  function emptyLesson() {
+    const n = data.lessons.length + 1;
+    return { id: "", lessonNo: n, sort: n, youtubeUrl: "", youtubeId: "", title: "", description: "", thumbnail: "", duration: "", status: "draft" };
+  }
+
+  function lessonListHtml() {
+    if (!data.lessons.length) return `<div class="cs-empty">Chua co bai hoc. Dan link YouTube va bam Dong bo de tao bai dau tien.</div>`;
+    return data.lessons.slice().sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999)).map((item) => `<div class="ytc-lesson ${item.id === editingId ? "is-editing" : ""}" data-lesson-id="${esc(item.id)}"><img src="${esc(item.thumbnail || (item.youtubeId ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg` : ""))}" alt=""><div><b>${esc(item.lessonNo)}. ${esc(item.title)}</b><span>${esc(item.youtubeUrl || "Chua co link")}</span><span>${esc(item.description || "Chua co mo ta")}</span></div><div class="ytc-actions"><span class="ytc-status">${esc(item.status)}</span><button class="btn" data-edit-lesson type="button">Sua</button><button class="btn delete" data-delete-lesson type="button">Xoa</button></div></div>`).join("");
+  }
+
+  function bind(view) {
+    view.querySelector("[data-save-all]").addEventListener("click", saveAll);
+    view.querySelector("[data-import-youtube]").addEventListener("click", importYoutube);
+    view.querySelector("[data-new-lesson]").addEventListener("click", () => { editingId = ""; draw(); });
+    view.querySelector("[data-lesson-form]").addEventListener("submit", (event) => {
+      event.preventDefault();
+      collectCourse(view);
+      const rec = Object.fromEntries(new FormData(event.currentTarget).entries());
+      const youtubeId = youtubeIdFromUrl(rec.youtubeUrl);
+      const id = rec.id || `lesson-${Date.now()}`;
+      const old = data.lessons.find((item) => item.id === id) || {};
+      const next = { ...old, id, lessonNo: Number(rec.lessonNo) || data.lessons.length + 1, sort: Number(rec.sort) || Number(rec.lessonNo) || data.lessons.length + 1, youtubeUrl: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : rec.youtubeUrl.trim(), youtubeId, title: rec.title.trim(), duration: rec.duration.trim(), status: rec.status, thumbnail: rec.thumbnail.trim() || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : ""), description: rec.description.trim(), updatedAt: new Date().toISOString() };
+      const index = data.lessons.findIndex((item) => item.id === id);
+      if (index >= 0) data.lessons[index] = next; else data.lessons.push(next);
+      editingId = next.id;
+      saveAll();
+    });
+    view.querySelectorAll("[data-edit-lesson]").forEach((button) => button.addEventListener("click", (event) => { editingId = event.target.closest("[data-lesson-id]").dataset.lessonId; draw(); }));
+    view.querySelectorAll("[data-delete-lesson]").forEach((button) => button.addEventListener("click", (event) => {
+      if (!confirm("Xoa bai hoc nay?")) return;
+      const id = event.target.closest("[data-lesson-id]").dataset.lessonId;
+      data.lessons = data.lessons.filter((item) => item.id !== id);
+      if (editingId === id) editingId = "";
+      saveAll();
+    }));
+  }
+
+  function collectCourse(view) {
+    view.querySelectorAll("[data-course-field]").forEach((el) => { data.course[el.dataset.courseField] = el.value.trim(); });
+    data.course.updatedAt = new Date().toISOString();
+  }
+
+  async function importYoutube() {
+    const view = document.getElementById("courseAdmin");
+    const input = view.querySelector("[data-youtube-url]");
+    const youtubeUrl = input.value.trim();
+    if (!youtubeUrl) return flash("Hay dan link YouTube truoc");
+    flash("Dang dong bo YouTube...");
+    try {
+      const res = await fetch("/api/passport/course-videos/import-youtube", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ youtubeUrl }) });
+      const payload = await res.json();
+      if (!payload.ok) throw new Error(payload.error || "Khong dong bo duoc");
+      const item = payload.data;
+      const existing = data.lessons.find((lesson) => lesson.youtubeId === item.youtubeId);
+      const next = { ...(existing || {}), ...item, id: existing ? existing.id : item.id, lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, duration: existing ? existing.duration : "", description: existing ? existing.description : "", status: existing ? existing.status : "draft", updatedAt: new Date().toISOString() };
+      if (existing) data.lessons[data.lessons.indexOf(existing)] = next; else data.lessons.push(next);
+      editingId = next.id;
+      input.value = "";
+      draw();
+      flash("Da dong bo tieu de va thumbnail");
+    } catch (error) {
+      flash(error.message || "Loi dong bo YouTube");
+    }
+  }
+
+  async function saveAll() {
+    const view = document.getElementById("courseAdmin");
+    collectCourse(view);
+    data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
+    try {
+      const res = await fetch("/api/passport/course-videos/save", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
+      const payload = await res.json();
+      if (!payload.ok) throw new Error(payload.error || "Khong luu duoc");
+      data = payload.data;
+      draw();
+      flash("Da luu len server");
+    } catch (error) {
+      flash(error.message || "Chua luu duoc");
+    }
+  }
+
+  function youtubeIdFromUrl(value) {
+    const text = String(value || "").trim();
+    if (/^[A-Za-z0-9_-]{11}$/.test(text)) return text;
+    try {
+      const url = new URL(text);
+      if (url.hostname.includes("youtu.be")) return cleanId(url.pathname.slice(1));
+      if (url.pathname.startsWith("/shorts/")) return cleanId(url.pathname.split("/")[2]);
+      if (url.pathname.startsWith("/embed/")) return cleanId(url.pathname.split("/")[2]);
+      return cleanId(url.searchParams.get("v"));
+    } catch { return ""; }
+  }
+
+  function cleanId(value) {
+    const match = String(value || "").match(/[A-Za-z0-9_-]{11}/);
+    return match ? match[0] : "";
+  }
+
+  function flash(message) {
+    const view = document.getElementById("courseAdmin");
+    const el = view && view.querySelector("[data-saved]");
+    if (!el) return;
+    el.textContent = message;
+    setTimeout(() => { el.textContent = ""; }, 3500);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", () => setTimeout(load, 80));
+  else setTimeout(load, 80);
 })();

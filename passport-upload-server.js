@@ -7,6 +7,7 @@ const path = require("path");
 const ROOT = __dirname;
 const UPLOAD_DIR = path.join(ROOT, "passport", "uploads");
 const SIGNUP_FILE = path.join(ROOT, "passport", "course-signups.json");
+const COURSE_VIDEO_FILE = path.join(ROOT, "passport", "course-videos.json");
 const HOST = "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
@@ -33,6 +34,23 @@ const server = http.createServer((req, res) => {
 
   if (req.method === "POST" && url.pathname === "/api/passport/course-signups") {
     saveSignup(req, res);
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/passport/course-videos") {
+    sendJson(res, 200, { ok: true, data: readCourseVideos() });
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/passport/course-videos/save") {
+    saveCourseVideos(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/passport/course-videos/import-youtube") {
+    importYoutube(req, res).catch((error) => {
+      sendJson(res, 500, { ok: false, error: error.message });
+    });
     return;
   }
 
@@ -364,6 +382,155 @@ function readSignups() {
   } catch {
     return [];
   }
+}
+
+function readCourseVideos() {
+  try {
+    const data = JSON.parse(fs.readFileSync(COURSE_VIDEO_FILE, "utf8"));
+    return normalizeCourseData(data);
+  } catch {
+    return normalizeCourseData(defaultCourseVideos());
+  }
+}
+
+function saveCourseVideos(req, res) {
+  readJsonBody(req, res, (body) => {
+    const data = normalizeCourseData(body);
+    fs.writeFileSync(COURSE_VIDEO_FILE, JSON.stringify(data, null, 2), "utf8");
+    sendJson(res, 200, { ok: true, data });
+  });
+}
+
+async function importYoutube(req, res) {
+  const body = await readJsonBodyAsync(req);
+  const youtubeUrl = String(body.youtubeUrl || body.url || "").trim();
+  const youtubeId = youtubeIdFromUrl(youtubeUrl);
+  if (!youtubeId) {
+    sendJson(res, 400, { ok: false, error: "Invalid YouTube URL" });
+    return;
+  }
+
+  const watchUrl = `https://www.youtube.com/watch?v=${youtubeId}`;
+  const response = await fetch(`https://www.youtube.com/oembed?url=${encodeURIComponent(watchUrl)}&format=json`);
+  const meta = response.ok ? await response.json() : {};
+  sendJson(res, 200, {
+    ok: true,
+    data: {
+      id: `yt-${youtubeId}`,
+      youtubeUrl: watchUrl,
+      youtubeId,
+      title: String(meta.title || "Bai hoc moi").slice(0, 240),
+      description: "",
+      thumbnail: meta.thumbnail_url || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
+      author: meta.author_name || "",
+      status: "draft"
+    }
+  });
+}
+
+function normalizeCourseData(input) {
+  const seed = defaultCourseVideos();
+  const course = { ...seed.course, ...(input && input.course ? input.course : {}) };
+  const lessons = Array.isArray(input && input.lessons) ? input.lessons : seed.lessons;
+  return {
+    course: {
+      title: String(course.title || seed.course.title).slice(0, 180),
+      price: String(course.price || seed.course.price).slice(0, 80),
+      contact: String(course.contact || seed.course.contact).slice(0, 160),
+      goal: String(course.goal || seed.course.goal).slice(0, 2000),
+      cover: String(course.cover || seed.course.cover).slice(0, 500),
+      updatedAt: course.updatedAt || new Date().toISOString()
+    },
+    lessons: lessons.map((lesson, index) => normalizeLesson(lesson, index)).sort((a, b) => a.sort - b.sort)
+  };
+}
+
+function normalizeLesson(lesson, index) {
+  const youtubeId = youtubeIdFromUrl(lesson.youtubeUrl || lesson.url || "") || String(lesson.youtubeId || "");
+  const youtubeUrl = youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(lesson.youtubeUrl || "");
+  return {
+    id: String(lesson.id || `lesson-${Date.now()}-${index}`).slice(0, 80),
+    lessonNo: Number(lesson.lessonNo || lesson.order || index + 1),
+    sort: Number(lesson.sort || lesson.lessonNo || lesson.order || index + 1),
+    youtubeUrl,
+    youtubeId,
+    title: String(lesson.title || "Bai hoc moi").slice(0, 240),
+    description: String(lesson.description || lesson.note || "").slice(0, 4000),
+    thumbnail: String(lesson.thumbnail || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : "")).slice(0, 500),
+    duration: String(lesson.duration || "").slice(0, 40),
+    status: ["draft", "published", "hidden"].includes(lesson.status) ? lesson.status : "draft",
+    updatedAt: lesson.updatedAt || new Date().toISOString()
+  };
+}
+
+function defaultCourseVideos() {
+  return {
+    course: {
+      title: "Doanh nghiep mot nguoi",
+      price: "Lien he",
+      contact: "Zalo 0963249467",
+      goal: "Khoa hoc giup hoc vien dong goi nang luc ca nhan thanh offer ro rang, tao noi dung keo khach, ban san pham dich vu so va van hanh gon bang AI.",
+      cover: "/assets/hvd-horizontal.svg",
+      updatedAt: new Date().toISOString()
+    },
+    lessons: []
+  };
+}
+
+function youtubeIdFromUrl(value) {
+  const text = String(value || "").trim();
+  if (/^[A-Za-z0-9_-]{11}$/.test(text)) return text;
+  try {
+    const url = new URL(text);
+    if (url.hostname.includes("youtu.be")) return cleanYoutubeId(url.pathname.slice(1));
+    if (url.pathname.startsWith("/shorts/")) return cleanYoutubeId(url.pathname.split("/")[2]);
+    if (url.pathname.startsWith("/embed/")) return cleanYoutubeId(url.pathname.split("/")[2]);
+    return cleanYoutubeId(url.searchParams.get("v"));
+  } catch {
+    return "";
+  }
+}
+
+function cleanYoutubeId(value) {
+  const match = String(value || "").match(/[A-Za-z0-9_-]{11}/);
+  return match ? match[0] : "";
+}
+
+function readJsonBody(req, res, done) {
+  let text = "";
+  req.on("data", (chunk) => {
+    text += chunk;
+    if (text.length > 1024 * 1024) {
+      res.writeHead(413);
+      res.end("Too large");
+      req.destroy();
+    }
+  });
+  req.on("end", () => {
+    try {
+      done(text ? JSON.parse(text) : {});
+    } catch {
+      sendJson(res, 400, { ok: false, error: "Invalid JSON" });
+    }
+  });
+}
+
+function readJsonBodyAsync(req) {
+  return new Promise((resolve, reject) => {
+    let text = "";
+    req.on("data", (chunk) => {
+      text += chunk;
+      if (text.length > 1024 * 1024) reject(new Error("Too large"));
+    });
+    req.on("end", () => {
+      try {
+        resolve(text ? JSON.parse(text) : {});
+      } catch {
+        reject(new Error("Invalid JSON"));
+      }
+    });
+    req.on("error", reject);
+  });
 }
 
 function safeName(name) {
