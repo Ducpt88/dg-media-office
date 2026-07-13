@@ -1,9 +1,9 @@
 {
   "course": {
-    "title": "Doanh nghiep mot nguoi",
-    "price": "Lien he",
+    "title": "Doanh nghiệp một người",
+    "price": "Liên hệ",
     "contact": "Zalo 0963249467",
-    "goal": "Khoa hoc giup hoc vien dong goi nang luc ca nhan thanh offer ro rang, tao noi dung keo khach, ban san pham dich vu so va van hanh gon bang AI.",
+    "goal": "Khóa học giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, tạo nội dung kéo khách, bán sản phẩm dịch vụ số và vận hành gọn bằng AI.",
     "cover": "/assets/hvd-horizontal.svg",
     "updatedAt": "2026-07-13T00:00:00.000Z"
   },

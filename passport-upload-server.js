@@ -419,7 +419,7 @@ async function importYoutube(req, res) {
       id: `yt-${youtubeId}`,
       youtubeUrl: watchUrl,
       youtubeId,
-      title: String(meta.title || "Bai hoc moi").slice(0, 240),
+      title: String(meta.title || "Bài học mới").slice(0, 240),
       description: "",
       thumbnail: meta.thumbnail_url || `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`,
       author: meta.author_name || "",
@@ -454,7 +454,7 @@ function normalizeLesson(lesson, index) {
     sort: Number(lesson.sort || lesson.lessonNo || lesson.order || index + 1),
     youtubeUrl,
     youtubeId,
-    title: String(lesson.title || "Bai hoc moi").slice(0, 240),
+    title: String(lesson.title || "Bài học mới").slice(0, 240),
     description: String(lesson.description || lesson.note || "").slice(0, 4000),
     thumbnail: String(lesson.thumbnail || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : "")).slice(0, 500),
     duration: String(lesson.duration || "").slice(0, 40),
@@ -466,10 +466,10 @@ function normalizeLesson(lesson, index) {
 function defaultCourseVideos() {
   return {
     course: {
-      title: "Doanh nghiep mot nguoi",
-      price: "Lien he",
+      title: "Doanh nghiệp một người",
+      price: "Liên hệ",
       contact: "Zalo 0963249467",
-      goal: "Khoa hoc giup hoc vien dong goi nang luc ca nhan thanh offer ro rang, tao noi dung keo khach, ban san pham dich vu so va van hanh gon bang AI.",
+      goal: "Khóa học giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, tạo nội dung kéo khách, bán sản phẩm dịch vụ số và vận hành gọn bằng AI.",
       cover: "/assets/hvd-horizontal.svg",
       updatedAt: new Date().toISOString()
     },
