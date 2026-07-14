@@ -312,34 +312,51 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
 .office-public-frame{pointer-events:none!important}
 .office-public-framebox{background:#080812}
 @media(max-width:760px){.office-public-top{display:block}.office-public-badge{margin-top:10px}.office-public-frame,.office-public-framebox{min-height:430px;height:56vh}}
-.reviews-panel{border-radius:26px;background:#fff;border:1px solid #dbeafe;color:#14213d;box-shadow:0 24px 70px rgba(37,99,235,.12);overflow:hidden}
-.reviews-summary{display:grid;grid-template-columns:130px 1fr 190px;gap:24px;align-items:center;padding:28px 32px;border-bottom:1px solid #e6eaf0;background:linear-gradient(120deg,#f8fbff,#fff)}
-.score-number{display:block;font-size:56px;line-height:.95;font-weight:900;color:#2563eb;letter-spacing:-.055em}
-.score-stars,.review-stars{color:#7c3aed;letter-spacing:1px;font-size:18px;line-height:1}
+.reviews-section.sec{padding:54px 0}
+.reviews-section .sec-head{margin-bottom:28px}
+.reviews-panel{border-radius:22px;background:#fff;border:1px solid #dbeafe;color:#14213d;box-shadow:0 18px 48px rgba(37,99,235,.1);overflow:hidden}
+.reviews-summary{display:grid;grid-template-columns:104px 1fr 168px;gap:18px;align-items:center;padding:20px 24px;border-bottom:1px solid #e6eaf0;background:linear-gradient(120deg,#f8fbff,#fff)}
+.score-number{display:block;font-size:46px;line-height:.95;font-weight:900;color:#2563eb;letter-spacing:-.055em}
+.score-stars,.review-stars{color:#7c3aed;letter-spacing:1px;font-size:15px;line-height:1}
 .score-count{display:block;margin-top:9px;color:#667085;font-size:13px;font-weight:700}
-.rating-bars{display:grid;gap:9px}
+.rating-bars{display:grid;gap:7px}
 .rating-row{display:grid;grid-template-columns:24px 1fr 38px;gap:8px;align-items:center;font-size:12px;font-weight:900;color:#2563eb}
-.rating-track{height:6px;border-radius:999px;background:#e6eaf0;overflow:hidden}
+.rating-track{height:5px;border-radius:999px;background:#e6eaf0;overflow:hidden}
 .rating-fill{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#2563eb,#7c3aed)}
 .rating-percent{color:#667085;text-align:right}
 .review-action{text-align:center}
-.review-action .btn{justify-content:center;width:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 12px 28px rgba(37,99,235,.2)}
+.review-action .btn{justify-content:center;width:100%;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;box-shadow:0 10px 22px rgba(37,99,235,.18)}
 .review-action small{display:block;margin-top:10px;color:#667085;font-size:12px;font-weight:700}
-.review-list{display:grid;gap:14px;padding:20px}
-.review-item{display:grid;grid-template-columns:48px 1fr;gap:14px;padding:18px;border-radius:18px;background:#f8fbff;border:1px solid #e6eaf0}
-.review-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-weight:900}
+.review-list{display:grid;gap:10px;padding:14px}
+.review-item{display:grid;grid-template-columns:42px 1fr;gap:12px;padding:14px;border-radius:16px;background:#f8fbff;border:1px solid #e6eaf0}
+.review-avatar{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:13px;font-weight:900}
 .review-avatar.gold{background:linear-gradient(135deg,#2563eb,#60a5fa);color:#fff}
 .review-avatar.pink{background:linear-gradient(135deg,#7c3aed,#2563eb)}
 .review-head{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .review-name{font-weight:900;color:#14213d}
 .verified{display:inline-flex;align-items:center;padding:3px 8px;border-radius:999px;background:#ecfdf3;border:1px solid #bbf7d0;color:#16a34a;font-size:11px;font-weight:900}
-.review-item p{grid-column:2;margin:8px 0 0;color:#667085;font-size:13.5px}
-.review-time{display:block;margin-top:7px;color:#8a93a3;font-size:12px}
+.review-item p{grid-column:2;margin:6px 0 0;color:#667085;font-size:13px}
+.review-time{display:block;margin-top:5px;color:#8a93a3;font-size:12px}
 .review-actions{grid-column:2;display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:2px}
-.review-chip{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;border:1px solid #dbeafe;background:#fff;color:#344054;font-size:12px;font-weight:850;box-shadow:0 6px 16px rgba(37,99,235,.06)}
+.review-chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #dbeafe;background:#fff;color:#344054;font:inherit;font-size:12px;font-weight:850;box-shadow:0 6px 16px rgba(37,99,235,.06);cursor:pointer}
 .review-chip.primary{color:#2563eb;background:#eff6ff}
-.review-chip .icon{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;font-size:11px;line-height:1}
-@media(max-width:820px){.reviews-summary{grid-template-columns:1fr;gap:18px;text-align:left}.review-action{text-align:left}.review-action .btn{width:auto}.review-item{grid-template-columns:42px 1fr;padding:15px}.review-item p,.review-actions{grid-column:1/-1}.review-actions{gap:7px}.review-chip{flex:1 1 auto;justify-content:center;padding:7px 9px}.score-number{font-size:48px}}
+.review-chip .icon{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;font-size:10px;line-height:1}
+.review-modal{position:fixed;inset:0;z-index:130;display:none;place-items:center;padding:18px;background:rgba(15,23,42,.5);backdrop-filter:blur(12px)}
+.review-modal.open{display:grid}
+.review-form{width:min(520px,100%);border:1px solid #dbeafe;border-radius:22px;background:#fff;color:#14213d;box-shadow:0 28px 90px rgba(15,23,42,.22);padding:20px}
+.review-form-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;margin-bottom:12px}
+.review-form h3{margin:0;font-size:22px}
+.review-form p{margin:5px 0 0;color:#667085;font-size:13px}
+.review-form label{display:grid;gap:6px;margin-top:12px;color:#475467;font-size:12px;font-weight:900}
+.review-form input,.review-form textarea,.review-form select{width:100%;border:1px solid #dbe3ef;border-radius:14px;background:#fff;color:#14213d;padding:11px 12px;font:inherit;outline:0}
+.review-form textarea{min-height:94px;resize:vertical}
+.review-form input:focus,.review-form textarea:focus,.review-form select:focus{border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.1)}
+.review-stars-input{display:flex;gap:6px;margin-top:7px}
+.review-stars-input button{width:34px;height:34px;border:1px solid #dbeafe;border-radius:10px;background:#eff6ff;color:#2563eb;font-size:18px;cursor:pointer}
+.review-stars-input button.active{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;border-color:transparent}
+.review-form-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:16px}
+.review-form-status{min-height:18px;margin-top:9px;color:#2563eb;font-size:12px;font-weight:800}
+@media(max-width:820px){.reviews-section.sec{padding:44px 0}.reviews-summary{grid-template-columns:1fr;gap:15px;text-align:left;padding:18px}.review-action{text-align:left}.review-action .btn{width:auto}.review-item{grid-template-columns:40px 1fr;padding:13px}.review-item p,.review-actions{grid-column:1/-1}.review-actions{gap:7px}.review-chip{flex:1 1 auto;justify-content:center;padding:7px 8px}.score-number{font-size:42px}.review-form{padding:16px}}
 </style>
 </head>
 <body class="platform">
@@ -407,7 +424,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
   </div>
 </section>
 
-<section class="sec wrap" id="danh-gia">
+<section class="sec wrap reviews-section" id="danh-gia">
   <div class="sec-head"><h2>&#272;&#225;nh gi&#225; t&#7915; kh&#225;ch h&#224;ng</h2><p>Nh&#7919;ng ph&#7843;n h&#7891;i sau khi kh&#225;ch mua, c&#224;i &#273;&#7863;t v&#224; d&#249;ng s&#7843;n ph&#7849;m DUCPT trong c&#244;ng vi&#7879;c th&#7853;t.</p></div>
   <div class="reviews-panel">
     <div class="reviews-summary">
@@ -424,11 +441,11 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
         <div class="rating-row"><span>1&#9733;</span><div class="rating-track"><span class="rating-fill" style="width:0%"></span></div><span class="rating-percent">0%</span></div>
       </div>
       <div class="review-action">
-        <a class="btn" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="write_review">&#9998; Vi&#7871;t &#273;&#225;nh gi&#225;</a>
+        <button class="btn" type="button" data-open-review-form data-track="write_review">&#9998; Vi&#7871;t &#273;&#225;nh gi&#225;</button>
         <small>Ch&#7881; ng&#432;&#7901;i &#273;&#227; mua m&#7899;i &#273;&#432;&#7907;c &#273;&#225;nh gi&#225;</small>
       </div>
     </div>
-    <div class="review-list">
+    <div class="review-list" id="reviewList">
       <article class="review-item">
         <div class="review-avatar">MC</div>
         <div>
@@ -440,7 +457,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
         <div class="review-actions" aria-label="Tuong tac danh gia">
           <span class="review-chip primary"><span class="icon">&#128077;</span> Like</span>
           <span class="review-chip"><span class="icon">&#10003;</span> H&#7919;u &#237;ch</span>
-          <a class="review-chip" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="review_reply_manh_cuong"><span class="icon">&#9998;</span> &#272;&#225;nh gi&#225;</a>
+          <button class="review-chip" type="button" data-open-review-form data-track="review_reply_manh_cuong"><span class="icon">&#9998;</span> &#272;&#225;nh gi&#225;</button>
         </div>
       </article>
       <article class="review-item">
@@ -454,7 +471,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
         <div class="review-actions" aria-label="Tuong tac danh gia">
           <span class="review-chip primary"><span class="icon">&#128077;</span> Like</span>
           <span class="review-chip"><span class="icon">&#10003;</span> H&#7919;u &#237;ch</span>
-          <a class="review-chip" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="review_reply_pham_thinh"><span class="icon">&#9998;</span> &#272;&#225;nh gi&#225;</a>
+          <button class="review-chip" type="button" data-open-review-form data-track="review_reply_pham_thinh"><span class="icon">&#9998;</span> &#272;&#225;nh gi&#225;</button>
         </div>
       </article>
       <article class="review-item">
@@ -468,12 +485,50 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
         <div class="review-actions" aria-label="Tuong tac danh gia">
           <span class="review-chip primary"><span class="icon">&#128077;</span> Like</span>
           <span class="review-chip"><span class="icon">&#10003;</span> H&#7919;u &#237;ch</span>
-          <a class="review-chip" href="https://zalo.me/0963249467" target="_blank" rel="noopener" data-track="review_reply_ellie"><span class="icon">&#9998;</span> &#272;&#225;nh gi&#225;</a>
+          <button class="review-chip" type="button" data-open-review-form data-track="review_reply_ellie"><span class="icon">&#9998;</span> &#272;&#225;nh gi&#225;</button>
         </div>
       </article>
     </div>
   </div>
 </section>
+
+<div class="review-modal" id="reviewModal" aria-label="Vi&#7871;t &#273;&#225;nh gi&#225; DUCPT">
+  <form class="review-form" id="reviewForm">
+    <div class="review-form-top">
+      <div>
+        <h3>Vi&#7871;t &#273;&#225;nh gi&#225;</h3>
+        <p>Chia s&#7867; tr&#7843;i nghi&#7879;m c&#7911;a b&#7841;n sau khi d&#249;ng s&#7843;n ph&#7849;m DUCPT.</p>
+      </div>
+      <button class="close-btn" type="button" id="closeReviewModal" aria-label="&#272;&#243;ng">&#215;</button>
+    </div>
+    <label>H&#7885; t&#234;n<input name="name" required maxlength="60" placeholder="T&#234;n c&#7911;a b&#7841;n"></label>
+    <label>S&#7843;n ph&#7849;m
+      <select name="product">
+        <option>Verba Studio</option>
+        <option>Knowledge Brain Bot</option>
+        <option>Pinterest AutoPost</option>
+        <option>Claude Dual Workspace</option>
+        <option>S&#7843;n ph&#7849;m kh&#225;c</option>
+      </select>
+    </label>
+    <label>S&#7889; sao
+      <input name="rating" id="reviewRating" type="hidden" value="5">
+      <span class="review-stars-input" id="reviewStarsInput" aria-label="Ch&#7885;n s&#7889; sao">
+        <button type="button" data-rating="1">&#9733;</button>
+        <button type="button" data-rating="2">&#9733;</button>
+        <button type="button" data-rating="3">&#9733;</button>
+        <button type="button" data-rating="4">&#9733;</button>
+        <button type="button" data-rating="5">&#9733;</button>
+      </span>
+    </label>
+    <label>N&#7897;i dung<textarea name="message" required maxlength="280" placeholder="B&#7841;n th&#237;ch &#273;i&#7875;m n&#224;o? Qu&#225; tr&#236;nh setup c&#243; d&#7877; kh&#244;ng?"></textarea></label>
+    <div class="review-form-actions">
+      <button class="btn btn-glass" type="button" id="cancelReview">H&#7911;y</button>
+      <button class="btn btn-hero" type="submit">G&#7917;i &#273;&#225;nh gi&#225;</button>
+    </div>
+    <div class="review-form-status" id="reviewFormStatus"></div>
+  </form>
+</div>
 
 <section class="sec wrap" id="social">
   <div class="social-flow" aria-label="Cac nen tang chay ngang">
@@ -972,6 +1027,99 @@ document.getElementById("closeProduct").addEventListener("click",closeProductDet
 document.getElementById("productModal").addEventListener("click",event=>{if(event.target.id==="productModal")closeProductDetail()});
 document.getElementById("closeCheckout").addEventListener("click",closeCheckout);
 document.getElementById("checkoutModal").addEventListener("click",event=>{if(event.target.id==="checkoutModal")closeCheckout()});
+const reviewKey="ducptCustomerReviews";
+function escapeHtml(value){
+  return String(value||"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[char]));
+}
+function readReviews(){
+  try{return JSON.parse(localStorage.getItem(reviewKey))||[]}catch{return[]}
+}
+function writeReviews(items){
+  localStorage.setItem(reviewKey,JSON.stringify(items.slice(0,20)));
+}
+function initialsFromName(name){
+  return String(name||"DG").trim().split(/\s+/).slice(0,2).map(part=>part[0]||"").join("").toUpperCase()||"DG";
+}
+function reviewStars(rating){
+  const count=Math.max(1,Math.min(5,Number(rating)||5));
+  return "&#9733;".repeat(count);
+}
+function reviewTemplate(review){
+  const name=escapeHtml(review.name||"Khach hang DUCPT");
+  const message=escapeHtml(review.message||"");
+  const product=escapeHtml(review.product||"San pham DUCPT");
+  return `<article class="review-item user-review">
+    <div class="review-avatar">${escapeHtml(initialsFromName(review.name))}</div>
+    <div>
+      <div class="review-head"><span class="review-name">${name}</span><span class="verified">&#10003; V&#7915;a g&#7917;i</span></div>
+      <div class="review-stars" aria-label="${review.rating} sao">${reviewStars(review.rating)}</div>
+      <span class="review-time">${product} · v&#7915;a xong</span>
+    </div>
+    <p>${message}</p>
+    <div class="review-actions" aria-label="Tuong tac danh gia">
+      <span class="review-chip primary"><span class="icon">&#128077;</span> Like</span>
+      <span class="review-chip"><span class="icon">&#10003;</span> H&#7919;u &#237;ch</span>
+      <button class="review-chip" type="button" data-open-review-form><span class="icon">&#9998;</span> &#272;&#225;nh gi&#225;</button>
+    </div>
+  </article>`;
+}
+function renderSavedReviews(){
+  const list=document.getElementById("reviewList");
+  if(!list)return;
+  list.querySelectorAll(".user-review").forEach(item=>item.remove());
+  readReviews().forEach(review=>list.insertAdjacentHTML("afterbegin",reviewTemplate(review)));
+}
+function setReviewRating(value){
+  const rating=Math.max(1,Math.min(5,Number(value)||5));
+  document.getElementById("reviewRating").value=String(rating);
+  document.querySelectorAll("#reviewStarsInput button").forEach(button=>{
+    button.classList.toggle("active",Number(button.dataset.rating)<=rating);
+  });
+}
+function openReviewModal(){
+  document.getElementById("reviewFormStatus").textContent="";
+  setReviewRating(document.getElementById("reviewRating").value||5);
+  document.getElementById("reviewModal").classList.add("open");
+  setTimeout(()=>document.querySelector("#reviewForm input[name='name']").focus(),40);
+  trackClick({dataset:{track:"open_review_form"},getAttribute:()=>"",textContent:"review_form"});
+}
+function closeReviewModal(){
+  document.getElementById("reviewModal").classList.remove("open");
+}
+document.addEventListener("click",event=>{
+  const trigger=event.target.closest("[data-open-review-form]");
+  if(!trigger)return;
+  event.preventDefault();
+  openReviewModal();
+});
+document.getElementById("closeReviewModal").addEventListener("click",closeReviewModal);
+document.getElementById("cancelReview").addEventListener("click",closeReviewModal);
+document.getElementById("reviewModal").addEventListener("click",event=>{if(event.target.id==="reviewModal")closeReviewModal()});
+document.querySelectorAll("#reviewStarsInput button").forEach(button=>button.addEventListener("click",()=>setReviewRating(button.dataset.rating)));
+document.getElementById("reviewForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const form=event.currentTarget;
+  const data=Object.fromEntries(new FormData(form).entries());
+  const review={...data,createdAt:new Date().toISOString()};
+  const status=document.getElementById("reviewFormStatus");
+  status.textContent="Dang luu danh gia...";
+  try{
+    const reviews=readReviews();
+    reviews.unshift(review);
+    writeReviews(reviews);
+    if(window.DUCPT_REVIEW_API){
+      const res=await fetch(window.DUCPT_REVIEW_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(review)});
+      if(!res.ok)throw new Error("Khong gui duoc ve may chu");
+    }
+    renderSavedReviews();
+    status.textContent="Da them danh gia cua ban.";
+    form.reset();
+    setReviewRating(5);
+    setTimeout(closeReviewModal,700);
+  }catch(error){
+    status.textContent=error.message||"Chua luu duoc danh gia.";
+  }
+});
 function openCustomerLogin(){
   document.getElementById("customerLoginStatus").textContent="";
   document.getElementById("customerLoginModal").classList.add("open");
@@ -1035,6 +1183,7 @@ document.querySelectorAll('.card').forEach(c=>c.addEventListener('mousemove',e=>
   c.style.setProperty('--gy',((e.clientY-r.top)/r.height*100)+'%');
 }));
 loadClarity();
+renderSavedReviews();
 renderStats();
 </script>
 </body>
