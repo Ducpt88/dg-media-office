@@ -2,6 +2,7 @@ User-agent: *
 Content-Signal: search=yes,ai-input=yes,ai-train=no,use=reference
 Allow: /
 Disallow: /passport/
+Disallow: /khoa-hoc/
 Disallow: /admin/
 Disallow: /dang-nhap/
 Disallow: /customer-portal.html
