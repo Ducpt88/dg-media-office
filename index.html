@@ -779,6 +779,7 @@ body.platform .badge{background:linear-gradient(90deg,#2563eb,#7c3aed);color:#ff
 <script>
 const ANALYTICS_CONFIG={clarityProjectId:"a391372641p533055026"};
 const statsKey="ducpt_aurora_store_clicks_v1";
+const trafficKey="ducpt_aurora_store_traffic_v1";
 const orderKey="ducpt_orders_v1";
 const zaloUrl="https://zalo.me/0963249467";
 const defaultSepayUrl="https://zalo.me/0963249467";
@@ -876,6 +877,42 @@ function loadClarity(){
     t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
     y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
   })(window,document,"clarity","script",id);
+}
+function readTraffic(){
+  try{return JSON.parse(localStorage.getItem(trafficKey))||{total:0,sessions:0,pages:{},sources:{},log:[]}}catch{return{total:0,sessions:0,pages:{},sources:{},log:[]}}
+}
+function writeTraffic(data){
+  data.log=(data.log||[]).slice(0,300);
+  localStorage.setItem(trafficKey,JSON.stringify(data));
+}
+function trafficSource(){
+  const params=new URLSearchParams(location.search);
+  const utm=params.get("utm_source")||params.get("source");
+  if(utm)return utm.slice(0,60);
+  if(!document.referrer)return "direct";
+  try{return new URL(document.referrer).hostname.replace(/^www\./,"")}catch{return "referrer"}
+}
+function trackPageview(){
+  const now=Date.now();
+  const sessionKey="ducpt_aurora_session_v1";
+  let sid=sessionStorage.getItem(sessionKey);
+  const isNew=!sid;
+  if(!sid){sid="s"+now.toString(36)+Math.random().toString(36).slice(2,8);sessionStorage.setItem(sessionKey,sid)}
+  const path=location.pathname+location.search;
+  const source=trafficSource();
+  const data=readTraffic();
+  data.total=(data.total||0)+1;
+  data.sessions=(data.sessions||0)+(isNew?1:0);
+  data.pages=data.pages||{};
+  data.sources=data.sources||{};
+  data.pages[path]=(data.pages[path]||0)+1;
+  data.sources[source]=(data.sources[source]||0)+1;
+  const entry={type:"pageview",at:new Date(now).toISOString(),session:sid,path,source,referrer:document.referrer||"direct",viewport:window.innerWidth+"x"+window.innerHeight};
+  data.last=entry;
+  data.log=[entry,...(data.log||[])].slice(0,300);
+  writeTraffic(data);
+  sendAnalytics(entry);
+  if(typeof window.clarity==="function")window.clarity("event","ducpt_pageview");
 }
 function readStats(){
   try{return JSON.parse(localStorage.getItem(statsKey))||{total:0,events:{}}}catch{return{total:0,events:{}}}
