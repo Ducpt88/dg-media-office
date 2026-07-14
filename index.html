@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://www.clarity.ms https://*.clarity.ms https://www.google-analytics.com https://region1.google-analytics.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; form-action 'self' https://zalo.me; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.clarity.ms https://*.clarity.ms https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https: https://www.clarity.ms https://*.clarity.ms https://www.google-analytics.com https://region1.google-analytics.com; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com; form-action 'self' https://zalo.me; upgrade-insecure-requests">
+<script>if(location.protocol==="http:"&&!/^(localhost|127\.0\.0\.1)$/i.test(location.hostname))location.replace("https:"+location.href.slice(location.protocol.length));</script>
 <title>DUCPT - Công cụ AI, automation và sản phẩm số thực chiến</title>
 <meta name="description" content="Khám phá công cụ AI thực chiến của DUCPT: Verba Studio, Brain Bot, Pinterest AutoPost và Claude Dual Workspace. Xem demo, đối tượng phù hợp và giá trước khi mua.">
 <meta name="robots" content="index,follow,max-image-preview:large"><link rel="canonical" href="https://ducpt.com/">
@@ -789,6 +790,7 @@ window.DUCPT_ZALO_URL=window.DUCPT_ZALO_URL||zaloUrl;
 window.DUCPT_SEPAY_URL=window.DUCPT_SEPAY_URL||defaultSepayUrl;
 window.DUCPT_PORTAL_API=window.DUCPT_PORTAL_API||"";
 window.DUCPT_GOOGLE_AUTH_URL=window.DUCPT_GOOGLE_AUTH_URL||"";
+window.DUCPT_ANALYTICS_API=window.DUCPT_ANALYTICS_API||"";
 const productArticles={
   "Verba Studio":{
     tag:"Ứng dụng creator",
@@ -879,19 +881,52 @@ function readStats(){
   try{return JSON.parse(localStorage.getItem(statsKey))||{total:0,events:{}}}catch{return{total:0,events:{}}}
 }
 function writeStats(stats){
+  stats.log=(stats.log||[]).slice(0,200);
   localStorage.setItem(statsKey,JSON.stringify(stats));
   renderStats(stats);
 }
 function cleanName(value){
   return String(value||"click").trim().replace(/\s+/g,"_").replace(/[^\w.-]/g,"").slice(0,60)||"click";
 }
-function trackClick(target){
+function nearestSection(target){
+  const section=target.closest("section[id],main,footer,nav");
+  return section?.id||section?.tagName?.toLowerCase()||"page";
+}
+function sendAnalytics(event){
+  if(!window.DUCPT_ANALYTICS_API)return;
+  try{
+    const body=JSON.stringify(event);
+    if(navigator.sendBeacon){
+      navigator.sendBeacon(window.DUCPT_ANALYTICS_API,new Blob([body],{type:"application/json"}));
+      return;
+    }
+    fetch(window.DUCPT_ANALYTICS_API,{method:"POST",headers:{"Content-Type":"application/json"},body,keepalive:true});
+  }catch{}
+}
+function trackClick(target,pointerEvent){
   const name=cleanName(target.dataset.track||target.getAttribute("href")||target.textContent);
+  const now=new Date().toISOString();
+  const entry={
+    name,
+    at:now,
+    path:location.pathname+location.search,
+    section:nearestSection(target),
+    href:target.getAttribute("href")||"",
+    text:String(target.textContent||"").trim().replace(/\s+/g," ").slice(0,90),
+    x:pointerEvent?Math.round(pointerEvent.clientX/window.innerWidth*100):null,
+    y:pointerEvent?Math.round(pointerEvent.clientY/window.innerHeight*100):null,
+    viewport:`${window.innerWidth}x${window.innerHeight}`,
+    referrer:document.referrer||"direct"
+  };
   const stats=readStats();
   stats.total=(stats.total||0)+1;
   stats.events[name]=(stats.events[name]||0)+1;
-  stats.last={name,at:new Date().toISOString()};
+  stats.sections=stats.sections||{};
+  stats.sections[entry.section]=(stats.sections[entry.section]||0)+1;
+  stats.last=entry;
+  stats.log=[entry,...(stats.log||[])].slice(0,200);
   writeStats(stats);
+  sendAnalytics({type:"click",...entry});
   if(typeof window.clarity==="function")window.clarity("event","ducpt_click_"+name);
 }
 function renderStats(stats=readStats()){
@@ -906,7 +941,7 @@ window.addEventListener("pointermove",e=>{
 },{passive:true});
 document.addEventListener("click",e=>{
   const target=e.target.closest("a,button,.card");
-  if(target)trackClick(target);
+  if(target)trackClick(target,e);
 });
 document.getElementById("statsToggle").addEventListener("click",()=>document.getElementById("statsPanel").classList.toggle("open"));
 document.getElementById("resetStats").addEventListener("click",()=>writeStats({total:0,events:{}}));
