@@ -28,6 +28,15 @@
   }
   const money = (value, currency = "VND") => new Intl.NumberFormat(currency === "USD" ? "en-US" : "vi-VN", { style:"currency", currency }).format(Number(value) || 0);
   const paidStatus = item => /paid|success|received|complete/i.test(item.status || "");
+  const syncFingerprint = item => [
+    item.orderId || "",
+    item.product || "",
+    Number(item.amount || 0).toFixed(2),
+    item.currency || "VND",
+    item.status || "",
+    item.name || "",
+    item.contact || ""
+  ].join("|");
   const financeEndpoint = () => {
     const raw = String(window.DUCPT_LOCAL_FINANCE_API || "http://127.0.0.1:8790/api/finance-revenue").trim();
     return /\/api\/finance-revenue\/?$/i.test(raw) ? raw : raw.replace(/\/$/, "") + "/api/finance-revenue";
@@ -64,6 +73,44 @@
     const body = await response.json().catch(() => ({}));
     if (!response.ok || !body.ok) throw new Error(body.error || `DG Office HTTP ${response.status}`);
     return body;
+  };
+  let syncInFlight = false;
+  const syncPaidRecordsToDGOffice = async (options = {}) => {
+    if (syncInFlight) return;
+    const statusNode = document.getElementById("paymentStatus");
+    const targets = records.filter(item => paidStatus(item) && (!item.dgOfficeSyncedAt || item.dgOfficeSyncError || item.dgOfficeSyncFingerprint !== syncFingerprint(item)));
+    if (!targets.length) return;
+    syncInFlight = true;
+    let ok = 0;
+    let failed = 0;
+    if (!options.silent && statusNode) statusNode.textContent = `Đang đẩy ${targets.length} dòng tiền cũ sang DG Office 8790...`;
+    for (const target of targets) {
+      try {
+        const result = await pushRevenueToDGOffice(target);
+        const patched = {
+          ...target,
+          dgOfficeSyncedAt:new Date().toISOString(),
+          dgOfficeLedger:result.ledger?.path || target.dgOfficeLedger || "",
+          dgOfficeSyncError:"",
+          dgOfficeSyncFingerprint:syncFingerprint(target)
+        };
+        records = records.map(item => item.orderId === patched.orderId ? patched : item);
+        ok += 1;
+      } catch (error) {
+        const patched = {
+          ...target,
+          dgOfficeSyncError:error.message || "Không gọi được DG Office",
+          dgOfficeSyncFingerprint:syncFingerprint(target)
+        };
+        records = records.map(item => item.orderId === patched.orderId ? patched : item);
+        failed += 1;
+      }
+      localStorage.setItem(key, JSON.stringify(records));
+    }
+    syncInFlight = false;
+    if (statusNode && (!options.silent || failed)) {
+      statusNode.textContent = failed ? `Đã đẩy ${ok} dòng, ${failed} dòng chưa sang được DG Office 8790.` : `Đã đẩy ${ok} dòng tiền sang DG Office 8790.`;
+    }
   };
   const render = () => {
     const paid = records.filter(item => /paid|success/i.test(item.status || ""));
@@ -117,6 +164,7 @@
           savedRecord.dgOfficeSyncedAt = new Date().toISOString();
           savedRecord.dgOfficeLedger = result.ledger?.path || "";
           savedRecord.dgOfficeSyncError = "";
+          savedRecord.dgOfficeSyncFingerprint = syncFingerprint(savedRecord);
           records = records.map(item => item.orderId === savedRecord.orderId ? {...item, ...savedRecord} : item);
           localStorage.setItem(key, JSON.stringify(records));
           if (statusNode) statusNode.textContent = result.ledger?.replaced ? "Đã cập nhật ledger DG Office 8790." : "Đã đẩy doanh thu vào DG Office 8790.";
@@ -144,6 +192,7 @@
     if (remove && confirm("Xóa học viên và giao dịch này?")) { records = records.filter(x => x.orderId !== remove.dataset.delete); localStorage.setItem(key, JSON.stringify(records)); if(editingOrderId===remove.dataset.delete) editingOrderId=""; render(); }
   });
   window.addEventListener("ducpt:settings", render);
-  document.getElementById("cockpitRefresh")?.addEventListener("click", render);
+  document.getElementById("cockpitRefresh")?.addEventListener("click", () => { render(); syncPaidRecordsToDGOffice(); });
   render();
+  setTimeout(() => syncPaidRecordsToDGOffice({silent:true}), 800);
 })();
