@@ -27,6 +27,44 @@
     label.firstChild.textContent = "Số tiền ";
   }
   const money = (value, currency = "VND") => new Intl.NumberFormat(currency === "USD" ? "en-US" : "vi-VN", { style:"currency", currency }).format(Number(value) || 0);
+  const paidStatus = item => /paid|success|received|complete/i.test(item.status || "");
+  const financeEndpoint = () => {
+    const raw = String(window.DUCPT_LOCAL_FINANCE_API || "http://127.0.0.1:8790/api/finance-revenue").trim();
+    return /\/api\/finance-revenue\/?$/i.test(raw) ? raw : raw.replace(/\/$/, "") + "/api/finance-revenue";
+  };
+  const pushRevenueToDGOffice = async record => {
+    if (!paidStatus(record)) return { ok:true, skipped:true, reason:"not_paid" };
+    const payload = {
+      source:"ducpt-passport",
+      site:"ducpt.com",
+      url:location.href.split("#")[0],
+      orderId:record.orderId,
+      product:record.product || "Khóa học DUCPT",
+      amount:Number(record.amount || 0),
+      currency:record.currency === "USD" ? "USD" : "VND",
+      status:record.status || "paid",
+      paymentSource:record.paymentSource || "manual",
+      name:record.name || "",
+      contact:record.contact || "",
+      customers:1,
+      licenses:record.entitlement ? 1 : 0,
+      orders:1,
+      revenueTrusted:true,
+      createdAt:record.createdAt || "",
+      updatedAt:record.updatedAt || "",
+      note:"Passport payment sync"
+    };
+    const response = await fetch(financeEndpoint(), {
+      method:"POST",
+      mode:"cors",
+      cache:"no-store",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify(payload)
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok || !body.ok) throw new Error(body.error || `DG Office HTTP ${response.status}`);
+    return body;
+  };
   const render = () => {
     const paid = records.filter(item => /paid|success/i.test(item.status || ""));
     const learners = records.filter(item => item.entitlement || /paid|success/i.test(item.status || ""));
@@ -50,14 +88,55 @@
     const header = rows?.previousElementSibling; if (header && !header.querySelector('[data-actions-head]')) header.insertAdjacentHTML("beforeend", '<span data-actions-head>Thao tác</span>');
     if (rows) rows.innerHTML = learners.slice().reverse().map(x => `<div class="row"><span>${x.name || "Học viên"}</span><span>${x.contact || "Chưa cập nhật"}</span><span>${x.product || "Khóa học"}</span><span>${x.paymentSource === "app" ? "App" : "Xác nhận thực tế"}</span><span>${x.entitlement ? "Đã mở" : "Đang khóa"}</span><span class="customer-actions"><button type="button" data-edit="${x.orderId}">Sửa</button><button type="button" class="delete" data-delete="${x.orderId}">Xóa</button></span></div>`).join("");
   };
-  form?.addEventListener("submit", event => {
-    event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget)); const paid = data.status === "paid";
+  form?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const submitButton = event.currentTarget.querySelector('button[type="submit"]');
+    const statusNode = document.getElementById("paymentStatus");
+    const data = Object.fromEntries(new FormData(event.currentTarget));
+    const paid = data.status === "paid";
+    const wasEditing = Boolean(editingOrderId);
     const normalized = {...data, amount:Number(data.amount), currency:data.currency === "USD" ? "USD" : "VND", entitlement:paid};
-    if (editingOrderId) { const index = records.findIndex(item => item.orderId === editingOrderId); if (index >= 0) records[index] = {...records[index], ...normalized, updatedAt:new Date().toISOString()}; }
-    else records.push({...normalized, orderId:(data.paymentSource === "app" ? "APP-" : "MANUAL-") + Date.now(), createdAt:new Date().toISOString()});
-    localStorage.setItem(key, JSON.stringify(records)); render();
-    document.getElementById("paymentStatus").textContent = editingOrderId ? "Đã cập nhật thông tin học viên." : paid ? "Đã cộng doanh thu, thêm học viên và mở quyền học." : "Đã lưu chờ xác nhận.";
-    editingOrderId = ""; event.currentTarget.querySelector('button[type="submit"]').textContent = "Lưu thanh toán & cập nhật học viên"; event.currentTarget.reset();
+    let savedRecord = null;
+    if (submitButton) submitButton.disabled = true;
+    try {
+      if (editingOrderId) {
+        const index = records.findIndex(item => item.orderId === editingOrderId);
+        if (index >= 0) {
+          savedRecord = {...records[index], ...normalized, updatedAt:new Date().toISOString()};
+          records[index] = savedRecord;
+        }
+      } else {
+        savedRecord = {...normalized, orderId:(data.paymentSource === "app" ? "APP-" : "MANUAL-") + Date.now(), createdAt:new Date().toISOString()};
+        records.push(savedRecord);
+      }
+      localStorage.setItem(key, JSON.stringify(records)); render();
+      if (statusNode) statusNode.textContent = paid ? "Đã lưu Passport. Đang đẩy về DG Office 8790..." : "Đã lưu chờ xác nhận.";
+      if (paid && savedRecord) {
+        try {
+          const result = await pushRevenueToDGOffice(savedRecord);
+          savedRecord.dgOfficeSyncedAt = new Date().toISOString();
+          savedRecord.dgOfficeLedger = result.ledger?.path || "";
+          savedRecord.dgOfficeSyncError = "";
+          records = records.map(item => item.orderId === savedRecord.orderId ? {...item, ...savedRecord} : item);
+          localStorage.setItem(key, JSON.stringify(records));
+          if (statusNode) statusNode.textContent = result.ledger?.replaced ? "Đã cập nhật ledger DG Office 8790." : "Đã đẩy doanh thu vào DG Office 8790.";
+        } catch (error) {
+          savedRecord.dgOfficeSyncError = error.message || "Không gọi được DG Office";
+          records = records.map(item => item.orderId === savedRecord.orderId ? {...item, ...savedRecord} : item);
+          localStorage.setItem(key, JSON.stringify(records));
+          if (statusNode) statusNode.textContent = "Đã lưu Passport, nhưng DG Office 8790 chưa nhận: " + savedRecord.dgOfficeSyncError;
+        }
+      } else if (statusNode && wasEditing) {
+        statusNode.textContent = "Đã cập nhật thông tin học viên.";
+      }
+    } finally {
+      editingOrderId = "";
+      if (submitButton) {
+        submitButton.textContent = "Lưu thanh toán & cập nhật học viên";
+        submitButton.disabled = false;
+      }
+      event.currentTarget.reset();
+    }
   });
   document.getElementById("customerRows")?.addEventListener("click", event => {
     const edit = event.target.closest("[data-edit]"); const remove = event.target.closest("[data-delete]");
