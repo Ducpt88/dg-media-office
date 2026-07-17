@@ -446,16 +446,20 @@ function normalizeCourseData(input) {
 }
 
 function normalizeLesson(lesson, index) {
-  const youtubeId = youtubeIdFromUrl(lesson.youtubeUrl || lesson.url || "") || String(lesson.youtubeId || "");
-  const youtubeUrl = youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(lesson.youtubeUrl || "");
+  const youtubeId = youtubeIdFromUrl(lesson.youtubeUrl || lesson.url || lesson.videoUrl || lesson.publicUrl || "") || String(lesson.youtubeId || "");
+  const directVideoUrl = youtubeId ? "" : String(lesson.videoUrl || lesson.publicUrl || lesson.storageUrl || lesson.assetUrl || lesson.url || "").trim();
+  const youtubeUrl = youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(lesson.youtubeUrl || "").trim();
   return {
     id: String(lesson.id || `lesson-${Date.now()}-${index}`).slice(0, 80),
     lessonNo: Number(lesson.lessonNo || lesson.order || index + 1),
     sort: Number(lesson.sort || lesson.lessonNo || lesson.order || index + 1),
     youtubeUrl,
     youtubeId,
+    videoUrl: directVideoUrl,
+    sourceType: youtubeId ? "youtube" : directVideoUrl ? "direct" : String(lesson.sourceType || "youtube").slice(0, 24),
     title: String(lesson.title || "Bài học mới").slice(0, 240),
     description: String(lesson.description || lesson.note || "").slice(0, 4000),
+    resourceUrl: String(lesson.resourceUrl || lesson.materialUrl || lesson.noteUrl || "").slice(0, 500),
     thumbnail: String(lesson.thumbnail || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : "")).slice(0, 500),
     duration: String(lesson.duration || "").slice(0, 40),
     status: ["draft", "published", "hidden"].includes(lesson.status) ? lesson.status : "draft",

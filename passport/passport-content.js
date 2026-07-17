@@ -459,7 +459,7 @@
     });
 
     learningDashboardSection();
-    courseStudioSection();
+    if (!document.getElementById("courseAdmin")?.dataset.coursePackager) courseStudioSection();
 
     recordSection({
       viewId: "aboutAdmin", title: "Về chúng tôi", storeKey: "ducpt_about_v1",
@@ -482,6 +482,7 @@
 
   const view = document.getElementById("courseAdmin");
   if (!view) return;
+  view.dataset.coursePackager = "v2";
 
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const seed = {
@@ -1113,13 +1114,13 @@
     if (!view) return;
     mountStyle();
     try {
-      const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
-      const payload = await res.json();
-      data = payload.ok ? payload.data : seed;
+      const res = await fetch("/passport/course-videos.json", { cache: "no-store" });
+      data = await res.json();
     } catch {
       try {
-        const res = await fetch("/passport/course-videos.json", { cache: "no-store" });
-        data = await res.json();
+        const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
+        const payload = await res.json();
+        data = payload.ok ? payload.data : seed;
       } catch {
         data = JSON.parse(JSON.stringify(seed));
       }
@@ -1150,10 +1151,37 @@
 
   function emptyLesson() {
     const n = data.lessons.length + 1;
-    return { id: "", lessonNo: n, sort: n, youtubeUrl: "", youtubeId: "", title: "", description: "", thumbnail: "", duration: "", status: "draft" };
+    return { id: "", lessonNo: n, sort: n, youtubeUrl: "", youtubeId: "", videoUrl: "", sourceType: "youtube", resourceUrl: "", title: "", description: "", thumbnail: "", duration: "", status: "draft" };
+  }
+
+  function playableUrl(lesson) {
+    return String(lesson.videoUrl || lesson.publicUrl || lesson.storageUrl || lesson.assetUrl || "").trim();
+  }
+
+  function sourceLabel(lesson) {
+    return lesson.youtubeId ? "YouTube" : playableUrl(lesson) ? "Video file/storage" : "Chưa gắn video";
+  }
+
+  function thumbFor(lesson) {
+    return lesson.thumbnail || (lesson.youtubeId ? `https://i.ytimg.com/vi/${lesson.youtubeId}/hqdefault.jpg` : "") || data.course.cover || "/assets/course/doanh-nghiep-1-nguoi.png";
+  }
+
+  function titleFromAssetName(name) {
+    return String(name || "Video khóa học")
+      .replace(/\.[^.]+$/, "")
+      .replace(/^\d{14}-/, "")
+      .replace(/^(?:buoi|bai|lesson)[-_ ]?\d{1,3}[-_ ]?/i, "")
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b\w/g, (c) => c.toUpperCase()) || "Video khóa học";
   }
 
   async function loadLegacyAssets() {
+    if (!/^(localhost|127\.0\.0\.1)$/i.test(location.hostname) && !window.DUCPT_ADMIN_API) {
+      legacyAssets = [];
+      return;
+    }
     try {
       const res = await fetch("/api/passport/assets", { cache: "no-store" });
       const payload = await res.json();
@@ -1165,12 +1193,12 @@
 
   function legacyAssetsHtml() {
     if (!legacyAssets.length) return "";
-    return `<article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Video đã tải lên trước đây</h3><div class="pc-hint">Các file này vẫn còn trong thư mục passport/uploads trên máy/server local. Chúng không bị xóa, chỉ không thể đưa nguyên file lớn lên GitHub Pages. Nếu muốn dùng trên website thật, hãy đưa video lên YouTube không công khai rồi dán link vào phần bài học.</div></div><span class="ytc-status">${legacyAssets.length} file</span></div><div class="ytc-asset-list">${legacyAssets.map((asset) => `<div class="ytc-asset"><div><b>${esc(asset.name || asset.fileName)}</b><small>${esc(asset.fileName)} · ${formatBytes(asset.size)} · ${esc(asset.type || "video")}</small></div><a class="btn" href="${esc(asset.url)}" target="_blank" rel="noreferrer">Xem file</a></div>`).join("")}</div></article>`;
+    return `<article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Video đã tải lên trước đây</h3><div class="pc-hint">Các file này vẫn còn trong thư mục passport/uploads trên máy/server local. Chúng không bị xóa, chỉ không thể đưa nguyên file lớn lên GitHub Pages. Nếu muốn dùng trên website thật, hãy đưa video lên YouTube không công khai hoặc lưu lên storage rồi dán link vào bài học.</div></div><span class="ytc-status">${legacyAssets.length} file</span></div><div class="ytc-asset-list">${legacyAssets.map((asset) => `<div class="ytc-asset"><div><b>${esc(asset.name || asset.fileName)}</b><small>${esc(asset.fileName)} · ${formatBytes(asset.size)} · ${esc(asset.type || "video")}</small></div><div class="ytc-actions"><a class="btn" href="${esc(asset.url)}" target="_blank" rel="noreferrer">Xem file</a><button class="btn primary" data-use-asset type="button" data-asset-url="${esc(asset.url)}" data-asset-name="${esc(asset.name || asset.fileName)}" data-asset-type="${esc(asset.type || "video")}">Dùng làm bài học</button></div></div>`).join("")}</div></article>`;
   }
 
   function adminEditorHtml(lesson) {
     return `<div class="ytc-grid" style="margin-top:14px"><article class="ytc-panel ytc-form"><h3 style="margin:0">Thông tin khóa học</h3><label>Tên khóa học<input data-course-field="title" value="${esc(data.course.title)}"></label><label>Giá / CTA<input data-course-field="price" value="${esc(data.course.price)}"></label><label>Liên hệ<input data-course-field="contact" value="${esc(data.course.contact)}"></label><label>Link ảnh bìa<input data-course-field="cover" value="${esc(data.course.cover)}"></label><label>Mục tiêu khóa học<textarea data-course-field="goal">${esc(data.course.goal)}</textarea></label></article>
-      <article class="ytc-panel"><h3 style="margin:0">Thêm video YouTube</h3><div class="ytc-import"><input class="searchbox" data-youtube-url placeholder="Dán link YouTube vào đây"><button class="btn primary" data-import-youtube type="button">${ICO.sync}Đồng bộ</button></div><form class="ytc-form" data-lesson-form><input type="hidden" name="id" value="${esc(lesson.id)}"><label>Link YouTube<input name="youtubeUrl" value="${esc(lesson.youtubeUrl)}" placeholder="https://www.youtube.com/watch?v=..."></label><label>Số buổi<input name="lessonNo" type="number" min="1" value="${esc(lesson.lessonNo)}"></label><label>Thứ tự sắp xếp<input name="sort" type="number" min="1" value="${esc(lesson.sort)}"></label><label>Tiêu đề<input name="title" required value="${esc(lesson.title)}"></label><label>Thời lượng hiển thị<input name="duration" value="${esc(lesson.duration)}" placeholder="Ví dụ: 18:35 hoặc để trống"></label><label>Trạng thái<select name="status"><option value="draft"${lesson.status==="draft"?" selected":""}>Draft - chưa hiển thị</option><option value="published"${lesson.status==="published"?" selected":""}>Published - hiển thị cho học viên</option><option value="hidden"${lesson.status==="hidden"?" selected":""}>Hidden - tạm ẩn</option></select></label><label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}"></label><label>Mô tả bài học<textarea name="description" placeholder="Nhập outline, mục tiêu, bài tập, link tài liệu...">${esc(lesson.description)}</textarea></label><div class="ytc-actions"><button class="btn primary" type="submit">${ICO.save}${lesson.id ? "Lưu bài học" : "Thêm bài học"}</button><button class="btn" data-new-lesson type="button">Làm mới</button></div></form></article></div>
+      <article class="ytc-panel"><h3 style="margin:0">Đóng gói bài học / video</h3><div class="pc-hint" style="margin-top:6px">Có thể dán YouTube unlisted, link video từ storage, hoặc tải file lên khi đang chạy Passport local.</div><div class="ytc-import"><input class="searchbox" data-youtube-url placeholder="Dán link YouTube để đồng bộ tiêu đề + thumbnail"><button class="btn primary" data-import-youtube type="button">${ICO.sync}Đồng bộ</button></div><div class="ytc-import"><input class="searchbox" data-upload-video type="file" accept="video/*"><button class="btn" data-upload-video-button type="button">Tải video lên</button></div><form class="ytc-form" data-lesson-form><input type="hidden" name="id" value="${esc(lesson.id)}"><label>Link YouTube<input name="youtubeUrl" value="${esc(lesson.youtubeUrl)}" placeholder="https://www.youtube.com/watch?v=..."></label><label>Link video trực tiếp / storage<input name="videoUrl" value="${esc(lesson.videoUrl || "")}" placeholder="https://.../video.mp4 hoặc /passport/uploads/buoi-01.mp4"></label><label>Số buổi<input name="lessonNo" type="number" min="1" value="${esc(lesson.lessonNo)}"></label><label>Thứ tự sắp xếp<input name="sort" type="number" min="1" value="${esc(lesson.sort)}"></label><label>Tiêu đề<input name="title" required value="${esc(lesson.title)}"></label><label>Thời lượng hiển thị<input name="duration" value="${esc(lesson.duration)}" placeholder="Ví dụ: 18:35 hoặc để trống"></label><label>Trạng thái<select name="status"><option value="draft"${lesson.status==="draft"?" selected":""}>Draft - chưa hiển thị</option><option value="published"${lesson.status==="published"?" selected":""}>Published - hiển thị cho học viên</option><option value="hidden"${lesson.status==="hidden"?" selected":""}>Hidden - tạm ẩn</option></select></label><label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}" placeholder="Để trống nếu dùng thumbnail YouTube hoặc ảnh bìa khóa học"></label><label>Link tài liệu / bài tập<input name="resourceUrl" value="${esc(lesson.resourceUrl || "")}" placeholder="PDF, Notion, Google Drive, template..."></label><label>Mô tả bài học<textarea name="description" placeholder="Nhập mục tiêu, outline, bài tập, link tài liệu...">${esc(lesson.description)}</textarea></label><div class="ytc-actions"><button class="btn primary" type="submit">${ICO.save}${lesson.id ? "Lưu bài học" : "Thêm bài học"}</button><button class="btn" data-new-lesson type="button">Làm mới</button></div></form></article></div>
       <article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Danh sách bài học</h3><div class="pc-hint">Bài published sẽ hiển thị trên website học viên. Draft/hidden chỉ nằm trong Passport.</div></div></div><div class="ytc-lessons">${lessonListHtml()}</div></article>`;
   }
 
@@ -1178,15 +1206,14 @@
     const published = data.lessons.filter((item) => item.status === "published").sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
     const rows = published.length ? published.map((item, index) => {
       const no = item.lessonNo || index + 1;
-      const thumb = item.thumbnail || (item.youtubeId ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg` : "");
-      return `<div class="ytc-preview-card"><img src="${esc(thumb)}" alt=""><div><b>Buổi ${esc(no)}: ${esc(item.title || "Bài học chưa có tiêu đề")}</b><p>${esc(item.description || "Mô tả bài học đang được cập nhật.")}</p><span class="ytc-status">${esc(item.duration || "Thời lượng trên YouTube")}</span></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem như học viên</a></div>`;
+      return `<div class="ytc-preview-card"><img src="${esc(thumbFor(item))}" alt=""><div><b>Buổi ${esc(no)}: ${esc(item.title || "Bài học chưa có tiêu đề")}</b><p>${esc(item.description || item.resourceUrl || "Mô tả bài học đang được cập nhật.")}</p><span class="ytc-status">${esc(item.duration || sourceLabel(item))}</span></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem như học viên</a></div>`;
     }).join("") : `<div class="cs-empty">Chưa có bài học published. Chuyển về Góc nhìn quản trị để xuất bản ít nhất một bài học.</div>`;
     return `<article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Góc nhìn học viên</h3><div class="pc-hint">Đây là danh sách bài học học viên sẽ thấy trên trang /khoa-hoc/. Chỉ các bài published xuất hiện ở đây.</div></div><span class="ytc-status">${published.length} bài đang hiển thị</span></div><div class="ytc-preview-list">${rows}</div></article>`;
   }
 
   function lessonListHtml() {
     if (!data.lessons.length) return `<div class="cs-empty">Chưa có bài học. Dán link YouTube và bấm Đồng bộ để tạo bài đầu tiên.</div>`;
-    return data.lessons.slice().sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999)).map((item) => `<div class="ytc-lesson ${item.id === editingId ? "is-editing" : ""}" data-lesson-id="${esc(item.id)}"><img src="${esc(item.thumbnail || (item.youtubeId ? `https://i.ytimg.com/vi/${item.youtubeId}/hqdefault.jpg` : ""))}" alt=""><div><b>${esc(item.lessonNo)}. ${esc(item.title)}</b><span>${esc(item.youtubeUrl || "Chưa có link")}</span><span>${esc(item.description || "Chưa có mô tả")}</span></div><div class="ytc-actions"><span class="ytc-status st-${esc(item.status || "draft")}">${esc(statusLabel(item.status))}</span><button class="btn" data-edit-lesson type="button">${ICO.edit}Sửa</button><button class="btn delete" data-delete-lesson type="button">${ICO.trash}Xóa</button></div></div>`).join("");
+    return data.lessons.slice().sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999)).map((item) => `<div class="ytc-lesson ${item.id === editingId ? "is-editing" : ""}" data-lesson-id="${esc(item.id)}"><img src="${esc(thumbFor(item))}" alt=""><div><b>${esc(item.lessonNo)}. ${esc(item.title)}</b><span>${esc(item.youtubeUrl || item.videoUrl || "Chưa có link")}</span><span>${esc(item.description || item.resourceUrl || "Chưa có mô tả")}</span></div><div class="ytc-actions"><span class="ytc-status st-${esc(item.status || "draft")}">${esc(statusLabel(item.status))}</span><button class="btn" data-edit-lesson type="button">${ICO.edit}Sửa</button><button class="btn delete" data-delete-lesson type="button">${ICO.trash}Xóa</button></div></div>`).join("");
   }
 
   function statusLabel(status) {
@@ -1205,17 +1232,43 @@
     view.querySelector("[data-save-all]").addEventListener("click", saveAll);
     view.querySelectorAll("[data-view-mode]").forEach((button) => button.addEventListener("click", () => { viewMode = button.dataset.viewMode; draw(); }));
     view.querySelector("[data-import-youtube]")?.addEventListener("click", importYoutube);
+    view.querySelector("[data-upload-video-button]")?.addEventListener("click", () => view.querySelector("[data-upload-video]")?.click());
+    view.querySelector("[data-upload-video]")?.addEventListener("change", uploadVideoFile);
     view.querySelector("[data-new-lesson]")?.addEventListener("click", () => { editingId = ""; draw(); });
+    view.querySelectorAll("[data-use-asset]").forEach((button) => button.addEventListener("click", () => {
+      const assetUrl = button.dataset.assetUrl || "";
+      const assetName = button.dataset.assetName || "";
+      const assetType = button.dataset.assetType || "video";
+      const title = titleFromAssetName(assetName);
+      const next = {
+        ...emptyLesson(),
+        id: `asset-${Date.now()}`,
+        lessonNo: data.lessons.length + 1,
+        sort: data.lessons.length + 1,
+        title,
+        videoUrl: assetUrl,
+        sourceType: "direct",
+        description: `Bài học tạo từ file đã upload (${assetType}). Hãy đổi sang link công khai nếu muốn học viên xem trên website live.`,
+        thumbnail: data.course.cover || "",
+        status: "draft",
+        updatedAt: new Date().toISOString()
+      };
+      data.lessons.push(next);
+      editingId = next.id;
+      draw();
+      flash("Đã đưa file upload vào bài học. Hãy kiểm tra link công khai rồi bấm Lưu tất cả.");
+    }));
     view.querySelector("[data-save-github-config]").addEventListener("click", () => { saveGithubConfig(view); flash("Đã lưu kết nối GitHub trên trình duyệt này"); });
     view.querySelector("[data-test-github]").addEventListener("click", testGithubConnection);
     view.querySelector("[data-lesson-form]")?.addEventListener("submit", (event) => {
       event.preventDefault();
       collectCourse(view);
       const rec = Object.fromEntries(new FormData(event.currentTarget).entries());
-      const youtubeId = youtubeIdFromUrl(rec.youtubeUrl);
+      const youtubeId = youtubeIdFromUrl(rec.youtubeUrl || rec.videoUrl || "");
+      const directVideoUrl = youtubeId ? "" : String(rec.videoUrl || "").trim();
       const id = rec.id || `lesson-${Date.now()}`;
       const old = data.lessons.find((item) => item.id === id) || {};
-      const next = { ...old, id, lessonNo: Number(rec.lessonNo) || data.lessons.length + 1, sort: Number(rec.sort) || Number(rec.lessonNo) || data.lessons.length + 1, youtubeUrl: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : rec.youtubeUrl.trim(), youtubeId, title: rec.title.trim(), duration: rec.duration.trim(), status: rec.status, thumbnail: rec.thumbnail.trim() || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : ""), description: rec.description.trim(), updatedAt: new Date().toISOString() };
+      const next = { ...old, id, lessonNo: Number(rec.lessonNo) || data.lessons.length + 1, sort: Number(rec.sort) || Number(rec.lessonNo) || data.lessons.length + 1, youtubeUrl: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(rec.youtubeUrl || "").trim(), youtubeId, videoUrl: directVideoUrl, sourceType: youtubeId ? "youtube" : directVideoUrl ? "direct" : (old.sourceType || "youtube"), title: rec.title.trim(), duration: rec.duration.trim(), status: rec.status, thumbnail: rec.thumbnail.trim() || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : old.thumbnail || data.course.cover || ""), resourceUrl: String(rec.resourceUrl || old.resourceUrl || "").trim(), description: rec.description.trim(), updatedAt: new Date().toISOString() };
       const index = data.lessons.findIndex((item) => item.id === id);
       if (index >= 0) data.lessons[index] = next; else data.lessons.push(next);
       editingId = next.id;
@@ -1239,16 +1292,16 @@
   async function importYoutube() {
     const view = document.getElementById("courseAdmin");
     const input = view.querySelector("[data-youtube-url]");
-    const youtubeUrl = input.value.trim();
-    if (!youtubeUrl) return flash("Hãy dán link YouTube trước");
-    flash("Đang đồng bộ YouTube...");
-    try {
-      const res = await fetch("/api/passport/course-videos/import-youtube", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ youtubeUrl }) });
+      const youtubeUrl = input.value.trim();
+      if (!youtubeUrl) return flash("Hãy dán link YouTube trước");
+      flash("Đang đồng bộ YouTube...");
+      try {
+        const res = await fetch("/api/passport/course-videos/import-youtube", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ youtubeUrl }) });
       const payload = await res.json();
       if (!payload.ok) throw new Error(payload.error || "Không đồng bộ được");
       const item = payload.data;
       const existing = data.lessons.find((lesson) => lesson.youtubeId === item.youtubeId);
-      const next = { ...(existing || {}), ...item, id: existing ? existing.id : item.id, lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, duration: existing ? existing.duration : "", description: existing ? existing.description : "", status: existing ? existing.status : "draft", updatedAt: new Date().toISOString() };
+      const next = { ...(existing || {}), ...item, id: existing ? existing.id : item.id, lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, videoUrl: existing?.videoUrl || "", sourceType: "youtube", resourceUrl: existing?.resourceUrl || "", duration: existing ? existing.duration : "", description: existing ? existing.description : "", status: existing ? existing.status : "draft", updatedAt: new Date().toISOString() };
       if (existing) data.lessons[data.lessons.indexOf(existing)] = next; else data.lessons.push(next);
       editingId = next.id;
       input.value = "";
@@ -1258,13 +1311,49 @@
       const youtubeId = youtubeIdFromUrl(youtubeUrl);
       if (!youtubeId) return flash(error.message || "Lỗi đồng bộ YouTube");
       const existing = data.lessons.find((lesson) => lesson.youtubeId === youtubeId);
-      const item = { id: `yt-${youtubeId}`, youtubeUrl: `https://www.youtube.com/watch?v=${youtubeId}`, youtubeId, title: existing?.title || "Bài học mới", description: existing?.description || "", thumbnail: `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`, status: existing?.status || "draft" };
+      const item = { id: `yt-${youtubeId}`, youtubeUrl: `https://www.youtube.com/watch?v=${youtubeId}`, youtubeId, videoUrl: "", sourceType: "youtube", resourceUrl: existing?.resourceUrl || "", title: existing?.title || "Bài học mới", description: existing?.description || "", thumbnail: `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`, status: existing?.status || "draft" };
       const next = { ...(existing || {}), ...item, lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, duration: existing ? existing.duration : "", updatedAt: new Date().toISOString() };
       if (existing) data.lessons[data.lessons.indexOf(existing)] = next; else data.lessons.push(next);
       editingId = next.id;
       input.value = "";
       draw();
       flash("Đã tạo bài từ link YouTube. Sửa tiêu đề nếu cần.");
+    }
+  }
+
+  async function uploadVideoFile(event) {
+    const file = event.target.files && event.target.files[0];
+    if (!file) return;
+    flash("Đang tải video lên Passport local...");
+    try {
+      const res = await fetch(`/api/passport/upload?name=${encodeURIComponent(file.name)}`, {
+        method: "POST",
+        headers: { "Content-Type": file.type || "application/octet-stream" },
+        body: file
+      });
+      const payload = await res.json();
+      if (!payload.ok) throw new Error(payload.error || "Không tải được video");
+      const asset = payload.data;
+      const next = {
+        ...emptyLesson(),
+        id: `asset-${Date.now()}`,
+        lessonNo: data.lessons.length + 1,
+        sort: data.lessons.length + 1,
+        title: titleFromAssetName(asset.name || asset.fileName || file.name),
+        videoUrl: asset.url,
+        sourceType: "direct",
+        description: "Bài học tạo từ file upload local. Để khách xem trên ducpt.com, hãy đổi sang link YouTube unlisted hoặc link storage công khai trước khi Published.",
+        thumbnail: data.course.cover || "",
+        status: "draft",
+        updatedAt: new Date().toISOString()
+      };
+      data.lessons.push(next);
+      editingId = next.id;
+      event.target.value = "";
+      draw();
+      flash("Đã tải video và tạo bài học nháp. Kiểm tra link trước khi Published.");
+    } catch (error) {
+      flash((error && error.message) || "Không tải được video. Hãy chạy Passport upload server hoặc dùng link YouTube/storage.");
     }
   }
 
