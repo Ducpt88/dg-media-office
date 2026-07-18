@@ -5,7 +5,7 @@
     "contact": "Zalo 0963249467",
     "goal": "Khóa học giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, tạo nội dung kéo khách, bán sản phẩm dịch vụ số và vận hành gọn bằng AI.",
     "cover": "/assets/hvd-horizontal.svg",
-    "updatedAt": "2026-07-18T04:38:13.000Z",
+    "updatedAt": "2026-07-18T07:05:40.000Z",
     "modules": [
       {
         "code": "M1",
@@ -60,7 +60,8 @@
       "learnPoints": [
         "Nhận ra 'mơ hồ' đang khiến bạn mất tiền ở đâu",
         "Nguyên tắc: cái gì đo được thì giữ được"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-T3AhtyTGA0c",
@@ -82,7 +83,8 @@
       "learnPoints": [
         "Vì sao dòng tiền 'sợ' sự mơ hồ",
         "Cách bắt đầu ghi rõ tiền vào - ra"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-db7eqUnYyaE",
@@ -104,7 +106,8 @@
       "learnPoints": [
         "Phân biệt 'bận chạy' và 'giữ được nhịp'",
         "Thiết lập một nhịp kiểm tra tiền định kỳ"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-Gua7Q9l0I7Q",
@@ -126,7 +129,8 @@
       "learnPoints": [
         "Đổi góc nhìn về mục đích chi tiền",
         "Ưu tiên chi cho thứ trả lại tập trung"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-uLmxMAvnkf0",
@@ -149,7 +153,8 @@
         "Nguyên tắc 'một cửa vào' cho mọi việc",
         "Nhận ra việc đang rơi vì phân mảnh",
         "Cách bố trí bảng vận hành một màn hình"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-emCUIKpiyYw",
@@ -171,7 +176,8 @@
       "learnPoints": [
         "Vì sao trí nhớ không đáng tin cho việc",
         "Thói quen ghi việc ngay khi phát sinh"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-k5LUj_l856Q",
@@ -193,7 +199,8 @@
       "learnPoints": [
         "Định nghĩa 'xong' bằng bằng chứng",
         "Cách nộp việc kèm bằng chứng"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-IBgN0kbwxK8",
@@ -216,7 +223,8 @@
         "Sai lầm phổ biến khi làm một mình",
         "Ưu tiên đúng thứ để không quá tải",
         "Khung vận hành tối giản cho 1 người"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-NuNZ6uv4Q9M",
@@ -238,7 +246,8 @@
       "learnPoints": [
         "Cách bóc tách tài liệu dài",
         "Biến tài liệu thành hành động"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-rZLMtCLG68E",
@@ -260,7 +269,8 @@
       "learnPoints": [
         "Cách nhân một ý tưởng thành nhiều nội dung",
         "Bốn góc khai thác từ một chủ đề"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-c_rT9-vb4TM",
@@ -282,7 +292,8 @@
       "learnPoints": [
         "Phân biệt nợ tốt và nợ mất kiểm soát",
         "Dấu hiệu nợ đang vượt tầm"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-NNptM1R_BDc",
@@ -304,7 +315,8 @@
       "learnPoints": [
         "Nhận diện cú mua theo cảm xúc",
         "Một mẹo chặn mua bốc đồng"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-eVJeWScYmes",
@@ -326,7 +338,8 @@
       "learnPoints": [
         "Vì sao cần 'luật chơi' tài chính cá nhân",
         "Bắt đầu đặt 1-2 luật cho mình"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-iS3jFCrRd38",
@@ -348,7 +361,8 @@
       "learnPoints": [
         "Ý tưởng một điểm điều phối nhiều luồng",
         "Vận hành tự động cho người một mình"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-6w0ZUUV6ck8",
@@ -370,7 +384,8 @@
       "learnPoints": [
         "Bẫy chi tiêu để trông giàu",
         "Chọn tích lũy thay vì phô trương"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-HfD4PmM62DE",
@@ -392,7 +407,8 @@
       "learnPoints": [
         "Vì sao không dừng quan trọng hơn đi nhanh",
         "Giữ đà thay vì bùng rồi tắt"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-gLzH3ZMZeNw",
@@ -414,7 +430,8 @@
       "learnPoints": [
         "Vì sao không cần chứng minh bằng chi tiêu",
         "Chi theo giá trị, không theo cái nhìn"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-Usewn36l3gk",
@@ -436,7 +453,8 @@
       "learnPoints": [
         "Quỹ dự phòng nên bằng bao nhiêu",
         "Cách bắt đầu tích quỹ ngay"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-If95OqcbERk",
@@ -458,7 +476,8 @@
       "learnPoints": [
         "Nhận ra việc đang nghiền thời gian",
         "Bước đầu để cắt việc lặp"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-aczpMHkjCLM",
@@ -480,17 +499,18 @@
       "learnPoints": [
         "Tìm các lỗ rò rỉ tiền hàng tháng",
         "Dựng hệ thống giữ tiền tối thiểu"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-ito_0uIJ8b0",
       "lessonNo": 21,
       "sort": 21,
-      "youtubeUrl": "https://www.youtube.com/watch?v=ito_0uIJ8b0",
-      "youtubeId": "ito_0uIJ8b0",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/ito_0uIJ8b0/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "1:07:46",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -503,7 +523,8 @@
         "Vibe Coding là gì và làm được gì",
         "Tư duy build sản phẩm số một mình",
         "Bức tranh tổng thể của chuỗi học"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-3hPHqyokhEw",
@@ -525,7 +546,8 @@
       "learnPoints": [
         "Rủi ro của tiền nhanh",
         "Ưu tiên nguồn thu bền"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-8PEcvlI_WVY",
@@ -548,7 +570,8 @@
         "Cách lên sóng nhanh với Verba",
         "Cấu hình tối thiểu để live",
         "Live đa nền tảng"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-D8vowE8CsyY",
@@ -570,17 +593,18 @@
       "learnPoints": [
         "Ý tưởng automation kéo traffic",
         "Lợi ích chạy nền hằng ngày"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-sma3SXZ8tzI",
       "lessonNo": 25,
       "sort": 25,
-      "youtubeUrl": "https://www.youtube.com/watch?v=sma3SXZ8tzI",
-      "youtubeId": "sma3SXZ8tzI",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/sma3SXZ8tzI/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "T? YouTube",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -592,7 +616,8 @@
       "learnPoints": [
         "Các bước dựng sản phẩm",
         "Thực hành theo hướng dẫn"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-YpmIk7x6GZo",
@@ -614,7 +639,8 @@
       "learnPoints": [
         "Kỹ năng quản tiền không cần chờ giàu",
         "Bắt đầu luyện với số tiền đang có"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-xZIQeSuUxCc",
@@ -636,7 +662,8 @@
       "learnPoints": [
         "Dấu hiệu thiếu hệ thống",
         "Khung hệ thống giữ tiền cơ bản"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-NhzePL4Ivb4",
@@ -658,17 +685,18 @@
       "learnPoints": [
         "Vì sao 'cầm lái' quan trọng hơn thu nhập",
         "Tự đánh giá mình đang cầm lái tới đâu"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-4yjelymJ8r8",
       "lessonNo": 29,
       "sort": 29,
-      "youtubeUrl": "https://www.youtube.com/watch?v=4yjelymJ8r8",
-      "youtubeId": "4yjelymJ8r8",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/4yjelymJ8r8/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "24:46",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -681,7 +709,8 @@
         "Kỹ thuật build cụ thể",
         "Xử lý vấn đề thường gặp",
         "Đóng gói để dùng thật"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-qSkbFRaPce4",
@@ -703,7 +732,8 @@
       "learnPoints": [
         "Nhận ra ai/điều gì đang lái tiền của bạn",
         "Giành lại quyền kiểm soát"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-3enslmFd5Sk",
@@ -725,7 +755,8 @@
       "learnPoints": [
         "Cách dựng một nút chạy quy trình",
         "Giảm thao tác lặp mỗi ngày"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-U2dEATjdezM",
@@ -747,7 +778,8 @@
       "learnPoints": [
         "Luồng tự động đăng đa nền tảng",
         "Dùng Pinterest làm cửa hút traffic"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-8TXwn__vp_A",
@@ -769,7 +801,8 @@
       "learnPoints": [
         "Khác biệt Agent vs chatbot thường",
         "Ứng dụng cho YouTube và lập trình"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-eCw0caT7wlE",
@@ -791,7 +824,8 @@
       "learnPoints": [
         "Ý tưởng biến máy nhà thành server làm việc",
         "Lợi ích truy cập từ xa cho người một mình"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-LBK6Aex2dY0",
@@ -813,7 +847,8 @@
       "learnPoints": [
         "Cách Bot gom kiến thức đa nguồn",
         "Nhận kết quả map qua Telegram"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt--oE-P4HhE7w",
@@ -835,7 +870,8 @@
       "learnPoints": [
         "Lịch chạy tự động mỗi ngày",
         "Vì sao đều đặn thắng bùng nổ"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-_7hGkiR50Ws",
@@ -857,7 +893,8 @@
       "learnPoints": [
         "Tiện ích chỉ đáng khi có việc lặp",
         "Tự hỏi trước khi cài thêm công cụ"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-XixBdm2QMo8",
@@ -879,7 +916,8 @@
       "learnPoints": [
         "Giá trị nằm ở chi tiết nhỏ dùng hằng ngày",
         "Chọn công cụ theo việc thật"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-FNCAbKzzepY",
@@ -901,7 +939,8 @@
       "learnPoints": [
         "Ý tưởng đóng gói quy trình lặp",
         "Giảm thao tác thủ công khi làm video"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-vCRovK8_bwA",
@@ -923,7 +962,8 @@
       "learnPoints": [
         "Chi phí ẩn của thao tác thủ công",
         "Gộp chuỗi thao tác thành một bước"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-ob69PQbuptg",
@@ -945,17 +985,18 @@
       "learnPoints": [
         "Những thứ cần có trước khi dùng",
         "Tránh lỗi người mới hay mắc"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-ohSxpqk1cJg",
       "lessonNo": 42,
       "sort": 42,
-      "youtubeUrl": "https://www.youtube.com/watch?v=ohSxpqk1cJg",
-      "youtubeId": "ohSxpqk1cJg",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/ohSxpqk1cJg/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "29:38",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -967,7 +1008,8 @@
       "learnPoints": [
         "Mở rộng tính năng",
         "Tối ưu quy trình build"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-dJeSvzglRz0",
@@ -989,7 +1031,8 @@
       "learnPoints": [
         "Ứng dụng Fable 5 vào content",
         "Prompt cơ bản cho creator"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-uutrqHHZjF4",
@@ -1011,7 +1054,8 @@
       "learnPoints": [
         "Điểm mạnh riêng của Fable 5",
         "Khi nào nên dùng Fable 5"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-zXk_hYmszh4",
@@ -1033,7 +1077,8 @@
       "learnPoints": [
         "Cách AutoPost hoạt động",
         "Lên lịch đăng hàng loạt"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-F9zs7CUIVGo",
@@ -1055,7 +1100,8 @@
       "learnPoints": [
         "Sức mạnh của lịch đăng đều",
         "Cách duy trì đăng bền"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-MsPHfOpYnxY",
@@ -1077,7 +1123,8 @@
       "learnPoints": [
         "Sai lầm coi Fable 5 là chatbot",
         "Cách khai thác đúng"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-vqhHjFUmyDI",
@@ -1100,17 +1147,18 @@
         "Fable 5 là gì",
         "Cách bắt đầu cho người mới",
         "Việc nên giao cho Fable 5"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-WxoSSQCFwes",
       "lessonNo": 49,
       "sort": 49,
-      "youtubeUrl": "https://www.youtube.com/watch?v=WxoSSQCFwes",
-      "youtubeId": "WxoSSQCFwes",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/WxoSSQCFwes/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "33:37",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -1123,7 +1171,8 @@
         "Hoàn thiện sản phẩm",
         "Chuẩn bị đóng gói bán",
         "Định giá cơ bản"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-vVp5k-W2qoM",
@@ -1146,7 +1195,8 @@
         "Cách Fable 5 cải thiện website",
         "Quy trình nhờ AI tinh chỉnh site",
         "Kiểm tra kết quả trước khi đăng"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-rswprRCq40w",
@@ -1168,17 +1218,18 @@
       "learnPoints": [
         "Quy trình live một click",
         "Chuẩn bị trước khi lên sóng"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-vcJwgN_Zr38",
       "lessonNo": 52,
       "sort": 52,
-      "youtubeUrl": "https://www.youtube.com/watch?v=vcJwgN_Zr38",
-      "youtubeId": "vcJwgN_Zr38",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/vcJwgN_Zr38/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "1:27:45",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -1190,7 +1241,8 @@
       "learnPoints": [
         "Thực chiến build từ đầu",
         "Vận hành sản phẩm một mình"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-L4U4Jy4SCYo",
@@ -1212,7 +1264,8 @@
       "learnPoints": [
         "Nhắc lại quy trình live một click",
         "Mẹo giữ chất lượng khi live"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-eFr8Yds1EsI",
@@ -1234,17 +1287,18 @@
       "learnPoints": [
         "Xu hướng build bằng AI",
         "Vì sao không cần gõ code như xưa"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-vMSQU_ys4XE",
       "lessonNo": 55,
       "sort": 55,
-      "youtubeUrl": "https://www.youtube.com/watch?v=vMSQU_ys4XE",
-      "youtubeId": "vMSQU_ys4XE",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/vMSQU_ys4XE/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "1:29:40",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -1256,17 +1310,18 @@
       "learnPoints": [
         "Mở rộng & bảo trì sản phẩm",
         "Xử lý tình huống thực tế"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-HmclLkwGdW8",
       "lessonNo": 56,
       "sort": 56,
-      "youtubeUrl": "https://www.youtube.com/watch?v=HmclLkwGdW8",
-      "youtubeId": "HmclLkwGdW8",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/HmclLkwGdW8/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "1:23:50",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -1278,17 +1333,18 @@
       "learnPoints": [
         "Ghép các phần thành hệ thống",
         "Vận hành ổn định"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-Oqx-vJ_Y1jY",
       "lessonNo": 57,
       "sort": 57,
-      "youtubeUrl": "https://www.youtube.com/watch?v=Oqx-vJ_Y1jY",
-      "youtubeId": "Oqx-vJ_Y1jY",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Cách Tiết Kiệm 95% Thời Gian Nuôi Pinterest Và Kéo View Tự Động",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/Oqx-vJ_Y1jY/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "13:16",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -1301,17 +1357,18 @@
         "Quy trình nuôi Pinterest tối ưu",
         "Tự động hóa để tiết kiệm thời gian",
         "Đo hiệu quả kéo view"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-VAOiAVEWhDA",
       "lessonNo": 58,
       "sort": 58,
-      "youtubeUrl": "https://www.youtube.com/watch?v=VAOiAVEWhDA",
-      "youtubeId": "VAOiAVEWhDA",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Kiếm Tiền Với Vibe Coding: Build App & Extensions 1 Người Vận Hành Cả Doanh Nghiệp",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/VAOiAVEWhDA/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "21:53",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -1323,7 +1380,8 @@
       "learnPoints": [
         "Tổng hợp toàn chuỗi",
         "Con đường kiếm tiền từ sản phẩm"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-HnbOnAQpGr4",
@@ -1346,7 +1404,8 @@
         "Tính năng trình bày của Verba",
         "Làm video trình bày chỉn chu",
         "Khi nào dùng Verba thay vì quay thường"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-V4JnYmwPd3Y",
@@ -1368,7 +1427,8 @@
       "learnPoints": [
         "Luồng agent tự viết bài",
         "Ứng dụng kiếm tiền từ nội dung"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-PYFIUJ0ZnOs",
@@ -1390,7 +1450,8 @@
       "learnPoints": [
         "Thử nhanh công cụ AI",
         "Ghi lại cảm nhận để chọn công cụ"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-VxvX00uLuM8",
@@ -1412,17 +1473,18 @@
       "learnPoints": [
         "Cách agent nhận & làm nhiệm vụ",
         "Ứng dụng kiếm tiền tự động"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-LWln6jaNbiw",
       "lessonNo": 63,
       "sort": 63,
-      "youtubeUrl": "https://www.youtube.com/watch?v=LWln6jaNbiw",
-      "youtubeId": "LWln6jaNbiw",
+      "youtubeUrl": "",
+      "youtubeId": "",
       "title": "Hướng Dẫn Cách Làm Thumbail Giống 90% Đối Thủ Làm Youtube Views Ngoại",
       "description": "Video được đồng bộ từ nguồn YouTube Đức DG (@ducdg2).",
-      "thumbnail": "https://i.ytimg.com/vi/LWln6jaNbiw/hqdefault.jpg",
+      "thumbnail": "",
       "duration": "11:35",
       "status": "published",
       "updatedAt": "2026-07-17T00:00:00.000Z",
@@ -1435,7 +1497,8 @@
         "Công thức thumbnail hút click",
         "Học từ thumbnail đối thủ mạnh",
         "Lỗi thumbnail thường gặp"
-      ]
+      ],
+      "access": "premium"
     },
     {
       "id": "yt-8BSMt7ZrgvI",
@@ -1457,7 +1520,8 @@
       "learnPoints": [
         "Giới thiệu công cụ làm thumbnail",
         "Làm thumbnail nhanh"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-xcfUDTRtLVQ",
@@ -1479,7 +1543,8 @@
       "learnPoints": [
         "Công cụ tải video đa nền tảng",
         "Ứng dụng cho việc làm content"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-bdrk_wAk7Jw",
@@ -1501,7 +1566,8 @@
       "learnPoints": [
         "Tư duy thử rồi tối ưu",
         "Đo trước khi tối ưu"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-WaZeArUt3NY",
@@ -1524,7 +1590,8 @@
         "Nguyên tắc đặt tên & phân thư mục",
         "Cấu trúc thư mục dễ tìm kiếm",
         "Thói quen dọn file định kỳ"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-vmGEYZCQqTY",
@@ -1546,7 +1613,8 @@
       "learnPoints": [
         "Mẹo tìm file tức thì",
         "Duy trì hệ thống file gọn"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-Bqm_FlEB83A",
@@ -1569,7 +1637,8 @@
         "Cài & dùng Pro Video Downloader",
         "Tải video đa nền tảng nhanh",
         "Lưu ý bản quyền khi dùng lại"
-      ]
+      ],
+      "access": "free"
     },
     {
       "id": "yt-4rq5gx7iYxU",
@@ -1588,7 +1657,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-v34KU8IRc58",
@@ -1607,7 +1677,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-X5tETq083qk",
@@ -1626,7 +1697,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-8Z2pYPMafwg",
@@ -1645,7 +1717,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-EyYgV0Hn32U",
@@ -1664,7 +1737,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-dZ6znSU1ZlE",
@@ -1683,7 +1757,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-HE7xBQTZdWo",
@@ -1702,7 +1777,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-Asimmg0qp1M",
@@ -1721,7 +1797,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-yxJjqYQ_skA",
@@ -1740,7 +1817,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-JQSSKGwORgo",
@@ -1759,7 +1837,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-k0jUx1yNNLs",
@@ -1778,7 +1857,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-ssIpZ7CAJ8Q",
@@ -1797,7 +1877,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-_7ke3Em0DV8",
@@ -1816,7 +1897,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-ys0spbpmHZo",
@@ -1835,7 +1917,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-AJr3abtbVfA",
@@ -1854,7 +1937,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-DCWfuXBXVnE",
@@ -1873,7 +1957,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-W-9IrlIXDVE",
@@ -1892,7 +1977,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-k72q17I7tHU",
@@ -1911,7 +1997,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-dh5EFhtfXGw",
@@ -1930,7 +2017,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-lIqTVWue5b8",
@@ -1949,7 +2037,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-WFbNgZfdawk",
@@ -1968,7 +2057,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-Vh9E3Ln6Bko",
@@ -1987,7 +2077,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-54fWjwCr-eU",
@@ -2006,7 +2097,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-0p-14WtD4rY",
@@ -2025,7 +2117,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-JLgI2-RzZdY",
@@ -2044,7 +2137,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-PX6KSZOKESg",
@@ -2063,7 +2157,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-peDNr4yYwG8",
@@ -2082,7 +2177,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-P-yFxXE0WCY",
@@ -2101,7 +2197,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-i7o4uca23qA",
@@ -2120,7 +2217,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-2PzqYOSE0HA",
@@ -2139,7 +2237,8 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     },
     {
       "id": "yt-yEhPvYURrPY",
@@ -2158,8 +2257,13 @@
       "moduleNo": "",
       "type": "offtopic",
       "objective": "",
-      "learnPoints": []
+      "learnPoints": [],
+      "access": "hidden"
     }
   ],
-  "schemaVersion": 2
+  "schemaVersion": 2,
+  "accessModel": {
+    "free": "Xem ngay",
+    "premium": "Cần đăng ký học"
+  }
 }
