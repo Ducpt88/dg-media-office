@@ -1105,7 +1105,22 @@
     if (document.getElementById("ytc-final-style")) return;
     const style = document.createElement("style");
     style.id = "ytc-final-style";
-    style.textContent = ".ytc-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}.ytc-panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}.ytc-form{display:grid;gap:10px}.ytc-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ytc-form input,.ytc-form textarea,.ytc-form select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ytc-form textarea{min-height:90px;resize:vertical}.ytc-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ytc-import{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}.ytc-view-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.ytc-view-switch button{border:0;border-radius:9px;background:transparent;padding:8px 10px;color:var(--muted);font-weight:900;cursor:pointer}.ytc-view-switch button.is-active{background:#fff;color:#1d4ed8;box-shadow:0 1px 6px rgba(16,24,40,.08)}.ytc-lessons{display:grid;gap:10px}.ytc-lesson{display:grid;grid-template-columns:70px minmax(0,1fr) 120px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-lesson.is-editing{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.08)}.ytc-lesson img{width:70px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:#e2e8f0}.ytc-lesson b{display:block;margin-bottom:4px}.ytc-lesson span,.ytc-note{display:block;color:var(--muted);font-size:11px;line-height:1.5}.ytc-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}.ytc-preview-list{display:grid;gap:12px}.ytc-preview-card{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.ytc-preview-card img{width:150px;aspect-ratio:16/9;border-radius:10px;object-fit:cover;background:#e2e8f0}.ytc-preview-card p{margin:5px 0;color:var(--muted);font-size:12px;line-height:1.5}.ytc-asset-list{display:grid;gap:10px}.ytc-asset{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-asset b{display:block;overflow-wrap:anywhere}.ytc-asset small{display:block;color:var(--muted);margin-top:4px}.ytc-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.ytc-guide div{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-guide b{display:block;margin-bottom:4px}@media(max-width:900px){.ytc-grid{grid-template-columns:1fr}.ytc-import,.ytc-lesson,.ytc-preview-card,.ytc-asset{grid-template-columns:1fr}.ytc-lesson img,.ytc-preview-card img{width:100%}.ytc-guide{grid-template-columns:1fr}}.ytc-steps{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin:14px 0 0;padding:14px 16px;border:1px solid #dbe7ff;border-radius:14px;background:linear-gradient(90deg,#f4f8ff,#faf7ff)}.ytc-step{display:flex;gap:10px;align-items:center;flex:1;min-width:180px}.ytc-step i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-style:normal;font-weight:900;flex:none;box-shadow:0 6px 14px rgba(37,99,235,.3)}.ytc-step b{display:block;font-size:12.5px}.ytc-step span{display:block;color:var(--muted);font-size:11px}.ytc-steps>em{align-self:center;color:#93a6c9;font-style:normal;font-weight:900}.ytc-collapse{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper);overflow:hidden}.ytc-collapse>summary{display:flex;align-items:center;gap:8px;padding:14px 18px;cursor:pointer;font-weight:800;color:var(--ink);list-style:none}.ytc-collapse>summary::-webkit-details-marker{display:none}.ytc-collapse>summary:after{content:'▾';margin-left:auto;color:var(--muted);transition:.2s}.ytc-collapse[open]>summary:after{transform:rotate(180deg)}.ytc-collapse>.ytc-panel{border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none}.ytc-ic{width:15px;height:15px;vertical-align:-2.5px;margin-right:5px}.ytc-status.st-published{background:#ecfdf5;color:#047857}.ytc-status.st-hidden{background:#fff7ed;color:#c2410c}.ytc-status.st-draft{background:#f1f5f9;color:#475569}";
+    style.textContent = ".ytc-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}.ytc-panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}.ytc-form{display:grid;gap:10px}.ytc-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ytc-form input,.ytc-form textarea,.ytc-form select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ytc-form textarea{min-height:90px;resize:vertical}.ytc-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ytc-import{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}.ytc-view-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.ytc-view-switch button{border:0;border-radius:9px;background:transparent;padding:8px 10px;color:var(--muted);font-weight:900;cursor:pointer}.ytc-view-switch button.is-active{background:#fff;color:#1d4ed8;box-shadow:0 1px 6px rgba(16,24,40,.08)}.ytc-lessons{display:grid;gap:10px}.ytc-lesson{display:grid;grid-template-columns:70px minmax(0,1fr) 120px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-lesson.is-editing{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.08)}.ytc-lesson img{width:70px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:#e2e8f0}.ytc-lesson b{display:block;margin-bottom:4px}.ytc-lesson span,.ytc-note{display:block;color:var(--muted);font-size:11px;line-height:1.5}.ytc-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}.ytc-preview-list{display:grid;gap:12px}.ytc-preview-card{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.ytc-preview-card img{width:150px;aspect-ratio:16/9;border-radius:10px;object-fit:cover;background:#e2e8f0}.ytc-preview-card p{margin:5px 0;color:var(--muted);font-size:12px;line-height:1.5}.ytc-asset-list{display:grid;gap:10px}.ytc-asset{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-asset b{display:block;overflow-wrap:anywhere}.ytc-asset small{display:block;color:var(--muted);margin-top:4px}.ytc-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.ytc-guide div{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-guide b{display:block;margin-bottom:4px}@media(max-width:900px){.ytc-grid{grid-template-columns:1fr}.ytc-import,.ytc-lesson,.ytc-preview-card,.ytc-asset{grid-template-columns:1fr}.ytc-lesson img,.ytc-preview-card img{width:100%}.ytc-guide{grid-template-columns:1fr}}.ytc-steps{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin:14px 0 0;padding:14px 16px;border:1px solid #dbe7ff;border-radius:14px;background:linear-gradient(90deg,#f4f8ff,#faf7ff)}.ytc-step{display:flex;gap:10px;align-items:center;flex:1;min-width:180px}.ytc-step i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-style:normal;font-weight:900;flex:none;box-shadow:0 6px 14px rgba(37,99,235,.3)}.ytc-step b{display:block;font-size:12.5px}.ytc-step span{display:block;color:var(--muted);font-size:11px}.ytc-steps>em{align-self:center;color:#93a6c9;font-style:normal;font-weight:900}.ytc-collapse{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper);overflow:hidden}.ytc-collapse>summary{display:flex;align-items:center;gap:8px;padding:14px 18px;cursor:pointer;font-weight:800;color:var(--ink);list-style:none}.ytc-collapse>summary::-webkit-details-marker{display:none}.ytc-collapse>summary:after{content:'▾';margin-left:auto;color:var(--muted);transition:.2s}.ytc-collapse[open]>summary:after{transform:rotate(180deg)}.ytc-collapse>.ytc-panel{border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none}.ytc-ic{width:15px;height:15px;vertical-align:-2.5px;margin-right:5px}.ytc-status.st-published{background:#ecfdf5;color:#047857}.ytc-status.st-hidden{background:#fff7ed;color:#c2410c}.ytc-status.st-draft{background:#f1f5f9;color:#475569}"
+      + /* Bố cục giống hệt trang ngoài /khoa-hoc/#hoc-ngay: player ở giữa, cây chương bên phải */
+      ".ca-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:14px;align-items:start;margin-top:14px}"
+      + ".ca-player{padding:0;overflow:hidden}.ca-frame{aspect-ratio:16/9;background:#0b1220;display:grid;place-items:center;color:#93a6c9;font-size:13px;text-align:center;padding:16px}.ca-frame iframe,.ca-frame video{width:100%;height:100%;border:0;display:block;background:#0b1220}"
+      + ".ca-body{padding:16px 18px}.ca-eyebrow{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10.5px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}"
+      + ".ca-title{margin:10px 0 4px;font-size:19px;line-height:1.3}.ca-sub{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}"
+      + ".ca-form{margin-top:14px;display:grid;gap:10px}.ca-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.ca-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ca-form input,.ca-form select,.ca-form textarea{padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ca-form textarea{min-height:80px;resize:vertical}"
+      + ".ca-curri{position:sticky;top:82px;max-height:calc(100vh - 112px);display:flex;flex-direction:column;overflow:hidden;padding:0}"
+      + ".ca-curri-head{padding:14px 16px 12px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#f8fbff,#fff)}.ca-curri-head h3{margin:0;font-size:15px}.ca-curri-head p{margin:3px 0 0;color:var(--muted);font-size:11.5px}"
+      + ".ca-list{overflow-y:auto;padding:10px}.ca-ch{border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:8px;overflow:hidden}"
+      + ".ca-ch-head{padding:10px 12px;background:linear-gradient(180deg,#f8fbff,#fff);border-bottom:1px solid var(--line)}.ca-ch-head b{display:block;font-size:12.5px;text-transform:uppercase}.ca-ch-head span{display:block;margin-top:4px;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}.ca-ch-head span i{font-style:normal;color:var(--blue);font-weight:900}"
+      + ".ca-row{display:grid;grid-template-columns:26px minmax(0,1fr);gap:3px 8px;padding:9px 12px;border-top:1px solid #f1f5f9;cursor:pointer;transition:background .15s}.ca-row:hover{background:#f8fbff}.ca-row.is-active{background:#eff6ff;box-shadow:inset 3px 0 0 #2563eb}"
+      + ".ca-row .n{grid-column:1;grid-row:1;color:#98a2b3;font-size:12px;font-weight:900;font-variant-numeric:tabular-nums}.ca-row .t{grid-column:2;grid-row:1;font-size:13px;line-height:1.35}.ca-row .m{grid-column:2;grid-row:2;display:flex;gap:5px;flex-wrap:wrap;align-items:center}"
+      + ".ca-tag{display:inline-flex;padding:2px 7px;border-radius:999px;font-size:9.5px;font-weight:900;background:#f1f5f9;color:#475467;white-space:nowrap}.ca-tag.free{background:#ecfdf5;color:#047857}.ca-tag.prem{background:#f4f0ff;color:#7c3aed}.ca-tag.pub{background:#eff6ff;color:#1d4ed8}.ca-tag.hid{background:#fff7ed;color:#c2410c}"
+      + "@media(max-width:1080px){.ca-layout{grid-template-columns:1fr}.ca-curri{position:static;max-height:none;order:-1}.ca-list{max-height:420px}.ca-form-grid{grid-template-columns:1fr 1fr}}"
+      + "@media(max-width:640px){.ca-form-grid{grid-template-columns:1fr}}";
     document.head.appendChild(style);
   }
 
@@ -1130,6 +1145,10 @@
       if (draft && draft.course && (draft.course.updatedAt || "") > (data.course.updatedAt || "")) data = draft;
     } catch {}
     await loadLegacyAssets();
+    if (!editingId) {
+      const first = data.lessons.slice().sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999)).find((x) => x.status === "published") || data.lessons[0];
+      if (first) editingId = first.id;
+    }
     draw();
   }
 
@@ -1197,9 +1216,105 @@
   }
 
   function adminEditorHtml(lesson) {
-    return `<div class="ytc-grid" style="margin-top:14px"><article class="ytc-panel ytc-form"><h3 style="margin:0">Thông tin khóa học</h3><label>Tên khóa học<input data-course-field="title" value="${esc(data.course.title)}"></label><label>Giá / CTA<input data-course-field="price" value="${esc(data.course.price)}"></label><label>Liên hệ<input data-course-field="contact" value="${esc(data.course.contact)}"></label><label>Link ảnh bìa<input data-course-field="cover" value="${esc(data.course.cover)}"></label><label>Mục tiêu khóa học<textarea data-course-field="goal">${esc(data.course.goal)}</textarea></label></article>
-      <article class="ytc-panel"><h3 style="margin:0">Đóng gói bài học / video</h3><div class="pc-hint" style="margin-top:6px">Có thể dán YouTube unlisted, link video từ storage, hoặc tải file lên khi đang chạy Passport local.</div><div class="ytc-import"><input class="searchbox" data-youtube-url placeholder="Dán link YouTube để đồng bộ tiêu đề + thumbnail"><button class="btn primary" data-import-youtube type="button">${ICO.sync}Đồng bộ</button></div><div class="ytc-import"><input class="searchbox" data-upload-video type="file" accept="video/*"><button class="btn" data-upload-video-button type="button">Tải video lên</button></div><form class="ytc-form" data-lesson-form><input type="hidden" name="id" value="${esc(lesson.id)}"><label>Link YouTube<input name="youtubeUrl" value="${esc(lesson.youtubeUrl)}" placeholder="https://www.youtube.com/watch?v=..."></label><label>Link video trực tiếp / storage<input name="videoUrl" value="${esc(lesson.videoUrl || "")}" placeholder="https://.../video.mp4 hoặc /passport/uploads/buoi-01.mp4"></label><label>Số buổi<input name="lessonNo" type="number" min="1" value="${esc(lesson.lessonNo)}"></label><label>Thứ tự sắp xếp<input name="sort" type="number" min="1" value="${esc(lesson.sort)}"></label><label>Tiêu đề<input name="title" required value="${esc(lesson.title)}"></label><label>Thời lượng hiển thị<input name="duration" value="${esc(lesson.duration)}" placeholder="Ví dụ: 18:35 hoặc để trống"></label><label>Trạng thái<select name="status"><option value="draft"${lesson.status==="draft"?" selected":""}>Draft - chưa hiển thị</option><option value="published"${lesson.status==="published"?" selected":""}>Published - hiển thị cho học viên</option><option value="hidden"${lesson.status==="hidden"?" selected":""}>Hidden - tạm ẩn</option></select></label><label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}" placeholder="Để trống nếu dùng thumbnail YouTube hoặc ảnh bìa khóa học"></label><label>Link tài liệu / bài tập<input name="resourceUrl" value="${esc(lesson.resourceUrl || "")}" placeholder="PDF, Notion, Google Drive, template..."></label><label>Mô tả bài học<textarea name="description" placeholder="Nhập mục tiêu, outline, bài tập, link tài liệu...">${esc(lesson.description)}</textarea></label><div class="ytc-actions"><button class="btn primary" type="submit">${ICO.save}${lesson.id ? "Lưu bài học" : "Thêm bài học"}</button><button class="btn" data-new-lesson type="button">Làm mới</button></div></form></article></div>
-      <article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Danh sách bài học</h3><div class="pc-hint">Bài published sẽ hiển thị trên website học viên. Draft/hidden chỉ nằm trong Passport.</div></div></div><div class="ytc-lessons">${lessonListHtml()}</div></article>`;
+    return `<div class="ca-layout">
+      <section>
+        <article class="ytc-panel ca-player">
+          <div class="ca-frame">${playerHtml(lesson)}</div>
+          <div class="ca-body">
+            <span class="ca-eyebrow">${lesson.id ? "Đang sửa bài" : "Bài học mới"}</span>
+            <h3 class="ca-title">${esc(lesson.title || "Chọn một bài ở cột phải để xem và sửa")}</h3>
+            <p class="ca-sub">${esc(lesson.objective || lesson.description || "Bấm vào một bài trong cây chương bên phải — video hiện ngay tại đây, sửa xong bấm Lưu bài học.")}</p>
+            <div class="ytc-import" style="margin-top:14px"><input class="searchbox" data-youtube-url placeholder="Dán link YouTube để tạo/đồng bộ bài mới"><button class="btn primary" data-import-youtube type="button">${ICO.sync}Đồng bộ</button></div>
+            <div class="ytc-import"><input class="searchbox" data-upload-video type="file" accept="video/*"><button class="btn" data-upload-video-button type="button">Tải video lên</button></div>
+            <form class="ca-form" data-lesson-form>
+              <input type="hidden" name="id" value="${esc(lesson.id)}">
+              <label>Tiêu đề bài học<input name="title" required value="${esc(lesson.title)}"></label>
+              <div class="ca-form-grid">
+                <label>Chương<select name="module">${moduleOptionsHtml(lesson.module)}</select></label>
+                <label>Mã bài trong chương<input name="moduleNo" value="${esc(lesson.moduleNo || "")}" placeholder="Ví dụ 1.1"></label>
+                <label>Quyền xem<select name="access"><option value="free"${lesson.access !== "premium" && lesson.access !== "hidden" ? " selected" : ""}>FREE — ai đăng ký cũng xem</option><option value="premium"${lesson.access === "premium" ? " selected" : ""}>PREMIUM — chỉ học viên trả phí</option><option value="hidden"${lesson.access === "hidden" ? " selected" : ""}>Ẩn khỏi khóa học</option></select></label>
+              </div>
+              <div class="ca-form-grid">
+                <label>Trạng thái<select name="status"><option value="draft"${lesson.status === "draft" ? " selected" : ""}>Bản nháp</option><option value="published"${lesson.status === "published" ? " selected" : ""}>Đang hiển thị</option><option value="hidden"${lesson.status === "hidden" ? " selected" : ""}>Tạm ẩn</option></select></label>
+                <label>Số buổi<input name="lessonNo" type="number" min="1" value="${esc(lesson.lessonNo)}"></label>
+                <label>Thứ tự sắp xếp<input name="sort" type="number" min="1" value="${esc(lesson.sort)}"></label>
+              </div>
+              <div class="ca-form-grid">
+                <label>Link YouTube<input name="youtubeUrl" value="${esc(lesson.youtubeUrl)}" placeholder="https://www.youtube.com/watch?v=..."></label>
+                <label>Link video trực tiếp / storage<input name="videoUrl" value="${esc(lesson.videoUrl || "")}" placeholder="https://.../video.mp4"></label>
+                <label>Thời lượng hiển thị<input name="duration" value="${esc(lesson.duration)}" placeholder="Ví dụ 18:35"></label>
+              </div>
+              <div class="ca-form-grid">
+                <label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}" placeholder="Để trống = lấy thumbnail YouTube"></label>
+                <label>Link tài liệu / bài tập<input name="resourceUrl" value="${esc(lesson.resourceUrl || "")}" placeholder="PDF, Notion, Drive..."></label>
+                <label>Loại<input name="type" value="${esc(lesson.type || "")}" placeholder="clip / bài giảng"></label>
+              </div>
+              <label>Mục tiêu bài học<textarea name="objective" placeholder="Học xong bài này học viên làm được gì?">${esc(lesson.objective || "")}</textarea></label>
+              <label>Mô tả / outline<textarea name="description" placeholder="Nội dung chính, bài tập, link tài liệu...">${esc(lesson.description)}</textarea></label>
+              <div class="ytc-actions"><button class="btn primary" type="submit">${ICO.save}${lesson.id ? "Lưu bài học" : "Thêm bài học"}</button><button class="btn" data-new-lesson type="button">Bài mới</button>${lesson.id ? `<button class="btn delete" data-delete-lesson data-lesson-id="${esc(lesson.id)}" type="button">${ICO.trash}Xóa bài này</button>` : ""}</div>
+            </form>
+          </div>
+        </article>
+        <article class="ytc-panel ytc-form" style="margin-top:14px"><h3 style="margin:0">Thông tin khóa học</h3><label>Tên khóa học<input data-course-field="title" value="${esc(data.course.title)}"></label><label>Giá / CTA<input data-course-field="price" value="${esc(data.course.price)}"></label><label>Liên hệ<input data-course-field="contact" value="${esc(data.course.contact)}"></label><label>Link ảnh bìa<input data-course-field="cover" value="${esc(data.course.cover)}"></label><label>Mục tiêu khóa học<textarea data-course-field="goal">${esc(data.course.goal)}</textarea></label></article>
+      </section>
+      <aside class="ytc-panel ca-curri">
+        <div class="ca-curri-head">
+          <h3>Nội dung khóa học</h3>
+          <p>Xếp đúng như trang ngoài — bấm một bài để xem video và sửa ngay</p>
+          <span class="ytc-status" style="margin-top:8px">${data.lessons.length} bài · ${data.lessons.filter((x) => x.status === "published").length} đang hiển thị</span>
+        </div>
+        <div class="ca-list">${chapterListHtml()}</div>
+      </aside>
+    </div>`;
+  }
+
+  function playerHtml(lesson) {
+    if (lesson.youtubeId) return `<iframe src="https://www.youtube-nocookie.com/embed/${esc(lesson.youtubeId)}?rel=0&modestbranding=1" title="${esc(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    const direct = playableUrl(lesson);
+    if (direct) return `<video controls playsinline preload="metadata" poster="${esc(thumbFor(lesson))}" src="${esc(direct)}"></video>`;
+    return "Chưa gắn video cho bài này — dán link YouTube ở ô bên dưới";
+  }
+
+  function moduleOptionsHtml(current) {
+    const modules = Array.isArray(data.course.modules) ? data.course.modules : [];
+    const options = modules.map((m) => `<option value="${esc(m.code)}"${current === m.code ? " selected" : ""}>${esc(m.code)} — ${esc(m.title)}</option>`).join("");
+    return `${options}<option value="OFF"${!current || current === "OFF" ? " selected" : ""}>OFF — chưa xếp chương</option>`;
+  }
+
+  function durationSeconds(value) {
+    const text = String(value || "").trim();
+    if (!/^\d/.test(text)) return 0;
+    const parts = text.split(":").map(Number);
+    while (parts.length < 3) parts.unshift(0);
+    return parts[0] * 3600 + parts[1] * 60 + parts[2];
+  }
+
+  function formatHMS(total) {
+    const h = Math.floor(total / 3600);
+    const m = Math.floor((total % 3600) / 60);
+    const s = total % 60;
+    return [h, m, s].map((v) => String(v).padStart(2, "0")).join(":");
+  }
+
+  /* Cây chương giống hệt trang ngoài, nhưng hiện cả bài nháp/ẩn để anh nhìn thấy toàn bộ kho. */
+  function chapterListHtml() {
+    if (!data.lessons.length) return `<div class="cs-empty">Chưa có bài học. Dán link YouTube và bấm Đồng bộ để tạo bài đầu tiên.</div>`;
+    const modules = Array.isArray(data.course.modules) ? data.course.modules : [];
+    const sorted = data.lessons.slice().sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
+    const groups = modules.map((m) => ({ code: m.code, title: m.title, items: sorted.filter((l) => l.module === m.code) }));
+    const codes = modules.map((m) => m.code);
+    const rest = sorted.filter((l) => !codes.includes(l.module));
+    if (rest.length) groups.push({ code: "OFF", title: "Chưa xếp chương / để ngoài khóa", items: rest });
+    return groups.filter((g) => g.items.length).map((group, gi) => {
+      const total = group.items.reduce((sum, l) => sum + durationSeconds(l.duration), 0);
+      const live = group.items.filter((l) => l.status === "published").length;
+      const rows = group.items.map((item, i) => {
+        const access = item.access === "premium" ? '<span class="ca-tag prem">💎 PREMIUM</span>' : item.access === "hidden" ? '<span class="ca-tag">Ẩn khỏi khóa</span>' : '<span class="ca-tag free">FREE</span>';
+        const state = item.status === "published" ? '<span class="ca-tag pub">Đang hiển thị</span>' : item.status === "hidden" ? '<span class="ca-tag hid">Tạm ẩn</span>' : '<span class="ca-tag">Bản nháp</span>';
+        return `<div class="ca-row${item.id === editingId ? " is-active" : ""}" data-lesson-id="${esc(item.id)}" data-select-lesson><span class="n">${String(i + 1).padStart(2, "0")}</span><span class="t">${esc(item.title || "Bài chưa có tiêu đề")}</span><span class="m"><span class="ca-tag">${esc(item.duration || "—")}</span>${access}${state}</span></div>`;
+      }).join("");
+      return `<section class="ca-ch"><div class="ca-ch-head"><b>${gi + 1}. ${esc(group.title)}</b><span>Số lượng: <i>${group.items.length}</i> video · Thời lượng: <i>${formatHMS(total)}</i> · Đang hiển thị: <i>${live}</i></span></div>${rows}</section>`;
+    }).join("");
   }
 
   function studentPreviewHtml() {
@@ -1268,13 +1383,18 @@
       const directVideoUrl = youtubeId ? "" : String(rec.videoUrl || "").trim();
       const id = rec.id || `lesson-${Date.now()}`;
       const old = data.lessons.find((item) => item.id === id) || {};
-      const next = { ...old, id, lessonNo: Number(rec.lessonNo) || data.lessons.length + 1, sort: Number(rec.sort) || Number(rec.lessonNo) || data.lessons.length + 1, youtubeUrl: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(rec.youtubeUrl || "").trim(), youtubeId, videoUrl: directVideoUrl, sourceType: youtubeId ? "youtube" : directVideoUrl ? "direct" : (old.sourceType || "youtube"), title: rec.title.trim(), duration: rec.duration.trim(), status: rec.status, thumbnail: rec.thumbnail.trim() || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : old.thumbnail || data.course.cover || ""), resourceUrl: String(rec.resourceUrl || old.resourceUrl || "").trim(), description: rec.description.trim(), updatedAt: new Date().toISOString() };
+      const next = { ...old, module: String(rec.module || old.module || "OFF"), moduleNo: String(rec.moduleNo || "").trim(), access: String(rec.access || old.access || "free"), objective: String(rec.objective || "").trim(), type: String(rec.type || old.type || "").trim(), id, lessonNo: Number(rec.lessonNo) || data.lessons.length + 1, sort: Number(rec.sort) || Number(rec.lessonNo) || data.lessons.length + 1, youtubeUrl: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(rec.youtubeUrl || "").trim(), youtubeId, videoUrl: directVideoUrl, sourceType: youtubeId ? "youtube" : directVideoUrl ? "direct" : (old.sourceType || "youtube"), title: rec.title.trim(), duration: rec.duration.trim(), status: rec.status, thumbnail: rec.thumbnail.trim() || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : old.thumbnail || data.course.cover || ""), resourceUrl: String(rec.resourceUrl || old.resourceUrl || "").trim(), description: rec.description.trim(), updatedAt: new Date().toISOString() };
       const index = data.lessons.findIndex((item) => item.id === id);
       if (index >= 0) data.lessons[index] = next; else data.lessons.push(next);
       editingId = next.id;
       saveAll();
     });
     view.querySelectorAll("[data-edit-lesson]").forEach((button) => button.addEventListener("click", (event) => { editingId = event.target.closest("[data-lesson-id]").dataset.lessonId; draw(); }));
+    view.querySelectorAll("[data-select-lesson]").forEach((row) => row.addEventListener("click", () => {
+      editingId = row.dataset.lessonId;
+      draw();
+      document.getElementById("courseAdmin")?.querySelector(".ca-player")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }));
     view.querySelectorAll("[data-delete-lesson]").forEach((button) => button.addEventListener("click", (event) => {
       if (!confirm("Xóa bài học này?")) return;
       const id = event.target.closest("[data-lesson-id]").dataset.lessonId;
