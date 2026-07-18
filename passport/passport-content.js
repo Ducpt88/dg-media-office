@@ -1120,7 +1120,8 @@
       + ".ca-row .n{grid-column:1;grid-row:1;color:#98a2b3;font-size:12px;font-weight:900;font-variant-numeric:tabular-nums}.ca-row .t{grid-column:2;grid-row:1;font-size:13px;line-height:1.35}.ca-row .m{grid-column:2;grid-row:2;display:flex;gap:5px;flex-wrap:wrap;align-items:center}"
       + ".ca-tag{display:inline-flex;padding:2px 7px;border-radius:999px;font-size:9.5px;font-weight:900;background:#f1f5f9;color:#475467;white-space:nowrap}.ca-tag.free{background:#ecfdf5;color:#047857}.ca-tag.prem{background:#f4f0ff;color:#7c3aed}.ca-tag.pub{background:#eff6ff;color:#1d4ed8}.ca-tag.hid{background:#fff7ed;color:#c2410c}"
       + "@media(max-width:1080px){.ca-layout{grid-template-columns:1fr}.ca-curri{position:static;max-height:none;order:-1}.ca-list{max-height:420px}.ca-form-grid{grid-template-columns:1fr 1fr}}"
-      + "@media(max-width:640px){.ca-form-grid{grid-template-columns:1fr}}";
+      + "@media(max-width:640px){.ca-form-grid{grid-template-columns:1fr}}"
+      + ".ca-alert{margin:0 0 12px;padding:12px 14px;border-left:4px solid #dc2626;border-radius:10px;background:#fef2f2;color:#991b1b;font-size:12.5px;line-height:1.6}.ca-alert code{background:#fff;padding:1px 5px;border-radius:5px}";
     document.head.appendChild(style);
   }
 
@@ -1145,6 +1146,7 @@
       if (draft && draft.course && (draft.course.updatedAt || "") > (data.course.updatedAt || "")) data = draft;
     } catch {}
     await loadLegacyAssets();
+    watchPlayerBlocked();
     if (!editingId) {
       const first = data.lessons.slice().sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999)).find((x) => x.status === "published") || data.lessons[0];
       if (first) editingId = first.id;
@@ -1219,11 +1221,13 @@
     return `<div class="ca-layout">
       <section>
         <article class="ytc-panel ca-player">
-          <div class="ca-frame">${playerHtml(lesson)}</div>
+          <div class="ca-frame" data-player>${playerHtml(lesson)}</div>
           <div class="ca-body">
+            <div data-player-alert></div>
             <span class="ca-eyebrow">${lesson.id ? "Đang sửa bài" : "Bài học mới"}</span>
             <h3 class="ca-title">${esc(lesson.title || "Chọn một bài ở cột phải để xem và sửa")}</h3>
             <p class="ca-sub">${esc(lesson.objective || lesson.description || "Bấm vào một bài trong cây chương bên phải — video hiện ngay tại đây, sửa xong bấm Lưu bài học.")}</p>
+            ${lesson.youtubeId ? `<p style="margin:8px 0 0"><a class="btn" href="https://www.youtube.com/watch?v=${esc(lesson.youtubeId)}" target="_blank" rel="noreferrer">${ICO.eye}Mở trên YouTube (nếu khung trên không phát được)</a></p>` : ""}
             <div class="ytc-import" style="margin-top:14px"><input class="searchbox" data-youtube-url placeholder="Dán link YouTube để tạo/đồng bộ bài mới"><button class="btn primary" data-import-youtube type="button">${ICO.sync}Đồng bộ</button></div>
             <div class="ytc-import"><input class="searchbox" data-upload-video type="file" accept="video/*"><button class="btn" data-upload-video-button type="button">Tải video lên</button></div>
             <form class="ca-form" data-lesson-form>
@@ -1266,6 +1270,21 @@
         <div class="ca-list">${chapterListHtml()}</div>
       </aside>
     </div>`;
+  }
+
+  /* Cửa soát vé góc-nhìn-người-dùng-cuối: không hỏi "có thẻ iframe không" mà hỏi
+     "khung video có thật sự phát được không". Trình duyệt bắn securitypolicyviolation
+     khi CSP chặn nguồn video — bắt lấy và hiện cảnh báo đỏ ngay trên màn hình,
+     thay vì để anh nhìn một ô đen im lặng. */
+  function watchPlayerBlocked() {
+    if (window.__ducptPlayerWatch) return;
+    window.__ducptPlayerWatch = true;
+    document.addEventListener("securitypolicyviolation", (event) => {
+      if (!/frame-src|media-src|default-src/.test(event.violatedDirective || "")) return;
+      const box = document.getElementById("courseAdmin")?.querySelector("[data-player-alert]");
+      if (!box) return;
+      box.innerHTML = `<div class="ca-alert">⚠ Khung video đang bị chặn — không xem được tại đây.<br>Nguồn bị chặn: <b>${esc(event.blockedURI)}</b> · Luật chặn: <b>${esc(event.violatedDirective)}</b><br>Cách xử lý: mở <code>passport/index.html</code>, thêm nguồn này vào dòng Content-Security-Policy. Trong lúc chờ, bấm nút "Mở trên YouTube" bên dưới để xem bài.</div>`;
+    });
   }
 
   function playerHtml(lesson) {
