@@ -3,14 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="robots" content="noindex,nofollow,noarchive">
-  <title>Khóa học Doanh nghiệp một người - DUCPT</title>
-  <meta name="description" content="Khu học tập DUCPT: xem video YouTube, đăng ký học và theo dõi khóa Doanh nghiệp một người.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <title>Khóa học Doanh Nghiệp Một Người — Vận hành Công Ty 1 Người bằng AI | DUCPT</title>
+  <meta name="description" content="69 bài học thực chiến giúp bạn vận hành công ty 1 người: giữ dòng tiền, kéo khách tự động, dùng AI làm thay việc lặp và tự build công cụ để bán. Đăng ký học thử miễn phí.">
+  <meta name="keywords" content="doanh nghiệp một người, công ty 1 người, khóa học kinh doanh một mình, vận hành bằng AI, tự động hóa bán hàng, khóa học AI thực chiến">
   <link rel="canonical" href="https://ducpt.com/khoa-hoc/">
-  <meta property="og:title" content="Khóa học Doanh nghiệp một người - DUCPT">
-  <meta property="og:description" content="Học viên xem danh sách video, đăng ký học và theo dõi khóa Doanh nghiệp một người trên DUCPT.">
+  <meta property="og:title" content="Khóa học Doanh Nghiệp Một Người — Vận hành Công Ty 1 Người bằng AI">
+  <meta property="og:description" content="6 chương · 69 bài học · 9 giờ thực chiến. Từ giữ dòng tiền, kéo khách tự động đến tự build app bán hàng — vận hành cả doanh nghiệp một mình.">
   <meta property="og:url" content="https://ducpt.com/khoa-hoc/">
+  <meta property="og:image" content="https://ducpt.com/assets/course/doanh-nghiep-1-nguoi.png">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="vi_VN">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Doanh nghiệp một người — Vận hành Công ty 1 người bằng AI","description":"Khóa học thực chiến 69 bài giúp cá nhân vận hành một doanh nghiệp một mình: giữ dòng tiền, xây nội dung kéo khách, tự động hóa bán hàng, dùng AI và tự build công cụ số.","inLanguage":"vi-VN","provider":{"@type":"Organization","name":"DUCPT","url":"https://ducpt.com/"},"url":"https://ducpt.com/khoa-hoc/","image":"https://ducpt.com/assets/course/doanh-nghiep-1-nguoi.png","offers":{"@type":"Offer","category":"Freemium","price":"0","priceCurrency":"VND","availability":"https://schema.org/InStock","description":"Đăng ký tài khoản miễn phí để học 58 bài; nâng cấp Premium để mở toàn bộ 69 bài."},"hasCourseInstance":{"@type":"CourseInstance","courseMode":"online","inLanguage":"vi-VN","courseWorkload":"PT9H"}}</script>
   <link rel="icon" type="image/svg+xml" href="/assets/hvd-monogram.svg">
   <link rel="apple-touch-icon" href="/assets/hvd-monogram.svg">
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -102,9 +107,40 @@
     .pill{display:inline-flex;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:900;margin-top:3px}
     .pill.f{background:#ecfdf5;color:#047857}.pill.p{background:#f4f0ff;color:#7c3aed}
     .blockreg{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:10.5px;font-weight:900;letter-spacing:.04em;white-space:nowrap;background:#fffbeb;color:#b45309}
-    /* Bỏ cột đăng ký khỏi bố cục — danh sách bài dùng full chiều ngang */
-    .course-layout{grid-template-columns:1fr}
+    /* Bố cục: video ở giữa · danh sách khóa học cột phải dính màn hình */
+    .course-layout{grid-template-columns:minmax(0,1fr) 390px;align-items:start}
+    .curri{position:sticky;top:80px;max-height:calc(100vh - 100px);display:flex;flex-direction:column;overflow:hidden;padding:0}
+    .curri-head{padding:16px 17px 13px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#f8fbff,#fff)}
+    .curri-head h2{margin:0;font-size:17px}
+    .curri-head p{margin:3px 0 9px;color:var(--muted);font-size:12.5px}
+    .curri .lesson-list{overflow-y:auto;padding:10px;gap:8px}
+    .curri .ch{margin-bottom:8px;border-radius:12px}
+    .curri .ch-head{padding:11px 13px}
+    .curri .ch-head .ct{font-size:13px}
+    .curri .ch-head .cm{font-size:11px;margin-top:4px}
+    .curri .lrow{grid-template-columns:26px minmax(0,1fr);gap:8px;padding:9px 13px;row-gap:5px}
+    .curri .lrow .du{grid-column:2;font-size:11px;color:var(--muted)}
+    .curri .lrow .ti{grid-column:2;font-size:13px;line-height:1.35}
+    .curri .lrow .bfree,.curri .lrow .bprem,.curri .lrow .blockreg{grid-column:2;justify-self:start;margin-top:2px}
+    .curri .ch-more{padding:10px;font-size:12px}
+    .curri .ch-none{padding:11px 13px;font-size:12px}
+    .benefits{margin-top:16px;padding:22px}
+    .benefits h2{margin:0 0 14px;font-size:20px}
+    .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .bgrid article{padding:14px;border:1px solid var(--line);border-radius:12px;background:#f8fbff}
+    .bgrid b{display:block;margin-bottom:4px;font-size:14px}
+    .bgrid p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}
+    .hero-lead{max-width:64ch;font-size:17px;line-height:1.7;color:var(--muted)}
+    .hero-lead strong{color:var(--ink);font-weight:800}
+    .hero-pts{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:8px;max-width:62ch}
+    .hero-pts li{position:relative;padding-left:26px;color:#475467;font-size:14.5px}
+    .hero-pts li::before{content:"✓";position:absolute;left:0;top:0;color:var(--green);font-weight:900}
+    .hero-pts strong{color:var(--ink)}
+    .hero-stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+    .hero-stats span{padding:9px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--muted);font-size:13px}
+    .hero-stats b{color:var(--ink);font-size:17px;font-weight:900;margin-right:4px}
     .register-card{display:none}
+    @media(max-width:1080px){.course-layout{grid-template-columns:1fr}.curri{position:static;max-height:none;order:-1}.curri .lesson-list{max-height:460px}.bgrid{grid-template-columns:1fr}}
     .register-card.open{display:block;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:90;width:min(430px,93vw);max-height:88vh;overflow:auto;margin:0}
     .regbd{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:89;display:none}
     .regbd.open{display:block}
@@ -129,16 +165,48 @@
 </head>
 <body>
   <header class="header"><nav class="nav"><a href="/"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></a><a class="active" href="/khoa-hoc/">Khóa học</a><a href="/bai-viet/">Bài viết</a><a href="/dich-vu/">Dịch vụ đào tạo</a><a href="/cong-cu-ai/">Công cụ AI</a><a href="/ve-chung-toi/">Về chúng tôi</a><span class="grow"></span><a class="login" href="/dang-nhap/">Đăng nhập</a><a class="signup" href="#dang-ky-hoc">Đăng ký học</a></nav></header>
-  <section class="course-hero"><div class="inner"><span class="eyebrow">Khu học tập DUCPT</span><h1 id="courseTitle">Khóa học Doanh nghiệp một người</h1><p id="courseGoal">Nơi học viên xem video YouTube của khóa học, đăng ký học và theo dõi các bài mới được mở từ kênh DUCPT.</p><div class="hero-actions"><a class="primary-btn" href="#hoc-ngay">Vào học ngay</a><a class="ghost-btn" href="#dang-ky-hoc">Đăng ký khóa học</a></div></div></section>
+  <section class="course-hero"><div class="inner">
+    <span class="eyebrow">Khóa học thực chiến · DUCPT</span>
+    <h1 id="courseTitle">Doanh nghiệp một người</h1>
+    <p class="hero-lead" id="courseGoal">Vận hành trọn một <strong>công ty 1 người</strong> mà vẫn ra tiền: giữ được dòng tiền, tự động kéo khách, dùng AI làm thay phần việc lặp lại và tự build công cụ để bán — không cần thuê thêm ai.</p>
+    <ul class="hero-pts">
+      <li>Học theo lộ trình <strong>6 chương</strong>, xem tới đâu làm được tới đó</li>
+      <li>Mỗi bài có <strong>mục tiêu rõ ràng</strong> và việc cần làm ngay sau khi xem</li>
+      <li><strong>Đăng ký miễn phí</strong> là mở được 58 bài học ngay</li>
+    </ul>
+    <div class="hero-stats">
+      <span><b id="hsLessons">69</b> bài học</span>
+      <span><b>6</b> chương</span>
+      <span><b>9</b> giờ thực chiến</span>
+      <span><b>58</b> bài học miễn phí</span>
+    </div>
+    <div class="hero-actions"><a class="primary-btn" href="#dang-ky-hoc">Đăng ký học miễn phí</a><a class="ghost-btn" href="#hoc-ngay">Xem chương trình học</a></div>
+  </div></section>
   <main class="course-shell" id="hoc-ngay">
     <div class="course-layout">
       <section>
-        <article class="panel course-player"><div class="player-frame" id="playerFrame"><div class="empty-player">Đang mở bài học...</div></div><div class="panel-pad"><span class="eyebrow">Đang học</span><h2 id="currentTitle" style="margin:10px 0 6px">Chọn bài học</h2><p id="currentDesc" style="margin:0;color:var(--muted)">Chọn một buổi trong danh sách bên dưới để học ngay trên website.</p><ul id="currentLearn" class="learn-points"></ul><div class="course-meta"><div class="metric"><span>Tổng video</span><strong id="metricVideos">0</strong></div><div class="metric"><span>Nguồn video</span><strong>Video bài học</strong></div><div class="metric"><span>Thời lượng</span><strong id="metricDuration">Theo video</strong></div><div class="metric"><span>Trạng thái</span><strong id="metricStatus">Đang cập nhật</strong></div></div></div></article>
         <div id="acctChip"></div>
-        <div class="section-head"><div><h2>Danh sách video khóa học</h2><p>Chọn một video để học ngay. Danh sách này lấy từ gói khóa học đã xuất bản.</p></div></div>
-        <div class="lesson-toolbar"><div><b>Lộ trình học</b><span>Học theo đúng thứ tự buổi, xem video rồi thực hành theo mô tả từng bài.</span></div><div class="lesson-count" id="lessonCount">0 bài học</div></div>
-        <div class="lesson-list" id="lessonList"></div>
+        <article class="panel course-player"><div class="player-frame" id="playerFrame"><div class="empty-player">Đang mở bài học...</div></div><div class="panel-pad"><span class="eyebrow">Đang học</span><h2 id="currentTitle" style="margin:10px 0 6px">Chọn bài học</h2><p id="currentDesc" style="margin:0;color:var(--muted)">Chọn một bài ở danh sách bên phải để học ngay trên website.</p><ul id="currentLearn" class="learn-points"></ul><div class="course-meta"><div class="metric"><span>Tổng bài học</span><strong id="metricVideos">0</strong></div><div class="metric"><span>Nguồn video</span><strong>Video bài học</strong></div><div class="metric"><span>Thời lượng</span><strong id="metricDuration">Theo video</strong></div><div class="metric"><span>Trạng thái</span><strong id="metricStatus">Đang cập nhật</strong></div></div></div></article>
+        <section class="panel benefits">
+          <h2>Học xong bạn vận hành được một công ty 1 người</h2>
+          <div class="bgrid">
+            <article><b>Giữ được dòng tiền</b><p>Dựng hệ thống giữ tiền, nhìn rõ tiền vào - tiền ra thay vì để mọi thứ mơ hồ.</p></article>
+            <article><b>Vận hành một mình</b><p>Gom cả ngày làm việc về một màn hình, không rơi đầu việc, không cần thuê thêm người.</p></article>
+            <article><b>Kéo khách tự động</b><p>Biến một ý tưởng thành nhiều nội dung và chạy traffic đều mỗi ngày bằng automation.</p></article>
+            <article><b>Dùng AI như cộng sự</b><p>Khai thác Fable 5 và AI Agent để làm thay phần việc lặp lại, không dùng như chatbot thường.</p></article>
+            <article><b>Tự build công cụ bán</b><p>Tự làm app và extension để bán, không cần biết gõ code thủ công.</p></article>
+            <article><b>Lên sóng chuyên nghiệp</b><p>Livestream và quay trình bày chỉn chu chỉ với một cú click.</p></article>
+          </div>
+        </section>
       </section>
+      <aside class="curri panel" id="curriPanel">
+        <div class="curri-head">
+          <h2>Nội dung khóa học</h2>
+          <p id="curriSub">Chọn một bài để học ngay</p>
+          <div class="lesson-count" id="lessonCount">0 bài học</div>
+        </div>
+        <div class="lesson-list" id="lessonList"></div>
+      </aside>
       <aside class="panel register-card" id="dang-ky-hoc"><span class="eyebrow">Đăng ký học</span><h2 id="registerTitle">Doanh nghiệp một người</h2><p>Để lại thông tin, DUCPT sẽ liên hệ mở quyền học và gửi hướng dẫn vào học.</p><div id="acctBox"></div><div class="price" id="coursePrice">Liên hệ <small>Tư vấn theo nhu cầu học</small></div><form class="signup-form" id="courseSignup"><label>Họ tên<input name="name" required placeholder="Tên học viên"></label><label>SĐT/Zalo<input name="contact" required placeholder="Số điện thoại hoặc Zalo"></label><label>Email<input name="email" type="email" placeholder="email@example.com"></label><label>Nhu cầu học<textarea name="note" placeholder="Bạn muốn học để làm gì?"></textarea></label><button class="primary-btn" type="submit">Gửi đăng ký</button><div id="signupStatus" class="asset-note"></div></form><div class="notice">Sau khi gửi thông tin, DUCPT sẽ liên hệ để tư vấn và mở quyền học phù hợp.</div></aside>
     </div>
   </main>
@@ -177,7 +245,13 @@
       function sourceLabel(lesson){const source=playableSource(lesson);return source?source.label:"Video"}
       function lessonDescription(lesson){const text=String(lesson.description||"").trim();const lower=text.toLowerCase();if(!text||lower.includes("youtube")||lower.includes("@ducdg2")||lower.includes("đồng bộ"))return lesson.objective||"Mô tả bài học đang được cập nhật.";return text}
       function lessonDuration(lesson){const value=String(lesson.duration||"").trim();return value&&!value.toLowerCase().includes("youtube")?value:"Theo video"}
-      function renderPackagedCourse(){els.courseTitle.textContent=state.course.title||"Khóa học Doanh nghiệp một người";els.courseGoal.textContent=state.course.goal||"Nơi học viên xem danh sách bài học, video và tài liệu của khóa học.";els.registerTitle.textContent=state.course.title||"Doanh nghiệp một người";els.coursePrice.innerHTML=`${escapeHtml(state.course.price||"Liên hệ")} <small>Tư vấn theo nhu cầu học</small>`;els.metricVideos.textContent=state.lessons.length;els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:"Chưa có bài học";els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Chưa xuất bản";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";if(!state.lessons.length){showYoutubeSource();return}const modules=Array.isArray(state.course.modules)?state.course.modules:[];const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})).filter(g=>g.items.length):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");const noFree=freeN===0?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}"><div class="ch-head"><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length}</b> video · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}</ul>${noFree}${more}</section>`}).join("");els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
+      function renderPackagedCourse(){/* Giữ nguyên tiêu đề & mô tả tĩnh trong HTML để chuẩn SEO */
+        if(els.registerTitle)els.registerTitle.textContent=state.course.title||"Doanh nghiệp một người";
+        if(els.coursePrice)els.coursePrice.innerHTML=`${escapeHtml(state.course.price||"Liên hệ")} <small>Tư vấn theo nhu cầu học</small>`;
+        els.metricVideos.textContent=state.lessons.length;
+        const hs=document.getElementById("hsLessons");if(hs)hs.textContent=state.lessons.length;
+        const cs=document.getElementById("curriSub");if(cs)cs.textContent=(state.course.modules||[]).length+" chương · chọn một bài để học ngay";
+        els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:"Chưa có bài học";els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Chưa xuất bản";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";if(!state.lessons.length){showYoutubeSource();return}const modules=Array.isArray(state.course.modules)?state.course.modules:[];const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})).filter(g=>g.items.length):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");const noFree=freeN===0?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}"><div class="ch-head"><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length}</b> video · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}</ul>${noFree}${more}</section>`}).join("");els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
       const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email";
       function getRole(){try{const r=localStorage.getItem(ROLE_KEY);return ["free","premium","admin"].includes(r)?r:"guest"}catch(e){return "guest"}}
