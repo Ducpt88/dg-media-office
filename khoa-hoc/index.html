@@ -92,6 +92,21 @@
     .pill{display:inline-flex;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:900;margin-top:3px}
     .pill.f{background:#ecfdf5;color:#047857}.pill.p{background:#f4f0ff;color:#7c3aed}
     .blockreg{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;font-size:10.5px;font-weight:900;letter-spacing:.04em;white-space:nowrap;background:#fffbeb;color:#b45309}
+    /* Bỏ cột đăng ký khỏi bố cục — danh sách bài dùng full chiều ngang */
+    .course-layout{grid-template-columns:1fr}
+    .register-card{display:none}
+    .register-card.open{display:block;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:90;width:min(430px,93vw);max-height:88vh;overflow:auto;margin:0}
+    .regbd{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:89;display:none}
+    .regbd.open{display:block}
+    .regclose{position:absolute;top:12px;right:14px;width:32px;height:32px;border:1px solid var(--line);border-radius:9px;background:#fff;color:var(--muted);font-size:16px;cursor:pointer;line-height:1}
+    .regclose:hover{border-color:var(--blue);color:var(--blue)}
+    .chip-acct{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 15px;border:1px solid var(--line);border-radius:14px;background:#fff;margin-bottom:14px}
+    .chip-acct .av{width:36px;height:36px;border-radius:999px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:900;flex:none}
+    .chip-acct .who b{display:block;font-size:13.5px;line-height:1.2}
+    .chip-acct .who span{display:block;color:var(--muted);font-size:11.5px}
+    .chip-acct .sp{margin-left:auto}
+    .chip-acct .up{display:inline-flex;align-items:center;min-height:38px;padding:0 15px;border-radius:999px;background:linear-gradient(90deg,#7c3aed,#c026d3);color:#fff;font-weight:900;font-size:12.5px;text-decoration:none}
+    .chip-acct .out{border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;min-height:38px;padding:0 14px;font:inherit;font-size:12.5px;font-weight:800;cursor:pointer;margin-left:8px}
     .lock-cta{padding:28px;text-align:center;color:#fff}
     .lock-cta b{display:block;font-size:19px;margin-bottom:6px}
     .lock-cta p{margin:0 auto 16px;max-width:44ch;color:rgba(255,255,255,.85);font-size:14px}
@@ -109,6 +124,7 @@
     <div class="course-layout">
       <section>
         <article class="panel course-player"><div class="player-frame" id="playerFrame"><div class="empty-player">Đang mở bài học...</div></div><div class="panel-pad"><span class="eyebrow">Đang học</span><h2 id="currentTitle" style="margin:10px 0 6px">Chọn bài học</h2><p id="currentDesc" style="margin:0;color:var(--muted)">Chọn một buổi trong danh sách bên dưới để học ngay trên website.</p><ul id="currentLearn" class="learn-points"></ul><div class="course-meta"><div class="metric"><span>Tổng video</span><strong id="metricVideos">0</strong></div><div class="metric"><span>Nguồn video</span><strong>Video bài học</strong></div><div class="metric"><span>Thời lượng</span><strong id="metricDuration">Theo video</strong></div><div class="metric"><span>Trạng thái</span><strong id="metricStatus">Đang cập nhật</strong></div></div></div></article>
+        <div id="acctChip"></div>
         <div class="section-head"><div><h2>Danh sách video khóa học</h2><p>Chọn một video để học ngay. Danh sách này lấy từ gói khóa học đã xuất bản.</p></div></div>
         <div class="lesson-toolbar"><div><b>Lộ trình học</b><span>Học theo đúng thứ tự buổi, xem video rồi thực hành theo mô tả từng bài.</span></div><div class="lesson-count" id="lessonCount">0 bài học</div></div>
         <div class="lesson-list" id="lessonList"></div>
@@ -135,6 +151,10 @@
       const state={course:{},lessons:[]};
       window.__coursePackagerReady=true;
       if(els.playerFrame)els.playerFrame.addEventListener("contextmenu",e=>e.preventDefault());
+      /* Mọi nút trỏ tới #dang-ky-hoc đều mở popup thay vì nhảy neo */
+      document.addEventListener("click",function(e){const a=e.target.closest('a[href="#dang-ky-hoc"],a[href$="#dang-ky-hoc"]');
+        if(a){e.preventDefault();if(getRole()==="guest")regModal(true)}});
+      document.addEventListener("keydown",function(e){if(e.key==="Escape")regModal(false)});
       loadPackagedCourse();
       async function loadPackagedCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/api/passport/course-videos",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.status==="published"&&(playableSource(item)||item.access==="premium")).sort((a,b)=>(Number(a.sort)||999)-(Number(b.sort)||999));renderPackagedCourse();const first=state.lessons.find(l=>l.access!=="premium")||state.lessons[0];if(first)selectPackagedLesson(first.id);paintAdminBar();renderAccountBox();
         const sf=document.getElementById("courseSignup");
@@ -162,15 +182,25 @@
         bar.innerHTML='<span class="lbl">Xem với vai trò</span>'+opts.map(o=>`<button data-r="${o[0]}" class="${r===o[0]?"on":""}">${o[1]}</button>`).join("")+'<button data-off title="Ẩn thanh này">✕</button>';
         bar.querySelectorAll("[data-r]").forEach(b=>b.addEventListener("click",()=>setRole(b.dataset.r)));
         bar.querySelector("[data-off]").addEventListener("click",()=>{try{localStorage.removeItem("ducpt-adminui")}catch(e){}bar.remove()});}
-      function renderAccountBox(){const box=document.getElementById("acctBox"),form=document.getElementById("courseSignup");if(!box)return;
+      function regModal(open){const card=document.getElementById("dang-ky-hoc");let bd=document.getElementById("regBd");
+        if(!bd){bd=document.createElement("div");bd.className="regbd";bd.id="regBd";document.body.appendChild(bd);bd.addEventListener("click",()=>regModal(false))}
+        if(!card)return;
+        if(open&&!card.querySelector(".regclose")){const x=document.createElement("button");x.className="regclose";x.type="button";x.textContent="✕";x.setAttribute("aria-label","Đóng");x.addEventListener("click",()=>regModal(false));card.appendChild(x)}
+        card.classList.toggle("open",!!open);bd.classList.toggle("open",!!open)}
+      function renderAccountBox(){const chip=document.getElementById("acctChip");if(!chip)return;
         const r=getRole();
-        if(r==="guest"){box.innerHTML="";if(form)form.style.display="";return}
-        if(form)form.style.display="none";
+        if(r==="guest"){chip.innerHTML="";return}
+        regModal(false);
         const mail=getEmail()||"hocvien@ducpt.com";
         const isP=(r==="premium"||r==="admin");
-        box.innerHTML=`<div class="acct"><span class="av">${escapeHtml((mail[0]||"H").toUpperCase())}</span><div><b>${r==="admin"?"Quản trị viên":"Học viên"}</b><span>${escapeHtml(mail)}</span><span class="pill ${isP?"p":"f"}">${r==="admin"?"🛠 ADMIN":(isP?"💎 PREMIUM":"TÀI KHOẢN FREE")}</span></div></div>`+
-          (isP?`<p style="margin:0;color:var(--muted);font-size:13px">Bạn đang mở toàn bộ 69 bài học.</p>`
-              :`<p style="margin:0 0 10px;color:var(--muted);font-size:13px">Nâng cấp để mở 11 bài chuyên sâu, gồm chuỗi Vibe Coding 7.3 giờ.</p><a class="primary-btn" style="width:100%" href="https://zalo.me/0963249467">💎 Nâng cấp Premium</a>`);}
+        chip.innerHTML=`<div class="chip-acct"><span class="av">${escapeHtml((mail[0]||"H").toUpperCase())}</span>`+
+          `<span class="who"><b>${r==="admin"?"Quản trị viên":"Học viên"}</b><span>${escapeHtml(mail)}</span></span>`+
+          `<span class="pill ${isP?"p":"f"}">${r==="admin"?"🛠 ADMIN":(isP?"💎 PREMIUM":"TÀI KHOẢN FREE")}</span>`+
+          `<span class="sp"></span>`+
+          (isP?`<span style="color:var(--muted);font-size:12.5px">Đang mở toàn bộ 69 bài</span>`
+              :`<a class="up" href="https://zalo.me/0963249467">💎 Nâng cấp Premium</a>`)+
+          `<button class="out" type="button" id="btnOut">Đăng xuất</button></div>`;
+        const o=document.getElementById("btnOut");if(o)o.addEventListener("click",()=>{try{localStorage.removeItem(MAIL_KEY)}catch(e){}setRole("guest")})}
       function viewerTag(){const m=getEmail();if(m)return m;try{const k="ducpt-viewer";let v=localStorage.getItem(k);if(!v){v=Math.random().toString(36).slice(2,8).toUpperCase();localStorage.setItem(k,v)}return v}catch(e){return "KHACH"}}
       function protectPlayer(){const f=els.playerFrame;if(!f)return;
         f.insertAdjacentHTML("beforeend",'<div class="pf-mask" title="DUCPT"></div><div class="pf-mask br"></div><div class="pf-wm" id="pfWm">'+escapeHtml("DUCPT · "+viewerTag())+'</div>');
