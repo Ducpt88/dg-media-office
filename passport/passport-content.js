@@ -1108,7 +1108,18 @@
     style.textContent = ".ytc-grid{display:grid;grid-template-columns:340px minmax(0,1fr);gap:14px}.ytc-panel{padding:18px;border:1px solid var(--line);border-radius:14px;background:var(--paper);box-shadow:0 8px 28px rgba(16,24,40,.04)}.ytc-form{display:grid;gap:10px}.ytc-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ytc-form input,.ytc-form textarea,.ytc-form select{padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ytc-form textarea{min-height:90px;resize:vertical}.ytc-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.ytc-import{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:12px 0}.ytc-view-switch{display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}.ytc-view-switch button{border:0;border-radius:9px;background:transparent;padding:8px 10px;color:var(--muted);font-weight:900;cursor:pointer}.ytc-view-switch button.is-active{background:#fff;color:#1d4ed8;box-shadow:0 1px 6px rgba(16,24,40,.08)}.ytc-lessons{display:grid;gap:10px}.ytc-lesson{display:grid;grid-template-columns:70px minmax(0,1fr) 120px;gap:12px;align-items:start;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-lesson.is-editing{border-color:#2563eb;box-shadow:0 0 0 2px rgba(37,99,235,.08)}.ytc-lesson img{width:70px;aspect-ratio:16/9;border-radius:8px;object-fit:cover;background:#e2e8f0}.ytc-lesson b{display:block;margin-bottom:4px}.ytc-lesson span,.ytc-note{display:block;color:var(--muted);font-size:11px;line-height:1.5}.ytc-status{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eff6ff;color:#1d4ed8;font-size:11px;font-weight:900}.ytc-preview-list{display:grid;gap:12px}.ytc-preview-card{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:14px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:14px;background:#fff}.ytc-preview-card img{width:150px;aspect-ratio:16/9;border-radius:10px;object-fit:cover;background:#e2e8f0}.ytc-preview-card p{margin:5px 0;color:var(--muted);font-size:12px;line-height:1.5}.ytc-asset-list{display:grid;gap:10px}.ytc-asset{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-asset b{display:block;overflow-wrap:anywhere}.ytc-asset small{display:block;color:var(--muted);margin-top:4px}.ytc-guide{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}.ytc-guide div{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fff}.ytc-guide b{display:block;margin-bottom:4px}@media(max-width:900px){.ytc-grid{grid-template-columns:1fr}.ytc-import,.ytc-lesson,.ytc-preview-card,.ytc-asset{grid-template-columns:1fr}.ytc-lesson img,.ytc-preview-card img{width:100%}.ytc-guide{grid-template-columns:1fr}}.ytc-steps{display:flex;gap:10px;align-items:stretch;flex-wrap:wrap;margin:14px 0 0;padding:14px 16px;border:1px solid #dbe7ff;border-radius:14px;background:linear-gradient(90deg,#f4f8ff,#faf7ff)}.ytc-step{display:flex;gap:10px;align-items:center;flex:1;min-width:180px}.ytc-step i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-style:normal;font-weight:900;flex:none;box-shadow:0 6px 14px rgba(37,99,235,.3)}.ytc-step b{display:block;font-size:12.5px}.ytc-step span{display:block;color:var(--muted);font-size:11px}.ytc-steps>em{align-self:center;color:#93a6c9;font-style:normal;font-weight:900}.ytc-collapse{margin-top:14px;border:1px solid var(--line);border-radius:14px;background:var(--paper);overflow:hidden}.ytc-collapse>summary{display:flex;align-items:center;gap:8px;padding:14px 18px;cursor:pointer;font-weight:800;color:var(--ink);list-style:none}.ytc-collapse>summary::-webkit-details-marker{display:none}.ytc-collapse>summary:after{content:'▾';margin-left:auto;color:var(--muted);transition:.2s}.ytc-collapse[open]>summary:after{transform:rotate(180deg)}.ytc-collapse>.ytc-panel{border:0;border-top:1px solid var(--line);border-radius:0;box-shadow:none}.ytc-ic{width:15px;height:15px;vertical-align:-2.5px;margin-right:5px}.ytc-status.st-published{background:#ecfdf5;color:#047857}.ytc-status.st-hidden{background:#fff7ed;color:#c2410c}.ytc-status.st-draft{background:#f1f5f9;color:#475569}"
       + /* Bố cục giống hệt trang ngoài /khoa-hoc/#hoc-ngay: player ở giữa, cây chương bên phải */
       ".ca-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:14px;align-items:start;margin-top:14px}"
-      + ".ca-player{padding:0;overflow:hidden}.ca-frame{aspect-ratio:16/9;background:#0b1220;display:grid;place-items:center;color:#93a6c9;font-size:13px;text-align:center;padding:16px}.ca-frame iframe,.ca-frame video{width:100%;height:100%;border:0;display:block;background:#0b1220}"
+      + ".ca-player{padding:0;overflow:hidden}.ca-frame{position:relative;aspect-ratio:16/9;background:#0b1220;display:grid;place-items:center;color:#93a6c9;font-size:13px;text-align:center;padding:0}.ca-frame.is-empty{padding:16px}.ca-frame iframe,.ca-frame video{width:100%;height:100%;border:0;display:block;background:#0b1220}"
+      /* Bài dạng Shorts quay dọc: khung 9:16 để video lấp đầy, không còn hai dải đen hai bên */
+      + ".ca-frame.is-portrait{aspect-ratio:9/16;max-width:352px;margin:0 auto}"
+      /* Trình phát DG: khung YouTube bị che hoàn toàn bằng lớp chắn chuột + thanh điều khiển riêng */
+      + ".ytwrap{position:relative;width:100%;height:100%;background:#000;overflow:hidden}.ytwrap>div:first-child,.ytwrap iframe{width:100%;height:100%;border:0;display:block}"
+      + ".ythit{position:absolute;inset:0;z-index:2;cursor:pointer;background:transparent}"
+      + ".ytbar{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;align-items:center;gap:9px;padding:9px 11px;background:linear-gradient(180deg,transparent,rgba(4,10,20,.86))}"
+      + ".ytbar button{border:0;border-radius:8px;background:rgba(255,255,255,.14);color:#fff;width:30px;height:30px;font-size:12px;cursor:pointer;flex:none}.ytbar button:hover{background:rgba(255,255,255,.26)}"
+      + ".ytseek{flex:1;height:5px;border-radius:999px;background:rgba(255,255,255,.26);cursor:pointer;overflow:hidden}.ytseek i{display:block;height:100%;width:0;background:#38bdf8}"
+      + ".yttime{color:#e2e8f0;font-size:11px;font-variant-numeric:tabular-nums;flex:none}"
+      + ".ytload{position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:#93a6c9;font-size:12px;background:#0b1220}"
+      + ".ca-src-note{margin:8px 0 0;color:var(--muted);font-size:11px}"
       + ".ca-body{padding:16px 18px}.ca-eyebrow{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10.5px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}"
       + ".ca-title{margin:10px 0 4px;font-size:19px;line-height:1.3}.ca-sub{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}"
       + ".ca-form{margin-top:14px;display:grid;gap:10px}.ca-form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.ca-form label{display:grid;gap:5px;color:var(--muted);font-size:11px;font-weight:900}.ca-form input,.ca-form select,.ca-form textarea{padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff;font:inherit;width:100%;min-width:0}.ca-form textarea{min-height:80px;resize:vertical}"
@@ -1180,6 +1191,7 @@
       <details class="ytc-collapse"${githubConfig().token ? "" : " open"}><summary>${ICO.cloud}Cài đặt lưu trữ (GitHub) — điền 1 lần là nút Lưu chạy thẳng trên website</summary><article class="ytc-panel ytc-form"><div class="pc-hint">Chỉ cần điền token trên trình duyệt của anh. Token nằm trong localStorage máy anh, không đưa vào repo. Cần quyền Contents: Read and write cho repo Ducpt88/dg-media-office.</div><label>GitHub token<input data-github-field="token" type="password" value="${esc(githubConfig().token)}" placeholder="github_pat_..."></label><div class="ytc-grid"><label>Owner<input data-github-field="owner" value="${esc(githubConfig().owner)}"></label><label>Repo<input data-github-field="repo" value="${esc(githubConfig().repo)}"></label></div><div class="ytc-grid"><label>Branch<input data-github-field="branch" value="${esc(githubConfig().branch)}"></label><label>File path<input data-github-field="path" value="${esc(githubConfig().path)}"></label></div><div class="ytc-actions"><button class="btn" data-save-github-config type="button">Lưu kết nối GitHub</button><button class="btn" data-test-github type="button">Kiểm tra kết nối</button></div></article></details>
       <details class="ytc-collapse"><summary>${ICO.help}Hướng dẫn nhanh: cần gì khi thêm một video?</summary><article class="ytc-panel"><div class="ytc-guide"><div><b>1. Link YouTube</b><span class="ytc-note">Nên để không công khai. Video riêng tư sẽ không xem được khi nhúng trên website.</span></div><div><b>2. Tiêu đề</b><span class="ytc-note">Có thể đồng bộ từ YouTube, nhưng vẫn nên sửa lại cho đúng bài học.</span></div><div><b>3. Mô tả / outline</b><span class="ytc-note">Nhập mục tiêu, nội dung chính, bài tập và link tài liệu kèm theo.</span></div><div><b>4. Trạng thái</b><span class="ytc-note">Draft để soạn, published để học viên học, hidden để tạm ẩn.</span></div></div></article></details>`;
     bind(view);
+    if (viewMode !== "student") mountDgPlayer(view, lesson);
   }
 
   function emptyLesson() {
@@ -1233,13 +1245,13 @@
     return `<div class="ca-layout">
       <section>
         <article class="ytc-panel ca-player">
-          <div class="ca-frame" data-player>${playerHtml(lesson)}</div>
+          <div class="ca-frame${isPortraitLesson(lesson) ? " is-portrait" : ""}${lesson.youtubeId || playableUrl(lesson) ? "" : " is-empty"}" data-player>${playerHtml(lesson)}</div>
           <div class="ca-body">
             <div data-player-alert></div>
             <span class="ca-eyebrow">${lesson.id ? "Đang sửa bài" : "Bài học mới"}</span>
             <h3 class="ca-title">${esc(lesson.title || "Chọn một bài ở cột phải để xem và sửa")}</h3>
             <p class="ca-sub">${esc(lesson.objective || lesson.description || "Bấm vào một bài trong cây chương bên phải — video hiện ngay tại đây, sửa xong bấm Lưu bài học.")}</p>
-            ${lesson.youtubeId ? `<p style="margin:8px 0 0"><a class="btn" href="https://www.youtube.com/watch?v=${esc(lesson.youtubeId)}" target="_blank" rel="noreferrer">${ICO.eye}Mở trên YouTube (nếu khung trên không phát được)</a></p>` : ""}
+            ${lesson.youtubeId ? `<details class="ca-src-note"><summary>Nguồn video (chỉ quản trị thấy)</summary><a href="https://www.youtube.com/watch?v=${esc(lesson.youtubeId)}" target="_blank" rel="noreferrer">Mở bản gốc để kiểm tra khi khung trên không phát được</a></details>` : ""}
             <div class="ytc-import" style="margin-top:14px"><input class="searchbox" data-youtube-url placeholder="Dán link YouTube để tạo/đồng bộ bài mới"><button class="btn primary" data-import-youtube type="button">${ICO.sync}Đồng bộ</button></div>
             <div class="ytc-import"><input class="searchbox" data-upload-video type="file" accept="video/*"><button class="btn" data-upload-video-button type="button">Tải video lên</button></div>
             <form class="ca-form" data-lesson-form>
@@ -1299,11 +1311,95 @@
     });
   }
 
+  /* Bài quay dọc (Shorts) phải hiện khung 9:16, không nhét vào 16:9 rồi để hai dải đen. */
+  function isPortraitLesson(lesson) {
+    const raw = `${lesson.rawTitle || ""} ${lesson.youtubeUrl || ""} ${lesson.title || ""}`.toLowerCase();
+    if (/\/shorts\//.test(raw) || raw.includes("#shorts")) return true;
+    return String(lesson.orientation || "").toLowerCase() === "portrait";
+  }
+
   function playerHtml(lesson) {
-    if (lesson.youtubeId) return `<iframe src="https://www.youtube-nocookie.com/embed/${esc(lesson.youtubeId)}?rel=0&modestbranding=1" title="${esc(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    if (lesson.youtubeId) return `<div class="ytwrap" data-yt-wrap><div data-yt-host></div><div class="ythit" data-yt-hit></div><div class="ytbar"><button type="button" data-yt-play aria-label="Phát/Dừng">▶</button><div class="ytseek" data-yt-seek><i data-yt-fill></i></div><span class="yttime" data-yt-time>0:00 / 0:00</span><button type="button" data-yt-fs aria-label="Toàn màn hình">⛶</button></div><div class="ytload" data-yt-load>Đang tải bài học…</div></div>`;
     const direct = playableUrl(lesson);
     if (direct) return `<video controls playsinline preload="metadata" poster="${esc(thumbFor(lesson))}" src="${esc(direct)}"></video>`;
     return "Chưa gắn video cho bài này — dán link YouTube ở ô bên dưới";
+  }
+
+  /* Nạp YouTube IFrame API một lần rồi dựng trình phát riêng: iframe bị lớp .ythit chắn chuột
+     nên YouTube không bao giờ hiện logo, tiêu đề hay nút "Xem trên YouTube". */
+  function loadYtApi() {
+    if (window.__dgYtApiReady) return window.__dgYtApiReady;
+    window.__dgYtApiReady = new Promise((resolve) => {
+      if (window.YT && window.YT.Player) return resolve();
+      if (!document.getElementById("dg-ytapi")) {
+        const s = document.createElement("script");
+        s.id = "dg-ytapi";
+        s.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(s);
+      }
+      const prev = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = function () { try { prev && prev(); } catch (e) {} resolve(); };
+      const timer = setInterval(() => { if (window.YT && window.YT.Player) { clearInterval(timer); resolve(); } }, 150);
+      setTimeout(() => { clearInterval(timer); resolve(); }, 8000);
+    });
+    return window.__dgYtApiReady;
+  }
+
+  function fmtClock(total) {
+    const s = Math.max(0, Math.floor(total || 0));
+    const h = Math.floor(s / 3600);
+    const m = Math.floor((s % 3600) / 60);
+    const x = s % 60;
+    return (h ? `${h}:${String(m).padStart(2, "0")}` : String(m)) + ":" + String(x).padStart(2, "0");
+  }
+
+  async function mountDgPlayer(root, lesson) {
+    const wrap = root.querySelector("[data-yt-wrap]");
+    if (!wrap || !lesson.youtubeId) return;
+    const load = wrap.querySelector("[data-yt-load]");
+    await loadYtApi();
+    if (!window.YT || !window.YT.Player) {
+      if (load) load.textContent = "Không tải được trình phát — kiểm tra kết nối mạng.";
+      return;
+    }
+    try { if (window.__dgYtPlayer && window.__dgYtPlayer.destroy) window.__dgYtPlayer.destroy(); } catch (e) {}
+    clearInterval(window.__dgYtTick);
+    window.__dgYtPlayer = new YT.Player(wrap.querySelector("[data-yt-host]"), {
+      videoId: lesson.youtubeId,
+      playerVars: { controls: 0, rel: 0, modestbranding: 1, iv_load_policy: 3, disablekb: 1, fs: 0, playsinline: 1, autoplay: 0, origin: location.origin },
+      events: { onReady: () => { if (load) load.remove(); wirePlayer(wrap); } }
+    });
+  }
+
+  function wirePlayer(wrap) {
+    const player = window.__dgYtPlayer;
+    const btn = wrap.querySelector("[data-yt-play]");
+    const hit = wrap.querySelector("[data-yt-hit]");
+    const seek = wrap.querySelector("[data-yt-seek]");
+    const fill = wrap.querySelector("[data-yt-fill]");
+    const time = wrap.querySelector("[data-yt-time]");
+    const fs = wrap.querySelector("[data-yt-fs]");
+    const toggle = () => { if (player.getPlayerState() === 1) player.pauseVideo(); else player.playVideo(); };
+    hit && hit.addEventListener("click", toggle);
+    btn && btn.addEventListener("click", toggle);
+    seek && seek.addEventListener("click", (e) => {
+      const box = seek.getBoundingClientRect();
+      player.seekTo((player.getDuration() || 0) * ((e.clientX - box.left) / box.width), true);
+    });
+    fs && fs.addEventListener("click", () => {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else if (wrap.requestFullscreen) wrap.requestFullscreen();
+    });
+    clearInterval(window.__dgYtTick);
+    window.__dgYtTick = setInterval(() => {
+      if (!document.body.contains(wrap)) return clearInterval(window.__dgYtTick);
+      if (!player || !player.getDuration) return;
+      const d = player.getDuration() || 0;
+      const c = player.getCurrentTime() || 0;
+      if (fill) fill.style.width = (d ? (c / d) * 100 : 0) + "%";
+      if (time) time.textContent = `${fmtClock(c)} / ${fmtClock(d)}`;
+      if (btn) btn.textContent = player.getPlayerState() === 1 ? "❚❚" : "▶";
+    }, 500);
   }
 
   function moduleOptionsHtml(current) {
