@@ -44,6 +44,13 @@
   }
 
   function isPreviewingAsStudent() { return read(PREVIEW_KEY) === "1"; }
+  function clearSession() { drop(SESSION_KEY); drop(PREVIEW_KEY); drop(ROLE_KEY); }
+
+  window.DUCPTAdminSession = window.DUCPTAdminSession || {
+    get: readSession,
+    isPreview: isPreviewingAsStudent,
+    logout: function () { clearSession(); location.reload(); }
+  };
 
   /* Trang ngoài đọc vai qua ducpt-role. Có phiên quản trị thì đặt admin,
      bật "Xem như học viên" thì hạ xuống guest để nhìn đúng thứ khách thật nhìn. */
@@ -91,6 +98,25 @@
       '.dgs-menu a:hover,.dgs-menu button:hover{background:#f1f5f9}',
       '.dgs-menu .danger{color:#b42318}',
       'body.dgs-on{padding-top:44px!important}',
+      /* Chip tài khoản thay cho nút Đăng nhập trong header */
+      '.dgs-chip{display:inline-flex;align-items:center;gap:9px;padding:6px 14px 6px 6px;border:1px solid #e6eaf0;border-radius:999px;',
+      'background:#fff;color:#17213a;cursor:pointer;font:inherit;box-shadow:0 4px 14px rgba(16,24,40,.07)}',
+      '.dgs-chip:hover{border-color:#c7d2fe;box-shadow:0 6px 18px rgba(37,99,235,.14)}',
+      '.dgs-chip-av{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;flex:none;',
+      'background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-weight:900;font-size:13px}',
+      '.dgs-chip-txt{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15}',
+      '.dgs-chip-txt b{font-size:13px;font-weight:800;white-space:nowrap}',
+      '.dgs-chip-txt i{font-style:normal;font-size:10.5px;color:#718096;white-space:nowrap}',
+      '@media(max-width:820px){.dgs-chip{padding:5px}.dgs-chip-txt{display:none}}',
+      '.dgs-linked-panel{max-width:860px;margin:40px auto;padding:28px;border:1px solid #e6eaf0;border-radius:24px;',
+      'background:#fff;color:#17213a;box-shadow:0 22px 70px rgba(15,23,42,.16)}',
+      '.dgs-linked-panel small{display:inline-flex;margin-bottom:8px;color:#2563eb;font-weight:900;text-transform:uppercase;letter-spacing:.08em}',
+      '.dgs-linked-panel h1{margin:0 0 8px;font-size:clamp(30px,4vw,46px);line-height:1.05;color:#17213a}',
+      '.dgs-linked-panel p{margin:0 0 14px;color:#64748b}',
+      '.dgs-linked-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}',
+      '.dgs-linked-actions a,.dgs-linked-actions button{border:0;border-radius:999px;padding:11px 16px;font:700 14px/1.2 inherit;',
+      'text-decoration:none;cursor:pointer;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff}',
+      '.dgs-linked-actions .secondary{background:#eef2ff;color:#1e3a8a}',
       '@media(max-width:700px){.dgs-bar .dgs-where,.dgs-bar .dgs-full{display:none}.dgs-bar{padding:6px 10px;gap:7px}}'
     ].join("");
     var el = document.createElement("style");
@@ -128,6 +154,7 @@
     document.body.appendChild(bar);
     document.body.appendChild(menu);
     document.body.classList.add("dgs-on");
+    render.menu = menu;
 
     bar.querySelector("[data-dgs-avatar]").addEventListener("click", function (e) {
       e.stopPropagation();
@@ -148,13 +175,93 @@
       drop(SESSION_KEY); drop(PREVIEW_KEY); drop(ROLE_KEY);
       location.reload();
     });
+    return menu;
+  }
+
+  /* Đăng nhập rồi mà nav vẫn mời "Đăng nhập / Đăng ký học" là mâu thuẫn ngay trước mắt.
+     Thay hai nút đó trong header bằng chip tài khoản, bấm mở đúng menu của avatar.
+     CTA bán hàng nằm trong NỘI DUNG trang thì giữ nguyên — admin cần thấy trang y như khách. */
+  var LOGIN_TEXT = /^(đăng nhập|đăng ký học|đăng ký miễn phí|đăng ký ngay)$/i;
+
+  function swapNavLogin(session, menu) {
+    var nodes = document.querySelectorAll("header a, header button, nav a, nav button, .top a, .top button");
+    var hidden = [];
+    var host = null;
+    Array.prototype.forEach.call(nodes, function (el) {
+      var txt = (el.textContent || "").replace(/\s+/g, " ").trim();
+      if (!LOGIN_TEXT.test(txt) && !el.hasAttribute("data-open-customer-login")) return;
+      if (el.closest(".dgs-bar")) return;
+      if (!host) host = el.parentNode;
+      el.style.display = "none";
+      hidden.push(el);
+    });
+    if (!host) return 0;
+
+    var chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "dgs-chip";
+    chip.innerHTML = '<span class="dgs-chip-av">' + (session.initial || "Đ") + '</span>' +
+      '<span class="dgs-chip-txt"><b>' + (session.name || "Quản trị viên") + '</b><i>Quản trị · đã đăng nhập</i></span>';
+    chip.addEventListener("click", function (e) {
+      e.preventDefault(); e.stopPropagation();
+      menu.classList.toggle("open");
+    });
+    host.appendChild(chip);
+    return hidden.length;
+  }
+
+  function replaceAuthPrompt(session) {
+    if (!session || isPreviewingAsStudent()) return;
+    var path = location.pathname;
+    if (!/^\/dang-nhap\/?$|^\/dang-ky\/?$/i.test(path)) return;
+    var target = document.getElementById("loginView") || document.querySelector("main.register");
+    if (!target) return;
+    var email = session.email || "Owner · DUCPT";
+    var isLoginPage = /^\/dang-nhap/i.test(path);
+    var title = isLoginPage ? "Anh đang đăng nhập bằng tài khoản quản trị" : "Tài khoản Admin đã được liên kết";
+    var desc = isLoginPage
+      ? "Không cần đăng nhập hoặc đăng ký lại. Phiên Admin từ Passport đang dùng chung trên website này."
+      : "Trang đăng ký chỉ dành cho khách mới. Với tài khoản Admin, anh có thể về Passport hoặc mở website ở chế độ quản trị.";
+    target.classList.remove("hidden");
+    target.innerHTML =
+      '<article class="dgs-linked-panel">' +
+        '<small>DUCPT Admin linked</small>' +
+        '<h1>' + title + '</h1>' +
+        '<p><b>Tài khoản:</b> ' + email + '</p>' +
+        '<p>' + desc + '</p>' +
+        '<div class="dgs-linked-actions">' +
+          '<a href="/passport/">Về Passport</a>' +
+          '<a class="secondary" href="/">Mở website</a>' +
+          '<button class="secondary" type="button" data-dgs-logout-inline>Đăng xuất Admin</button>' +
+        '</div>' +
+      '</article>';
+    var portal = document.getElementById("portalView");
+    if (portal) portal.classList.remove("open");
+    var logout = target.querySelector("[data-dgs-logout-inline]");
+    if (logout) logout.addEventListener("click", function () { clearSession(); location.reload(); });
+  }
+
+  /* Nhiều trang có header dán dính (sticky/fixed) ở top:0 — nó sẽ nằm ĐÈ dưới thanh quản trị,
+     làm chip tài khoản bị che mất. Đẩy mọi header dán dính xuống đúng chiều cao thanh. */
+  function offsetStickyHeaders(barH) {
+    Array.prototype.forEach.call(document.querySelectorAll("header,nav,.top,.topbar"), function (el) {
+      if (el.closest(".dgs-bar")) return;
+      var s = getComputedStyle(el);
+      if (s.position !== "sticky" && s.position !== "fixed") return;
+      if (parseInt(s.top, 10) !== 0) return;
+      el.style.top = barH + "px";
+    });
   }
 
   function boot() {
     var session = readSession();
     if (!session) return;          // khách thường: không chèn gì, trang giữ nguyên như cũ
     syncRole(session);
-    render(session);
+    var menu = render(session);
+    swapNavLogin(session, menu);
+    replaceAuthPrompt(session);
+    offsetStickyHeaders(44);
+    try { window.dispatchEvent(new CustomEvent("ducpt:admin-session-ready", { detail: { session: session, preview: isPreviewingAsStudent() } })); } catch (e) {}
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
