@@ -420,7 +420,7 @@
       seed: [
         { id: "p1", name: "Verba Studio", priceLabel: "199K", status: "active" },
         { id: "p2", name: "Brain Bot", priceLabel: "299K", status: "active" },
-        { id: "p3", name: "Pinterest AutoPost", priceLabel: "249K", status: "active" },
+        { id: "p3", name: "Pinterest AutoPost", priceLabel: "499K / 3 tháng", status: "active" },
         { id: "p4", name: "Giải pháp tùy chỉnh", priceLabel: "Liên hệ", status: "active" },
       ],
     });
@@ -453,7 +453,7 @@
       seed: [
         { id: "t1", name: "Verba Studio", status: "live", note: "Landing + checkout" },
         { id: "t2", name: "Knowledge Brain Bot", status: "live", note: "Trang sản phẩm" },
-        { id: "t3", name: "Pinterest AutoPost", status: "draft", note: "Chờ mô tả chi tiết" },
+        { id: "t3", name: "Pinterest AutoPost", status: "draft", note: "Gói 3 tháng 499K · 1 năm 1.5M" },
         { id: "t4", name: "API tích hợp", status: "setup", note: "Chờ backend" },
       ],
     });
@@ -1143,7 +1143,19 @@
     }
     try {
       const draft = JSON.parse(localStorage.getItem("ducpt_course_videos_draft_v1") || "null");
-      if (draft && draft.course && (draft.course.updatedAt || "") > (data.course.updatedAt || "")) data = draft;
+      const legacyDraftText = draft ? JSON.stringify({
+        modules: draft.course?.modules || [],
+        firstLessons: (draft.lessons || []).slice(0, 24).map((item) => ({ module: item.module, title: item.title }))
+      }) : "";
+      const isLegacyMoneyFirstDraft =
+        legacyDraftText.includes("Tư duy tiền & tài chính cá nhân") ||
+        legacyDraftText.includes("tài chính cá nhân") ||
+        (draft?.lessons || []).slice(0, 8).some((item) => item.module === "M1" && /tiền|dòng tiền|giàu|nợ/i.test(item.title || ""));
+      if (isLegacyMoneyFirstDraft) {
+        localStorage.removeItem("ducpt_course_videos_draft_v1");
+      } else if (draft && draft.course && (draft.course.updatedAt || "") > (data.course.updatedAt || "")) {
+        data = draft;
+      }
     } catch {}
     await loadLegacyAssets();
     watchPlayerBlocked();
