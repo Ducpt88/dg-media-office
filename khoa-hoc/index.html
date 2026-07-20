@@ -71,6 +71,23 @@
     .player-frame.is-portrait .ytvol-range{display:none}
     .player-frame.is-portrait .ytbar{gap:9px;padding:0 11px}
     .player-frame.is-portrait .yttime{font-size:11px}
+    /* Anh bia khoa hoc khi chua co video */
+    .cover-shot{position:relative;display:block;width:100%;height:100%;padding:0;border:0;background:#0b1220;cursor:zoom-in;overflow:hidden}
+    .cover-shot img{width:100%;height:100%;object-fit:cover;display:block}
+    .cs-tag{position:absolute;top:14px;left:14px;padding:7px 13px;border-radius:999px;background:rgba(8,12,18,.82);
+      color:#fcd34d;font-size:12px;font-weight:900;backdrop-filter:blur(6px)}
+    .cs-zoom{position:absolute;bottom:14px;right:14px;padding:7px 13px;border-radius:999px;background:rgba(8,12,18,.82);
+      color:#e8eef4;font-size:12px;font-weight:800;backdrop-filter:blur(6px)}
+    .cover-shot:hover .cs-zoom{background:#2563eb;color:#fff}
+    .cover-box{position:fixed;inset:0;z-index:99997;display:none;place-items:center;padding:26px;background:rgba(6,10,18,.92);cursor:zoom-out}
+    .cover-box.open{display:grid}
+    .cover-box img{max-width:min(1400px,96vw);max-height:92vh;border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.6);cursor:default}
+    .cb-close{position:absolute;top:18px;right:20px;width:40px;height:40px;border:0;border-radius:50%;cursor:pointer;
+      background:rgba(255,255,255,.14);color:#fff;font-size:17px}
+    .cb-close:hover{background:rgba(255,255,255,.28)}
+    .soon-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:0 0 12px;padding:12px 14px;
+      border:1px solid var(--line);border-radius:14px;background:#fff}
+    .soon-head b{font-size:14px}.soon-head span{color:var(--muted);font-size:12px}
     .ytposter{position:absolute;inset:0;z-index:6;display:grid;place-items:center;gap:0;cursor:pointer;
       background:radial-gradient(circle at 50% 42%,rgba(37,99,235,.28),transparent 62%),linear-gradient(180deg,#0b1220,#060b14)}
     .ytposter .pp-btn{display:grid;place-items:center;width:74px;height:74px;border-radius:50%;
@@ -292,8 +309,48 @@
     loadCourse();
     async function loadCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/api/passport/course-videos",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.status==="published"&&item.youtubeId).sort((a,b)=>(Number(a.sort)||999)-(Number(b.sort)||999));render();if(state.lessons[0])selectLesson(state.lessons[0].id)}
     function render(){if(window.__coursePackagerReady)return;els.courseTitle.textContent=state.course.title||"Khóa học Doanh nghiệp một người";els.courseGoal.textContent=state.course.goal||"Nơi học viên xem danh sách bài học YouTube và đăng ký khóa học.";els.registerTitle.textContent=state.course.title||"Doanh nghiệp một người";els.coursePrice.innerHTML=`${escapeHtml(state.course.price||"Liên hệ")} <small>Tư vấn theo nhu cầu học</small>`;els.metricVideos.textContent=state.lessons.length;els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:"Nguồn YouTube";els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Mở nguồn";if(!state.lessons.length){showYoutubeSource();return}els.lessonList.innerHTML=state.lessons.map((lesson,index)=>{const no=lesson.lessonNo||index+1;const thumb=lesson.thumbnail||`https://i.ytimg.com/vi/${lesson.youtubeId}/hqdefault.jpg`;const desc=lesson.description||"Mô tả bài học đang được cập nhật.";return `<article class="lesson-item" data-id="${escapeHtml(lesson.id)}"><div class="lesson-media"><img class="thumb" src="${escapeHtml(thumb)}" alt=""><span class="lesson-badge">Buổi ${escapeHtml(no)}</span><span class="play-dot">&#9658;</span></div><div class="lesson-copy"><h3>${escapeHtml(lesson.title)}</h3><p>${escapeHtml(desc)}</p><div class="lesson-meta"><span>${escapeHtml(lesson.duration||"Thời lượng trên YouTube")}</span><span>YouTube</span><span>Buổi ${escapeHtml(no)}</span></div></div><div class="lesson-actions"><span class="status-chip">Học ngay</span></div></article>`}).join("");els.lessonList.querySelectorAll(".lesson-item").forEach(row=>row.addEventListener("click",()=>selectLesson(row.dataset.id)))}
-    function showYoutubeSource(){els.currentTitle.textContent="Chưa có bài học";els.currentDesc.textContent="Khóa học chưa có video được xuất bản. Khi bài học được bật trạng thái xuất bản, danh sách sẽ hiện ở đây.";els.metricDuration.textContent="Theo video";els.playerFrame.innerHTML=`<div class="empty-player">Chưa có bài học được xuất bản</div>`;els.lessonList.innerHTML=`<article class="empty-course"><h3>Chưa có bài học</h3><p>Vào Passport để thêm video vào gói khóa học và bật trạng thái xuất bản cho học viên.</p></article>`}
-    function selectLesson(id){if(window.__coursePackagerReady)return;const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lesson.description||"Bài học đang được cập nhật mô tả.";els.metricDuration.textContent=lesson.duration||"Từ YouTube";els.playerFrame.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(lesson.youtubeId)}?enablejsapi=1&rel=0&modestbranding=1" title="${escapeHtml(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`}
+    function showYoutubeSource(){
+        /* Khoa rieng tu, chua co video: khach nhin thay ANH BIA that + khung chuong trinh hoc,
+           bam vao anh de xem to. Khong hien chu "khong co du lieu" cut lun. */
+        const c=state.course||{};
+        const cover=c.cover||"/assets/course/doanh-nghiep-1-nguoi-cover.jpg";
+        const note=c.emptyNote||"Nội dung khóa học đang được cập nhật.";
+        els.currentTitle.textContent=c.title||"Doanh nghiệp một người";
+        els.currentDesc.textContent=note;
+        els.metricDuration.textContent="Đang cập nhật";
+        els.playerFrame.classList.remove("is-portrait");
+        const pnl=els.playerFrame.closest(".course-player");if(pnl)pnl.classList.remove("pf-side");
+        els.playerFrame.innerHTML=`<button class="cover-shot" type="button" data-cover>
+            <img src="${escapeHtml(cover)}" alt="${escapeHtml(c.title||"Khóa học")}" loading="eager" decoding="async" onerror="this.src='/assets/course/doanh-nghiep-1-nguoi.png'">
+            <span class="cs-tag">🔒 Khóa riêng tư · sắp mở</span>
+            <span class="cs-zoom">Bấm để xem ảnh lớn</span>
+          </button>`;
+        const btn=els.playerFrame.querySelector("[data-cover]");
+        if(btn)btn.addEventListener("click",()=>openCoverLightbox(cover,c.title||"Khóa học"));
+        const mods=Array.isArray(c.modules)?c.modules:[];
+        els.lessonList.innerHTML=mods.length
+          ? `<div class="soon-head"><b>Chương trình học</b><span>${mods.length} chương · video đang được đưa lên dần</span></div>`
+            + mods.map((m,i)=>`<section class="ch"><div class="ch-head"><h3 class="ct">${i+1}. ${escapeHtml(m.title)}</h3>
+                <div class="cm">${escapeHtml(m.desc||"Nội dung đang cập nhật")}</div></div>
+                <div class="ch-none">Video của chương này sắp lên</div></section>`).join("")
+          : `<article class="empty-course"><h3>Chương trình đang được xây</h3><p>${escapeHtml(note)}</p></article>`;
+      }
+
+      /* Xem anh bia to: bam nen toi hoac phim Esc de dong */
+      function openCoverLightbox(src,alt){
+        let box=document.getElementById("coverBox");
+        if(!box){box=document.createElement("div");box.id="coverBox";box.className="cover-box";
+          box.innerHTML=`<button class="cb-close" type="button" aria-label="Đóng">✕</button><img alt="">`;
+          document.body.appendChild(box);
+          const close=()=>box.classList.remove("open");
+          box.addEventListener("click",e=>{if(e.target===box||e.target.closest(".cb-close"))close()});
+          document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+        }
+        const img=box.querySelector("img");img.src=src;img.alt=alt||"";
+        box.classList.add("open");
+      }
+
+      function selectLesson(id){if(window.__coursePackagerReady)return;const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lesson.description||"Bài học đang được cập nhật mô tả.";els.metricDuration.textContent=lesson.duration||"Từ YouTube";els.playerFrame.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(lesson.youtubeId)}?enablejsapi=1&rel=0&modestbranding=1" title="${escapeHtml(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`}
     els.signup.addEventListener("submit",async event=>{event.preventDefault();const record=Object.fromEntries(new FormData(event.currentTarget).entries());record.course=state.course.title||"Doanh nghiệp một người";record.createdAt=new Date().toISOString();els.signupStatus.textContent="Đang gửi đăng ký...";try{const res=await fetch("/api/passport/course-signups",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});const payload=await res.json();if(!payload.ok)throw new Error(payload.error||"Không lưu được đăng ký");els.signupStatus.textContent="Đã gửi đăng ký. DUCPT sẽ liên hệ để mở quyền học.";event.currentTarget.reset()}catch{els.signupStatus.textContent="Chưa gửi được đăng ký. Vui lòng liên hệ Zalo hoặc thử lại sau."}});
     function escapeHtml(value){return String(value||"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]))}
   </script>
@@ -327,7 +384,7 @@
         els.metricVideos.textContent=state.lessons.length;
         const hs=document.getElementById("hsLessons");if(hs)hs.textContent=state.lessons.length;
         const cs=document.getElementById("curriSub");if(cs)cs.textContent=(state.course.modules||[]).length+" chương · chọn một bài để học ngay";
-        els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:"Chưa có bài học";els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Chưa xuất bản";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";if(!state.lessons.length){showYoutubeSource();return}const modules=Array.isArray(state.course.modules)?state.course.modules:[];const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})).filter(g=>g.items.length):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");const noFree=freeN===0?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}${chCollapsed(gi)?" collapsed":""}" data-ch="${gi}"><div class="ch-head" data-ch-head><span class="ch-caret">▼</span><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length}</b> video · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}</ul>${noFree}${more}</section>`}).join("");wireChapterToggle();els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
+        els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:`${(state.course.modules||[]).length} chương · sắp mở`;els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Sắp mở";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";if(!state.lessons.length){showYoutubeSource();return}const modules=Array.isArray(state.course.modules)?state.course.modules:[];const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})).filter(g=>g.items.length):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");const noFree=freeN===0?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}${chCollapsed(gi)?" collapsed":""}" data-ch="${gi}"><div class="ch-head" data-ch-head><span class="ch-caret">▼</span><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length}</b> video · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}</ul>${noFree}${more}</section>`}).join("");wireChapterToggle();els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
       const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1";
       function getRole(){try{const r=localStorage.getItem(ROLE_KEY);return ["free","premium","admin"].includes(r)?r:"guest"}catch(e){return "guest"}}
