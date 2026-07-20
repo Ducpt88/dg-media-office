@@ -5,7 +5,7 @@
     "contact": "Zalo 0963249467",
     "goal": "Bạn học cách dựng một \"văn phòng\" đầy đủ phòng ban ngay trên máy tính của mình: có người điều phối, có người làm nội dung, có người dựng công cụ, có kế toán soát tiền — tất cả do AI đóng vai, còn bạn chỉ ra đề bài và bấm duyệt. Hết khóa, bạn cầm trong tay một bộ máy chạy được mỗi ngày, không phụ thuộc trí nhớ và không phụ thuộc nhân sự.",
     "cover": "/assets/course/doanh-nghiep-1-nguoi.png",
-    "updatedAt": "2026-07-20T09:16:22+07:00",
+    "updatedAt": "2026-07-20T10:43:46+07:00",
     "modules": [
       {
         "code": "M1",
@@ -125,7 +125,32 @@
       "Tự dựng được công cụ số nhỏ để dùng và để bán"
     ]
   },
-  "lessons": [],
+  "lessons": [
+    {
+      "id": "yt-IBgN0kbwxK8",
+      "lessonNo": 1,
+      "sort": 1,
+      "module": "M1",
+      "moduleNo": "1.1",
+      "youtubeId": "IBgN0kbwxK8",
+      "youtubeUrl": "https://www.youtube.com/watch?v=IBgN0kbwxK8",
+      "title": "Triển khai \"Công Ty 1 Người\": Điều quan trọng nhất bạn đang bỏ qua!",
+      "rawTitle": "Vận Hành Doanh Nghiệp 1 Người : Điều quan trọng nhất bạn đang bỏ qua! | Đức DG",
+      "description": "Điều quan trọng nhất mà người vận hành doanh nghiệp một người hay bỏ qua khi bắt đầu ứng dụng AI Agent.",
+      "objective": "Nắm điều quan trọng nhất mà người vận hành doanh nghiệp một người hay bỏ qua.",
+      "learnPoints": [
+        "Sai lầm phổ biến khi làm một mình",
+        "Ưu tiên đúng thứ để không quá tải",
+        "Khung vận hành tối giản cho 1 người"
+      ],
+      "duration": "7:22",
+      "status": "published",
+      "access": "free",
+      "type": "clip",
+      "thumbnail": "",
+      "updatedAt": "2026-07-20T10:43:46+07:00"
+    }
+  ],
   "schemaVersion": 2,
   "accessModel": {
     "free": "Xem ngay",
