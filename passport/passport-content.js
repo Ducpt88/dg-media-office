@@ -1119,6 +1119,11 @@
       + ".ytseek{flex:1;height:5px;border-radius:999px;background:rgba(255,255,255,.26);cursor:pointer;overflow:hidden}.ytseek i{display:block;height:100%;width:0;background:#38bdf8}"
       + ".yttime{color:#e2e8f0;font-size:11px;font-variant-numeric:tabular-nums;flex:none}"
       + ".ytload{position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:#93a6c9;font-size:12px;background:#0b1220}"
+      + ".ytposter{position:absolute;inset:0;z-index:6;display:grid;place-items:center;cursor:pointer;background:radial-gradient(circle at 50% 42%,rgba(37,99,235,.28),transparent 62%),linear-gradient(180deg,#0b1220,#060b14)}"
+      + ".ytposter .pp-btn{display:grid;place-items:center;width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);box-shadow:0 14px 34px rgba(37,99,235,.45)}"
+      + ".ytposter .pp-btn i{display:block;width:0;height:0;margin-left:5px;border-style:solid;border-width:12px 0 12px 19px;border-color:transparent transparent transparent #fff}"
+      + ".ytposter .pp-cap{position:absolute;left:0;right:0;bottom:46px;padding:0 18px;color:#e8eefc;text-align:center;font-size:12.5px;font-weight:800;line-height:1.45}"
+      + ".ytposter .pp-cap small{display:block;margin-top:4px;color:#93a6c9;font-size:11px;font-weight:600}"
       + ".ca-src-note{margin:8px 0 0;color:var(--muted);font-size:11px}"
       + ".ca-body{padding:16px 18px}.ca-eyebrow{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10.5px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}"
       + ".ca-title{margin:10px 0 4px;font-size:19px;line-height:1.3}.ca-sub{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}"
@@ -1319,7 +1324,7 @@
   }
 
   function playerHtml(lesson) {
-    if (lesson.youtubeId) return `<div class="ytwrap" data-yt-wrap><div data-yt-host></div><div class="ythit" data-yt-hit></div><div class="ytbar"><button type="button" data-yt-play aria-label="Phát/Dừng">▶</button><div class="ytseek" data-yt-seek><i data-yt-fill></i></div><span class="yttime" data-yt-time>0:00 / 0:00</span><button type="button" data-yt-fs aria-label="Toàn màn hình">⛶</button></div><div class="ytload" data-yt-load>Đang tải bài học…</div></div>`;
+    if (lesson.youtubeId) return `<div class="ytwrap" data-yt-wrap><div data-yt-host></div><div class="ythit" data-yt-hit></div><div class="ytbar"><button type="button" data-yt-play aria-label="Phát/Dừng">▶</button><div class="ytseek" data-yt-seek><i data-yt-fill></i></div><span class="yttime" data-yt-time>0:00 / 0:00</span><button type="button" data-yt-fs aria-label="Toàn màn hình">⛶</button></div><div class="ytposter" data-yt-poster><div class="pp-btn"><i></i></div><div class="pp-cap">${esc(lesson.title || "Bài học DUCPT")}<small>Bấm để phát</small></div></div><div class="ytload" data-yt-load>Đang tải bài học…</div></div>`;
     const direct = playableUrl(lesson);
     if (direct) return `<video controls playsinline preload="metadata" poster="${esc(thumbFor(lesson))}" src="${esc(direct)}"></video>`;
     return "Chưa gắn video cho bài này — dán link YouTube ở ô bên dưới";
@@ -1367,7 +1372,20 @@
     window.__dgYtPlayer = new YT.Player(wrap.querySelector("[data-yt-host]"), {
       videoId: lesson.youtubeId,
       playerVars: { controls: 0, rel: 0, modestbranding: 1, iv_load_policy: 3, disablekb: 1, fs: 0, playsinline: 1, autoplay: 0, origin: location.origin },
-      events: { onReady: () => { if (load) load.remove(); wirePlayer(wrap); } }
+      events: {
+        onReady: () => {
+          if (load) load.remove();
+          /* Poster DG che kín màn chờ YouTube: không lộ nút play đỏ, thanh tiêu đề hay nút chia sẻ. */
+          var po = wrap.querySelector("[data-yt-poster]");
+          if (po) po.addEventListener("click", function () { window.__dgYtPlayer.playVideo(); });
+          wirePlayer(wrap);
+        },
+        onStateChange: (ev) => {
+          var po = wrap.querySelector("[data-yt-poster]");
+          if (!po) return;
+          po.style.display = ev.data === 1 ? "none" : "";
+        }
+      }
     });
   }
 

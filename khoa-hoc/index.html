@@ -24,7 +24,9 @@
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
     body{background:var(--bg)}
     .course-hero{padding:70px 20px 34px;background:linear-gradient(180deg,#f8fbff,#fff)}
-    .course-hero .inner,.course-shell{max-width:1180px;margin:auto}
+    .course-hero .inner{max-width:1180px;margin:auto}
+    /* Khu học dùng gần hết bề ngang màn hình thay vì bó hẹp 1180px giữa trang */
+    .course-shell{max-width:min(1560px,95vw);margin:auto}
     .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:var(--blue);font-size:12px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     .course-hero h1{max-width:850px;margin:16px 0 14px;font-size:clamp(36px,5.4vw,62px);line-height:1.05;letter-spacing:0}
     .course-hero p{max-width:760px;color:var(--muted);font-size:17px;line-height:1.7}
@@ -34,11 +36,40 @@
     .ghost-btn{min-height:46px;padding:0 18px;border:1px solid #dbeafe;background:#fff;color:var(--blue)}
     .small-btn{min-height:38px;padding:0 13px;border:1px solid #dbeafe;background:#eff6ff;color:var(--blue);font-size:12px}
     .course-shell{padding:30px 20px 70px}
-    .course-layout{display:grid;grid-template-columns:minmax(0,1.45fr) 360px;gap:18px;align-items:start}
+    .course-layout{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(360px,420px);gap:18px;align-items:start}
     .panel{border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 14px 38px rgba(16,24,40,.07)}
     .panel-pad{padding:20px}.course-player{overflow:hidden}.player-frame{aspect-ratio:16/9;background:#0b1220;display:grid;place-items:center}
     /* Bài quay dọc (Shorts): khung 9:16 để video lấp đầy thay vì hai dải đen hai bên */
     .player-frame.is-portrait{aspect-ratio:9/16;max-width:400px;margin:0 auto}
+    /* Bài dọc chỉ chiếm hẹp giữa màn hình, hai bên bỏ trống. Xếp video trái - thông tin bài phải
+       de dung het be ngang va nhin duoc tong quan ngay canh video. */
+    .course-player.pf-side{display:grid;grid-template-columns:minmax(280px,380px) minmax(0,1fr);align-items:start;gap:0}
+    .course-player.pf-side .player-frame.is-portrait{max-width:none;margin:0;border-radius:18px 0 0 18px}
+    .course-player.pf-side .panel-pad{align-self:stretch}
+    @media(max-width:900px){.course-player.pf-side{grid-template-columns:1fr}
+      .course-player.pf-side .player-frame.is-portrait{max-width:400px;margin:0 auto;border-radius:0}}
+    /* Poster riêng của DG: che hoàn toàn màn chờ của YouTube (nút play đỏ, thanh tiêu đề,
+       nút chia sẻ/xem sau) — người học chỉ thấy giao diện DUCPT. */
+    .ytposter{position:absolute;inset:0;z-index:6;display:grid;place-items:center;gap:0;cursor:pointer;
+      background:radial-gradient(circle at 50% 42%,rgba(37,99,235,.28),transparent 62%),linear-gradient(180deg,#0b1220,#060b14)}
+    .ytposter .pp-btn{display:grid;place-items:center;width:74px;height:74px;border-radius:50%;
+      background:linear-gradient(135deg,#2563eb,#7c3aed);box-shadow:0 16px 40px rgba(37,99,235,.45);transition:transform .18s}
+    .ytposter:hover .pp-btn{transform:scale(1.07)}
+    .ytposter .pp-btn i{display:block;width:0;height:0;margin-left:6px;border-style:solid;
+      border-width:13px 0 13px 21px;border-color:transparent transparent transparent #fff}
+    .ytposter .pp-cap{position:absolute;left:0;right:0;bottom:52px;padding:0 20px;color:#e8eefc;
+      text-align:center;font-size:13px;font-weight:800;line-height:1.45}
+    .ytposter .pp-cap small{display:block;margin-top:5px;color:#93a6c9;font-size:11px;font-weight:600}
+    /* Chương thu ra thu vào */
+    .ch-head{position:relative;cursor:pointer;user-select:none;padding-right:44px!important}
+    .ch-head:hover{background:#f2f7ff}
+    .ch-caret{position:absolute;right:15px;top:50%;transform:translateY(-50%);color:#93a6c9;font-size:12px;transition:transform .2s}
+    .ch.collapsed .ch-caret{transform:translateY(-50%) rotate(-90deg)}
+    .ch.collapsed .ch-rows,.ch.collapsed .ch-none,.ch.collapsed .ch-more{display:none}
+    .ch-tools{display:flex;justify-content:flex-end;gap:8px;margin:0 0 10px}
+    .ch-tools button{padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;
+      color:var(--blue);font:inherit;font-size:12px;font-weight:800;cursor:pointer}
+    .ch-tools button:hover{border-color:#bfdbfe;background:#f8fbff}
     .player-frame iframe{width:100%;height:100%;border:0;display:block;background:#0b1220}.empty-player{padding:30px;color:#dbeafe;text-align:center}
     .course-meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:14px}
     .metric{padding:13px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
@@ -253,7 +284,7 @@
         els.metricVideos.textContent=state.lessons.length;
         const hs=document.getElementById("hsLessons");if(hs)hs.textContent=state.lessons.length;
         const cs=document.getElementById("curriSub");if(cs)cs.textContent=(state.course.modules||[]).length+" chương · chọn một bài để học ngay";
-        els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:"Chưa có bài học";els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Chưa xuất bản";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";if(!state.lessons.length){showYoutubeSource();return}const modules=Array.isArray(state.course.modules)?state.course.modules:[];const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})).filter(g=>g.items.length):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");const noFree=freeN===0?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}"><div class="ch-head"><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length}</b> video · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}</ul>${noFree}${more}</section>`}).join("");els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
+        els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:"Chưa có bài học";els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Chưa xuất bản";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";if(!state.lessons.length){showYoutubeSource();return}const modules=Array.isArray(state.course.modules)?state.course.modules:[];const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})).filter(g=>g.items.length):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");const noFree=freeN===0?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}${chCollapsed(gi)?" collapsed":""}" data-ch="${gi}"><div class="ch-head" data-ch-head><span class="ch-caret">▼</span><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length}</b> video · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}</ul>${noFree}${more}</section>`}).join("");wireChapterToggle();els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
       const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1";
       function getRole(){try{const r=localStorage.getItem(ROLE_KEY);return ["free","premium","admin"].includes(r)?r:"guest"}catch(e){return "guest"}}
@@ -307,6 +338,8 @@
           '<span class="yttime" id="ytTime">0:00 / 0:00</span>'+
           '<button id="ytFs" aria-label="Toàn màn hình">⛶</button></div>'+
           '<div class="pf-wm" id="pfWm">'+escapeHtml("DUCPT · "+viewerTag())+'</div>'+
+          '<div class="ytposter" id="ytPoster"><div class="pp-btn"><i></i></div>'+
+          '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div>'+
           '<div class="ytload" id="ytLoad">Đang tải bài học…</div></div>';
         const wm=document.getElementById("pfWm");
         if(wm){const move=()=>{wm.style.left=(6+Math.random()*58)+"%";wm.style.top=(18+Math.random()*56)+"%"};
@@ -316,7 +349,15 @@
         try{if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy()}catch(e){}
         ytPlayer=new YT.Player("ytHost",{videoId:videoId,
           playerVars:{controls:0,rel:0,modestbranding:1,iv_load_policy:3,disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin},
-          events:{onReady:function(){const l=document.getElementById("ytLoad");if(l)l.remove();wire()}}});
+          events:{onReady:function(){const l=document.getElementById("ytLoad");if(l)l.remove();
+            /* Poster cua DG che kin man cho cua YouTube (nut play do, thanh tieu de, nut chia se).
+               Chi go poster khi video da THUC SU chay, nen khong bao gio lo giao dien YouTube. */
+            const po=document.getElementById("ytPoster");
+            if(po)po.addEventListener("click",()=>{ytPlayer.playVideo()});
+            wire()},
+          onStateChange:function(ev){const po=document.getElementById("ytPoster");if(!po)return;
+            if(ev.data===1){po.style.display="none"}
+            else if(ev.data===0||ev.data===-1){po.style.display=""}}}});
         function wire(){
           const btn=document.getElementById("ytPlay"),hit=document.getElementById("ytHit"),
                 seek=document.getElementById("ytSeek"),fill=document.getElementById("ytFill"),
@@ -339,9 +380,36 @@
         }
       }
       function isPortraitLesson(lesson){const raw=`${lesson.rawTitle||""} ${lesson.youtubeUrl||""} ${lesson.title||""}`.toLowerCase();if(raw.includes("/shorts/")||raw.includes("#shorts"))return true;return String(lesson.orientation||"").toLowerCase()==="portrait"}
+      /* Thu ra thu vao tung chuong. Nho trang thai trong localStorage de lan sau mo lai van nhu cu. */
+      const CH_KEY="ducpt-chuong-thu-gon";
+      function chClosedSet(){try{return new Set(JSON.parse(localStorage.getItem(CH_KEY)||"[]"))}catch(e){return new Set()}}
+      function chCollapsed(gi){return chClosedSet().has(gi)}
+      function chSave(set){try{localStorage.setItem(CH_KEY,JSON.stringify([...set]))}catch(e){}}
+      function wireChapterToggle(){
+        const list=els.lessonList;if(!list)return;
+        list.querySelectorAll("[data-ch-head]").forEach(head=>{
+          head.addEventListener("click",e=>{
+            if(e.target.closest(".lrow"))return;
+            const sec=head.closest(".ch");const gi=Number(sec.dataset.ch);
+            sec.classList.toggle("collapsed");
+            const set=chClosedSet();
+            if(sec.classList.contains("collapsed"))set.add(gi);else set.delete(gi);
+            chSave(set)})});
+        if(!list.previousElementSibling||!list.previousElementSibling.classList.contains("ch-tools")){
+          const bar=document.createElement("div");bar.className="ch-tools";
+          bar.innerHTML='<button type="button" data-ch-all="open">Mở tất cả</button><button type="button" data-ch-all="close">Thu gọn tất cả</button>';
+          list.parentNode.insertBefore(bar,list);
+          bar.addEventListener("click",e=>{
+            const btn=e.target.closest("[data-ch-all]");if(!btn)return;
+            const close=btn.dataset.chAll==="close";const set=new Set();
+            list.querySelectorAll(".ch").forEach(sec=>{
+              sec.classList.toggle("collapsed",close);
+              if(close)set.add(Number(sec.dataset.ch))});
+            chSave(set)})}
+      }
       function durSeconds(v){const t=String(v||"").trim();if(!/^\d/.test(t))return 0;const p=t.split(":").map(Number);while(p.length<3)p.unshift(0);return p[0]*3600+p[1]*60+p[2]}
       function fmtHMS(s){const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(x).padStart(2,"0")}`}
-      function selectPackagedLesson(id){const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;els.playerFrame.classList.remove("is-portrait");/* màn chặn luôn 16:9, chỉ khung phát thật mới đổi tỉ lệ */window.__curLesson=id;document.querySelectorAll(".lrow").forEach(row=>row.classList.toggle("active",row.dataset.id===id));
+      function selectPackagedLesson(id){const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;els.playerFrame.classList.remove("is-portrait");window.__curLessonTitle=lesson.title||"";const pnl=els.playerFrame.closest(".course-player");if(pnl)pnl.classList.remove("pf-side");/* màn chặn luôn 16:9, chỉ khung phát thật mới đổi tỉ lệ */window.__curLesson=id;document.querySelectorAll(".lrow").forEach(row=>row.classList.toggle("active",row.dataset.id===id));
         const role=getRole();
         function head(){els.currentTitle.textContent=lesson.title;els.metricDuration.textContent=lessonDuration(lesson);const lpx=document.getElementById("currentLearn");if(lpx)lpx.innerHTML=(Array.isArray(lesson.learnPoints)?lesson.learnPoints:[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}
         /* Khách chưa đăng ký: chặn tất cả, kể cả bài FREE */
@@ -353,7 +421,7 @@
         /* Premium/Admin xem bài premium: nguồn video chỉ trả về khi đã đấu Supabase */
         if(lesson.access==="premium"&&!playableSource(lesson)){head();els.currentDesc.textContent="Bạn có quyền xem bài này. Nguồn video sẽ được trả về sau khi kết nối đăng nhập Supabase.";
           els.playerFrame.innerHTML=`<div class="gate note"><div class="ic">🛠</div><b>Đã mở quyền — chờ đấu nối nguồn video</b><p>Mã video của bài PREMIUM được cố tình gỡ khỏi dữ liệu công khai. Sau khi bật Supabase, hệ thống sẽ trả mã riêng cho người có quyền.</p></div>`;return}
-        const source=playableSource(lesson);if(!source)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lessonDescription(lesson);const lp=document.getElementById("currentLearn");if(lp)lp.innerHTML=(Array.isArray(lesson.learnPoints)?lesson.learnPoints:[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("");els.metricDuration.textContent=lessonDuration(lesson);const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent=source.label;els.playerFrame.classList.toggle("is-portrait",isPortraitLesson(lesson));if(source.type==="youtube"){mountSecurePlayer(source.id);return}els.playerFrame.innerHTML=`<video controls playsinline preload="metadata" poster="${escapeHtml(thumbFor(lesson))}" src="${escapeHtml(source.url)}" style="width:100%;height:100%;display:block;background:#0b1220"></video>`}
+        const source=playableSource(lesson);if(!source)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lessonDescription(lesson);const lp=document.getElementById("currentLearn");if(lp)lp.innerHTML=(Array.isArray(lesson.learnPoints)?lesson.learnPoints:[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("");els.metricDuration.textContent=lessonDuration(lesson);const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent=source.label;const port=isPortraitLesson(lesson);els.playerFrame.classList.toggle("is-portrait",port);if(pnl)pnl.classList.toggle("pf-side",port);if(source.type==="youtube"){mountSecurePlayer(source.id);return}els.playerFrame.innerHTML=`<video controls playsinline preload="metadata" poster="${escapeHtml(thumbFor(lesson))}" src="${escapeHtml(source.url)}" style="width:100%;height:100%;display:block;background:#0b1220"></video>`}
       function youtubeIdFromUrl(value){const text=String(value||"").trim();if(/^[A-Za-z0-9_-]{11}$/.test(text))return text;try{const url=new URL(text,location.href);if(url.hostname.includes("youtu.be"))return cleanId(url.pathname.slice(1));if(url.pathname.startsWith("/shorts/"))return cleanId(url.pathname.split("/")[2]);if(url.pathname.startsWith("/embed/"))return cleanId(url.pathname.split("/")[2]);return cleanId(url.searchParams.get("v"))}catch{return""}}
       function cleanId(value){const match=String(value||"").match(/[A-Za-z0-9_-]{11}/);return match?match[0]:""}
     })();
