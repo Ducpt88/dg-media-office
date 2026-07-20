@@ -3,44 +3,127 @@
     "title": "Doanh nghiệp một người",
     "price": "Liên hệ",
     "contact": "Zalo 0963249467",
-    "goal": "Khóa học giúp học viên dựng công ty một người bằng AI: có hệ điều hành công việc, dòng tiền vận hành, nội dung kéo khách, tự động hóa, tự build công cụ số và livestream bán hàng.",
+    "goal": "Bạn học cách dựng một \"văn phòng\" đầy đủ phòng ban ngay trên máy tính của mình: có người điều phối, có người làm nội dung, có người dựng công cụ, có kế toán soát tiền — tất cả do AI đóng vai, còn bạn chỉ ra đề bài và bấm duyệt. Hết khóa, bạn cầm trong tay một bộ máy chạy được mỗi ngày, không phụ thuộc trí nhớ và không phụ thuộc nhân sự.",
     "cover": "/assets/course/doanh-nghiep-1-nguoi.png",
-    "updatedAt": "2026-07-20T09:06:20+07:00",
+    "updatedAt": "2026-07-20T09:16:22+07:00",
     "modules": [
       {
         "code": "M1",
-        "title": "Nền móng vận hành công ty một người",
-        "desc": "Thiết kế hệ điều hành công việc, bằng chứng hoàn thành, tài liệu và trung tâm điều phối để một người vận hành cả công ty."
+        "title": "Bộ khung vận hành — một người làm được việc của cả đội",
+        "desc": "Dựng bộ khung để một người ôm được khối lượng việc của một đội mà không rơi việc, không phụ thuộc trí nhớ.",
+        "outline": [
+          "Vì sao một người thất bại: không phải lười, mà vì việc nằm rải rác 7 chỗ",
+          "Nguyên tắc một cửa vào: mọi việc đổ về đúng một nơi",
+          "Dựng bảng điều hành gom cả ngày làm việc vào một màn hình",
+          "Việc chưa ghi xuống thì chưa tồn tại — cách ghi để không tốn sức",
+          "Năm cột trạng thái: từ lúc nhận việc tới lúc xong thật",
+          "Nhịp ngày: sáng chốt việc, trong ngày cập nhật, tối chốt sổ",
+          "Bằng chứng hoàn thành: thế nào là xong, thế nào là tưởng xong",
+          "Cuộn ngày: cách để bảng việc không phình lên thành bãi rác"
+        ],
+        "lessonPlanned": 8
       },
       {
         "code": "M2",
-        "title": "Dòng tiền vận hành công ty một người",
-        "desc": "Quản trị dòng tiền, luật chi tiêu và nhịp kiểm soát để công ty một người không rò rỉ tiền."
+        "title": "Dòng tiền — biết tiền đang ở đâu trước khi nghĩ tới tăng trưởng",
+        "desc": "Nắm dòng tiền của một công ty một người: thu gì, chi gì, khoản nào đang âm thầm rò rỉ.",
+        "outline": [
+          "Ba con số một người phải nhìn mỗi tuần",
+          "Sổ thu chi tối giản: nhập 2 phút, đọc được ngay",
+          "Chi phí công cụ và AI: khoản dễ rò rỉ nhất mà ít ai soát",
+          "Kỳ vận hành: vì sao chốt theo kỳ chứ không theo cảm giác",
+          "Tính lãi thật của một kênh, một sản phẩm",
+          "Ngưỡng cảnh báo: đặt mức nào thì máy tự kêu",
+          "Định giá sản phẩm số khi bạn chỉ có một mình",
+          "Quỹ dự phòng cho người làm một mình"
+        ],
+        "lessonPlanned": 8
       },
       {
         "code": "M3",
-        "title": "Content, traffic & phễu khách hàng",
-        "desc": "Biến ý tưởng thành nội dung, lịch đăng và nguồn traffic đều cho phễu khách hàng."
+        "title": "Nội dung và khách hàng — để người ta tự tìm tới",
+        "desc": "Biến một ý tưởng thành nhiều nội dung, chạy đều mỗi ngày, kéo khách về mà không phải chạy quảng cáo liên tục.",
+        "outline": [
+          "Một ý tưởng — nhiều định dạng: cách nhân bản không nhạt",
+          "Lịch nội dung tự chạy: đặt một lần, chạy cả tháng",
+          "Tỉ lệ nội dung bán hàng và nội dung xây niềm tin",
+          "Viết tiêu đề người ta phải bấm mà không giật gân",
+          "Chuẩn tìm kiếm: viết cho người đọc nhưng máy vẫn hiểu",
+          "Phễu khách: từ người lạ tới người trả tiền, đi qua mấy bước",
+          "Đo cái gì để biết nội dung có hiệu quả",
+          "Cách tái sử dụng nội dung cũ thành nội dung mới"
+        ],
+        "lessonPlanned": 8
       },
       {
         "code": "M4",
-        "title": "AI Agent & Fable 5 cho người vận hành",
-        "desc": "Dùng AI Agent, Fable 5 và bot như nhân sự vận hành thay vì chatbot rời rạc."
+        "title": "Đội ngũ AI — phân vai rõ thì giao việc mới chạy",
+        "desc": "Dựng đội ngũ AI có tên, có vai, có trách nhiệm — thay vì hỏi đáp lặt vặt với một chatbot.",
+        "outline": [
+          "Vì sao hỏi chatbot mãi không thành đội ngũ",
+          "Phân vai: điều phối, nội dung, kỹ thuật, kiểm tra, sổ sách",
+          "Viết thẻ kỹ năng cho một vai: nó được làm gì, cấm làm gì",
+          "Giao việc bằng phiếu: cấu trúc một phiếu việc chạy được",
+          "Cửa kiểm tra chất lượng: chặn thứ dở trước khi ra ngoài",
+          "Việc nào để máy tự quyết, việc nào bắt buộc hỏi bạn",
+          "Khi máy làm sai: cách sửa gốc thay vì sửa từng lần",
+          "Tự phục hồi: để bộ máy không đứng im khi bạn ngủ",
+          "Ghi luật: lỗi đã gặp một lần thì đừng gặp lần hai"
+        ],
+        "lessonPlanned": 9
       },
       {
         "code": "M5",
-        "title": "Vibe Coding — tự build sản phẩm số",
-        "desc": "Tự build app/extension nhỏ, đóng gói sản phẩm số và biến công cụ thành tài sản kinh doanh."
+        "title": "Tự dựng công cụ số — dùng cho mình rồi bán cho người khác",
+        "desc": "Tự làm ra công cụ nhỏ giải đúng một nỗi đau, dùng được ngay và đóng gói bán được.",
+        "outline": [
+          "Không biết code vẫn dựng được công cụ: bắt đầu từ đâu",
+          "Chọn bài toán đáng làm: dấu hiệu một việc nên tự động hóa",
+          "Từ việc thủ công tới kịch bản chạy tự động",
+          "Làm bản chạy được trong một buổi, đừng làm bản hoàn hảo",
+          "Kiểm thử ở góc nhìn người dùng cuối: mở lên có dùng được không",
+          "Đóng gói thành sản phẩm: tên, giá, trang bán, hướng dẫn",
+          "Bán công cụ nhỏ: kênh nào hợp với người làm một mình",
+          "Chăm sóc sau bán mà không tốn thêm giờ"
+        ],
+        "lessonPlanned": 8
       },
       {
         "code": "M6",
-        "title": "Livestream & Verba Studio bán hàng",
-        "desc": "Dùng livestream, quay màn hình và Verba Studio để trình bày, bán hàng và hỗ trợ học viên."
+        "title": "Lên hình và bán hàng — chốt đơn bằng chính bộ máy của bạn",
+        "desc": "Dùng video, livestream và bản demo để trình bày giá trị và chốt đơn, ngay cả khi bạn ngại lên hình.",
+        "outline": [
+          "Ngại lên hình: cách quay buổi đầu không cần đẹp",
+          "Bộ thiết bị tối thiểu — đừng mua thừa",
+          "Kịch bản một video bán hàng ba phút",
+          "Quay màn hình để demo: cho người ta thấy thay vì nghe kể",
+          "Livestream một mình: chuẩn bị gì để không đứt mạch",
+          "Chốt đơn trong buổi phát mà không đuổi khách",
+          "Cắt buổi dài thành nhiều video ngắn",
+          "Lịch lên hình bền: mỗi tuần bao nhiêu là đủ"
+        ],
+        "lessonPlanned": 8
       }
     ],
     "private": true,
     "emptyNote": "Nội dung khóa học đang được cập nhật. Video sẽ lên dần theo từng chương.",
-    "coverPending": "Cho Founder gui anh bia moi co dong chu vang DOANH NGHIEP 1 NGUOI -> luu vao assets/course/doanh-nghiep-1-nguoi-cover.jpg roi doi truong cover"
+    "coverPending": "Cho Founder gui anh bia moi co dong chu vang DOANH NGHIEP 1 NGUOI -> luu vao assets/course/doanh-nghiep-1-nguoi-cover.jpg roi doi truong cover",
+    "subtitle": "Vận hành cả một công ty bằng AI — không thuê thêm ai",
+    "promise": "Một người — một bộ máy — chạy đều mỗi ngày.",
+    "forWho": [
+      "Người làm tự do đang ôm hết mọi việc và bắt đầu quá tải",
+      "Chủ shop, chủ dịch vụ nhỏ muốn bỏ việc lặp lại mà chưa dám thuê người",
+      "Người làm nội dung muốn tăng sản lượng mà không tăng giờ ngồi",
+      "Người mới muốn khởi nghiệp một mình, ít vốn, không có đội"
+    ],
+    "outcomes": [
+      "Có bảng điều hành gom cả ngày làm việc về một màn hình",
+      "Có nhịp vận hành ngày — tuần — tháng chạy được kể cả khi bạn bận",
+      "Có bộ \"nhân sự AI\" phân vai rõ ràng, giao việc là chạy",
+      "Có cửa kiểm tra chất lượng để không bao giờ đăng nhầm thứ dở",
+      "Biết tiền đang nằm ở đâu, khoản nào lãi, khoản nào đang rò",
+      "Tự dựng được công cụ số nhỏ để dùng và để bán"
+    ]
   },
   "lessons": [],
   "schemaVersion": 2,

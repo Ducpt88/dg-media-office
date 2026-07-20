@@ -71,6 +71,11 @@
     .player-frame.is-portrait .ytvol-range{display:none}
     .player-frame.is-portrait .ytbar{gap:9px;padding:0 11px}
     .player-frame.is-portrait .yttime{font-size:11px}
+    /* Bai du kien trong danh muc: hien de ban hang nhung khong bam phat duoc */
+    .lrow.soon{cursor:default;opacity:.92}
+    .lrow.soon:hover{background:transparent}
+    .bsoon{display:inline-flex;align-items:center;min-height:24px;padding:0 9px;border-radius:999px;
+      background:#fff7ed;color:#c2410c;font-size:10.5px;font-weight:900;white-space:nowrap}
     /* Anh bia khoa hoc khi chua co video */
     .cover-shot{position:relative;display:block;width:100%;height:100%;padding:0;border:0;background:#0b1220;cursor:zoom-in;overflow:hidden}
     .cover-shot img{width:100%;height:100%;object-fit:cover;display:block}
@@ -328,12 +333,18 @@
         const btn=els.playerFrame.querySelector("[data-cover]");
         if(btn)btn.addEventListener("click",()=>openCoverLightbox(cover,c.title||"Khóa học"));
         const mods=Array.isArray(c.modules)?c.modules:[];
+        const tongBai=mods.reduce((s,m)=>s+((m.outline||[]).length),0);
         els.lessonList.innerHTML=mods.length
-          ? `<div class="soon-head"><b>Chương trình học</b><span>${mods.length} chương · video đang được đưa lên dần</span></div>`
-            + mods.map((m,i)=>`<section class="ch"><div class="ch-head"><h3 class="ct">${i+1}. ${escapeHtml(m.title)}</h3>
-                <div class="cm">${escapeHtml(m.desc||"Nội dung đang cập nhật")}</div></div>
-                <div class="ch-none">Video của chương này sắp lên</div></section>`).join("")
+          ? `<div class="soon-head"><b>Danh mục khóa học Doanh nghiệp một người</b>`
+            + `<span>${mods.length} chương · ${tongBai} bài · video đang được đưa lên dần</span></div>`
+            + mods.map((m,i)=>{
+                const rows=(m.outline||[]).map((x,k)=>`<li class="lrow soon"><span class="no">${String(k+1).padStart(2,"0")}</span><span class="ti">${escapeHtml(x)}</span><span class="bsoon">Sắp lên</span></li>`).join("");
+                return `<section class="ch${i===0?"":" collapsed"}" data-ch="${i}"><div class="ch-head" data-ch-head><span class="ch-caret">▼</span>
+                  <h3 class="ct">${i+1}. ${escapeHtml(m.title)}</h3>
+                  <div class="cm">Số lượng: <b>${(m.outline||[]).length}</b> bài · ${escapeHtml(m.desc||"")}</div></div>
+                  <ul class="ch-rows">${rows}</ul></section>`}).join("")
           : `<article class="empty-course"><h3>Chương trình đang được xây</h3><p>${escapeHtml(note)}</p></article>`;
+        wireChapterToggle();
       }
 
       /* Xem anh bia to: bam nen toi hoac phim Esc de dong */
