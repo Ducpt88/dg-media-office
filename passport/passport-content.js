@@ -1133,6 +1133,11 @@
       + ".ytposter .pp-btn i{display:block;width:0;height:0;margin-left:5px;border-style:solid;border-width:12px 0 12px 19px;border-color:transparent transparent transparent #fff}"
       + ".ytposter .pp-cap{position:absolute;left:0;right:0;bottom:46px;padding:0 18px;color:#e8eefc;text-align:center;font-size:12.5px;font-weight:800;line-height:1.45}"
       + ".ytposter .pp-cap small{display:block;margin-top:4px;color:#93a6c9;font-size:11px;font-weight:600}"
+      + ".thumb-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px}"
+      + ".thumb-row .btn{padding:6px 11px;font-size:11.5px}"
+      + ".thumb-prev{display:block;margin-top:8px}"
+      + ".thumb-prev img{width:190px;aspect-ratio:16/9;object-fit:cover;border-radius:9px;background:#e2e8f0;border:1px solid var(--line)}"
+      + ".pc-draft{color:#047857;font-size:11px;font-weight:800;margin-right:10px;white-space:nowrap}"
       + ".ca-src-note{margin:8px 0 0;color:var(--muted);font-size:11px}"
       + ".ca-body{padding:16px 18px}.ca-eyebrow{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10.5px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}"
       + ".ca-title{margin:10px 0 4px;font-size:19px;line-height:1.3}.ca-sub{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}"
@@ -1197,7 +1202,7 @@
     const lesson = data.lessons.find((item) => item.id === editingId) || emptyLesson();
     const publishedCount = data.lessons.filter((item) => item.status === "published").length;
     view.innerHTML = `
-      <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quản lý học viên & video khóa học</h2><div class="pc-hint">Dán link YouTube, sửa mô tả, sắp xếp bài học và xuất bản lên trang /khoa-hoc/. Trên ducpt.com, nút Lưu sẽ commit file JSON thẳng vào GitHub nếu không có API server.</div></div><div class="pc-right"><span class="pc-saved" data-saved></span><div class="ytc-view-switch"><button class="${viewMode==="admin"?"is-active":""}" data-view-mode="admin" type="button">${ICO.edit}Quản trị</button><button class="${viewMode==="student"?"is-active":""}" data-view-mode="student" type="button">${ICO.eye}Học viên</button></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">${ICO.eye}Mở trang học</a><button class="btn primary" data-save-all type="button">${ICO.save}Lưu tất cả</button></div></div>
+      <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quản lý học viên & video khóa học</h2><div class="pc-hint">Dán link YouTube, sửa mô tả, sắp xếp bài học và xuất bản lên trang /khoa-hoc/. Trên ducpt.com, nút Lưu sẽ commit file JSON thẳng vào GitHub nếu không có API server.</div></div><div class="pc-right"><span class="pc-draft" data-draft-at>${draftStamp()}</span><span class="pc-saved" data-saved></span><div class="ytc-view-switch"><button class="${viewMode==="admin"?"is-active":""}" data-view-mode="admin" type="button">${ICO.edit}Quản trị</button><button class="${viewMode==="student"?"is-active":""}" data-view-mode="student" type="button">${ICO.eye}Học viên</button></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">${ICO.eye}Mở trang học</a><button class="btn primary" data-save-all type="button">${ICO.save}Lưu tất cả</button></div></div>
       <div class="ytc-steps"><div class="ytc-step"><i>1</i><div><b>Dán link YouTube</b><span>Video để chế độ Không công khai (unlisted)</span></div></div><em>→</em><div class="ytc-step"><i>2</i><div><b>Bấm Đồng bộ</b><span>Tự lấy tiêu đề + ảnh thumbnail</span></div></div><em>→</em><div class="ytc-step"><i>3</i><div><b>Sửa mô tả rồi Lưu tất cả</b><span>Bài "Đang hiển thị" sẽ lên trang học viên</span></div></div></div>
       <div class="cs-metrics"><article class="card metric"><span>${ICO.list}Tổng bài học</span><strong>${data.lessons.length}</strong><small>Trong khóa này</small></article><article class="card metric"><span>${ICO.eye}Đang hiển thị</span><strong>${publishedCount}</strong><small>Học viên thấy trên trang học</small></article><article class="card metric"><span>${ICO.edit}Nháp / tạm ẩn</span><strong>${data.lessons.length - publishedCount}</strong><small>Chỉ mình bạn thấy</small></article><article class="card metric"><span>${ICO.cloud}Lưu trữ</span><strong>${githubConfig().token ? "Đã kết nối" : "Chưa kết nối"}</strong><small>${githubConfig().token ? "Lưu thẳng lên website" : "Mở Cài đặt lưu trữ bên dưới"}</small></article></div>
       ${viewMode === "student" ? studentPreviewHtml() : adminEditorHtml(lesson)}
@@ -1287,7 +1292,7 @@
                 <label>Thời lượng hiển thị<input name="duration" value="${esc(lesson.duration)}" placeholder="Ví dụ 18:35"></label>
               </div>
               <div class="ca-form-grid">
-                <label>Thumbnail<input name="thumbnail" value="${esc(lesson.thumbnail)}" placeholder="Để trống = lấy thumbnail YouTube"></label>
+                <label>Ảnh bìa bài học<input name="thumbnail" value="${esc(lesson.thumbnail)}" placeholder="Để trống = tự lấy ảnh gốc của video YouTube"><span class="thumb-row"><button class="btn" type="button" data-thumb-yt>Lấy ảnh gốc video</button><button class="btn" type="button" data-thumb-pick>Tải ảnh lên</button><input type="file" accept="image/*" data-thumb-file hidden><button class="btn" type="button" data-thumb-clear>Dùng lại ảnh gốc</button></span><span class="thumb-prev"><img src="${esc(thumbFor(lesson))}" alt="" onerror="this.style.opacity=0"></span></label>
                 <label>Link tài liệu / bài tập<input name="resourceUrl" value="${esc(lesson.resourceUrl || "")}" placeholder="PDF, Notion, Drive..."></label>
                 <label>Loại<input name="type" value="${esc(lesson.type || "")}" placeholder="clip / bài giảng"></label>
               </div>
@@ -1563,8 +1568,112 @@
     return `${(value / Math.pow(1024, index)).toFixed(index ? 1 : 0)} ${units[index]}`;
   }
 
+  /* ---------- Ảnh bìa từng bài ----------
+     Ba đường: (1) tự lấy ảnh gốc của video YouTube, (2) Founder tự tải ảnh lên,
+     (3) xóa ảnh riêng để quay về ảnh gốc. Ảnh tải lên được nén còn 640x360
+     rồi nhúng thẳng vào dữ liệu, khỏi cần máy chủ lưu file. */
+  function bindThumbTools(view) {
+    const input = view.querySelector('input[name="thumbnail"]');
+    if (!input) return;
+    const prev = view.querySelector(".thumb-prev img");
+    const lesson = data.lessons.find((x) => x.id === editingId) || {};
+    const repaint = (val) => {
+      input.value = val || "";
+      if (prev) { prev.style.opacity = 1; prev.src = val || thumbFor(lesson); }
+    };
+    view.querySelector("[data-thumb-yt]")?.addEventListener("click", () => {
+      const id = (view.querySelector('input[name="youtubeUrl"]')?.value || "").trim();
+      const vid = youtubeIdFromUrl(id) || lesson.youtubeId;
+      if (!vid) return flash("Chưa có link YouTube để lấy ảnh");
+      repaint(`https://i.ytimg.com/vi/${vid}/maxresdefault.jpg`);
+      flash("Đã lấy ảnh gốc của video");
+    });
+    view.querySelector("[data-thumb-clear]")?.addEventListener("click", () => {
+      repaint("");
+      flash("Đã xóa ảnh riêng — sẽ dùng ảnh gốc của video");
+    });
+    view.querySelector("[data-thumb-pick]")?.addEventListener("click", () =>
+      view.querySelector("[data-thumb-file]")?.click());
+    view.querySelector("[data-thumb-file]")?.addEventListener("change", (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      if (!/^image\//.test(file.type)) return flash("File này không phải ảnh");
+      flash("Đang xử lý ảnh…");
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          /* Nén còn 640x360 để dữ liệu khóa học không phình to */
+          const W = 640, H = 360;
+          const cv = document.createElement("canvas");
+          cv.width = W; cv.height = H;
+          const ctx = cv.getContext("2d");
+          const r = Math.max(W / img.width, H / img.height);
+          const w = img.width * r, h = img.height * r;
+          ctx.drawImage(img, (W - w) / 2, (H - h) / 2, w, h);
+          const out = cv.toDataURL("image/jpeg", 0.78);
+          repaint(out);
+          flash(`Đã gắn ảnh bìa (${Math.round(out.length / 1024)} KB)`);
+          saveDraftNow();
+        };
+        img.onerror = () => flash("Không đọc được ảnh này");
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /* ---------- Tự lưu nháp ----------
+     Founder gõ tới đâu lưu tới đó. Đang đẩy mà mất mạng / đóng nhầm tab / server lỗi
+     thì lần sau mở lại vẫn còn nguyên, vào tối ưu tiếp chứ không phải làm lại từ đầu. */
+  const DRAFT_KEY = "ducpt_course_videos_draft_v1";
+  const DRAFT_AT_KEY = "ducpt_course_videos_draft_at_v1";
+  let draftTimer = null;
+
+  function saveDraftNow() {
+    try {
+      collectCourse(document.getElementById("courseAdmin"));
+    } catch (e) {}
+    try {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+      const now = new Date();
+      localStorage.setItem(DRAFT_AT_KEY, now.toISOString());
+      const el = document.querySelector("[data-draft-at]");
+      if (el) el.textContent = "Đã lưu nháp " + now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
+    } catch (e) {}
+  }
+
+  function bindAutoDraft(view) {
+    const kick = () => {
+      clearTimeout(draftTimer);
+      draftTimer = setTimeout(saveDraftNow, 800);
+    };
+    view.addEventListener("input", kick);
+    view.addEventListener("change", kick);
+    if (!window.__ducptDraftGuard) {
+      window.__ducptDraftGuard = true;
+      /* Đóng tab hoặc chuyển sang cửa sổ khác cũng lưu, không đợi hết 0.8 giây */
+      window.addEventListener("beforeunload", saveDraftNow);
+      document.addEventListener("visibilitychange", () => { if (document.hidden) saveDraftNow(); });
+    }
+  }
+
+  function draftStamp() {
+    try {
+      const at = localStorage.getItem(DRAFT_AT_KEY);
+      if (!at) return "Chưa có bản nháp";
+      const d = new Date(at);
+      const sameDay = d.toDateString() === new Date().toDateString();
+      return "Đã lưu nháp " + (sameDay
+        ? d.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })
+        : d.toLocaleString("vi-VN", { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }));
+    } catch (e) { return ""; }
+  }
+
   function bind(view) {
     view.querySelector("[data-save-all]").addEventListener("click", saveAll);
+    bindThumbTools(view);
+    bindAutoDraft(view);
     view.querySelectorAll("[data-view-mode]").forEach((button) => button.addEventListener("click", () => { viewMode = button.dataset.viewMode; draw(); }));
     view.querySelector("[data-import-youtube]")?.addEventListener("click", importYoutube);
     view.querySelector("[data-upload-video-button]")?.addEventListener("click", () => view.querySelector("[data-upload-video]")?.click());
