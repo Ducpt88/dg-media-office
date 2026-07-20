@@ -50,6 +50,27 @@
       .course-player.pf-side .player-frame.is-portrait{max-width:400px;margin:0 auto;border-radius:0}}
     /* Poster riêng của DG: che hoàn toàn màn chờ của YouTube (nút play đỏ, thanh tiêu đề,
        nút chia sẻ/xem sau) — người học chỉ thấy giao diện DUCPT. */
+    /* Am luong + toc do tren thanh dieu khien video */
+    .ytvol{display:flex;align-items:center;gap:6px;flex:none}
+    .ytvol-range{--vf:100%;width:74px;height:4px;border-radius:99px;cursor:pointer;appearance:none;-webkit-appearance:none;
+      background:linear-gradient(90deg,#38bdf8 var(--vf),rgba(255,255,255,.24) var(--vf))}
+    .ytvol-range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:11px;height:11px;border-radius:50%;
+      background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.5);cursor:pointer}
+    .ytvol-range::-moz-range-thumb{width:11px;height:11px;border:0;border-radius:50%;background:#fff;cursor:pointer}
+    .ytrate{position:relative;flex:none}
+    .ytrate>button{min-width:34px;font-size:12.5px!important;font-weight:800;font-variant-numeric:tabular-nums}
+    .ytrate-menu{position:absolute;right:0;bottom:calc(100% + 8px);z-index:8;display:none;min-width:132px;padding:6px;
+      border-radius:11px;background:rgba(12,18,28,.97);border:1px solid rgba(255,255,255,.14);box-shadow:0 14px 34px rgba(0,0,0,.5)}
+    .ytrate-menu.open{display:block}
+    .ytrate-menu button{display:block;width:100%;text-align:left;padding:7px 10px;border:0;border-radius:7px;
+      background:transparent;color:#e8eef4;font:700 12.5px/1.2 inherit;cursor:pointer}
+    .ytrate-menu button:hover{background:rgba(255,255,255,.12)}
+    .ytrate-menu button.on{background:#2563eb;color:#fff}
+    /* Khung doc hep: giau thanh keo am luong (giu nut tat tieng) de thanh tua du cho keo */
+    @media(max-width:520px){.ytvol-range{display:none}}
+    .player-frame.is-portrait .ytvol-range{display:none}
+    .player-frame.is-portrait .ytbar{gap:9px;padding:0 11px}
+    .player-frame.is-portrait .yttime{font-size:11px}
     .ytposter{position:absolute;inset:0;z-index:6;display:grid;place-items:center;gap:0;cursor:pointer;
       background:radial-gradient(circle at 50% 42%,rgba(37,99,235,.28),transparent 62%),linear-gradient(180deg,#0b1220,#060b14)}
     .ytposter .pp-btn{display:grid;place-items:center;width:74px;height:74px;border-radius:50%;
@@ -379,6 +400,10 @@
           '<div class="ytbar"><button id="ytPlay" aria-label="Phát/Dừng">▶</button>'+
           '<div class="ytseek" id="ytSeek"><i id="ytFill"></i></div>'+
           '<span class="yttime" id="ytTime">0:00 / 0:00</span>'+
+          '<div class="ytvol" id="ytVolWrap"><button id="ytMute" aria-label="Âm lượng" title="Âm lượng">🔊</button>'+
+          '<input id="ytVol" class="ytvol-range" type="range" min="0" max="100" step="1" value="100" aria-label="Mức âm lượng"></div>'+
+          '<div class="ytrate" id="ytRateWrap"><button id="ytRate" aria-label="Tốc độ phát" title="Tốc độ phát">1×</button>'+
+          '<div class="ytrate-menu" id="ytRateMenu"></div></div>'+
           '<button id="ytFs" aria-label="Toàn màn hình">⛶</button></div>'+
           
           '<div class="ytposter" id="ytPoster"><div class="pp-btn"><i></i></div>'+
@@ -400,6 +425,7 @@
             if(ev.data===1){po.style.display="none"}
             else if(ev.data===0||ev.data===-1){po.style.display=""}}}});
         function wire(){
+          wireVolume(); wireRate();
           const btn=document.getElementById("ytPlay"),hit=document.getElementById("ytHit"),
                 seek=document.getElementById("ytSeek"),fill=document.getElementById("ytFill"),
                 time=document.getElementById("ytTime"),fs=document.getElementById("ytFs"),wrap=document.getElementById("ytWrap");
@@ -447,6 +473,55 @@
               sec.classList.toggle("collapsed",close);
               if(close)set.add(Number(sec.dataset.ch))});
             chSave(set)})}
+      }
+      /* Am luong: nho muc da chon giua cac bai, bam bieu tuong de tat/bat tieng. */
+      const VOL_KEY="ducpt-am-luong";
+      function volIcon(v,muted){return (muted||v===0)?"🔇":(v<50?"🔉":"🔊")}
+      function wireVolume(){
+        const range=document.getElementById("ytVol"),btn=document.getElementById("ytMute");
+        if(!range||!btn||!ytPlayer)return;
+        let saved=100;try{const s=localStorage.getItem(VOL_KEY);if(s!==null)saved=Math.max(0,Math.min(100,Number(s)||0))}catch(e){}
+        range.value=saved;
+        /* Tu giu co "dang tat tieng": ytPlayer.isMuted() tra ve trang thai CU ngay sau khi goi
+           mute()/unMute(), doc luon se lam bieu tuong tre mot nhip. */
+        let muted=(saved===0);
+        try{ytPlayer.setVolume(saved);if(muted)ytPlayer.mute();else ytPlayer.unMute()}catch(e){}
+        const paint=()=>{const v=Number(range.value);
+          btn.textContent=volIcon(v,muted);
+          btn.setAttribute("title",muted?"Bật tiếng":"Tắt tiếng");
+          range.style.setProperty("--vf",(muted?0:v)+"%")};
+        paint();
+        range.addEventListener("input",()=>{const v=Number(range.value);
+          muted=(v===0);
+          try{ytPlayer.setVolume(v);if(muted)ytPlayer.mute();else ytPlayer.unMute()}catch(e){}
+          try{localStorage.setItem(VOL_KEY,String(v))}catch(e){}
+          paint()});
+        btn.addEventListener("click",()=>{
+          muted=!muted;
+          try{
+            if(muted){ytPlayer.mute()}
+            else{ytPlayer.unMute();if(Number(range.value)===0){range.value=60;ytPlayer.setVolume(60);try{localStorage.setItem(VOL_KEY,"60")}catch(e){}}}
+          }catch(e){}
+          paint()});
+      }
+
+      /* Toc do phat: 0.5x den 2x, cung nho lai cho bai sau. */
+      const RATE_KEY="ducpt-toc-do";
+      const RATES=[0.5,0.75,1,1.25,1.5,1.75,2];
+      function wireRate(){
+        const btn=document.getElementById("ytRate"),menu=document.getElementById("ytRateMenu");
+        if(!btn||!menu||!ytPlayer)return;
+        let saved=1;try{const s=Number(localStorage.getItem(RATE_KEY));if(RATES.includes(s))saved=s}catch(e){}
+        const apply=v=>{try{ytPlayer.setPlaybackRate(v)}catch(e){}
+          try{localStorage.setItem(RATE_KEY,String(v))}catch(e){}
+          btn.textContent=(v===1?"1":String(v))+"×";
+          menu.querySelectorAll("button").forEach(b=>b.classList.toggle("on",Number(b.dataset.r)===v))};
+        menu.innerHTML=RATES.map(v=>`<button type="button" data-r="${v}">${v===1?"Bình thường":v+"×"}</button>`).join("");
+        apply(saved);
+        btn.addEventListener("click",e=>{e.stopPropagation();menu.classList.toggle("open")});
+        menu.addEventListener("click",e=>{e.stopPropagation();const b=e.target.closest("[data-r]");
+          if(!b)return;apply(Number(b.dataset.r));menu.classList.remove("open")});
+        document.addEventListener("click",()=>menu.classList.remove("open"));
       }
       function durSeconds(v){const t=String(v||"").trim();if(!/^\d/.test(t))return 0;const p=t.split(":").map(Number);while(p.length<3)p.unshift(0);return p[0]*3600+p[1]*60+p[2]}
       function fmtHMS(s){const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;return `${String(h).padStart(2,"0")}:${String(m).padStart(2,"0")}:${String(x).padStart(2,"0")}`}

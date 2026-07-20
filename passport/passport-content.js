@@ -1119,6 +1119,15 @@
       + ".ytseek{flex:1;height:5px;border-radius:999px;background:rgba(255,255,255,.26);cursor:pointer;overflow:hidden}.ytseek i{display:block;height:100%;width:0;background:#38bdf8}"
       + ".yttime{color:#e2e8f0;font-size:11px;font-variant-numeric:tabular-nums;flex:none}"
       + ".ytload{position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:#93a6c9;font-size:12px;background:#0b1220}"
+      + ".ytvol{display:flex;align-items:center;gap:6px;flex:none}"
+      + ".ytvol-range{--vf:100%;width:70px;height:4px;border-radius:99px;cursor:pointer;appearance:none;-webkit-appearance:none;background:linear-gradient(90deg,#38bdf8 var(--vf),rgba(255,255,255,.24) var(--vf))}"
+      + ".ytvol-range::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:11px;height:11px;border-radius:50%;background:#fff;cursor:pointer}"
+      + ".ytrate{position:relative;flex:none}"
+      + ".ytrate>button{min-width:32px;font-size:12px;font-weight:800}"
+      + ".ytrate-menu{position:absolute;right:0;bottom:calc(100% + 8px);z-index:8;display:none;min-width:128px;padding:6px;border-radius:11px;background:rgba(12,18,28,.97);border:1px solid rgba(255,255,255,.14)}"
+      + ".ytrate-menu.open{display:block}"
+      + ".ytrate-menu button{display:block;width:100%;text-align:left;padding:7px 10px;border:0;border-radius:7px;background:transparent;color:#e8eef4;font:700 12.5px/1.2 inherit;cursor:pointer}"
+      + ".ytrate-menu button.on{background:#2563eb;color:#fff}"
       + ".ytposter{position:absolute;inset:0;z-index:6;display:grid;place-items:center;cursor:pointer;background:radial-gradient(circle at 50% 42%,rgba(37,99,235,.28),transparent 62%),linear-gradient(180deg,#0b1220,#060b14)}"
       + ".ytposter .pp-btn{display:grid;place-items:center;width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);box-shadow:0 14px 34px rgba(37,99,235,.45)}"
       + ".ytposter .pp-btn i{display:block;width:0;height:0;margin-left:5px;border-style:solid;border-width:12px 0 12px 19px;border-color:transparent transparent transparent #fff}"
@@ -1324,7 +1333,7 @@
   }
 
   function playerHtml(lesson) {
-    if (lesson.youtubeId) return `<div class="ytwrap" data-yt-wrap><div data-yt-host></div><div class="ythit" data-yt-hit></div><div class="ytbar"><button type="button" data-yt-play aria-label="Phát/Dừng">▶</button><div class="ytseek" data-yt-seek><i data-yt-fill></i></div><span class="yttime" data-yt-time>0:00 / 0:00</span><button type="button" data-yt-fs aria-label="Toàn màn hình">⛶</button></div><div class="ytposter" data-yt-poster><div class="pp-btn"><i></i></div><div class="pp-cap">${esc(lesson.title || "Bài học DUCPT")}<small>Bấm để phát</small></div></div><div class="ytload" data-yt-load>Đang tải bài học…</div></div>`;
+    if (lesson.youtubeId) return `<div class="ytwrap" data-yt-wrap><div data-yt-host></div><div class="ythit" data-yt-hit></div><div class="ytbar"><button type="button" data-yt-play aria-label="Phát/Dừng">▶</button><div class="ytseek" data-yt-seek><i data-yt-fill></i></div><span class="yttime" data-yt-time>0:00 / 0:00</span><div class="ytvol"><button type="button" data-yt-mute aria-label="Âm lượng">🔊</button><input class="ytvol-range" type="range" min="0" max="100" step="1" value="100" data-yt-vol aria-label="Mức âm lượng"></div><div class="ytrate"><button type="button" data-yt-rate aria-label="Tốc độ phát">1×</button><div class="ytrate-menu" data-yt-rate-menu></div></div><button type="button" data-yt-fs aria-label="Toàn màn hình">⛶</button></div><div class="ytposter" data-yt-poster><div class="pp-btn"><i></i></div><div class="pp-cap">${esc(lesson.title || "Bài học DUCPT")}<small>Bấm để phát</small></div></div><div class="ytload" data-yt-load>Đang tải bài học…</div></div>`;
     const direct = playableUrl(lesson);
     if (direct) return `<video controls playsinline preload="metadata" poster="${esc(thumbFor(lesson))}" src="${esc(direct)}"></video>`;
     return "Chưa gắn video cho bài này — dán link YouTube ở ô bên dưới";
@@ -1389,6 +1398,71 @@
     });
   }
 
+
+  /* Âm lượng + tốc độ phát, nhớ lại giữa các bài. isMuted() trả trạng thái CŨ ngay sau
+     khi gọi mute()/unMute() nên tự giữ cờ riêng, tránh biểu tượng trễ một nhịp. */
+  var VOL_KEY = "ducpt-am-luong", RATE_KEY = "ducpt-toc-do";
+  var RATES = [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2];
+
+  function wireVolumeRate(wrap) {
+    var player = window.__dgYtPlayer;
+    var range = wrap.querySelector("[data-yt-vol]");
+    var mute = wrap.querySelector("[data-yt-mute]");
+    var rateBtn = wrap.querySelector("[data-yt-rate]");
+    var rateMenu = wrap.querySelector("[data-yt-rate-menu]");
+    if (range && mute) {
+      var saved = 100;
+      try { var s = localStorage.getItem(VOL_KEY); if (s !== null) saved = Math.max(0, Math.min(100, Number(s) || 0)); } catch (e) {}
+      range.value = saved;
+      var muted = saved === 0;
+      try { player.setVolume(saved); if (muted) player.mute(); else player.unMute(); } catch (e) {}
+      var paint = function () {
+        var v = Number(range.value);
+        mute.textContent = (muted || v === 0) ? "🔇" : (v < 50 ? "🔉" : "🔊");
+        mute.title = muted ? "Bật tiếng" : "Tắt tiếng";
+        range.style.setProperty("--vf", (muted ? 0 : v) + "%");
+      };
+      paint();
+      range.addEventListener("input", function () {
+        var v = Number(range.value); muted = (v === 0);
+        try { player.setVolume(v); if (muted) player.mute(); else player.unMute(); } catch (e) {}
+        try { localStorage.setItem(VOL_KEY, String(v)); } catch (e) {}
+        paint();
+      });
+      mute.addEventListener("click", function () {
+        muted = !muted;
+        try {
+          if (muted) player.mute();
+          else { player.unMute(); if (Number(range.value) === 0) { range.value = 60; player.setVolume(60); } }
+        } catch (e) {}
+        paint();
+      });
+    }
+    if (rateBtn && rateMenu) {
+      var savedRate = 1;
+      try { var r = Number(localStorage.getItem(RATE_KEY)); if (RATES.indexOf(r) >= 0) savedRate = r; } catch (e) {}
+      rateMenu.innerHTML = RATES.map(function (v) {
+        return '<button type="button" data-r="' + v + '">' + (v === 1 ? "Bình thường" : v + "×") + '</button>';
+      }).join("");
+      var applyRate = function (v) {
+        try { player.setPlaybackRate(v); } catch (e) {}
+        try { localStorage.setItem(RATE_KEY, String(v)); } catch (e) {}
+        rateBtn.textContent = (v === 1 ? "1" : String(v)) + "×";
+        Array.prototype.forEach.call(rateMenu.querySelectorAll("button"), function (b) {
+          b.classList.toggle("on", Number(b.getAttribute("data-r")) === v);
+        });
+      };
+      applyRate(savedRate);
+      rateBtn.addEventListener("click", function (e) { e.stopPropagation(); rateMenu.classList.toggle("open"); });
+      rateMenu.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var b = e.target.closest("[data-r]"); if (!b) return;
+        applyRate(Number(b.getAttribute("data-r"))); rateMenu.classList.remove("open");
+      });
+      document.addEventListener("click", function () { rateMenu.classList.remove("open"); });
+    }
+  }
+
   function wirePlayer(wrap) {
     const player = window.__dgYtPlayer;
     const btn = wrap.querySelector("[data-yt-play]");
@@ -1408,6 +1482,7 @@
       if (document.fullscreenElement) document.exitFullscreen();
       else if (wrap.requestFullscreen) wrap.requestFullscreen();
     });
+    wireVolumeRate(wrap);
     clearInterval(window.__dgYtTick);
     window.__dgYtTick = setInterval(() => {
       if (!document.body.contains(wrap)) return clearInterval(window.__dgYtTick);
