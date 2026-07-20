@@ -1137,6 +1137,9 @@
       + ".thumb-row .btn{padding:6px 11px;font-size:11.5px}"
       + ".thumb-prev{display:block;margin-top:8px}"
       + ".thumb-prev img{width:190px;aspect-ratio:16/9;object-fit:cover;border-radius:9px;background:#e2e8f0;border:1px solid var(--line)}"
+      + ".draft-alert{margin:14px 0 0;padding:13px 16px;border:1px solid #fcd34d;border-radius:14px;background:linear-gradient(90deg,#fffbeb,#fff7ed)}"
+      + ".draft-alert b{display:block;color:#92400e;font-size:13.5px;margin-bottom:5px}"
+      + ".draft-alert span{display:block;color:#78350f;font-size:12.5px;line-height:1.6}"
       + ".pc-draft{color:#047857;font-size:11px;font-weight:800;margin-right:10px;white-space:nowrap}"
       + ".ca-src-note{margin:8px 0 0;color:var(--muted);font-size:11px}"
       + ".ca-body{padding:16px 18px}.ca-eyebrow{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border:1px solid #dbeafe;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:10.5px;font-weight:900;letter-spacing:.07em;text-transform:uppercase}"
@@ -1173,16 +1176,24 @@
     }
     try {
       const draft = JSON.parse(localStorage.getItem("ducpt_course_videos_draft_v1") || "null");
-      const legacyDraftText = draft ? JSON.stringify({
-        modules: draft.course?.modules || [],
-        firstLessons: (draft.lessons || []).slice(0, 24).map((item) => ({ module: item.module, title: item.title }))
-      }) : "";
-      const isLegacyMoneyFirstDraft =
-        legacyDraftText.includes("Tư duy tiền & tài chính cá nhân") ||
-        legacyDraftText.includes("tài chính cá nhân") ||
-        (draft?.lessons || []).slice(0, 8).some((item) => item.module === "M1" && /tiền|dòng tiền|giàu|nợ/i.test(item.title || ""));
-      if (isLegacyMoneyFirstDraft) {
-        localStorage.removeItem("ducpt_course_videos_draft_v1");
+      const draftLessons = (draft && Array.isArray(draft.lessons)) ? draft.lessons : [];
+      const serverLessons = Array.isArray(data.lessons) ? data.lessons : [];
+
+      /* LUẬT CŨ GÂY MẤT VIỆC: chỉ so mốc thời gian, bên nào mới hơn thì thắng.
+         Sửa dữ liệu trên máy chủ là bản nháp có bài của Founder bị đè, bài "biến mất".
+         LUẬT MỚI: bản nháp có bài mà máy chủ CHƯA có thì KHÔNG BAO GIỜ bị bỏ —
+         giữ lại và báo rõ để Founder biết còn bài chưa lên website. */
+      const serverIds = new Set(serverLessons.map((x) => String(x.id || x.youtubeId || "")));
+      const chuaLen = draftLessons.filter((x) => !serverIds.has(String(x.id || x.youtubeId || "")));
+
+      if (chuaLen.length) {
+        /* Giữ nội dung khóa học mới nhất từ máy chủ, nhưng gộp lại các bài chỉ có trong nháp. */
+        data = {
+          ...data,
+          course: { ...(data.course || {}), ...(draft.course || {}), modules: (data.course && data.course.modules) || (draft.course || {}).modules || [] },
+          lessons: serverLessons.concat(chuaLen)
+        };
+        window.__ducptDraftRecovered = chuaLen.length;
       } else if (draft && draft.course && (draft.course.updatedAt || "") > (data.course.updatedAt || "")) {
         data = draft;
       }
@@ -1203,6 +1214,7 @@
     const publishedCount = data.lessons.filter((item) => item.status === "published").length;
     view.innerHTML = `
       <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quản lý học viên & video khóa học</h2><div class="pc-hint">Dán link YouTube, sửa mô tả, sắp xếp bài học và xuất bản lên trang /khoa-hoc/. Trên ducpt.com, nút Lưu sẽ commit file JSON thẳng vào GitHub nếu không có API server.</div></div><div class="pc-right"><span class="pc-draft" data-draft-at>${draftStamp()}</span><span class="pc-saved" data-saved></span><div class="ytc-view-switch"><button class="${viewMode==="admin"?"is-active":""}" data-view-mode="admin" type="button">${ICO.edit}Quản trị</button><button class="${viewMode==="student"?"is-active":""}" data-view-mode="student" type="button">${ICO.eye}Học viên</button></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">${ICO.eye}Mở trang học</a><button class="btn primary" data-save-all type="button">${ICO.save}Lưu tất cả</button></div></div>
+      ${window.__ducptDraftRecovered ? `<div class="draft-alert"><b>⚠ Có ${window.__ducptDraftRecovered} bài đang lưu trên máy này, CHƯA lên website.</b><span>Bài vẫn còn nguyên và đã được khôi phục vào danh sách bên phải. Muốn học viên thấy được thì phải đẩy lên website: mở mục <b>Cài đặt lưu trữ</b> ở cuối trang, điền token GitHub một lần, rồi bấm <b>Lưu tất cả</b>.</span></div>` : ""}
       <div class="ytc-steps"><div class="ytc-step"><i>1</i><div><b>Dán link YouTube</b><span>Video để chế độ Không công khai (unlisted)</span></div></div><em>→</em><div class="ytc-step"><i>2</i><div><b>Bấm Đồng bộ</b><span>Tự lấy tiêu đề + ảnh thumbnail</span></div></div><em>→</em><div class="ytc-step"><i>3</i><div><b>Sửa mô tả rồi Lưu tất cả</b><span>Bài "Đang hiển thị" sẽ lên trang học viên</span></div></div></div>
       <div class="cs-metrics"><article class="card metric"><span>${ICO.list}Tổng bài học</span><strong>${data.lessons.length}</strong><small>Trong khóa này</small></article><article class="card metric"><span>${ICO.eye}Đang hiển thị</span><strong>${publishedCount}</strong><small>Học viên thấy trên trang học</small></article><article class="card metric"><span>${ICO.edit}Nháp / tạm ẩn</span><strong>${data.lessons.length - publishedCount}</strong><small>Chỉ mình bạn thấy</small></article><article class="card metric"><span>${ICO.cloud}Lưu trữ</span><strong>${githubConfig().token ? "Đã kết nối" : "Chưa kết nối"}</strong><small>${githubConfig().token ? "Lưu thẳng lên website" : "Mở Cài đặt lưu trữ bên dưới"}</small></article></div>
       ${viewMode === "student" ? studentPreviewHtml() : adminEditorHtml(lesson)}
@@ -1635,6 +1647,13 @@
       collectCourse(document.getElementById("courseAdmin"));
     } catch (e) {}
     try {
+      /* CHAN GHI DE MAT VIEC: khong bao gio luu de len ban nhap dang co NHIEU bai hon.
+         Truoc day mo trang luc du lieu rong roi chuyen tab la nhap bi ghi de thanh rong,
+         bai da nap coi nhu mat. Chi cho luu khi so bai khong giam. */
+      const cu = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
+      const soCu = (cu && Array.isArray(cu.lessons)) ? cu.lessons.length : 0;
+      const soMoi = Array.isArray(data.lessons) ? data.lessons.length : 0;
+      if (soCu > soMoi && !window.__ducptChoPhepXoaBai) return;
       localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
       const now = new Date();
       localStorage.setItem(DRAFT_AT_KEY, now.toISOString());
@@ -1726,6 +1745,8 @@
     }));
     view.querySelectorAll("[data-delete-lesson]").forEach((button) => button.addEventListener("click", (event) => {
       if (!confirm("Xóa bài học này?")) return;
+      /* Founder chu dong xoa thi moi cho phep ban nhap giam so bai */
+      window.__ducptChoPhepXoaBai = true;
       const id = event.target.closest("[data-lesson-id]").dataset.lessonId;
       data.lessons = data.lessons.filter((item) => item.id !== id);
       if (editingId === id) editingId = "";

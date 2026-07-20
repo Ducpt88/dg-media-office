@@ -240,6 +240,16 @@
     .course-hero h1{margin:10px 0 10px;font-size:clamp(30px,3.8vw,44px)}
     .hero-lead{max-width:72ch;margin:0;font-size:15.5px;line-height:1.65;color:var(--muted)}
     .hero-lead strong{color:var(--ink);font-weight:800}
+    .hero-sub{margin:6px 0 0;color:var(--blue);font-size:15px;font-weight:800}
+    .hero-promise{display:inline-block;margin:14px 0 0;padding:9px 15px;border-radius:999px;
+      background:linear-gradient(90deg,#eff6ff,#faf5ff);border:1px solid #dbeafe;
+      color:#1d4ed8;font-size:13.5px;font-weight:900}
+    .bgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .bgrid article{padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:#fff}
+    .bgrid article b{display:block;margin-bottom:5px;font-size:14px}
+    .bgrid article p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+    .benefits h2{margin:0 0 4px;font-size:22px}
+    .benefits .bsub{margin:0 0 14px;color:var(--muted);font-size:13px}
     .hero-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
     .hero-stats span{padding:7px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--muted);font-size:12.5px}
     .hero-stats b{color:var(--ink);font-size:15px;font-weight:900;margin-right:4px}
@@ -306,7 +316,9 @@ window.__dgHeroStats = function (course, lessons) {
   <section class="course-hero"><div class="inner">
     <span class="eyebrow">Khóa học thực chiến · DUCPT</span>
     <h1 id="courseTitle">Doanh nghiệp một người</h1>
+    <p class="hero-sub" id="courseSubtitle"></p>
     <p class="hero-lead" id="courseGoal">Vận hành trọn một <strong>công ty 1 người</strong> mà vẫn ra tiền: giữ được dòng tiền, tự động kéo khách, dùng AI làm thay phần việc lặp lại và tự build công cụ để bán — không cần thuê thêm ai.</p>
+    <p class="hero-promise" id="coursePromise"></p>
     <div class="hero-stats">
       <span><b id="hsLessons">—</b> <i id="hsLessonsLabel" style="font-style:normal">bài học</i></span>
       <span><b id="hsChapters">—</b> chương</span>
@@ -320,17 +332,8 @@ window.__dgHeroStats = function (course, lessons) {
       <section>
         <div id="acctChip"></div>
         <article class="panel course-player"><div class="player-frame" id="playerFrame"><div class="empty-player">Đang mở bài học...</div></div><div class="panel-pad"><span class="eyebrow">Đang học</span><h2 id="currentTitle" style="margin:10px 0 6px">Chọn bài học</h2><p id="currentDesc" style="margin:0;color:var(--muted)">Chọn một bài ở danh sách bên phải để học ngay trên website.</p><ul id="currentLearn" class="learn-points"></ul><div class="course-meta"><div class="metric"><span>Tổng bài học</span><strong id="metricVideos">0</strong></div><div class="metric"><span>Nguồn video</span><strong>Video bài học</strong></div><div class="metric"><span>Thời lượng</span><strong id="metricDuration">Theo video</strong></div><div class="metric"><span>Trạng thái</span><strong id="metricStatus">Đang cập nhật</strong></div></div></div></article>
-        <section class="panel benefits">
-          <h2>Học xong bạn vận hành được một công ty 1 người</h2>
-          <div class="bgrid">
-            <article><b>Giữ được dòng tiền</b><p>Dựng hệ thống giữ tiền, nhìn rõ tiền vào - tiền ra thay vì để mọi thứ mơ hồ.</p></article>
-            <article><b>Vận hành một mình</b><p>Gom cả ngày làm việc về một màn hình, không rơi đầu việc, không cần thuê thêm người.</p></article>
-            <article><b>Kéo khách tự động</b><p>Biến một ý tưởng thành nhiều nội dung và chạy traffic đều mỗi ngày bằng automation.</p></article>
-            <article><b>Dùng AI như cộng sự</b><p>Khai thác Fable 5 và AI Agent để làm thay phần việc lặp lại, không dùng như chatbot thường.</p></article>
-            <article><b>Tự build công cụ bán</b><p>Tự làm app và extension để bán, không cần biết gõ code thủ công.</p></article>
-            <article><b>Lên sóng chuyên nghiệp</b><p>Livestream và quay trình bày chỉn chu chỉ với một cú click.</p></article>
-          </div>
-        </section>
+        <section class="panel benefits" id="courseOutcomes"></section>
+        <section class="panel benefits" id="courseForWho"></section>
       </section>
       <aside class="curri panel" id="curriPanel">
         <div class="curri-head">
