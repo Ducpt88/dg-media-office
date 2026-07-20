@@ -1,0 +1,442 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DG BRAND LTD Ecosystem Map</title>
+<style>
+:root{
+  --bg:#f4f5f2;
+  --paper:#fbfbf8;
+  --paper-2:#eef1ec;
+  --ink:#252b27;
+  --muted:#717a74;
+  --line:#d8ddd5;
+  --strong:#18352f;
+  --product:#2f7ea8;
+  --content:#3d9b72;
+  --auto:#9a68b5;
+  --money:#d69b2d;
+  --sales:#d76555;
+  --source:#6d7886;
+  --radius:8px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font:13px/1.45 Inter,ui-sans-serif,system-ui,"Segoe UI",Arial,sans-serif;
+  overflow:hidden;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.shell{height:100vh;display:grid;grid-template-columns:318px minmax(0,1fr) 336px;background:var(--bg)}
+.side,.inspector{
+  min-width:0;
+  background:rgba(251,251,248,.92);
+  border-color:var(--line);
+  backdrop-filter:blur(16px);
+  overflow:auto;
+}
+.side{border-right:1px solid var(--line)}
+.inspector{border-left:1px solid var(--line)}
+.side-head,.panel-head{padding:16px;border-bottom:1px solid var(--line)}
+.brand-row{display:flex;align-items:center;gap:10px}
+.mark{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;background:#173a32;color:#a8f2c7;font-weight:900;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+.brand b{display:block;font-size:15px;letter-spacing:.01em}
+.brand span{display:block;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.searchbar{display:flex;align-items:center;gap:8px;margin-top:14px;padding:9px 10px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+.searchbar svg{width:16px;height:16px;color:#68716b;flex:0 0 auto}
+.searchbar input{width:100%;border:0;outline:0;background:transparent;color:var(--ink)}
+.side-tools{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.tool-btn,.mini-btn,.ghost-btn{
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background:#fff;
+  color:#3d4640;
+  font-weight:800;
+  min-height:34px;
+}
+.tool-btn{display:flex;align-items:center;justify-content:center;gap:7px}
+.tool-btn svg,.mini-btn svg,.ghost-btn svg{width:15px;height:15px;stroke:currentColor}
+.tree{padding:12px 10px 22px}
+.tree-label{margin:10px 8px 8px;color:#858d87;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em}
+details{margin:2px 0 6px}
+summary{
+  list-style:none;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 8px;
+  border-radius:var(--radius);
+  color:#4d5650;
+  font-weight:900;
+}
+summary::-webkit-details-marker{display:none}
+summary:before{content:"";width:8px;height:8px;border-right:2px solid #8b948d;border-bottom:2px solid #8b948d;transform:rotate(-45deg);transition:transform .18s ease}
+details[open] summary:before{transform:rotate(45deg)}
+.node-btn{
+  display:flex;
+  width:100%;
+  align-items:center;
+  gap:8px;
+  border:0;
+  background:transparent;
+  color:#4c554f;
+  padding:7px 9px 7px 29px;
+  border-radius:var(--radius);
+  text-align:left;
+  min-width:0;
+}
+.node-btn:hover,.node-btn.active{background:#e8ece6;color:#111}
+.node-dot{width:9px;height:9px;border-radius:50%;background:var(--c);box-shadow:0 0 0 3px color-mix(in srgb,var(--c),transparent 78%);flex:0 0 auto}
+.node-btn span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.stage{position:relative;min-width:0;overflow:hidden;background:#dfe2dd}
+.stage:before{
+  content:"";
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(87,96,90,.14) 1px,transparent 1px),linear-gradient(90deg,rgba(87,96,90,.14) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.topbar{
+  position:absolute;left:0;right:0;top:0;z-index:20;
+  height:52px;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:0 14px;
+  background:rgba(251,251,248,.78);
+  border-bottom:1px solid rgba(120,130,123,.18);
+  backdrop-filter:blur(14px);
+}
+.topbar-title{display:flex;align-items:center;gap:10px;min-width:0}
+.topbar-title b{font-size:14px;white-space:nowrap}
+.topbar-title span{color:var(--muted);font-size:12px;white-space:nowrap}
+.top-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.segmented{display:flex;padding:3px;border:1px solid var(--line);border-radius:var(--radius);background:#fff}
+.segmented button{border:0;background:transparent;border-radius:6px;min-height:30px;padding:0 10px;color:#5d665f;font-weight:900}
+.segmented button.active{background:#18352f;color:#fff}
+.mini-btn{display:grid;place-items:center;width:34px;height:34px;padding:0}
+.canvas{position:absolute;inset:52px 0 0;overflow:hidden}
+.graph{
+  position:absolute;
+  left:50%;top:50%;
+  width:1500px;height:900px;
+  transform:translate(-50%,-50%) scale(var(--zoom,.78));
+  transform-origin:center;
+  transition:transform .28s ease;
+}
+.links,.rays{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.link{stroke:rgba(76,86,80,.24);stroke-width:1.1;fill:none}
+.link.strong{stroke:rgba(24,53,47,.42);stroke-width:1.6}
+.link.active{stroke:var(--strong);stroke-width:2.2}
+.ray{stroke:rgba(24,53,47,.18);stroke-width:1.1}
+.core-node{
+  position:absolute;left:50%;top:50%;z-index:5;
+  width:176px;min-height:96px;
+  transform:translate(-50%,-50%);
+  display:grid;place-items:center;text-align:center;
+  padding:14px;
+  border:2px solid #244f46;
+  border-radius:18px;
+  background:linear-gradient(180deg,#245f52,#163a34);
+  color:#fff;
+  box-shadow:0 18px 44px rgba(24,53,47,.22),0 0 0 10px rgba(255,255,255,.24);
+}
+.core-node b{display:block;font-size:17px}
+.core-node span{display:block;margin-top:4px;color:#cbf7dc;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.cluster{
+  position:absolute;
+  width:168px;min-height:62px;
+  transform:translate(-50%,-50%);
+  z-index:4;
+  border:2px solid color-mix(in srgb,var(--c),#465049 20%);
+  border-radius:10px;
+  background:color-mix(in srgb,var(--c),#fff 78%);
+  color:#344039;
+  padding:10px 11px;
+  box-shadow:0 12px 26px rgba(56,66,60,.13);
+}
+.cluster b{display:block;font-size:12px;line-height:1.15}
+.cluster span{display:block;margin-top:4px;color:#65706a;font-size:10px;font-weight:800;text-transform:uppercase}
+.g-node{
+  position:absolute;
+  width:160px;
+  min-height:54px;
+  transform:translate(-50%,-50%);
+  z-index:3;
+  border:1.6px solid color-mix(in srgb,var(--c),#5f6861 28%);
+  border-radius:8px;
+  background:rgba(255,255,255,.82);
+  box-shadow:0 10px 22px rgba(60,70,65,.12);
+  color:#303a34;
+  padding:8px 9px;
+  text-align:left;
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,opacity .16s ease;
+}
+.g-node:hover,.g-node.active{transform:translate(-50%,-54%) scale(1.035);box-shadow:0 18px 34px rgba(60,70,65,.18);border-color:var(--c);z-index:8}
+.g-node.dim{opacity:.24}
+.g-node b{display:block;font-size:11px;line-height:1.18;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.g-node span{display:block;margin-top:4px;color:#6c746e;font-size:9px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
+.status{display:inline-flex;align-items:center;gap:4px;margin-top:6px;border-radius:999px;background:color-mix(in srgb,var(--c),#fff 76%);padding:3px 6px;color:#3d4841;font-size:9px;font-weight:900}
+.status:before{content:"";width:5px;height:5px;border-radius:50%;background:var(--c)}
+.legend{
+  position:absolute;left:16px;bottom:16px;z-index:21;
+  display:flex;flex-wrap:wrap;gap:8px;max-width:min(760px,calc(100% - 420px));
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.83);
+  backdrop-filter:blur(12px);
+}
+.legend button{border:0;border-radius:999px;background:#f2f4f0;color:#444f48;padding:6px 9px;font-size:11px;font-weight:900;display:flex;align-items:center;gap:6px}
+.legend button.active{background:#18352f;color:#fff}
+.legend i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.hint{
+  position:absolute;right:16px;bottom:16px;z-index:21;
+  width:min(360px,calc(100% - 32px));
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(255,255,255,.86);
+  padding:10px 12px;
+  color:#626c66;
+  font-size:12px;
+  backdrop-filter:blur(12px);
+}
+.inspector{display:flex;flex-direction:column}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.panel-head div{min-width:0}
+.panel-head b{display:block;font-size:14px}
+.panel-head span{display:block;color:var(--muted);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.ghost-btn{display:inline-flex;align-items:center;gap:6px;padding:0 10px}
+.inspect-body{padding:14px 16px 22px;display:grid;gap:12px}
+.hero-card{
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:linear-gradient(135deg,#18352f,#327f6d 54%,#e0b653);
+  color:#fff;
+  padding:16px;
+  min-height:132px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  box-shadow:0 18px 44px rgba(24,53,47,.16);
+}
+.hero-card span{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;color:#d9f7e4}
+.hero-card b{display:block;margin-top:8px;font-size:22px;line-height:1.03}
+.hero-card small{display:block;margin-top:10px;color:rgba(255,255,255,.82)}
+.metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.metric{border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:9px;min-width:0}
+.metric b{display:block;font-size:16px}
+.metric span{display:block;color:var(--muted);font-size:10px;font-weight:800;text-transform:uppercase}
+.info-box{border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:12px}
+.info-box h3{margin:0 0 7px;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#67716a}
+.info-box p{margin:0;color:#3f4943}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid color-mix(in srgb,var(--c),#c8cec7 40%);border-radius:999px;background:color-mix(in srgb,var(--c),#fff 84%);color:#344039;padding:5px 7px;font-size:10px;font-weight:900}
+.flow-list{display:grid;gap:8px}
+.flow-item{display:flex;align-items:flex-start;gap:8px;border:1px solid var(--line);border-radius:var(--radius);background:#fff;padding:9px}
+.flow-item i{width:20px;height:20px;border-radius:6px;background:var(--c);flex:0 0 auto}
+.flow-item b{display:block;font-size:12px}
+.flow-item span{display:block;color:var(--muted);font-size:11px}
+.empty{color:var(--muted)}
+.mini-map{
+  height:134px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:#fff;
+  position:relative;
+  overflow:hidden;
+}
+.mini-map i{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--c);left:var(--x);top:var(--y);opacity:.75}
+.mini-map strong{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:18px;height:18px;border-radius:50%;background:#18352f}
+.mobile-open{display:none}
+@media(max-width:1180px){
+  .shell{grid-template-columns:286px minmax(0,1fr)}
+  .inspector{position:absolute;right:0;top:0;bottom:0;z-index:40;width:min(360px,92vw);transform:translateX(100%);transition:transform .24s ease;box-shadow:-20px 0 60px rgba(0,0,0,.13)}
+  .inspector.open{transform:translateX(0)}
+  .mobile-open{display:grid}
+}
+@media(max-width:760px){
+  body{overflow:auto}
+  .shell{height:auto;min-height:100vh;display:block}
+  .side{display:none}
+  .stage{height:100vh;min-height:720px}
+  .graph{left:42%;--zoom:.4;width:1300px;height:820px}
+  .topbar{height:auto;min-height:52px;align-items:flex-start;padding:9px 10px;flex-wrap:wrap}
+  .topbar-title{width:100%}
+  .canvas{inset:88px 0 0}
+  .hint{display:none}
+  .legend{left:10px;right:10px;bottom:10px;max-width:none}
+  .legend button{font-size:10px;padding:5px 7px}
+}
+</style>
+</head>
+<body>
+<main class="shell">
+  <aside class="side">
+    <header class="side-head">
+      <div class="brand-row">
+        <div class="mark">DG</div>
+        <div class="brand"><b>DG BRAND LTD</b><span>Live wiki ecosystem</span></div>
+      </div>
+      <label class="searchbar">
+        <svg viewBox="0 0 24 24" fill="none"><path d="m21 21-4.3-4.3M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <input id="search" placeholder="Tim node, workflow, proof...">
+      </label>
+    </header>
+    <div class="side-tools">
+      <button class="tool-btn" id="centerBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v4m0 10v4M3 12h4m10 0h4M8 8l8 8m0-8-8 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Can giua</button>
+      <button class="tool-btn" id="resetBtn"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4v6h6M20 20v-6h-6M20 9A8 8 0 0 0 6.4 5.2L4 10m16 4-2.4 4.8A8 8 0 0 1 4 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Reset</button>
+    </div>
+    <nav class="tree" id="tree"></nav>
+  </aside>
+
+  <section class="stage">
+    <header class="topbar">
+      <div class="topbar-title">
+        <b>DG BRAND LTD - Ecosystem Graph</b>
+        <span id="countLabel">0 nodes</span>
+      </div>
+      <div class="top-actions">
+        <div class="segmented">
+          <button data-view="ecosystem" class="active">He sinh thai</button>
+          <button data-view="growth">Tang truong</button>
+          <button data-view="proof">Proof</button>
+        </div>
+        <button class="mini-btn" id="zoomOut" title="Thu nho"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button class="mini-btn" id="zoomIn" title="Phong to"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        <button class="mini-btn mobile-open" id="openPanel" title="Mo thong tin"><svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+      </div>
+    </header>
+    <div class="canvas" id="canvas">
+      <div class="graph" id="graph">
+        <svg class="rays" id="rays" viewBox="0 0 1500 900" aria-hidden="true"></svg>
+        <svg class="links" id="links" viewBox="0 0 1500 900" aria-hidden="true"></svg>
+        <button class="core-node" id="coreNode"><b>DG BRAND LTD</b><span>Operating system</span></button>
+        <div id="clusterLayer"></div>
+        <div id="nodeLayer"></div>
+      </div>
+    </div>
+    <div class="legend" id="legend"></div>
+    <div class="hint">Bam vao node de xem purpose, input/output va node no nuoi tiep. Dung search/filter de thay ro tung lop trong he sinh thai.</div>
+  </section>
+
+  <aside class="inspector" id="inspector">
+    <header class="panel-head">
+      <div><b id="panelTitle">DG BRAND LTD</b><span id="panelType">Operating system</span></div>
+      <button class="ghost-btn" id="closePanel"><svg viewBox="0 0 24 24" fill="none"><path d="M18 6 6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Dong</button>
+    </header>
+    <div class="inspect-body" id="inspectBody"></div>
+  </aside>
+</main>
+
+<script>
+const groups=[
+  {id:"product",name:"app-product",color:"var(--product)",x:510,y:210},
+  {id:"automation",name:"tool-automation",color:"var(--auto)",x:980,y:250},
+  {id:"content",name:"content-engine",color:"var(--content)",x:470,y:575},
+  {id:"money",name:"money-motivation",color:"var(--money)",x:990,y:620},
+  {id:"sales",name:"sales-crm-growth",color:"var(--sales)",x:750,y:165},
+  {id:"source",name:"sources-proof",color:"var(--source)",x:750,y:735}
+];
+const nodes=[
+  {id:"verba",g:"product",name:"Verba Studio",x:340,y:178,status:"ready",cta:["LIVE","AI transcript","demo"],purpose:"Phong thu san xuat video/live: quay man hinh, live da nen tang, transcript tieng Viet, zoom con tro va chat noi.",input:["Script","Live demo","Audio"],output:["Short video","Course clip","Proof asset"],feeds:["video-workflow","portfolio","sales-page"]},
+  {id:"brain",g:"product",name:"Brain Lite / iMap",x:500,y:105,status:"build",cta:["BRAIN","MAP","WIKI"],purpose:"Bien kien thuc roi rac thanh map de hoc lai, tim y tuong content va tao brief.",input:["Wiki notes","Sources","Transcript"],output:["Mindmap","Brief","Topic cluster"],feeds:["content-bank","dg-maps","money-channel"]},
+  {id:"portfolio",g:"product",name:"DUCPT Portfolio",x:650,y:245,status:"ready",cta:["DUCPT","AI","DEMO"],purpose:"Hub cong cu so va san pham AI cua he sinh thai DUCPT, dung lam showroom va case-study.",input:["Product proof","Screenshots","Case study"],output:["Trust hub","Lead page","Project board"],feeds:["sales-page","case-study"]},
+  {id:"mini-products",g:"product",name:"Mini Product Pages",x:335,y:295,status:"ready",cta:["PAGE","OFFER"],purpose:"Moi san pham co mot trang ban hang nho, lien ket ve hub va automation phu hop.",input:["Feature","Proof","CTA"],output:["Offer page","Lead capture"],feeds:["crm","sales-page"]},
+  {id:"voice-adam",g:"automation",name:"Voice Adam Clean Denoise",x:1055,y:150,status:"ready",cta:["VOICE","ADAM","CLEAN"],purpose:"Workflow voice mac dinh cho video: clean transcript, giam nhieu, QA nghe lai truoc khi dang.",input:["Script","Raw voice"],output:["Clean narration","QA checklist"],feeds:["video-workflow","money-channel"]},
+  {id:"dg-maps",g:"automation",name:"DG Maps YTB Bot",x:1160,y:285,status:"build",cta:["BOT","FOLLOW"],purpose:"Theo doi nguon kien thuc, gom bai moi, tao map/text va bao cao ve Telegram.",input:["YouTube","Web sources","Keywords"],output:["Daily map","Telegram report"],feeds:["brain","content-bank"]},
+  {id:"pinterest",g:"automation",name:"Pinterest AutoPost",x:990,y:385,status:"ready",cta:["PIN","TRAFFIC"],purpose:"Tao luong traffic dai han tu visual assets, pin title va link ve product/content hub.",input:["Images","Titles","URLs"],output:["Pins","Backlinks","Traffic"],feeds:["portfolio","sales-page"]},
+  {id:"telegram-gate",g:"automation",name:"Telegram Review Gate",x:855,y:305,status:"ready",cta:["QA","APPROVE"],purpose:"Cong duyet trung tam: bot gui ket qua, nguoi dung duyet truoc khi dang/xuat ban.",input:["Draft video","Report","Post copy"],output:["Approved asset","Fix request"],feeds:["video-workflow","crm"]},
+  {id:"video-workflow",g:"content",name:"DUC DG Video Workflow",x:330,y:520,status:"ready",cta:["STYLE","BEAT"],purpose:"Tu y tuong/script/voice/live demo thanh short video QA-approved, khong slideshow.",input:["Idea","Voice","Demo footage"],output:["Short video","Hook variants"],feeds:["money-channel","case-study","pinterest"]},
+  {id:"content-bank",g:"content",name:"Content Bank",x:505,y:675,status:"build",cta:["IDEA","SCRIPT"],purpose:"Kho idea, hook, script va proof footage tai su dung cho YouTube, Facebook, Reels va website.",input:["Brain maps","Trends","Proof"],output:["Scripts","Briefs","Repurpose plan"],feeds:["video-workflow","money-channel"]},
+  {id:"case-study",g:"content",name:"Case Study Engine",x:610,y:515,status:"ready",cta:["PROOF","STORY"],purpose:"Bien moi san pham/workflow thanh cau chuyen co van de, giai phap, bang chung va CTA.",input:["Project result","Before/after","Screens"],output:["Article","Video case","Sales proof"],feeds:["portfolio","sales-page"]},
+  {id:"clips",g:"content",name:"Clip Factory",x:345,y:705,status:"build",cta:["SHORT","BATCH"],purpose:"Cat mot buoi demo thanh nhieu clip nho, moi clip tro ve node san pham hoac money topic.",input:["Long demo","Transcript"],output:["Clip set","Captions"],feeds:["money-channel","pinterest"]},
+  {id:"money-channel",g:"money",name:"Money Philosophy Channel",x:960,y:535,status:"ready",cta:["MONEY","DISCIPLINE"],purpose:"Luong video ve tien, dong luc, ky luat va comeback de keo traffic rong hon ve he sinh thai.",input:["Personal lesson","Philosophy","Proof"],output:["Subscriber growth","Warm audience"],feeds:["portfolio","sales-page","content-bank"]},
+  {id:"discipline",g:"money",name:"Discipline Training",x:1135,y:595,status:"build",cta:["HABIT","FOCUS"],purpose:"Tach cac bai hoc ky luat thanh series de nuoi niem tin va hanh dong moi ngay.",input:["Routine","Failure log","Win log"],output:["Series","Checklist"],feeds:["money-channel","crm"]},
+  {id:"ancient",g:"money",name:"Ancient Wisdom / Stoicism",x:1025,y:730,status:"seed",cta:["WISDOM","HOOK"],purpose:"Nguon hook trieth ly co chieu sau cho video money/motivation, khong tach roi khoi product.",input:["Quotes","Stories"],output:["Hook bank","Angle map"],feeds:["money-channel","content-bank"]},
+  {id:"sales-page",g:"sales",name:"Offer / Sales Page",x:745,y:75,status:"ready",cta:["BUY","BOOK"],purpose:"Noi chuyen traffic thanh lead/order bang offer ro, proof ro va CTA ro.",input:["Portfolio","Proof","Traffic"],output:["Lead","Order","Call booking"],feeds:["crm"]},
+  {id:"crm",g:"sales",name:"CRM Follow-up",x:895,y:105,status:"build",cta:["LEAD","NURTURE"],purpose:"Theo doi lead den tu content, product page, Telegram va cac kenh social.",input:["Lead form","Comment","DM"],output:["Follow-up task","Pipeline"],feeds:["sales-page","telegram-gate"]},
+  {id:"community",g:"sales",name:"Community / Students",x:610,y:115,status:"seed",cta:["LEARN","GROUP"],purpose:"Bien khach hang/hoc vien thanh feedback, proof va noi dung hoi dap moi.",input:["Questions","Wins","Feedback"],output:["FAQ","Testimonial","Topic"],feeds:["case-study","content-bank"]},
+  {id:"ducptcom",g:"source",name:"ducpt.com",x:710,y:835,status:"ready",cta:["WEB","SOURCE"],purpose:"Nguon public trung tam cho hub, product, portfolio va demo.",input:["Pages","Assets"],output:["Trust signal"],feeds:["portfolio","sales-page"]},
+  {id:"verbario",g:"source",name:"verbar.io",x:850,y:810,status:"ready",cta:["VERBA","SOURCE"],purpose:"Nguon san pham Verba, logo, proof va demo lien quan.",input:["Product site"],output:["Brand proof"],feeds:["verba","case-study"]},
+  {id:"youtube",g:"source",name:"YouTube / Facebook / Reels",x:570,y:805,status:"ready",cta:["SOCIAL","PROOF"],purpose:"Kenh phan phoi video, thu hook va gom tin hieu phan hoi thi truong.",input:["Videos","Comments"],output:["Traffic","Feedback"],feeds:["money-channel","content-bank","crm"]},
+  {id:"telegram",g:"source",name:"Telegram Ops",x:1015,y:820,status:"ready",cta:["OPS","REPORT"],purpose:"Noi nhan report, duyet ket qua va quan sat pipeline ngay.",input:["Bot report","QA"],output:["Decision log"],feeds:["telegram-gate","crm"]}
+];
+const extraLinks=[
+  ["verba","video-workflow","strong"],["brain","content-bank","strong"],["brain","dg-maps"],["portfolio","sales-page","strong"],["mini-products","sales-page"],
+  ["voice-adam","video-workflow","strong"],["dg-maps","brain","strong"],["dg-maps","content-bank"],["pinterest","portfolio"],["telegram-gate","video-workflow"],
+  ["video-workflow","money-channel","strong"],["video-workflow","case-study"],["content-bank","video-workflow","strong"],["case-study","sales-page","strong"],
+  ["clips","pinterest"],["money-channel","sales-page","strong"],["discipline","money-channel"],["ancient","money-channel"],
+  ["sales-page","crm","strong"],["community","case-study"],["community","content-bank"],["ducptcom","portfolio"],["verbario","verba"],["youtube","money-channel"],["youtube","crm"],["telegram","telegram-gate"]
+];
+const groupColor=id=>groups.find(g=>g.id===id)?.color||"var(--source)";
+const nodeById=id=>nodes.find(n=>n.id===id);
+let activeId="verba",filter="all",query="",zoom=.78;
+const tree=document.getElementById("tree"),legend=document.getElementById("legend"),nodeLayer=document.getElementById("nodeLayer"),clusterLayer=document.getElementById("clusterLayer"),links=document.getElementById("links"),rays=document.getElementById("rays"),graph=document.getElementById("graph"),inspector=document.getElementById("inspector");
+function esc(s){return String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]))}
+function matches(n){return (filter==="all"||n.g===filter)&&(!query||[n.name,n.purpose,...n.cta,...n.input,...n.output].join(" ").toLowerCase().includes(query))}
+function renderTree(){
+  tree.innerHTML='<div class="tree-label">wiki</div>'+groups.map(g=>{
+    const items=nodes.filter(n=>n.g===g.id).map(n=>`<button class="node-btn ${n.id===activeId?'active':''}" data-node="${n.id}" style="--c:${groupColor(n.g)}"><i class="node-dot"></i><span>${esc(n.name)}</span></button>`).join("");
+    return `<details open><summary>${esc(g.name)}</summary>${items}</details>`;
+  }).join("")+'<div class="tree-label">sources</div><details open><summary>external links</summary><button class="node-btn"><i class="node-dot" style="--c:var(--source)"></i><span>verbar.io</span></button><button class="node-btn"><i class="node-dot" style="--c:var(--source)"></i><span>ducpt.com</span></button></details>';
+  tree.querySelectorAll("[data-node]").forEach(b=>b.onclick=()=>selectNode(b.dataset.node));
+}
+function renderLegend(){
+  legend.innerHTML=`<button class="${filter==='all'?'active':''}" data-filter="all"><i style="--c:#18352f"></i>Tat ca</button>`+groups.map(g=>`<button class="${filter===g.id?'active':''}" data-filter="${g.id}"><i style="--c:${g.color}"></i>${esc(g.name)}</button>`).join("");
+  legend.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;renderAll()});
+}
+function line(x1,y1,x2,y2,cls="link"){return `<path class="${cls}" d="M${x1} ${y1} C${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2} ${y2}"/>`}
+function renderGraph(){
+  rays.innerHTML=groups.map(g=>`<line class="ray" x1="750" y1="450" x2="${g.x}" y2="${g.y}"/>`).join("");
+  clusterLayer.innerHTML=groups.map(g=>`<button class="cluster" data-filter="${g.id}" style="left:${g.x}px;top:${g.y}px;--c:${g.color}"><b>${esc(g.name)}</b><span>${nodes.filter(n=>n.g===g.id).length} nodes</span></button>`).join("");
+  clusterLayer.querySelectorAll("[data-filter]").forEach(b=>b.onclick=()=>{filter=b.dataset.filter;renderAll()});
+  const active=nodeById(activeId);
+  links.innerHTML=extraLinks.map(([a,b,s])=>{
+    const na=nodeById(a),nb=nodeById(b);
+    const isActive=active&&(a===active.id||b===active.id);
+    return line(na.x,na.y,nb.x,nb.y,`link ${s||""} ${isActive?"active":""}`);
+  }).join("");
+  nodeLayer.innerHTML=nodes.map(n=>{
+    const visible=matches(n);
+    const related=active&&(active.id===n.id||active.feeds.includes(n.id)||n.feeds.includes(active.id)||extraLinks.some(([a,b])=>(a===active.id&&b===n.id)||(b===active.id&&a===n.id)));
+    return `<button class="g-node ${n.id===activeId?'active':''} ${(!visible||!related&&query)?'dim':''}" data-node="${n.id}" style="left:${n.x}px;top:${n.y}px;--c:${groupColor(n.g)}"><b>${esc(n.name)}</b><span>${esc(n.cta.join(" / "))}</span><em class="status">${esc(n.status)}</em></button>`;
+  }).join("");
+  nodeLayer.querySelectorAll("[data-node]").forEach(b=>b.onclick=()=>selectNode(b.dataset.node));
+}
+function renderInspector(){
+  const n=nodeById(activeId);
+  const related=nodes.filter(x=>n.feeds.includes(x.id)||x.feeds.includes(n.id)||extraLinks.some(([a,b])=>(a===n.id&&b===x.id)||(b===n.id&&a===x.id)));
+  document.getElementById("panelTitle").textContent=n.name;
+  document.getElementById("panelType").textContent=groups.find(g=>g.id===n.g).name+" / "+n.status;
+  document.getElementById("inspectBody").innerHTML=`
+    <section class="hero-card"><span>${esc(groups.find(g=>g.id===n.g).name)}</span><b>${esc(n.name)}</b><small>${esc(n.purpose)}</small></section>
+    <div class="metric-grid"><div class="metric"><b>${n.input.length}</b><span>Input</span></div><div class="metric"><b>${n.output.length}</b><span>Output</span></div><div class="metric"><b>${related.length}</b><span>Links</span></div></div>
+    <section class="info-box"><h3>CTA / Proof Tags</h3><div class="chips">${n.cta.map(c=>`<span class="chip" style="--c:${groupColor(n.g)}">${esc(c)}</span>`).join("")}</div></section>
+    <section class="info-box"><h3>Input</h3><div class="chips">${n.input.map(c=>`<span class="chip" style="--c:${groupColor(n.g)}">${esc(c)}</span>`).join("")}</div></section>
+    <section class="info-box"><h3>Output</h3><div class="chips">${n.output.map(c=>`<span class="chip" style="--c:${groupColor(n.g)}">${esc(c)}</span>`).join("")}</div></section>
+    <section class="info-box"><h3>Node no nuoi tiep</h3><div class="flow-list">${related.length?related.map(r=>`<button class="flow-item" data-node="${r.id}" style="--c:${groupColor(r.g)}"><i></i><div><b>${esc(r.name)}</b><span>${esc(r.purpose)}</span></div></button>`).join(""):'<p class="empty">Chua co lien ket phu.</p>'}</div></section>
+    <div class="mini-map">${nodes.map(x=>`<i style="--x:${(x.x/15).toFixed(1)}%;--y:${(x.y/9).toFixed(1)}%;--c:${x.id===n.id?'#18352f':groupColor(x.g)}"></i>`).join("")}<strong></strong></div>
+  `;
+  document.querySelectorAll(".flow-item[data-node]").forEach(b=>b.onclick=()=>selectNode(b.dataset.node));
+}
+function selectNode(id){activeId=id;inspector.classList.add("open");renderAll()}
+function renderAll(){
+  document.getElementById("countLabel").textContent=`${nodes.filter(matches).length}/${nodes.length} nodes`;
+  renderTree();renderLegend();renderGraph();renderInspector();
+}
+document.getElementById("search").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();renderAll()});
+document.getElementById("centerBtn").onclick=()=>{zoom=.78;graph.style.setProperty("--zoom",zoom);activeId="verba";filter="all";query="";document.getElementById("search").value="";renderAll()};
+document.getElementById("resetBtn").onclick=document.getElementById("centerBtn").onclick;
+document.getElementById("zoomIn").onclick=()=>{zoom=Math.min(1.32,zoom+.08);graph.style.setProperty("--zoom",zoom)};
+document.getElementById("zoomOut").onclick=()=>{zoom=Math.max(.62,zoom-.08);graph.style.setProperty("--zoom",zoom)};
+document.getElementById("openPanel").onclick=()=>inspector.classList.add("open");
+document.getElementById("closePanel").onclick=()=>inspector.classList.remove("open");
+document.getElementById("coreNode").onclick=()=>{activeId="verba";filter="all";renderAll()};
+document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-view]").forEach(x=>x.classList.remove("active"));b.classList.add("active");filter=b.dataset.view==="proof"?"source":b.dataset.view==="growth"?"sales":"all";renderAll()});
+renderAll();
+</script>
+<script src="/assets/ducpt-session.js?v=20260720-no-bar" defer></script></body>
+</html>
