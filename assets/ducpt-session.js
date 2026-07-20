@@ -152,20 +152,12 @@
   function injectStyle() {
     if (document.getElementById("ducpt-session-style")) return;
     var css = [
-      '.dgs-bar{position:fixed;top:0;left:0;right:0;z-index:99998;display:flex;align-items:center;gap:10px;padding:7px 16px;',
-      'background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;font:600 12px/1.4 -apple-system,BlinkMacSystemFont,"Be Vietnam Pro",sans-serif;',
-      'box-shadow:0 2px 14px rgba(37,99,235,.34)}',
-      '.dgs-bar b{font-weight:900;letter-spacing:.06em;text-transform:uppercase;font-size:11px}',
-      '.dgs-bar .dgs-where{opacity:.86;font-weight:500}',
-      '.dgs-bar .dgs-sp{flex:1}',
-      '.dgs-bar button,.dgs-bar a.dgs-act{border:1px solid rgba(255,255,255,.4);border-radius:8px;background:rgba(255,255,255,.14);',
-      'color:#fff;padding:5px 11px;font:inherit;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap}',
-      '.dgs-bar button:hover,.dgs-bar a.dgs-act:hover{background:rgba(255,255,255,.28)}',
       '.dgs-avatar{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;flex:none;cursor:pointer;',
       'border:2px solid rgba(255,255,255,.7);background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;font-weight:900;font-size:13px}',
-      '.dgs-menu{position:fixed;top:46px;right:14px;z-index:99999;display:none;min-width:236px;padding:8px;border-radius:14px;',
+      '.dgs-menu{position:fixed;top:64px;right:18px;z-index:99999;display:none;min-width:236px;padding:8px;border-radius:14px;',
       'background:#fff;color:#17213a;box-shadow:0 22px 60px rgba(15,23,42,.28);border:1px solid #e6eaf0}',
       '.dgs-menu.open{display:block}',
+      '.dgs-mode-now{padding:8px 12px;margin-bottom:6px;border-radius:9px;background:#eff6ff;color:#1d4ed8;font-size:11.5px;font-weight:900}',
       '.dgs-menu .dgs-who{padding:10px 12px;border-bottom:1px solid #eef2f7;margin-bottom:6px}',
       '.dgs-menu .dgs-who b{display:block;font-size:13px}',
       '.dgs-menu .dgs-who span{display:block;color:#718096;font-size:11px;margin-top:2px;overflow-wrap:anywhere}',
@@ -174,7 +166,12 @@
       '.dgs-menu a:hover,.dgs-menu button:hover{background:#f1f5f9}',
       '.dgs-menu button.on{background:#eff6ff;color:#1d4ed8}',
       '.dgs-menu .danger{color:#b42318}',
-      'body.dgs-on{padding-top:44px!important}',
+      '.dgs-float{position:fixed;top:14px;right:14px;z-index:99998;display:grid;place-items:center;width:42px;height:42px;',
+      'border-radius:50%;border:2px solid #fff;cursor:pointer;background:linear-gradient(135deg,#1d4ed8,#7c3aed);',
+      'color:#fff;font-weight:900;font-size:16px;box-shadow:0 10px 26px rgba(37,99,235,.4)}',
+      '.dgs-chip.is-student{border-color:#fcd34d;background:#fffbeb}',
+      '.dgs-chip.is-student .dgs-chip-av{background:linear-gradient(135deg,#b45309,#d97706)}',
+      '.dgs-chip.is-student .dgs-chip-txt i{color:#b45309;font-weight:800}',
       /* Chip tài khoản thay cho nút Đăng nhập trong header */
       '.dgs-chip{display:inline-flex;align-items:center;gap:9px;padding:6px 14px 6px 6px;border:1px solid #e6eaf0;border-radius:999px;',
       'background:#fff;color:#17213a;cursor:pointer;font:inherit;box-shadow:0 4px 14px rgba(16,24,40,.07)}',
@@ -194,7 +191,7 @@
       '.dgs-linked-actions a,.dgs-linked-actions button{border:0;border-radius:999px;padding:11px 16px;font:700 14px/1.2 inherit;',
       'text-decoration:none;cursor:pointer;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff}',
       '.dgs-linked-actions .secondary{background:#eef2ff;color:#1e3a8a}',
-      '@media(max-width:700px){.dgs-bar .dgs-where,.dgs-bar .dgs-full{display:none}.dgs-bar{padding:6px 10px;gap:7px}}'
+      '@media(max-width:820px){.dgs-float{width:38px;height:38px;font-size:14px}}'
     ].join("");
     var el = document.createElement("style");
     el.id = "ducpt-session-style";
@@ -210,34 +207,22 @@
     var initial = (session.initial || "Đ").trim().charAt(0).toUpperCase() || "Đ";
     var modeLabel = mode === "student" ? "👤 Chế độ học viên" : "⚙ Chế độ quản trị";
 
-    var bar = document.createElement("div");
-    bar.className = "dgs-bar";
-    bar.innerHTML =
-      '<b>' + modeLabel + '</b>' +
-      '<span class="dgs-where dgs-full">' + (target ? 'Trang này sửa ở mục: ' + target.label : 'Trang public') + '</span>' +
-      '<span class="dgs-sp"></span>' +
-      (target ? '<a class="dgs-act dgs-full" href="/passport/#' + target.view + '">Sửa trang này</a>' : '') +
-      '<div class="dgs-avatar" data-dgs-avatar title="Tài khoản quản trị">' + initial + '</div>';
-
+    /* Thanh quản trị đã bỏ theo yêu cầu Founder — mọi thứ dồn vào menu này,
+       mở bằng chip tài khoản trên nav (hoặc avatar nổi nếu trang không có nav). */
     var menu = document.createElement("div");
     menu.className = "dgs-menu";
     menu.innerHTML =
       '<div class="dgs-who"><b>' + (session.name || 'Quản trị viên') + '</b><span>' + (session.email || 'Owner · DUCPT') + '</span></div>' +
+      '<div class="dgs-mode-now">' + modeLabel + '</div>' +
       '<button type="button" data-dgs-mode="admin" class="' + (mode === "admin" ? "on" : "") + '">Quyền Admin</button>' +
       '<button type="button" data-dgs-mode="student" class="' + (mode === "student" ? "on" : "") + '">Quyền học viên</button>' +
       '<a href="/passport/">Về trang Passport</a>' +
       (target ? '<a href="/passport/#' + target.view + '">Sửa trang này (' + target.label + ')</a>' : '') +
       '<button type="button" class="danger" data-dgs-logout>Đăng xuất quản trị</button>';
 
-    document.body.appendChild(bar);
     document.body.appendChild(menu);
-    document.body.classList.add("dgs-on");
     render.menu = menu;
 
-    bar.querySelector("[data-dgs-avatar]").addEventListener("click", function (e) {
-      e.stopPropagation();
-      menu.classList.toggle("open");
-    });
     document.addEventListener("click", function () { menu.classList.remove("open"); });
     menu.addEventListener("click", function (e) { e.stopPropagation(); });
 
@@ -268,17 +253,29 @@
     Array.prototype.forEach.call(nodes, function (el) {
       var txt = (el.textContent || "").replace(/\s+/g, " ").trim();
       if (!LOGIN_TEXT.test(txt) && !el.hasAttribute("data-open-customer-login")) return;
-      if (el.closest(".dgs-bar")) return;
       if (!host) host = el.parentNode;
       el.style.display = "none";
       hidden.push(el);
     });
-    if (!host) return 0;
+    /* Thanh quan tri da bo. Chip la LOI VAO DUY NHAT cua menu, nen trang nao khong co
+       nut dang nhap trong nav thi van phai co mot avatar noi goc phai de bam duoc. */
+    if (!host) {
+      var float = document.createElement("button");
+      float.type = "button";
+      float.className = "dgs-float";
+      float.title = "Tai khoan quan tri";
+      float.textContent = session.initial || "Đ";
+      float.addEventListener("click", function (e) { e.stopPropagation(); menu.classList.toggle("open"); });
+      document.body.appendChild(float);
+      return 0;
+    }
 
     var chip = document.createElement("button");
     chip.type = "button";
     chip.className = "dgs-chip";
-    var subtitle = readViewMode() === "student" ? "Học viên · đã đăng nhập" : "Quản trị · đã đăng nhập";
+    var studentMode = readViewMode() === "student";
+    var subtitle = studentMode ? "Đang xem như học viên" : "Quản trị · đã đăng nhập";
+    if (studentMode) chip.className = "dgs-chip is-student";
     chip.innerHTML = '<span class="dgs-chip-av">' + (session.initial || "Đ") + '</span>' +
       '<span class="dgs-chip-txt"><b>' + (session.name || "Quản trị viên") + '</b><i>' + subtitle + '</i></span>';
     chip.addEventListener("click", function (e) {
@@ -320,18 +317,6 @@
     if (logout) logout.addEventListener("click", function () { clearSession(); location.reload(); });
   }
 
-  /* Nhiều trang có header dán dính (sticky/fixed) ở top:0 — nó sẽ nằm ĐÈ dưới thanh quản trị,
-     làm chip tài khoản bị che mất. Đẩy mọi header dán dính xuống đúng chiều cao thanh. */
-  function offsetStickyHeaders(barH) {
-    Array.prototype.forEach.call(document.querySelectorAll("header,nav,.top,.topbar"), function (el) {
-      if (el.closest(".dgs-bar")) return;
-      var s = getComputedStyle(el);
-      if (s.position !== "sticky" && s.position !== "fixed") return;
-      if (parseInt(s.top, 10) !== 0) return;
-      el.style.top = barH + "px";
-    });
-  }
-
   function boot() {
     var session = readSession();
     if (!session) return;          // khách thường: không chèn gì, trang giữ nguyên như cũ
@@ -339,7 +324,6 @@
     var menu = render(session);
     swapNavLogin(session, menu);
     replaceAuthPrompt(session);
-    offsetStickyHeaders(44);
     try { window.dispatchEvent(new CustomEvent("ducpt:admin-session-ready", { detail: { session: session, preview: isPreviewingAsStudent(), viewMode: readViewMode() } })); } catch (e) {}
   }
 
