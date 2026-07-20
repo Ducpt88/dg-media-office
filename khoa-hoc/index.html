@@ -460,6 +460,13 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
             setRole("free");
             const freeN=state.lessons.filter(l=>l.access!=="premium").length;
             if(st)st.textContent=`✅ Đã mở quyền học. Bạn xem được ${freeN} bài FREE ngay bây giờ.`;
+            /* Kich hoat ngay: cuon toi trinh phat va mo san bai FREE dau tien de nguoi moi hoc luon,
+               khong phai tu mo tim bai trong danh sach. */
+            setTimeout(()=>{try{
+              const dau=state.lessons.find(l=>l.access!=="premium");
+              if(dau){selectPackagedLesson(dau.id);
+                document.querySelector(".course-player")?.scrollIntoView({behavior:"smooth",block:"center"});}
+            }catch(e){}},600);
           },900)});}
       function playableSource(lesson){const youtubeId=youtubeIdFromLesson(lesson);if(youtubeId)return{type:"youtube",id:youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,label:"Video bài học"};const url=directVideoUrl(lesson);return url?{type:"video",url,label:"Video khóa học"}:null}
       function directVideoUrl(lesson){return String(lesson.videoUrl||lesson.publicUrl||lesson.storageUrl||lesson.assetUrl||(!youtubeIdFromLesson(lesson)?lesson.youtubeUrl:"")||"").trim()}
