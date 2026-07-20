@@ -5,7 +5,7 @@
     "contact": "Zalo 0963249467",
     "goal": "Bạn học cách dựng một \"văn phòng\" đầy đủ phòng ban ngay trên máy tính của mình: có người điều phối, có người làm nội dung, có người dựng công cụ, có kế toán soát tiền — tất cả do AI đóng vai, còn bạn chỉ ra đề bài và bấm duyệt. Hết khóa, bạn cầm trong tay một bộ máy chạy được mỗi ngày, không phụ thuộc trí nhớ và không phụ thuộc nhân sự.",
     "cover": "/assets/course/doanh-nghiep-1-nguoi.png",
-    "updatedAt": "2026-07-20T10:43:46+07:00",
+    "updatedAt": "2026-07-20T11:06:08+07:00",
     "modules": [
       {
         "code": "M1",
@@ -103,6 +103,18 @@
           "Lịch lên hình bền: mỗi tuần bao nhiêu là đủ"
         ],
         "lessonPlanned": 8
+      },
+      {
+        "code": "M7",
+        "title": "Thực hành có hướng dẫn — xem qua vai làm thật từng bước",
+        "desc": "Loạt bài quay màn hình: đi từ máy trắng tới lúc bộ máy chạy được. Xem tới đâu làm theo tới đó.",
+        "track": "review",
+        "outline": [
+          "Setup từ số 0 cho người mới — phần 1: dựng nền",
+          "Setup từ số 0 cho người mới — phần 2: hoàn tất và chạy thử",
+          "Giao AI triển khai và tối ưu một dự án thật",
+          "Để một Agent cầm đầu dự án — vận hành công ty một người"
+        ]
       }
     ],
     "private": true,
@@ -149,6 +161,98 @@
       "type": "clip",
       "thumbnail": "",
       "updatedAt": "2026-07-20T10:43:46+07:00"
+    },
+    {
+      "id": "yt-tFdYb-H2oyQ",
+      "lessonNo": 2,
+      "sort": 2,
+      "module": "M7",
+      "moduleNo": "7.1",
+      "youtubeId": "tFdYb-H2oyQ",
+      "youtubeUrl": "https://www.youtube.com/watch?v=tFdYb-H2oyQ",
+      "title": "Setup từ số 0 cho người mới — phần 1: dựng nền",
+      "description": "Bắt đầu từ máy trắng: cài đặt, cấu trúc thư mục và những lựa chọn ban đầu quyết định về sau.",
+      "objective": "Dựng xong nền để bắt đầu, không phải mò từng bước.",
+      "learnPoints": [
+        "Chuẩn bị máy và công cụ tối thiểu",
+        "Cấu trúc thư mục không rối về sau",
+        "Lỗi hay gặp ở buổi đầu"
+      ],
+      "duration": "16:52",
+      "status": "published",
+      "access": "premium",
+      "type": "review",
+      "thumbnail": "",
+      "updatedAt": "2026-07-20T11:06:08+07:00"
+    },
+    {
+      "id": "yt-tfmYkwYUTd4",
+      "lessonNo": 3,
+      "sort": 3,
+      "module": "M7",
+      "moduleNo": "7.2",
+      "youtubeId": "tfmYkwYUTd4",
+      "youtubeUrl": "https://www.youtube.com/watch?v=tfmYkwYUTd4",
+      "title": "Setup từ số 0 cho người mới — phần 2: hoàn tất và chạy thử",
+      "description": "Nối nốt phần còn lại và chạy thử lần đầu để chắc chắn mọi thứ hoạt động.",
+      "objective": "Chạy được lần đầu và biết cách tự kiểm tra.",
+      "learnPoints": [
+        "Hoàn tất cấu hình",
+        "Chạy thử và đọc kết quả",
+        "Tự kiểm tra khi có trục trặc"
+      ],
+      "duration": "4:21",
+      "status": "published",
+      "access": "premium",
+      "type": "review",
+      "thumbnail": "",
+      "updatedAt": "2026-07-20T11:06:08+07:00"
+    },
+    {
+      "id": "yt-2AuTaGh5QWM",
+      "lessonNo": 4,
+      "sort": 4,
+      "module": "M7",
+      "moduleNo": "7.3",
+      "youtubeId": "2AuTaGh5QWM",
+      "youtubeUrl": "https://www.youtube.com/watch?v=2AuTaGh5QWM",
+      "title": "Giao AI triển khai và tối ưu một dự án thật",
+      "description": "Bài dài nhất: xem toàn bộ một dự án được giao cho AI làm, từ nhận việc tới lúc tối ưu xong.",
+      "objective": "Biết cách ra đề bài cho AI để nó làm ra kết quả dùng được.",
+      "learnPoints": [
+        "Cách ra đề bài để AI hiểu đúng",
+        "Theo dõi trong lúc AI chạy",
+        "Chỗ nào phải tự tay kiểm lại"
+      ],
+      "duration": "32:43",
+      "status": "published",
+      "access": "premium",
+      "type": "review",
+      "thumbnail": "",
+      "updatedAt": "2026-07-20T11:06:08+07:00"
+    },
+    {
+      "id": "yt-rpJpXQFUEoc",
+      "lessonNo": 5,
+      "sort": 5,
+      "module": "M7",
+      "moduleNo": "7.4",
+      "youtubeId": "rpJpXQFUEoc",
+      "youtubeUrl": "https://www.youtube.com/watch?v=rpJpXQFUEoc",
+      "title": "Để một Agent cầm đầu dự án — vận hành công ty một người",
+      "description": "Bước cuối: giao quyền điều phối cho một Agent để nó tự chia việc, còn bạn chỉ duyệt.",
+      "objective": "Chuyển từ tự làm sang chỉ ra đề bài và duyệt.",
+      "learnPoints": [
+        "Vai trò của Agent điều phối",
+        "Việc nào được tự quyết, việc nào phải hỏi",
+        "Nhịp duyệt hằng ngày"
+      ],
+      "duration": "4:49",
+      "status": "published",
+      "access": "premium",
+      "type": "review",
+      "thumbnail": "",
+      "updatedAt": "2026-07-20T11:06:08+07:00"
     }
   ],
   "schemaVersion": 2,
