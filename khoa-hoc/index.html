@@ -293,7 +293,10 @@
       function setRole(r){try{localStorage.setItem(ROLE_KEY,r)}catch(e){}refreshCourseUi();try{window.dispatchEvent(new CustomEvent("ducpt:role-changed",{detail:{role:getRole()}}))}catch(e){}}
       function rememberEmailLead(data){try{data=data||{};if(window.DUCPTAdminSession&&typeof window.DUCPTAdminSession.recordEmailLead==="function"){window.DUCPTAdminSession.recordEmailLead(data);return}const email=String(data.email||"").trim().toLowerCase();if(!email)return;let list=[];try{list=JSON.parse(localStorage.getItem(EMAIL_LEADS_KEY)||"[]")}catch(e){list=[]}if(!Array.isArray(list))list=[];const now=new Date().toISOString();let row=list.find(x=>String(x.email||"").toLowerCase()===email);if(row){row.lastSeenAt=now;row.count=Number(row.count||0)+1;if(data.name)row.name=String(data.name);if(data.contact)row.contact=String(data.contact);row.source=data.source||row.source||"course-signup"}else list.unshift({email,name:String(data.name||""),contact:String(data.contact||""),source:data.source||"course-signup",sources:[data.source||"course-signup"],firstSeenAt:now,lastSeenAt:now,count:1});localStorage.setItem(EMAIL_LEADS_KEY,JSON.stringify(list.slice(0,200)))}catch(e){}}
       function refreshCourseUi(preferred){renderPackagedCourse();const preferredId=preferred&&preferred.id;const c=state.lessons.find(l=>l.id===(preferredId||(window.__curLesson||"")))||state.lessons[0];if(c)selectPackagedLesson(c.id);paintAdminBar();renderAccountBox();syncCourseAuthUi()}
-      function syncCourseAuthUi(){const r=getRole();const logged=r!=="guest"||hasLinkedSession();const cta=document.querySelector(".hero-actions .primary-btn");if(cta){cta.textContent=logged?"Vào học ngay":"Đăng ký học miễn phí";cta.setAttribute("href",logged?"#hoc-ngay":"#dang-ky-hoc")}document.querySelectorAll("header a.login,header a.signup").forEach(el=>{el.style.display=logged?"none":""});const card=document.getElementById("dang-ky-hoc"),form=document.getElementById("courseSignup");if(card){const eye=card.querySelector(".eyebrow"),notice=card.querySelector(".notice");if(eye)eye.textContent=logged?"Tài khoản học":"Đăng ký học";if(form)form.style.display=logged?"none":"";if(notice)notice.style.display=logged?"none":"";if(els.registerTitle)els.registerTitle.textContent=logged?(r==="admin"?"Tài khoản quản trị đã liên kết":"Tài khoản học viên đã đăng nhập"):(state.course.title||"Doanh nghiệp một người");if(els.coursePrice)els.coursePrice.style.display=logged?"none":""}if(logged)regModal(false)}
+      function syncCourseAuthUi(){const r=getRole();const logged=r!=="guest"||hasLinkedSession();const cta=document.querySelector(".hero-actions .primary-btn");
+        if(cta){cta.textContent=logged?"Xem danh sách khóa học":"Đăng ký học miễn phí";cta.setAttribute("href",logged?"#hoc-ngay":"#dang-ky-hoc")}
+        /* Da dang nhap roi thi khong moi "Xem chuong trinh hoc" nua — chi con mot loi vao duy nhat. */
+        const ghost=document.querySelector(".hero-actions .ghost-btn");if(ghost)ghost.style.display=logged?"none":"";document.querySelectorAll("header a.login,header a.signup").forEach(el=>{el.style.display=logged?"none":""});const card=document.getElementById("dang-ky-hoc"),form=document.getElementById("courseSignup");if(card){const eye=card.querySelector(".eyebrow"),notice=card.querySelector(".notice");if(eye)eye.textContent=logged?"Tài khoản học":"Đăng ký học";if(form)form.style.display=logged?"none":"";if(notice)notice.style.display=logged?"none":"";if(els.registerTitle)els.registerTitle.textContent=logged?(r==="admin"?"Tài khoản quản trị đã liên kết":"Tài khoản học viên đã đăng nhập"):(state.course.title||"Doanh nghiệp một người");if(els.coursePrice)els.coursePrice.style.display=logged?"none":""}if(logged)regModal(false)}
       window.addEventListener("ducpt:admin-session-ready",()=>refreshCourseUi());
       window.addEventListener("storage",e=>{if(e.key===ROLE_KEY||e.key===MAIL_KEY)refreshCourseUi()});
       function canPlay(lesson){const r=getRole();if(r==="guest")return false;if(lesson.access==="premium")return r==="premium"||r==="admin";return true}
@@ -337,13 +340,11 @@
           '<div class="ytseek" id="ytSeek"><i id="ytFill"></i></div>'+
           '<span class="yttime" id="ytTime">0:00 / 0:00</span>'+
           '<button id="ytFs" aria-label="Toàn màn hình">⛶</button></div>'+
-          '<div class="pf-wm" id="pfWm">'+escapeHtml("DUCPT · "+viewerTag())+'</div>'+
+          
           '<div class="ytposter" id="ytPoster"><div class="pp-btn"><i></i></div>'+
           '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div>'+
           '<div class="ytload" id="ytLoad">Đang tải bài học…</div></div>';
-        const wm=document.getElementById("pfWm");
-        if(wm){const move=()=>{wm.style.left=(6+Math.random()*58)+"%";wm.style.top=(18+Math.random()*56)+"%"};
-          move();clearInterval(window.__ducptWm);window.__ducptWm=setInterval(move,3000)}
+        /* Da bo watermark tren video: khong hien ma/chu tat de khong lo nguon video. */
         await loadYTApi();
         if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát.";return}
         try{if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy()}catch(e){}
