@@ -268,6 +268,38 @@
     @media(max-width:640px){.lesson-item{grid-template-columns:1fr}.lesson-actions{grid-column:1;justify-content:flex-start}.lesson-media{max-width:100%}}
     @media(max-width:560px){.course-meta,.check-grid{grid-template-columns:1fr}.course-hero{padding-top:42px}}
   </style>
+<script>
+/* Bốn ô số liệu đầu trang lấy từ dữ liệu THẬT.
+   Trang này có hai khối mã chạy độc lập nên hàm phải nằm ở phạm vi chung,
+   nhận course/lessons qua tham số thay vì đọc biến state của riêng một khối. */
+window.__dgHeroStats = function (course, lessons) {
+  try {
+    var c = course || {}, L = lessons || [];
+    var mods = Array.isArray(c.modules) ? c.modules : [];
+    if (!mods.length && !L.length) return;
+    var duKien = mods.reduce(function (s, m) { return s + ((m.outline || []).length); }, 0);
+    var tong = Math.max(duKien, L.length);
+    var sec = L.reduce(function (s, l) {
+      var v = String(l.duration || "").trim();
+      if (!/^[0-9]/.test(v)) return s;
+      var pr = v.split(":").map(Number); while (pr.length < 3) pr.unshift(0);
+      return s + pr[0] * 3600 + pr[1] * 60 + pr[2];
+    }, 0);
+    var free = L.filter(function (l) { return l.access !== "premium"; }).length;
+    var set = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
+    set("hsLessons", tong || "—");
+    set("hsLessonsLabel", L.length ? "bài học" : "bài trong chương trình");
+    set("hsChapters", mods.length || "—");
+    if (L.length && sec > 0) {
+      var gio = sec / 3600;
+      set("hsHours", gio >= 1 ? gio.toFixed(gio >= 10 ? 0 : 1) : Math.round(sec / 60));
+      set("hsHoursLabel", gio >= 1 ? "giờ thực chiến" : "phút đã lên");
+    } else { set("hsHours", L.length); set("hsHoursLabel", "video đã lên"); }
+    if (L.length) { set("hsFree", free); set("hsFreeLabel", "bài học miễn phí"); }
+    else { set("hsFree", "0đ"); set("hsFreeLabel", "đăng ký miễn phí"); }
+  } catch (e) {}
+};
+</script>
 </head>
 <body>
   <header class="header"><nav class="nav"><a href="/"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></a><a class="active" href="/khoa-hoc/">Khóa học</a><a href="/bai-viet/">Bài viết</a><a href="/dich-vu/">Dịch vụ đào tạo</a><a href="/cong-cu-ai/">Công cụ AI</a><a href="/ve-chung-toi/">Về chúng tôi</a><span class="grow"></span><a class="login" href="/dang-nhap/">Đăng nhập</a><a class="signup" href="#dang-ky-hoc">Đăng ký học</a></nav></header>
@@ -276,10 +308,10 @@
     <h1 id="courseTitle">Doanh nghiệp một người</h1>
     <p class="hero-lead" id="courseGoal">Vận hành trọn một <strong>công ty 1 người</strong> mà vẫn ra tiền: giữ được dòng tiền, tự động kéo khách, dùng AI làm thay phần việc lặp lại và tự build công cụ để bán — không cần thuê thêm ai.</p>
     <div class="hero-stats">
-      <span><b id="hsLessons">69</b> bài học</span>
-      <span><b>6</b> chương</span>
-      <span><b>9</b> giờ thực chiến</span>
-      <span><b>58</b> bài học miễn phí</span>
+      <span><b id="hsLessons">—</b> <i id="hsLessonsLabel" style="font-style:normal">bài học</i></span>
+      <span><b id="hsChapters">—</b> chương</span>
+      <span><b id="hsHours">—</b> <i id="hsHoursLabel" style="font-style:normal">giờ thực chiến</i></span>
+      <span><b id="hsFree">—</b> <i id="hsFreeLabel" style="font-style:normal">bài học miễn phí</i></span>
     </div>
     <div class="hero-actions"><a class="primary-btn" href="#dang-ky-hoc">Đăng ký học miễn phí</a><a class="ghost-btn" href="#hoc-ngay">Xem chương trình học</a></div>
   </div></section>
@@ -318,6 +350,9 @@
     async function loadCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/api/passport/course-videos",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.status==="published"&&item.youtubeId).sort((a,b)=>(Number(a.sort)||999)-(Number(b.sort)||999));render();if(state.lessons[0])selectLesson(state.lessons[0].id)}
     function render(){if(window.__coursePackagerReady)return;els.courseTitle.textContent=state.course.title||"Khóa học Doanh nghiệp một người";els.courseGoal.textContent=state.course.goal||"Nơi học viên xem danh sách bài học YouTube và đăng ký khóa học.";els.registerTitle.textContent=state.course.title||"Doanh nghiệp một người";els.coursePrice.innerHTML=`${escapeHtml(state.course.price||"Liên hệ")} <small>Tư vấn theo nhu cầu học</small>`;els.metricVideos.textContent=state.lessons.length;els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:"Nguồn YouTube";els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Mở nguồn";if(!state.lessons.length){showYoutubeSource();return}els.lessonList.innerHTML=state.lessons.map((lesson,index)=>{const no=lesson.lessonNo||index+1;const thumb=lesson.thumbnail||`https://i.ytimg.com/vi/${lesson.youtubeId}/hqdefault.jpg`;const desc=lesson.description||"Mô tả bài học đang được cập nhật.";return `<article class="lesson-item" data-id="${escapeHtml(lesson.id)}"><div class="lesson-media"><img class="thumb" src="${escapeHtml(thumb)}" alt=""><span class="lesson-badge">Buổi ${escapeHtml(no)}</span><span class="play-dot">&#9658;</span></div><div class="lesson-copy"><h3>${escapeHtml(lesson.title)}</h3><p>${escapeHtml(desc)}</p><div class="lesson-meta"><span>${escapeHtml(lesson.duration||"Thời lượng trên YouTube")}</span><span>YouTube</span><span>Buổi ${escapeHtml(no)}</span></div></div><div class="lesson-actions"><span class="status-chip">Học ngay</span></div></article>`}).join("");els.lessonList.querySelectorAll(".lesson-item").forEach(row=>row.addEventListener("click",()=>selectLesson(row.dataset.id)))}
     function showYoutubeSource(){
+        window.__dgHeroStats&&window.__dgHeroStats(state.course,state.lessons);
+        /* Da co video that thi khoi ma dong goi lo danh sach — khong ve de len. */
+        if(window.__dgHasLessons)return;
         /* Khoa rieng tu, chua co video: khach nhin thay ANH BIA that + khung chuong trinh hoc,
            bam vao anh de xem to. Khong hien chu "khong co du lieu" cut lun. */
         const c=state.course||{};
@@ -410,13 +445,13 @@
       function sourceLabel(lesson){const source=playableSource(lesson);return source?source.label:"Video"}
       function lessonDescription(lesson){const text=String(lesson.description||"").trim();const lower=text.toLowerCase();if(!text||lower.includes("youtube")||lower.includes("@ducdg2")||lower.includes("đồng bộ"))return lesson.objective||"Mô tả bài học đang được cập nhật.";return text}
       function lessonDuration(lesson){const value=String(lesson.duration||"").trim();return value&&!value.toLowerCase().includes("youtube")?value:"Theo video"}
-      function renderPackagedCourse(){/* Giữ nguyên tiêu đề & mô tả tĩnh trong HTML để chuẩn SEO */
+      function renderPackagedCourse(){window.__dgHeroStats&&window.__dgHeroStats(state.course,state.lessons);/* Giữ nguyên tiêu đề & mô tả tĩnh trong HTML để chuẩn SEO */
         if(els.registerTitle)els.registerTitle.textContent=state.course.title||"Doanh nghiệp một người";
         if(els.coursePrice)els.coursePrice.innerHTML=`${escapeHtml(state.course.price||"Liên hệ")} <small>Tư vấn theo nhu cầu học</small>`;
         els.metricVideos.textContent=state.lessons.length;
         const hs=document.getElementById("hsLessons");if(hs)hs.textContent=state.lessons.length;
         const cs=document.getElementById("curriSub");if(cs)cs.textContent=(state.course.modules||[]).length+" chương · chọn một bài để học ngay";
-        els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:`${(state.course.modules||[]).length} chương · sắp mở`;els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Sắp mở";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";if(!state.lessons.length){showYoutubeSource();return}const modules=Array.isArray(state.course.modules)?state.course.modules:[];/* Giu DU 6 chuong ke ca chuong chua co video: khach chua dang ky van nhin duoc toan canh khoa hoc. */const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");/* Bai da co video xep truoc, cac bai trong danh muc chua quay noi tiep sau, gan nhan "Sap len". */const outline=(g.m&&Array.isArray(g.m.outline))?g.m.outline:[];const daCo=items.map(l=>String(l.title||"").toLowerCase());const conLai=outline.filter(x=>!daCo.some(u=>u.includes(String(x).toLowerCase().slice(0,18))));const soonRows=conLai.map((x,k)=>`<li class="lrow soon"><span class="no">${String(items.length+k+1).padStart(2,"0")}</span><span class="ti">${escapeHtml(x)}</span><span class="bsoon">Sắp lên</span></li>`).join("");const noFree=(items.length&&freeN===0)?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}${chCollapsed(gi)?" collapsed":""}" data-ch="${gi}"><div class="ch-head" data-ch-head><span class="ch-caret">▼</span><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length+conLai.length}</b> bài · Đã có video: <b>${items.length}</b> · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}${soonRows}</ul>${noFree}${more}</section>`}).join("");wireChapterToggle();els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
+        els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:`${(state.course.modules||[]).length} chương · sắp mở`;els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Sắp mở";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";window.__dgHasLessons=state.lessons.length>0;if(!state.lessons.length){showYoutubeSource()}const modules=Array.isArray(state.course.modules)?state.course.modules:[];/* Giu DU 6 chuong ke ca chuong chua co video: khach chua dang ky van nhin duoc toan canh khoa hoc. */const groups=modules.length?modules.map(m=>({m,items:state.lessons.filter(l=>l.module===m.code)})):[{m:null,items:state.lessons}];els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=locked?'<span class="bprem">💎 PREMIUM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>');return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");/* Bai da co video xep truoc, cac bai trong danh muc chua quay noi tiep sau, gan nhan "Sap len". */const outline=(g.m&&Array.isArray(g.m.outline))?g.m.outline:[];const daCo=items.map(l=>String(l.title||"").toLowerCase());const conLai=outline.filter(x=>!daCo.some(u=>u.includes(String(x).toLowerCase().slice(0,18))));const soonRows=conLai.map((x,k)=>`<li class="lrow soon"><span class="no">${String(items.length+k+1).padStart(2,"0")}</span><span class="ti">${escapeHtml(x)}</span><span class="bsoon">Sắp lên</span></li>`).join("");const noFree=(items.length&&freeN===0)?`<div class="ch-none">Không có video FREE ở chương này — đăng ký học để mở ${premN} video PREMIUM.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem toàn bộ ${items.length} video (${premN} bài PREMIUM)</button>`:"";return `<section class="ch${freeN===0?" open":""}${chCollapsed(gi)?" collapsed":""}" data-ch="${gi}"><div class="ch-head" data-ch-head><span class="ch-caret">▼</span><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length+conLai.length}</b> bài · Đã có video: <b>${items.length}</b> · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}${soonRows}</ul>${noFree}${more}</section>`}).join("");wireChapterToggle();els.lessonList.querySelectorAll(".lrow").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn — chỉ hiện video FREE`:`Xem toàn bộ ${items} video (${prem} bài PREMIUM)`}))}
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
       const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1";
       function getRole(){try{const r=localStorage.getItem(ROLE_KEY);return ["free","premium","admin"].includes(r)?r:"guest"}catch(e){return "guest"}}
