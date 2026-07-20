@@ -336,6 +336,15 @@
         const btn=els.playerFrame.querySelector("[data-cover]");
         if(btn)btn.addEventListener("click",()=>openCoverLightbox(cover,c.title||"Khóa học"));
         const mods=Array.isArray(c.modules)?c.modules:[];
+        /* Trang co HAI luong nap du lieu; luong cu co the chay TRUOC khi state.course co modules.
+           Neu chua co chuong nao thi cho du lieu ve roi ve lai, thay vi ve ra man rong. */
+        if(!mods.length){
+          if((window.__soonRetry=(window.__soonRetry||0)+1)<=20){
+            els.lessonList.innerHTML='<article class="empty-course"><h3>Đang tải chương trình học…</h3></article>';
+            setTimeout(showYoutubeSource,300);
+            return;
+          }
+        }
         const tongBai=mods.reduce((s,m)=>s+((m.outline||[]).length),0);
         els.lessonList.innerHTML=mods.length
           ? `<div class="soon-head"><b>Danh mục khóa học Doanh nghiệp một người</b>`
