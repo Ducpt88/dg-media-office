@@ -1,6 +1,9 @@
 (() => {
   const key = "ducpt_orders_v1";
   const leadKey = "ducpt-email-leads-v1";
+  const signupInboxKey = "ducpt_course_signup_inbox_v1";
+  const studentProfileKey = "ducpt-student-profile-v1";
+  const registerKey = "ducpt_registrations_v1";
   const apiUrl = path => String(window.DUCPT_API_BASE || "").replace(/\/+$/, "") + path;
   const defaultCourseId = "doanh-nghiep-mot-nguoi";
   const defaultCourseTitle = "Doanh nghiệp một người";
@@ -37,6 +40,8 @@
     #customerRows .access-select:focus{outline:0;border-bottom-color:var(--blue)}
     #customerRows .row,.view#customers .headrow{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
     .customer-actions button{padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;cursor:pointer}.customer-actions .delete{color:#b42318}
+    .signup-inbox-alert{position:fixed;right:18px;bottom:18px;z-index:80;display:none;align-items:center;gap:10px;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.18);cursor:pointer;text-align:left}
+    .signup-inbox-alert.show{display:flex}.signup-inbox-alert b{display:block;font-size:13px}.signup-inbox-alert span{display:block;color:var(--muted);font-size:11px}.signup-inbox-alert i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#eff6ff;color:#2563eb;font-style:normal;font-weight:900;flex:none}
     @media(max-width:900px){#paymentForm .grid2{grid-template-columns:1fr}#paymentForm label{grid-template-columns:135px minmax(0,1fr)}}
   `;
   document.head.appendChild(style);
@@ -74,6 +79,16 @@
   const money = (value, currency = "VND") => new Intl.NumberFormat(currency === "USD" ? "en-US" : "vi-VN", { style:"currency", currency }).format(Number(value) || 0);
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[char]));
   const readLeads = () => { try { const list = JSON.parse(localStorage.getItem(leadKey) || "[]"); return Array.isArray(list) ? list : []; } catch { return []; } };
+  const readJsonList = storageKey => { try { const list = JSON.parse(localStorage.getItem(storageKey) || "[]"); return Array.isArray(list) ? list : []; } catch { return []; } };
+  const readSignupInbox = () => {
+    const rows = readJsonList(signupInboxKey);
+    try {
+      const profile = JSON.parse(localStorage.getItem(studentProfileKey) || "null");
+      if (profile && profile.email) rows.unshift({ ...profile, source:"student-profile", status:"free", purchaseStatus:profile.purchaseStatus || "not_paid" });
+    } catch {}
+    readJsonList(registerKey).forEach(item => rows.push({ ...item, course:item.interest || item.course || defaultCourseTitle, source:item.source || "register-page", status:item.status || "free", purchaseStatus:item.purchaseStatus || "not_paid" }));
+    return rows;
+  };
   const addCourseOption = item => {
     const title = String(item?.title || item?.name || item?.course || item?.product || "").trim();
     const id = normalizeCourseId(item?.id || item?.courseId || item?.slug || title || defaultCourseId) || defaultCourseId;
@@ -153,12 +168,36 @@
   };
   const readAllLeads = () => {
     const seen = new Set();
-    return readLeads().concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
+    return readLeads().concat(readSignupInbox()).concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
       const key = leadKeyOf(item);
       if (!identityOf(item) || seen.has(key)) return false;
       seen.add(key);
       return true;
     });
+  };
+  const showSignupInboxAlert = count => {
+    let node = document.getElementById("signupInboxAlert");
+    if (!count) {
+      if (node) node.remove();
+      return;
+    }
+    if (!node) {
+      node = document.createElement("button");
+      node.type = "button";
+      node.id = "signupInboxAlert";
+      node.className = "signup-inbox-alert";
+      node.innerHTML = '<i>!</i><div><b>Đăng ký mới: <span data-count>0</span></b><span>Bấm để mở mục Khách hàng & học viên.</span></div>';
+      node.addEventListener("click", () => {
+        const btn = document.querySelector('[data-view="customers"]');
+        if (btn) btn.click();
+        const rows = document.getElementById("customerRows");
+        rows?.scrollIntoView({ behavior:"smooth", block:"start" });
+      });
+      document.body.appendChild(node);
+    }
+    const countNode = node.querySelector("[data-count]");
+    if (countNode) countNode.textContent = String(count);
+    node.classList.add("show");
   };
   const loadRemoteSignups = async (options = {}) => {
     const statusNode = document.getElementById("paymentStatus");
@@ -169,6 +208,7 @@
       remoteSignups = body.data.map(normalizeSignupRow);
       collectCourseCatalog();
       render();
+      showSignupInboxAlert(readAllLeads().filter(item => item.source !== "passport-payment-admin").length);
       if (!options.silent && statusNode) statusNode.textContent = `Đã nạp ${remoteSignups.length} học viên đăng ký từ server.`;
     } catch (error) {
       if (!options.silent && statusNode) statusNode.textContent = "Chưa nạp được danh sách đăng ký từ server: " + (error.message || "");
@@ -360,6 +400,7 @@
       return `<div class="row"><span>${esc(x.name || "Lead Free")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.course || defaultCourseTitle)}<small>${esc(normalizeCourseId(x.course || defaultCourseId) || defaultCourseId)}</small></span><span>${esc(x.source || "Course")}</span><span><select class="access-select" data-upgrade-lead-select="${esc(key)}"><option value="free" selected>Free</option><option value="premium">Premium</option></select></span></div>`;
     });
     if (rows) rows.innerHTML = paidRows.concat(leadRows).join("") || '<div class="row"><span>Chưa có học viên/lead</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
+    showSignupInboxAlert(freeLeads.length);
   };
   form?.addEventListener("submit", async event => {
     event.preventDefault();
@@ -545,7 +586,7 @@
     render();
   };
   window.addEventListener("storage", event => {
-    if ([key, leadKey, "ducpt_courses_v2"].includes(event.key)) refreshCustomerRows();
+    if ([key, leadKey, signupInboxKey, studentProfileKey, registerKey, "ducpt_courses_v2"].includes(event.key)) refreshCustomerRows();
   });
   window.addEventListener("focus", refreshCustomerRows);
   window.addEventListener("pageshow", refreshCustomerRows);

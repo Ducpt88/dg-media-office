@@ -602,6 +602,20 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const courseId=courseAccessKey();
           return {course:state.course.title||"Doanh nghiệp một người",courseId,courseIds:[courseId],name,email,contact:String(input.contact||"").trim(),note:String(input.note||"").trim(),password:String(input.password||""),source:source||"course-signup",role:"free",accessPackage:"free",accessStatus:"active",funnelStage:"free_not_paid",purchaseStatus:"not_paid",nurturePlan:nurturePlan,createdAt:new Date().toISOString(),nextEmailDay:0};
         }
+        function rememberSignupInbox(record){
+          try{
+            const key="ducpt_course_signup_inbox_v1";
+            const email=String(record&&record.email||"").trim().toLowerCase();
+            if(!email)return;
+            let list=[];try{list=JSON.parse(localStorage.getItem(key)||"[]")}catch(e){list=[]}
+            if(!Array.isArray(list))list=[];
+            const now=new Date().toISOString();
+            const row={...record,email,role:record.role||"free",status:record.status||"free",purchaseStatus:record.purchaseStatus||"not_paid",accessPackage:record.accessPackage||"free",accessStatus:record.accessStatus||"active",source:record.source||"course-student-form",createdAt:record.createdAt||now,lastSeenAt:now};
+            list=list.filter(x=>String(x.email||"").trim().toLowerCase()!==email);
+            list.unshift(row);
+            localStorage.setItem(key,JSON.stringify(list.slice(0,300)));
+          }catch(e){}
+        }
         async function saveLeadRemote(record){
           try{await fetch(apiUrl("/api/passport/course-signups"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)})}catch(e){}
         }
@@ -752,6 +766,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           try{localStorage.setItem(MAIL_KEY,freeRecord.email)}catch(e){}
           saveStudentProfile(accessRecord);
           rememberEmailLead({...accessRecord,role,funnelStage:role==="premium"?"paid_student":"free_not_paid",purchaseStatus:role==="premium"?"paid":"not_paid"});
+          rememberSignupInbox(freeRecord);
           saveLeadRemote(freeRecord);
           switchLinkedSessionToStudent();
           setRole(role);
