@@ -87,13 +87,26 @@
     var source = String(data.source || "unknown").trim() || "unknown";
     var name = String(data.name || "").trim();
     var role = String(data.role || "").trim();
+    var contact = String(data.contact || "").trim();
+    var note = String(data.note || "").trim();
+    var course = String(data.course || "").trim();
+    var funnelStage = String(data.funnelStage || "").trim();
+    var purchaseStatus = String(data.purchaseStatus || "").trim();
+    var nurturePlan = Array.isArray(data.nurturePlan) ? data.nurturePlan.slice(0, 12) : null;
     if (!entry) {
       entry = {
         email: email,
         name: name,
+        contact: contact,
+        note: note,
+        course: course,
         role: role,
         source: source,
         sources: [source],
+        funnelStage: funnelStage || "lead",
+        purchaseStatus: purchaseStatus || "",
+        nextEmailDay: Number(data.nextEmailDay || 0),
+        nurturePlan: nurturePlan || [],
         firstSeenAt: now,
         lastSeenAt: now,
         count: 1
@@ -104,6 +117,13 @@
       entry.lastSeenAt = now;
       if (name) entry.name = name;
       if (role) entry.role = role;
+      if (contact) entry.contact = contact;
+      if (note) entry.note = note;
+      if (course) entry.course = course;
+      if (funnelStage) entry.funnelStage = funnelStage;
+      if (purchaseStatus) entry.purchaseStatus = purchaseStatus;
+      if (nurturePlan) entry.nurturePlan = nurturePlan;
+      if (data.nextEmailDay != null) entry.nextEmailDay = Number(data.nextEmailDay || 0);
       var sources = Array.isArray(entry.sources) ? entry.sources.slice() : [];
       if (sources.indexOf(source) < 0) sources.unshift(source);
       entry.sources = sources.slice(0, 8);

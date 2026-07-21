@@ -355,21 +355,37 @@ function saveSignup(req, res) {
       sendJson(res, 400, { ok: false, error: "Invalid JSON" });
       return;
     }
+    const now = new Date().toISOString();
     const record = {
       id: `signup-${Date.now()}`,
       course: String(body.course || "Doanh nghiệp một người").slice(0, 160),
       name: String(body.name || "").slice(0, 160),
       contact: String(body.contact || "").slice(0, 160),
-      email: String(body.email || "").slice(0, 160),
+      email: String(body.email || "").trim().toLowerCase().slice(0, 160),
       note: String(body.note || "").slice(0, 2000),
-      status: "new",
-      createdAt: new Date().toISOString()
+      role: String(body.role || "free").slice(0, 40),
+      source: String(body.source || "course-signup").slice(0, 80),
+      funnelStage: String(body.funnelStage || "free_not_paid").slice(0, 80),
+      purchaseStatus: String(body.purchaseStatus || "not_paid").slice(0, 80),
+      nextEmailDay: Number(body.nextEmailDay || 0),
+      nurturePlan: Array.isArray(body.nurturePlan) ? body.nurturePlan.slice(0, 12) : [],
+      status: String(body.status || "free").slice(0, 40),
+      createdAt: now,
+      updatedAt: now
     };
-    if (!record.name || !record.contact) {
-      sendJson(res, 400, { ok: false, error: "Missing name or contact" });
+    if (!record.email && !record.contact) {
+      sendJson(res, 400, { ok: false, error: "Missing email or contact" });
       return;
     }
     const rows = readSignups();
+    const key = (record.email || record.contact).toLowerCase();
+    const index = rows.findIndex((item) => String(item.email || item.contact || "").toLowerCase() === key);
+    if (index >= 0) {
+      rows[index] = { ...rows[index], ...record, id: rows[index].id || record.id, createdAt: rows[index].createdAt || record.createdAt, updatedAt: now };
+      fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
+      sendJson(res, 200, { ok: true, data: rows[index] });
+      return;
+    }
     rows.unshift(record);
     fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
     sendJson(res, 200, { ok: true, data: record });
