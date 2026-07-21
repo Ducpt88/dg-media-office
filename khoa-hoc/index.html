@@ -187,6 +187,11 @@
     .ytbrand-mask{position:absolute;left:0;right:0;z-index:2;pointer-events:none;background:#000}
     .ytbrand-mask.top{top:0;height:72px;background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.96) 58%,rgba(0,0,0,0) 100%)}
     .ytbrand-mask.bottom{bottom:0;height:62px;background:linear-gradient(0deg,#000 0%,rgba(0,0,0,.96) 72%,rgba(0,0,0,0) 100%)}
+    .ytcaption-shield{position:absolute;left:0;right:0;bottom:46px;z-index:3;height:clamp(96px,30%,190px);
+      pointer-events:none;background:linear-gradient(0deg,rgba(0,0,0,.94) 0%,rgba(0,0,0,.82) 68%,rgba(0,0,0,0) 100%);
+      opacity:0;transition:opacity .18s ease}
+    .ytwrap.caption-shield-on .ytcaption-shield{opacity:1}
+    .player-frame.is-portrait .ytcaption-shield{height:clamp(76px,18%,140px)}
     .ythit{position:absolute;inset:0;z-index:4;cursor:pointer;background:transparent}
     .ytbar{position:absolute;left:0;right:0;bottom:0;z-index:6;height:46px;display:flex;align-items:center;gap:12px;padding:0 14px;color:#e8eef4;background:linear-gradient(0deg,rgba(8,12,18,.98),rgba(8,12,18,.62))}
     .ytbar button{background:transparent;border:0;color:#e8eef4;font-size:15px;cursor:pointer;padding:4px 2px;line-height:1}
@@ -651,7 +656,9 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0")}
       async function mountSecurePlayer(videoId){
         const f=els.playerFrame;if(!f)return;
-        f.innerHTML='<div class="ytwrap" id="ytWrap"><div id="ytHost"></div><i class="ytbrand-mask top"></i><i class="ytbrand-mask bottom"></i><div class="ythit" id="ytHit"></div>'+
+        try{if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy()}catch(e){}
+        ytPlayer=null;
+        f.innerHTML='<div class="ytwrap" id="ytWrap"><div id="ytHost"></div><i class="ytbrand-mask top"></i><i class="ytbrand-mask bottom"></i><i class="ytcaption-shield" id="ytCaptionShield"></i><div class="ythit" id="ytHit"></div>'+
           '<div class="ytbar"><button id="ytPlay" aria-label="Phát/Dừng">▶</button>'+
           '<div class="ytseek" id="ytSeek"><i id="ytFill"></i></div>'+
           '<span class="yttime" id="ytTime">0:00 / 0:00</span>'+
@@ -666,21 +673,49 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           '<div class="pp-btn"><i></i></div>'+
           '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div>'+
           '<div class="ytload" id="ytLoad">Đang tải bài học…</div></div>';
+        let wantsPlay=false;
+        const requestPlay=()=>{
+          wantsPlay=true;
+          const l=document.getElementById("ytLoad");if(l)l.textContent="Đang tải trình phát...";
+          try{
+            if(ytPlayer&&ytPlayer.playVideo){
+              ytPlayer.playVideo();
+              forceCaptionsOff();
+            }
+          }catch(e){}
+        };
+        const poEarly=document.getElementById("ytPoster");
+        if(poEarly)poEarly.addEventListener("click",requestPlay);
         /* Da bo watermark tren video: khong hien ma/chu tat de khong lo nguon video. */
         await loadYTApi();
         if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát.";return}
-        try{if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy()}catch(e){}
         ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube-nocookie.com",
-          playerVars:{enablejsapi:1,controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin,widget_referrer:location.origin},
+          playerVars:{enablejsapi:1,controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,cc_lang_pref:"",disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin,widget_referrer:location.origin},
           events:{onReady:function(){const l=document.getElementById("ytLoad");if(l)l.remove();
             /* Poster cua DG che kin man cho cua YouTube (nut play do, thanh tieu de, nut chia se).
                Chi go poster khi video da THUC SU chay, nen khong bao gio lo giao dien YouTube. */
             const po=document.getElementById("ytPoster");
-            if(po)po.addEventListener("click",()=>{ytPlayer.playVideo()});
+            if(wantsPlay)requestPlay();
+            forceCaptionsOff();
             wire()},
           onStateChange:function(ev){const po=document.getElementById("ytPoster");if(!po)return;
-            if(ev.data===1){po.style.display="none"}
-            else if(ev.data===0||ev.data===-1){po.style.display=""}}}});
+            if(ev.data===1){po.style.display="none";setCaptionShield(true);forceCaptionsOff()}
+            else if(ev.data===0||ev.data===-1){po.style.display="";setCaptionShield(false)}
+            else if(ev.data===2){setCaptionShield(false)}} ,
+          onApiChange:function(){forceCaptionsOff()}}});
+        function setCaptionShield(on){
+          const wrap=document.getElementById("ytWrap");
+          if(wrap)wrap.classList.toggle("caption-shield-on",!!on);
+        }
+        function forceCaptionsOff(){
+          try{if(!ytPlayer)return;
+            if(ytPlayer.setOption){
+              try{ytPlayer.setOption("captions","track",{})}catch(e){}
+              try{ytPlayer.setOption("captions","fontSize",-1)}catch(e){}
+              try{ytPlayer.setOption("captions","reload",true)}catch(e){}
+            }
+          }catch(e){}
+        }
         function wire(){
           wireVolume(); wireRate();
           const btn=document.getElementById("ytPlay"),hit=document.getElementById("ytHit"),
