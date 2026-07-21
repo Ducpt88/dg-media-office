@@ -83,6 +83,28 @@
     if (read(ROLE_KEY) === "premium" || read("ducpt-premium-code-ok") === "1") return "premium";
     return "free";
   }
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[char];
+    });
+  }
+  function readStudentProfile() {
+    try {
+      var profile = JSON.parse(read(STUDENT_PROFILE_KEY) || "null");
+      return profile && typeof profile === "object" ? profile : null;
+    } catch (e) { return null; }
+  }
+  function sessionIdentity(session) {
+    var profile = readViewMode() === "student" ? readStudentProfile() : null;
+    var name = profile && profile.name ? profile.name : (session.name || "Quản trị viên");
+    var email = profile && profile.email ? profile.email : (readViewMode() === "student" ? (read(MAIL_KEY) || session.email || "Học viên") : (session.email || "Owner · DUCPT"));
+    var initialSource = profile && (profile.name || profile.email) ? (profile.name || profile.email) : (session.initial || session.name || "Đ");
+    return {
+      name: name,
+      email: email,
+      initial: String(initialSource || "Đ").trim().charAt(0).toUpperCase() || "Đ"
+    };
+  }
   function recordEmailLead(input) {
     var data = typeof input === "string" ? { email: input } : (input || {});
     var email = String(data.email || data.contact || "").trim().toLowerCase();
@@ -236,8 +258,9 @@
     var mode = readViewMode();
     var studentRole = currentStudentRole();
     var target = editTarget();
+    var identity = sessionIdentity(session);
     /* Giữ đúng chữ "Đ" như avatar trong Passport để hai nơi là một danh tính */
-    var initial = (session.initial || "Đ").trim().charAt(0).toUpperCase() || "Đ";
+    var initial = identity.initial;
     var modeLabel = mode === "student" ? "👤 Chế độ học viên " + (studentRole === "premium" ? "Premium" : "Free") : "⚙ Chế độ quản trị";
 
     /* Thanh quản trị đã bỏ theo yêu cầu Founder — mọi thứ dồn vào menu này,
@@ -245,7 +268,7 @@
     var menu = document.createElement("div");
     menu.className = "dgs-menu";
     menu.innerHTML =
-      '<div class="dgs-who"><b>' + (session.name || 'Quản trị viên') + '</b><span>' + (session.email || 'Owner · DUCPT') + '</span></div>' +
+      '<div class="dgs-who"><b>' + esc(identity.name) + '</b><span>' + esc(identity.email) + '</span></div>' +
       '<div class="dgs-mode-now">' + modeLabel + '</div>' +
       '<button type="button" data-dgs-mode="admin" class="' + (mode === "admin" ? "on" : "") + '">Quyền Admin</button>' +
       '<button type="button" data-dgs-mode="student" class="' + (mode === "student" ? "on" : "") + '">Quyền học viên ' + (studentRole === "premium" ? "Premium" : "Free") + '</button>' +
@@ -314,10 +337,12 @@
     chip.className = "dgs-chip";
     chip.style.display = "inline-flex";
     var studentMode = readViewMode() === "student";
+    var studentRole = currentStudentRole();
+    var identity = sessionIdentity(session);
     var subtitle = studentMode ? (studentRole === "premium" ? "Học viên Premium" : "Học viên Free") : "Quản trị · đã đăng nhập";
     if (studentMode) chip.className = "dgs-chip is-student";
-    chip.innerHTML = '<span class="dgs-chip-av">' + (session.initial || "Đ") + '</span>' +
-      '<span class="dgs-chip-txt"><b>' + (session.name || "Quản trị viên") + '</b><i>' + subtitle + '</i></span>';
+    chip.innerHTML = '<span class="dgs-chip-av">' + esc(identity.initial) + '</span>' +
+      '<span class="dgs-chip-txt"><b>' + esc(identity.name) + '</b><i>' + subtitle + '</i></span>';
     chip.addEventListener("click", function (e) {
       e.preventDefault(); e.stopPropagation();
       menu.classList.toggle("open");

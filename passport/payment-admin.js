@@ -519,6 +519,37 @@
       leadSelect.value = "free";
     }
   });
+  const reloadLocalRecords = () => {
+    let next = [];
+    try { next = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
+    records = (Array.isArray(next) ? next : []).map((item, index) => {
+      const courseId = courseIdFrom(item);
+      return {
+        ...item,
+        orderId:item.orderId || `LEGACY-${item.createdAt || Date.now()}-${index}`,
+        product:item.product === "Khóa học 1" ? defaultCourseTitle : (item.product || defaultCourseTitle),
+        courseId,
+        courseIds:Array.isArray(item.courseIds) && item.courseIds.length ? item.courseIds.map(normalizeCourseId).filter(Boolean) : [courseId],
+        accessPackage:item.accessPackage || (item.entitlement ? "premium" : "free"),
+        accessStatus:item.accessStatus || "active"
+      };
+    });
+    if (!records.some(item => item.orderId === seed.orderId)) {
+      records.push(seed);
+      try { localStorage.setItem(key, JSON.stringify(records)); } catch {}
+    }
+  };
+  const refreshCustomerRows = () => {
+    reloadLocalRecords();
+    collectCourseCatalog();
+    render();
+  };
+  window.addEventListener("storage", event => {
+    if ([key, leadKey, "ducpt_courses_v2"].includes(event.key)) refreshCustomerRows();
+  });
+  window.addEventListener("focus", refreshCustomerRows);
+  window.addEventListener("pageshow", refreshCustomerRows);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshCustomerRows(); });
   window.addEventListener("ducpt:settings", render);
   document.getElementById("cockpitRefresh")?.addEventListener("click", () => { loadRemoteSignups(); render(); syncCourseEntitlements(); syncPaidRecordsToDGOffice(); });
   loadCourseCatalog();
