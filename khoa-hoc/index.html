@@ -438,6 +438,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       document.addEventListener("click",function(e){const a=e.target.closest('a[href="#dang-ky-hoc"],a[href$="#dang-ky-hoc"]');
         if(a){e.preventDefault();if(getRole()==="guest"){if(!quickLoginStoredStudent())regModal(true)}else document.querySelector("#hoc-ngay")?.scrollIntoView({behavior:"smooth",block:"start"})}});
       document.addEventListener("keydown",function(e){if(e.key==="Escape")regModal(false)});
+      let quickLoginStoredStudent=function(){const fn=window.__ducptQuickLoginStoredStudent;return typeof fn==="function"?fn():false};
       loadPackagedCourse();
       async function loadPackagedCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/api/passport/course-videos",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
          (localStorage) truoc khi duoc day len web. Trinh duyet nay co phien quan tri
@@ -515,6 +516,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           openFirstFreeLesson();
           return true;
         }
+        window.__ducptQuickLoginStoredStudent=quickLoginStoredStudent;
         async function activateFreeAccount(record,st){
           if(!record.email||!record.name||!record.contact||!record.note){if(st){st.style.color="#b42318";st.textContent="Điền đủ Email, Họ tên, Zalo/SĐT và Mong muốn học để vào lớp."}return}
           if(st){st.style.color="#047857";st.textContent="Đang mở quyền học..."}
