@@ -1,0 +1,13 @@
+{
+  "name": "ducpt-passport-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node passport-upload-server.js",
+    "check": "node --check passport-upload-server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,6 +1,7 @@
 (() => {
   const key = "ducpt_orders_v1";
   const leadKey = "ducpt-email-leads-v1";
+  const apiUrl = path => String(window.DUCPT_API_BASE || "").replace(/\/+$/, "") + path;
   const defaultCourseId = "doanh-nghiep-mot-nguoi";
   const defaultCourseTitle = "Doanh nghiệp một người";
   const normalizeCourseId = value => String(value || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
@@ -162,7 +163,7 @@
   const loadRemoteSignups = async (options = {}) => {
     const statusNode = document.getElementById("paymentStatus");
     try {
-      const response = await fetch("/api/passport/course-signups", { cache:"no-store" });
+      const response = await fetch(apiUrl("/api/passport/course-signups"), { cache:"no-store" });
       const body = await response.json().catch(() => ({}));
       if (!response.ok || !body.ok || !Array.isArray(body.data)) throw new Error(body.error || `HTTP ${response.status}`);
       remoteSignups = body.data.map(normalizeSignupRow);
@@ -199,7 +200,7 @@
       orderId:record.orderId || "",
       paidAt:record.updatedAt || record.createdAt || new Date().toISOString()
     };
-    const response = await fetch("/api/passport/course-signups", {
+    const response = await fetch(apiUrl("/api/passport/course-signups"), {
       method:"POST",
       cache:"no-store",
       headers:{ "Content-Type":"application/json" },

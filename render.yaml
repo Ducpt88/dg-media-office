@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: ducpt-passport-api
+    env: node
+    plan: starter
+    buildCommand: ""
+    startCommand: node passport-upload-server.js
+    healthCheckPath: /api/passport/course-signups
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PUBLIC_SITE_URL
+        value: https://ducpt.com
+      - key: CORS_ORIGIN
+        value: https://ducpt.com
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_SECURE
+        sync: false
+      - key: SMTP_STARTTLS
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: MAIL_FROM
+        sync: false
+      - key: MAIL_REPLY_TO
+        sync: false

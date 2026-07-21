@@ -11,7 +11,7 @@ const ROOT = __dirname;
 const UPLOAD_DIR = path.join(ROOT, "passport", "uploads");
 const SIGNUP_FILE = path.join(ROOT, "passport", "course-signups.json");
 const COURSE_VIDEO_FILE = path.join(ROOT, "passport", "course-videos.json");
-const HOST = "127.0.0.1";
+const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
@@ -19,6 +19,14 @@ loadDotEnv(path.join(ROOT, ".env"));
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || `${HOST}:${PORT}`}`);
+  if (url.pathname.startsWith("/api/")) {
+    setCorsHeaders(res);
+    if (req.method === "OPTIONS") {
+      res.writeHead(204);
+      res.end();
+      return;
+    }
+  }
 
   if (req.method === "POST" && url.pathname === "/api/passport/upload") {
     handleUpload(req, res, url);
@@ -343,11 +351,20 @@ function contentType(filePath) {
 }
 
 function sendJson(res, status, payload) {
+  setCorsHeaders(res);
   res.writeHead(status, {
     "Content-Type": "application/json; charset=utf-8",
     "Cache-Control": "no-store"
   });
   res.end(JSON.stringify(payload));
+}
+
+function setCorsHeaders(res) {
+  const origin = process.env.CORS_ORIGIN || "*";
+  res.setHeader("Access-Control-Allow-Origin", origin);
+  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.setHeader("Vary", "Origin");
 }
 
 function saveSignup(req, res) {
