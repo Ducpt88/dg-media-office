@@ -673,22 +673,36 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           '<div class="pp-btn"><i></i></div>'+
           '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div>'+
           '<div class="ytload" id="ytLoad">Đang tải bài học…</div></div>';
-        let wantsPlay=false;
+        let wantsPlay=false, fallbackTimer=null;
+        const fallbackAutoplay=()=>{
+          const host=document.getElementById("ytHost");
+          if(!host)return;
+          host.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(videoId)}?autoplay=1&playsinline=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&rel=0&modestbranding=1" title="${escapeHtml(window.__curLessonTitle||"Bài học DUCPT")}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`;
+          const po=document.getElementById("ytPoster");if(po)po.style.display="none";
+        };
         const requestPlay=()=>{
           wantsPlay=true;
-          const l=document.getElementById("ytLoad");if(l)l.textContent="Đang tải trình phát...";
+          const l=document.getElementById("ytLoad");if(l)l.textContent="Đang phát bài học...";
           try{
             if(ytPlayer&&ytPlayer.playVideo){
               ytPlayer.playVideo();
               forceCaptionsOff();
+              clearTimeout(fallbackTimer);
+              fallbackTimer=setTimeout(()=>{
+                try{if(!ytPlayer.getPlayerState||ytPlayer.getPlayerState()!==1)fallbackAutoplay()}
+                catch(e){fallbackAutoplay()}
+              },1200);
+            }else{
+              clearTimeout(fallbackTimer);
+              fallbackTimer=setTimeout(fallbackAutoplay,800);
             }
-          }catch(e){}
+          }catch(e){fallbackAutoplay()}
         };
         const poEarly=document.getElementById("ytPoster");
         if(poEarly)poEarly.addEventListener("click",requestPlay);
         /* Da bo watermark tren video: khong hien ma/chu tat de khong lo nguon video. */
         await loadYTApi();
-        if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát.";return}
+        if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát.";if(wantsPlay)fallbackAutoplay();return}
         ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube-nocookie.com",
           playerVars:{enablejsapi:1,controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,cc_lang_pref:"",disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin,widget_referrer:location.origin},
           events:{onReady:function(){const l=document.getElementById("ytLoad");if(l)l.remove();
