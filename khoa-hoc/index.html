@@ -181,16 +181,20 @@
     .player-frame{position:relative}
     .ytwrap{position:relative;width:100%;height:100%;background:#000;overflow:hidden}
     .ytwrap>div:first-child,.ytwrap iframe{width:100%;height:100%;border:0;display:block}
+    .ytwrap iframe{pointer-events:none!important}
     /* Lớp chắn chuột: YouTube không nhận được hover/click nên không hiện tiêu đề,
        nút chia sẻ hay "Xem trên YouTube" */
-    .ythit{position:absolute;inset:0;z-index:2;cursor:pointer;background:transparent}
-    .ytbar{position:absolute;left:0;right:0;bottom:0;z-index:3;height:46px;display:flex;align-items:center;gap:12px;padding:0 14px;color:#e8eef4;background:linear-gradient(0deg,rgba(8,12,18,.96),rgba(8,12,18,.35))}
+    .ytbrand-mask{position:absolute;left:0;right:0;z-index:2;pointer-events:none;background:#000}
+    .ytbrand-mask.top{top:0;height:72px;background:linear-gradient(180deg,#000 0%,rgba(0,0,0,.96) 58%,rgba(0,0,0,0) 100%)}
+    .ytbrand-mask.bottom{bottom:0;height:62px;background:linear-gradient(0deg,#000 0%,rgba(0,0,0,.96) 72%,rgba(0,0,0,0) 100%)}
+    .ythit{position:absolute;inset:0;z-index:4;cursor:pointer;background:transparent}
+    .ytbar{position:absolute;left:0;right:0;bottom:0;z-index:6;height:46px;display:flex;align-items:center;gap:12px;padding:0 14px;color:#e8eef4;background:linear-gradient(0deg,rgba(8,12,18,.98),rgba(8,12,18,.62))}
     .ytbar button{background:transparent;border:0;color:#e8eef4;font-size:15px;cursor:pointer;padding:4px 2px;line-height:1}
     .ytbar button:hover{color:#fff}
     .ytseek{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.22);cursor:pointer;position:relative}
     .ytseek i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:#3b82f6;width:0}
     .yttime{font-size:12px;color:#c7d6e6;font-variant-numeric:tabular-nums;white-space:nowrap}
-    .ytload{position:absolute;inset:0;z-index:4;display:grid;place-items:center;color:#8fa3bb;font-size:13px;background:#000}
+    .ytload{position:absolute;inset:0;z-index:8;display:grid;place-items:center;color:#8fa3bb;font-size:13px;background:#000}
     .pf-wm{position:absolute;z-index:5;pointer-events:none;user-select:none;color:rgba(255,255,255,.34);font-size:12.5px;font-weight:800;letter-spacing:.04em;text-shadow:0 1px 3px rgba(0,0,0,.65);white-space:nowrap;transition:left 3s linear,top 3s linear}
     .adminbar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:80;display:flex;gap:6px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 18px 44px -18px rgba(16,24,40,.45)}
     .adminbar .lbl{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:0 6px}
@@ -418,7 +422,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         box.classList.add("open");
       }
 
-      function selectLesson(id){if(window.__coursePackagerReady)return;const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lesson.description||"Bài học đang được cập nhật mô tả.";els.metricDuration.textContent=lesson.duration||"Từ YouTube";els.playerFrame.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(lesson.youtubeId)}?enablejsapi=1&rel=0&modestbranding=1" title="${escapeHtml(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`}
+      function selectLesson(id){if(window.__coursePackagerReady)return;const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lesson.description||"Bài học đang được cập nhật mô tả.";els.metricDuration.textContent=lesson.duration||"Từ YouTube";els.playerFrame.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(lesson.youtubeId)}?enablejsapi=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&rel=0&modestbranding=1&playsinline=1" title="${escapeHtml(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`}
     els.signup.addEventListener("submit",async event=>{event.preventDefault();if(window.__coursePackagerReady)return;const record=Object.fromEntries(new FormData(event.currentTarget).entries());record.course=state.course.title||"Doanh nghiệp một người";record.createdAt=new Date().toISOString();els.signupStatus.textContent="Đang gửi đăng ký...";try{const res=await fetch("/api/passport/course-signups",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});const payload=await res.json();if(!payload.ok)throw new Error(payload.error||"Không lưu được đăng ký");els.signupStatus.textContent="Đã gửi đăng ký. DUCPT sẽ liên hệ để mở quyền học.";event.currentTarget.reset()}catch{els.signupStatus.textContent="Chưa gửi được đăng ký. Vui lòng liên hệ Zalo hoặc thử lại sau."}});
     function escapeHtml(value){return String(value||"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]))}
   </script>
@@ -580,7 +584,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0")}
       async function mountSecurePlayer(videoId){
         const f=els.playerFrame;if(!f)return;
-        f.innerHTML='<div class="ytwrap" id="ytWrap"><div id="ytHost"></div><div class="ythit" id="ytHit"></div>'+
+        f.innerHTML='<div class="ytwrap" id="ytWrap"><div id="ytHost"></div><i class="ytbrand-mask top"></i><i class="ytbrand-mask bottom"></i><div class="ythit" id="ytHit"></div>'+
           '<div class="ytbar"><button id="ytPlay" aria-label="Phát/Dừng">▶</button>'+
           '<div class="ytseek" id="ytSeek"><i id="ytFill"></i></div>'+
           '<span class="yttime" id="ytTime">0:00 / 0:00</span>'+
@@ -599,8 +603,8 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         await loadYTApi();
         if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát.";return}
         try{if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy()}catch(e){}
-        ytPlayer=new YT.Player("ytHost",{videoId:videoId,
-          playerVars:{controls:0,rel:0,modestbranding:1,iv_load_policy:3,disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin},
+        ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube-nocookie.com",
+          playerVars:{enablejsapi:1,controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin,widget_referrer:location.origin},
           events:{onReady:function(){const l=document.getElementById("ytLoad");if(l)l.remove();
             /* Poster cua DG che kin man cho cua YouTube (nut play do, thanh tieu de, nut chia se).
                Chi go poster khi video da THUC SU chay, nen khong bao gio lo giao dien YouTube. */
