@@ -41,7 +41,8 @@
     #customerRows .row,.view#customers .headrow{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
     .customer-actions button{padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;cursor:pointer}.customer-actions .delete{color:#b42318}
     .signup-inbox-alert{position:fixed;right:18px;bottom:18px;z-index:80;display:none;align-items:center;gap:10px;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.18);cursor:pointer;text-align:left}
-    .signup-inbox-alert.show{display:flex}.signup-inbox-alert b{display:block;font-size:13px}.signup-inbox-alert span{display:block;color:var(--muted);font-size:11px}.signup-inbox-alert i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#eff6ff;color:#2563eb;font-style:normal;font-weight:900;flex:none}
+    .signup-inbox-alert.show{display:flex}.signup-inbox-alert b{display:block;font-size:13px}.signup-inbox-alert em{font-style:normal;color:#2563eb}.signup-inbox-alert span{display:block;color:var(--muted);font-size:11px}.signup-inbox-alert i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#eff6ff;color:#2563eb;font-style:normal;font-weight:900;flex:none}
+    .signup-inbox-panel{margin:14px 0}.signup-inbox-panel .head{margin-bottom:10px}.signup-inbox-list{display:grid;gap:8px}.signup-inbox-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}.signup-inbox-item b{display:block;font-size:13px}.signup-inbox-item span{display:block;margin-top:2px;color:var(--muted);font-size:11px}.signup-inbox-item button{padding:7px 10px;border:1px solid #dbeafe;border-radius:9px;background:#eff6ff;color:#1d4ed8;font-weight:800;cursor:pointer}.signup-inbox-note{margin-top:9px;color:#92400e;font-size:11px}
     @media(max-width:900px){#paymentForm .grid2{grid-template-columns:1fr}#paymentForm label{grid-template-columns:135px minmax(0,1fr)}}
   `;
   document.head.appendChild(style);
@@ -152,6 +153,7 @@
   const paidStatus = item => /paid|success|received|complete/i.test(item.status || "");
   const identityOf = item => String(item.email || item.contact || item.name || "").trim().toLowerCase();
   const leadKeyOf = item => `${identityOf(item)}|${courseIdFrom(item)}`;
+  const isSystemLead = item => /^(admin-session|admin-student-access)$/i.test(String(item.source || ""));
   const isFreeSignup = item => !paidStatus(item) && !item.entitlement && item.role !== "premium" && !/paid|success|premium/i.test(item.purchaseStatus || "");
   const normalizeSignupRow = item => {
     const courseId = courseIdFrom(item);
@@ -170,10 +172,32 @@
     const seen = new Set();
     return readLeads().concat(readSignupInbox()).concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
       const key = leadKeyOf(item);
-      if (!identityOf(item) || seen.has(key)) return false;
+      if (!identityOf(item) || seen.has(key) || isSystemLead(item)) return false;
       seen.add(key);
       return true;
     });
+  };
+  const renderSignupInboxPanel = leads => {
+    const view = document.getElementById("customers");
+    if (!view) return;
+    let panel = document.getElementById("signupInboxPanel");
+    if (!leads.length) {
+      if (panel) panel.remove();
+      return;
+    }
+    if (!panel) {
+      panel = document.createElement("article");
+      panel.id = "signupInboxPanel";
+      panel.className = "card signup-inbox-panel";
+      const metrics = view.querySelector(".metrics");
+      if (metrics) metrics.insertAdjacentElement("beforebegin", panel);
+      else view.appendChild(panel);
+    }
+    panel.innerHTML = `<div class="head"><div><h2>Đăng ký mới từ website</h2><p>Danh sách học viên Free vừa đăng ký, bấm "Điền form" để nâng Premium hoặc chỉnh quyền.</p></div><span class="badge">${leads.length} lead</span></div>`+
+      `<div class="signup-inbox-list">${leads.slice(0,8).map(item => {
+        const key = esc(identityOf(item));
+        return `<div class="signup-inbox-item"><div><b>${esc(item.name || "Lead Free")}</b><span>${esc(item.email || item.contact || "Chưa có email")} · ${esc(item.course || item.product || defaultCourseTitle)} · ${esc(item.source || "course-signup")}</span></div><button type="button" data-fill-lead="${key}">Điền form</button></div>`;
+      }).join("")}</div><div class="signup-inbox-note">Live API hiện chưa nối server chung, nên hộp này đọc các đăng ký đã lưu trên trình duyệt/domain hiện tại.</div>`;
   };
   const showSignupInboxAlert = count => {
     let node = document.getElementById("signupInboxAlert");
@@ -186,12 +210,12 @@
       node.type = "button";
       node.id = "signupInboxAlert";
       node.className = "signup-inbox-alert";
-      node.innerHTML = '<i>!</i><div><b>Đăng ký mới: <span data-count>0</span></b><span>Bấm để mở mục Khách hàng & học viên.</span></div>';
+      node.innerHTML = '<i>!</i><div><b>Đăng ký mới: <em data-count>0</em></b><span>Bấm để xem danh sách đăng ký.</span></div>';
       node.addEventListener("click", () => {
         const btn = document.querySelector('[data-view="customers"]');
         if (btn) btn.click();
-        const rows = document.getElementById("customerRows");
-        rows?.scrollIntoView({ behavior:"smooth", block:"start" });
+        const panel = document.getElementById("signupInboxPanel") || document.getElementById("customerRows");
+        panel?.scrollIntoView({ behavior:"smooth", block:"start" });
       });
       document.body.appendChild(node);
     }
@@ -400,6 +424,7 @@
       return `<div class="row"><span>${esc(x.name || "Lead Free")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.course || defaultCourseTitle)}<small>${esc(normalizeCourseId(x.course || defaultCourseId) || defaultCourseId)}</small></span><span>${esc(x.source || "Course")}</span><span><select class="access-select" data-upgrade-lead-select="${esc(key)}"><option value="free" selected>Free</option><option value="premium">Premium</option></select></span></div>`;
     });
     if (rows) rows.innerHTML = paidRows.concat(leadRows).join("") || '<div class="row"><span>Chưa có học viên/lead</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
+    renderSignupInboxPanel(freeLeads);
     showSignupInboxAlert(freeLeads.length);
   };
   form?.addEventListener("submit", async event => {
@@ -519,12 +544,13 @@
     }
     render();
   };
-  document.getElementById("customerRows")?.addEventListener("click", async event => {
+  document.getElementById("customers")?.addEventListener("click", async event => {
     const edit = event.target.closest("[data-edit]");
     const remove = event.target.closest("[data-delete]");
     const open = event.target.closest("[data-open]");
     const pause = event.target.closest("[data-pause]");
     const upgrade = event.target.closest("[data-upgrade-lead]");
+    const fillLead = event.target.closest("[data-fill-lead]");
     if (edit) { const item = records.find(x => x.orderId === edit.dataset.edit); if (!item) return; editingOrderId = item.orderId; fillPaymentForm(item); return; }
     if (open) { await updateCourseAccess(open.dataset.open, { status:"paid", purchaseStatus:"paid", accessPackage:"premium", accessStatus:"active", role:"premium", entitlement:true }); return; }
     if (pause) { await updateCourseAccess(pause.dataset.pause, { accessStatus:"paused", accessPackage:"premium", role:"free", entitlement:false }); return; }
@@ -535,6 +561,14 @@
       fillPaymentForm({ name:lead?.name || "", contact:lead?.contact || "", email:lead?.email || "", product:lead?.course || defaultCourseTitle, courseId:normalizeCourseId(lead?.course || defaultCourseId) || defaultCourseId, amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active" });
       const statusNode = document.getElementById("paymentStatus");
       if (statusNode) statusNode.textContent = "Kiểm tra email, khóa học và số tiền rồi bấm Lưu để nâng Premium.";
+      return;
+    }
+    if (fillLead) {
+      const leadKeyValue = String(fillLead.dataset.fillLead || "").trim().toLowerCase();
+      const lead = readAllLeads().find(x => [x.email, x.contact, x.name].map(v => String(v || "").trim().toLowerCase()).includes(leadKeyValue));
+      fillPaymentForm({ name:lead?.name || "", contact:lead?.contact || "", email:lead?.email || "", product:lead?.course || defaultCourseTitle, courseId:normalizeCourseId(lead?.courseId || lead?.course || defaultCourseId) || defaultCourseId, amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active" });
+      const statusNode = document.getElementById("paymentStatus");
+      if (statusNode) statusNode.textContent = "Đã điền thông tin đăng ký mới. Kiểm tra rồi bấm Lưu để mở Premium.";
       return;
     }
     if (remove && confirm("Xóa học viên và giao dịch này?")) { records = records.filter(x => x.orderId !== remove.dataset.delete); localStorage.setItem(key, JSON.stringify(records)); if(editingOrderId===remove.dataset.delete) editingOrderId=""; render(); }
