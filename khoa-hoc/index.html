@@ -436,7 +436,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       if(els.playerFrame)els.playerFrame.addEventListener("contextmenu",e=>e.preventDefault());
       /* Mọi nút trỏ tới #dang-ky-hoc đều mở popup thay vì nhảy neo */
       document.addEventListener("click",function(e){const a=e.target.closest('a[href="#dang-ky-hoc"],a[href$="#dang-ky-hoc"]');
-        if(a){e.preventDefault();if(getRole()==="guest")regModal(true)}});
+        if(a){e.preventDefault();if(getRole()==="guest"){if(!quickLoginStoredStudent())regModal(true)}else document.querySelector("#hoc-ngay")?.scrollIntoView({behavior:"smooth",block:"start"})}});
       document.addEventListener("keydown",function(e){if(e.key==="Escape")regModal(false)});
       loadPackagedCourse();
       async function loadPackagedCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/api/passport/course-videos",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
@@ -480,10 +480,46 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
             if(dau){selectPackagedLesson(dau.id);document.querySelector(".course-player")?.scrollIntoView({behavior:"smooth",block:"center"});}
           }catch(e){}},600);
         }
+        function savedStudentReady(record){
+          return !!(record&&record.email&&record.name&&record.contact&&record.note);
+        }
+        function studentProfile(){
+          try{
+            const raw=JSON.parse(localStorage.getItem(STUDENT_PROFILE_KEY)||"null");
+            if(!raw||typeof raw!=="object")return null;
+            return {email:String(raw.email||"").trim().toLowerCase(),name:String(raw.name||"").trim(),contact:String(raw.contact||"").trim(),note:String(raw.note||"").trim(),role:raw.role||"free",updatedAt:raw.updatedAt||""};
+          }catch(e){return null}
+        }
+        function saveStudentProfile(record){
+          try{
+            const profile={email:String(record.email||"").trim().toLowerCase(),name:String(record.name||"").trim(),contact:String(record.contact||"").trim(),note:String(record.note||"").trim(),role:"free",updatedAt:new Date().toISOString()};
+            localStorage.setItem(STUDENT_PROFILE_KEY,JSON.stringify(profile));
+          }catch(e){}
+        }
+        function fillSignupForm(record){
+          const form=document.getElementById("courseSignup");if(!form||!record)return;
+          ["email","name","contact","note"].forEach(name=>{if(form.elements[name]&&!form.elements[name].value&&record[name])form.elements[name].value=record[name]});
+        }
+        function quickLoginStoredStudent(){
+          const saved=studentProfile();
+          fillSignupForm(saved);
+          const st=document.getElementById("signupStatus");
+          if(!savedStudentReady(saved)){
+            if(st&&saved){st.style.color="#92400e";st.textContent="Tài khoản đã lưu còn thiếu thông tin. Bổ sung một lần là lần sau bấm đăng nhập sẽ vào học ngay."}
+            return false;
+          }
+          try{localStorage.setItem(MAIL_KEY,saved.email)}catch(e){}
+          rememberEmailLead({...saved,course:state.course.title||"Doanh nghiệp một người",source:"course-student-return-login",role:"free",funnelStage:"free_not_paid",purchaseStatus:"not_paid",nurturePlan:nurturePlan,nextEmailDay:0});
+          setRole("free");
+          if(st){st.style.color="#047857";st.textContent="Đã đăng nhập bằng tài khoản học viên đã lưu. Bạn có thể học các bài FREE ngay."}
+          openFirstFreeLesson();
+          return true;
+        }
         async function activateFreeAccount(record,st){
           if(!record.email||!record.name||!record.contact||!record.note){if(st){st.style.color="#b42318";st.textContent="Điền đủ Email, Họ tên, Zalo/SĐT và Mong muốn học để vào lớp."}return}
           if(st){st.style.color="#047857";st.textContent="Đang mở quyền học..."}
           try{localStorage.setItem(MAIL_KEY,record.email)}catch(e){}
+          saveStudentProfile(record);
           rememberEmailLead(record);
           saveLeadRemote(record);
           setRole("free");
@@ -491,6 +527,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           if(st)st.textContent=`Đã mở quyền học. Bạn xem được ${freeN} bài FREE ngay bây giờ.`;
           openFirstFreeLesson();
         }
+        fillSignupForm(studentProfile());
         if(sf)sf.addEventListener("submit",event=>{event.preventDefault();const fd=new FormData(sf);activateFreeAccount(signupPayload(Object.fromEntries(fd.entries()),"course-student-form"),document.getElementById("signupStatus"))});
       }
       function playableSource(lesson){const youtubeId=youtubeIdFromLesson(lesson);if(youtubeId)return{type:"youtube",id:youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,label:"Video bài học"};const url=directVideoUrl(lesson);return url?{type:"video",url,label:"Video khóa học"}:null}
@@ -515,7 +552,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         const cs=document.getElementById("curriSub");if(cs)cs.textContent=chapterCount+" chương · chọn một bài để học ngay";
         els.lessonCount.textContent=state.lessons.length?`${state.lessons.length} bài học`:`${modules.length} chương · sắp mở`;els.metricStatus.textContent=state.lessons.length?"Sẵn sàng":"Sắp mở";const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent="Video bài học";window.__dgHasLessons=state.lessons.length>0;if(!state.lessons.length){showYoutubeSource();return}els.lessonList.innerHTML=groups.map((g,gi)=>{const items=g.items;const freeN=items.filter(l=>l.access!=="premium").length;const premN=items.length-freeN;const totalSec=items.reduce((s,l)=>s+durSeconds(l.duration),0);const title=g.m?g.m.title:"Danh sách bài học";const rows=items.map((lesson,i)=>{const locked=lesson.access==="premium";const badge=(lesson._chuaLenWeb?'<span class="bdraftonly" title="Chỉ mình bạn thấy — điền token GitHub trong Passport rồi Lưu để lên web">📝 Chưa lên web</span>':'')+(locked?'<span class="bprem">💎 PREMIUM · NÂNG GÓI ĐỂ XEM</span>':(getRole()==="guest"?'<span class="blockreg">🔐 CẦN ĐĂNG KÝ</span>':'<span class="bfree">FREE</span>'));return `<li class="lrow${locked?" locked":""}" data-id="${escapeHtml(lesson.id)}"><span class="no">${String(i+1).padStart(2,"0")}</span><span class="du">${escapeHtml(lessonDuration(lesson))}</span><span class="ti">${escapeHtml(lesson.title)}</span>${badge}</li>`}).join("");const noFree=(items.length&&freeN===0)?`<div class="ch-none">Chương này toàn video PREMIUM. Tài khoản Free vẫn thấy danh sách; nâng gói để xem nội dung.</div>`:"";const more=premN?`<button class="ch-more" type="button" data-more>Xem danh sách ${items.length} video (${premN} bài cần nâng gói)</button>`:"";return `<section class="ch${freeN===0?" open":""}${chCollapsed(gi)?" collapsed":""}" data-ch="${gi}"><div class="ch-head" data-ch-head><span class="ch-caret">▼</span><h3 class="ct">${escapeHtml(gi+1)}. ${escapeHtml(title)}</h3><div class="cm">Số lượng: <b>${items.length}</b> video · Thời lượng: <b>${fmtHMS(totalSec)}</b> · Đang hiển thị: <b>${items.length}</b> · Miễn phí: <b>${freeN}</b></div></div><ul class="ch-rows">${rows}</ul>${noFree}${more}</section>`}).join("");wireChapterToggle();els.lessonList.querySelectorAll(".lrow[data-id]").forEach(row=>row.addEventListener("click",()=>selectPackagedLesson(row.dataset.id)));els.lessonList.querySelectorAll("[data-more]").forEach(btn=>btn.addEventListener("click",()=>{const ch=btn.closest(".ch");ch.classList.toggle("open");const items=ch.querySelectorAll(".lrow[data-id]").length;const prem=ch.querySelectorAll(".lrow.locked").length;btn.textContent=ch.classList.contains("open")?`Thu gọn danh sách`:`Xem danh sách ${items} video (${prem} bài cần nâng gói)`}))}
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
-      const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1";
+      const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1", STUDENT_PROFILE_KEY="ducpt-student-profile-v1";
       function getRole(){try{const r=localStorage.getItem(ROLE_KEY);return ["free","premium","admin"].includes(r)?r:"guest"}catch(e){return "guest"}}
       function hasLinkedSession(){try{return !!(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get())}catch(e){return false}}
       function getEmail(){try{return localStorage.getItem(MAIL_KEY)||""}catch(e){return ""}}
@@ -527,7 +564,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         /* Da dang nhap roi thi khong moi "Xem chuong trinh hoc" nua — chi con mot loi vao duy nhat. */
         const ghost=document.querySelector(".hero-actions .ghost-btn");if(ghost)ghost.style.display=logged?"none":"";document.querySelectorAll("header a.login,header a.signup").forEach(el=>{el.style.display=logged?"none":""});const card=document.getElementById("dang-ky-hoc"),form=document.getElementById("courseSignup");if(card){const eye=card.querySelector(".eyebrow"),notice=card.querySelector(".notice"),nurture=card.querySelector(".nurture-note");if(eye)eye.textContent=logged?"Tài khoản học":"Đăng ký học";if(form)form.style.display=logged?"none":"";if(nurture)nurture.style.display=logged?"none":"";if(notice)notice.style.display=logged?"none":"";if(els.registerTitle)els.registerTitle.textContent=logged?(r==="admin"?"Tài khoản quản trị đã liên kết":"Tài khoản học viên đã đăng nhập"):(state.course.title||"Doanh nghiệp một người");if(els.coursePrice)els.coursePrice.style.display=logged?"none":""}if(logged)regModal(false)}
       window.addEventListener("ducpt:admin-session-ready",()=>refreshCourseUi());
-      window.addEventListener("storage",e=>{if(e.key===ROLE_KEY||e.key===MAIL_KEY)refreshCourseUi()});
+      window.addEventListener("storage",e=>{if(e.key===ROLE_KEY||e.key===MAIL_KEY||e.key===STUDENT_PROFILE_KEY)refreshCourseUi()});
       function canPlay(lesson){const r=getRole();if(r==="guest")return false;if(lesson.access==="premium")return r==="premium"||r==="admin";return true}
       function isAdminMode(){return false}
       function paintAdminBar(){const bar=document.getElementById("adminBar");if(bar)bar.remove();try{localStorage.removeItem("ducpt-adminui")}catch(e){}}
