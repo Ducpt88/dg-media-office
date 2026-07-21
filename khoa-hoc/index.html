@@ -907,16 +907,36 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           paintPosterHint("Đang mở bài học…");
           await loadYTApi();
           if(!window.YT||!window.YT.Player){if(load)load.textContent="Chưa mở được trình phát, kiểm tra mạng rồi bấm lại.";started=false;paintPosterHint("Bấm để phát");return}
-          ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube-nocookie.com",
-            playerVars:{controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,cc_lang_pref:"",disablekb:1,fs:0,playsinline:1,autoplay:1,origin:location.origin,widget_referrer:location.origin},
+          const renderYoutubeFallback=()=>{
+            try{ytPlayer&&ytPlayer.destroy&&ytPlayer.destroy()}catch(e){}
+            clearInterval(window.__ducptTick);
+            f.innerHTML=`<iframe src="https://www.youtube.com/embed/${escapeHtml(videoId)}?autoplay=1&controls=1&rel=0&modestbranding=1&playsinline=1" title="${escapeHtml(window.__curLessonTitle||"Bài học DUCPT")}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+          };
+          const ensureHost=()=>{let h=document.getElementById("ytHost");if(!h){const w=document.getElementById("ytWrap");h=document.createElement("div");h.id="ytHost";if(w)w.insertBefore(h,w.firstChild)}return h};
+          const makePlayer=host=>{ensureHost();return new YT.Player("ytHost",{videoId:videoId,host:host,
+            playerVars:{controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,cc_lang_pref:"",disablekb:1,fs:0,playsinline:1,autoplay:1,origin:location.origin,widget_referrer:location.href},
             events:{
               onReady:function(ev){forceSound();try{ev.target.playVideo()}catch(e){}wire();},
               onStateChange:function(ev){const po=document.getElementById("ytPoster");if(!po)return;
                 if(ev.data===1){const l=document.getElementById("ytLoad");if(l)l.remove();po.style.display="none";forceSound();setCaptionShield(true)}
                 else if(ev.data===0||ev.data===-1){po.style.display="";setCaptionShield(false)}
                 else if(ev.data===2){setCaptionShield(false)}},
-              onError:function(){paintPosterHint("Trình phát bị chặn, bấm lại hoặc tải lại trang")}
-            }});
+              onError:function(ev){
+                if(host.indexOf("youtube-nocookie.com")>0){
+                  try{ytPlayer&&ytPlayer.destroy&&ytPlayer.destroy()}catch(e){}
+                  const h=document.getElementById("ytHost");if(h)h.innerHTML="";
+                  paintPosterHint("Đang đổi nguồn phát dự phòng…");
+                  ytPlayer=makePlayer("https://www.youtube.com");
+                  return;
+                }
+                const l=document.getElementById("ytLoad");if(l)l.style.display="none";
+                started=false;
+                paintPosterHint("Đang mở bằng trình phát dự phòng…");
+                console.warn("DUCPT video player error",ev&&ev.data,videoId);
+                renderYoutubeFallback();
+              }
+            }})};
+          ytPlayer=makePlayer("https://www.youtube-nocookie.com");
           window.__ytp=ytPlayer;
         };
         ["click","touchend"].forEach(t=>{const po=document.getElementById("ytPoster");if(po)po.addEventListener(t,start,{passive:false})});
