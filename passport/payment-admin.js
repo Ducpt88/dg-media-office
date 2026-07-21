@@ -1,10 +1,26 @@
 (() => {
   const key = "ducpt_orders_v1";
   const leadKey = "ducpt-email-leads-v1";
-  const seed = { orderId:"MANUAL-20260711-001", name:"Học viên chưa cập nhật tên", contact:"", product:"Khóa học 1", amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", entitlement:true, createdAt:"2026-07-11T00:00:00+07:00" };
+  const defaultCourseId = "doanh-nghiep-mot-nguoi";
+  const defaultCourseTitle = "Doanh nghiệp một người";
+  const normalizeCourseId = value => String(value || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+  const courseIdFrom = item => normalizeCourseId(item && (item.courseId || (Array.isArray(item.courseIds) && item.courseIds[0]) || item.product || item.course || defaultCourseId)) || defaultCourseId;
+  const seed = { orderId:"MANUAL-20260711-001", name:"Học viên chưa cập nhật tên", contact:"", product:defaultCourseTitle, courseId:defaultCourseId, courseIds:[defaultCourseId], amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active", entitlement:true, createdAt:"2026-07-11T00:00:00+07:00" };
   let records = [];
+  let remoteSignups = [];
   try { records = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
-  records = records.map((item, index) => item.orderId ? item : {...item, orderId:`LEGACY-${item.createdAt || Date.now()}-${index}`});
+  records = records.map((item, index) => {
+    const courseId = courseIdFrom(item);
+    return {
+      ...item,
+      orderId:item.orderId || `LEGACY-${item.createdAt || Date.now()}-${index}`,
+      product:item.product === "Khóa học 1" ? defaultCourseTitle : (item.product || defaultCourseTitle),
+      courseId,
+      courseIds:Array.isArray(item.courseIds) && item.courseIds.length ? item.courseIds.map(normalizeCourseId).filter(Boolean) : [courseId],
+      accessPackage:item.accessPackage || (item.entitlement ? "premium" : "free"),
+      accessStatus:item.accessStatus || "active"
+    };
+  });
   if (!records.some(item => item.orderId === seed.orderId)) records.push(seed);
   localStorage.setItem(key, JSON.stringify(records));
   let editingOrderId = "";
@@ -14,6 +30,8 @@
     #paymentForm{padding:20px!important}#paymentForm .grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 22px}
     #paymentForm label{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:12px;font-size:13px;font-weight:700}
     #paymentForm .searchbox{width:100%;min-width:0}#paymentForm>button{margin-top:18px!important}#paymentStatus{display:inline-block;margin:18px 0 0 12px;color:var(--green);font-size:12px}
+    #customerRows small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+    #customerRows .access-select{width:100%;min-width:105px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:6px 8px;font-weight:800}
     #customerRows .row,.view#customers .headrow{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr .8fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
     .customer-actions button{padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;cursor:pointer}.customer-actions .delete{color:#b42318}
     @media(max-width:900px){#paymentForm .grid2{grid-template-columns:1fr}#paymentForm label{grid-template-columns:135px minmax(0,1fr)}}
@@ -27,13 +45,114 @@
     label.insertAdjacentElement("afterend", currencyLabel);
     label.firstChild.textContent = "Số tiền ";
   }
+  const contactInput = document.querySelector('#paymentForm [name="contact"]');
+  if (contactInput && !document.querySelector('#paymentForm [name="email"]')) {
+    const emailLabel = document.createElement("label");
+    emailLabel.innerHTML = 'Email học viên<input class="searchbox" name="email" type="email" autocomplete="email" required placeholder="email@example.com">';
+    contactInput.closest("label").insertAdjacentElement("afterend", emailLabel);
+  }
+  if (contactInput && !document.querySelector('#paymentForm [name="accessPackage"]')) {
+    const pkgLabel = document.createElement("label");
+    pkgLabel.innerHTML = 'Gói quyền học<select class="searchbox" name="accessPackage"><option value="premium" selected>Premium / Member - mở bài trả phí</option><option value="free">Free - chỉ xem bài Free</option></select>';
+    contactInput.closest("label").insertAdjacentElement("afterend", pkgLabel);
+  }
+  const productInput = document.querySelector('#paymentForm [name="product"]');
+  if (productInput && productInput.value === "Khóa học 1") productInput.value = defaultCourseTitle;
+  if (productInput && !document.querySelector('#paymentForm [name="courseId"]')) {
+    const courseIdLabel = document.createElement("label");
+    courseIdLabel.innerHTML = 'Mã khóa học<input class="searchbox" name="courseId" required value="doanh-nghiep-mot-nguoi" placeholder="doanh-nghiep-mot-nguoi">';
+    productInput.closest("label").insertAdjacentElement("afterend", courseIdLabel);
+  }
+  if (contactInput && !document.querySelector('#paymentForm [name="accessStatus"]')) {
+    const accessLabel = document.createElement("label");
+    accessLabel.innerHTML = 'Trạng thái quyền<select class="searchbox" name="accessStatus"><option value="active" selected>Đang mở</option><option value="paused">Tạm khóa</option><option value="expired">Hết hạn</option></select>';
+    contactInput.closest("label").insertAdjacentElement("afterend", accessLabel);
+  }
   const money = (value, currency = "VND") => new Intl.NumberFormat(currency === "USD" ? "en-US" : "vi-VN", { style:"currency", currency }).format(Number(value) || 0);
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[char]));
   const readLeads = () => { try { const list = JSON.parse(localStorage.getItem(leadKey) || "[]"); return Array.isArray(list) ? list : []; } catch { return []; } };
   const paidStatus = item => /paid|success|received|complete/i.test(item.status || "");
+  const identityOf = item => String(item.email || item.contact || item.name || "").trim().toLowerCase();
+  const leadKeyOf = item => `${identityOf(item)}|${courseIdFrom(item)}`;
+  const isFreeSignup = item => !paidStatus(item) && !item.entitlement && item.role !== "premium" && !/paid|success|premium/i.test(item.purchaseStatus || "");
+  const normalizeSignupRow = item => {
+    const courseId = courseIdFrom(item);
+    return {
+      ...item,
+      orderId:item.orderId || item.id || "",
+      product:item.product || item.course || defaultCourseTitle,
+      course:item.course || item.product || defaultCourseTitle,
+      courseId,
+      courseIds:Array.isArray(item.courseIds) && item.courseIds.length ? item.courseIds.map(normalizeCourseId).filter(Boolean) : [courseId],
+      source:item.source || "course-signup-server",
+      remoteSignup:true
+    };
+  };
+  const readAllLeads = () => {
+    const seen = new Set();
+    return readLeads().concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
+      const key = leadKeyOf(item);
+      if (!identityOf(item) || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  };
+  const loadRemoteSignups = async (options = {}) => {
+    const statusNode = document.getElementById("paymentStatus");
+    try {
+      const response = await fetch("/api/passport/course-signups", { cache:"no-store" });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok || !body.ok || !Array.isArray(body.data)) throw new Error(body.error || `HTTP ${response.status}`);
+      remoteSignups = body.data.map(normalizeSignupRow);
+      render();
+      if (!options.silent && statusNode) statusNode.textContent = `Đã nạp ${remoteSignups.length} học viên đăng ký từ server.`;
+    } catch (error) {
+      if (!options.silent && statusNode) statusNode.textContent = "Chưa nạp được danh sách đăng ký từ server: " + (error.message || "");
+    }
+  };
+  const syncCourseEntitlement = async record => {
+    if (!paidStatus(record)) return { ok:true, skipped:true, reason:"not_paid" };
+    const email = String(record.email || "").trim().toLowerCase();
+    if (!email) return { ok:false, skipped:true, reason:"missing_email" };
+    const active = (record.accessStatus || "active") === "active";
+    const premium = active && (record.accessPackage || "premium") !== "free";
+    const courseId = courseIdFrom(record);
+    const payload = {
+      course:record.product || defaultCourseTitle,
+      courseId,
+      courseIds:[courseId],
+      name:record.name || "",
+      email,
+      contact:record.contact || "",
+      note:"Cấp quyền từ Passport thanh toán",
+      role:premium ? "premium" : "free",
+      source:"passport-payment-admin",
+      funnelStage:premium ? "paid_student" : "paid_no_course_access",
+      purchaseStatus:"paid",
+      status:"paid",
+      entitlement:premium,
+      accessPackage:record.accessPackage || "premium",
+      accessStatus:record.accessStatus || "active",
+      orderId:record.orderId || "",
+      paidAt:record.updatedAt || record.createdAt || new Date().toISOString()
+    };
+    const response = await fetch("/api/passport/course-signups", {
+      method:"POST",
+      cache:"no-store",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify(payload)
+    });
+    const body = await response.json().catch(() => ({}));
+    if (!response.ok || !body.ok) throw new Error(body.error || `Course entitlement HTTP ${response.status}`);
+    return body;
+  };
   const syncFingerprint = item => [
     item.orderId || "",
     item.product || "",
+    item.courseId || courseIdFrom(item),
+    item.email || "",
+    item.accessPackage || "premium",
+    item.accessStatus || "active",
     Number(item.amount || 0).toFixed(2),
     item.currency || "VND",
     item.status || "",
@@ -52,11 +171,13 @@
       url:location.href.split("#")[0],
       orderId:record.orderId,
       product:record.product || "Khóa học DUCPT",
+      courseId:courseIdFrom(record),
       amount:Number(record.amount || 0),
       currency:record.currency === "USD" ? "USD" : "VND",
       status:record.status || "paid",
       paymentSource:record.paymentSource || "manual",
       name:record.name || "",
+      email:String(record.email || "").trim().toLowerCase(),
       contact:record.contact || "",
       customers:1,
       licenses:record.entitlement ? 1 : 0,
@@ -115,17 +236,43 @@
       statusNode.textContent = failed ? `Đã đẩy ${ok} dòng, ${failed} dòng chưa sang được DG Office 8790.` : `Đã đẩy ${ok} dòng tiền sang DG Office 8790.`;
     }
   };
+  let entitlementSyncInFlight = false;
+  const syncCourseEntitlements = async (options = {}) => {
+    if (entitlementSyncInFlight) return;
+    const statusNode = document.getElementById("paymentStatus");
+    const targets = records.filter(item => paidStatus(item) && item.email && (!item.courseEntitlementSyncedAt || item.courseEntitlementError || item.courseEntitlementFingerprint !== syncFingerprint(item)));
+    if (!targets.length) return;
+    entitlementSyncInFlight = true;
+    let ok = 0, failed = 0;
+    if (!options.silent && statusNode) statusNode.textContent = `Đang đồng bộ quyền học cho ${targets.length} học viên...`;
+    for (const target of targets) {
+      try {
+        await syncCourseEntitlement(target);
+        const patched = {...target, courseEntitlementSyncedAt:new Date().toISOString(), courseEntitlementError:"", courseEntitlementFingerprint:syncFingerprint(target)};
+        records = records.map(item => item.orderId === patched.orderId ? patched : item);
+        ok += 1;
+      } catch (error) {
+        const patched = {...target, courseEntitlementError:error.message || "Không đồng bộ được quyền học", courseEntitlementFingerprint:syncFingerprint(target)};
+        records = records.map(item => item.orderId === patched.orderId ? patched : item);
+        failed += 1;
+      }
+      localStorage.setItem(key, JSON.stringify(records));
+    }
+    entitlementSyncInFlight = false;
+    if (statusNode && (!options.silent || failed)) statusNode.textContent = failed ? `Đã mở ${ok} quyền, ${failed} dòng chưa đồng bộ được.` : `Đã đồng bộ ${ok} quyền học.`;
+  };
   const render = () => {
     const paid = records.filter(item => /paid|success/i.test(item.status || ""));
     const paidKeys = new Set(paid.flatMap(item => [item.email, item.contact, item.name].map(x => String(x || "").trim().toLowerCase()).filter(Boolean)));
-    const freeLeads = readLeads().filter(item => {
+    const freeLeads = readAllLeads().filter(item => {
       const k = String(item.email || item.contact || item.name || "").trim().toLowerCase();
       return k && !paidKeys.has(k) && !/paid|success|premium/i.test(item.purchaseStatus || item.status || "");
     });
     const learners = records.filter(item => item.entitlement || /paid|success/i.test(item.status || ""));
+    const activeLearners = learners.filter(item => item.entitlement && (item.accessStatus || "active") === "active");
     const set = (id, value) => { const node = document.getElementById(id); if (node) node.textContent = value; };
     set("paidMetric", paid.length); set("customerMetric", new Set([...learners.map(x => x.contact || x.name), ...freeLeads.map(x => x.email || x.contact || x.name)].filter(Boolean)).size);
-    set("newCustomerMetric", learners.length + freeLeads.length); set("activeCustomerMetric", learners.length);
+    set("newCustomerMetric", learners.length + freeLeads.length); set("activeCustomerMetric", activeLearners.length);
     const totals = paid.reduce((sum, item) => { const currency = item.currency || "VND"; sum[currency] = (sum[currency] || 0) + Number(item.amount || 0); return sum; }, {});
     let fx = { usdToVnd: 25000, baseCurrency: "VND" }; try { fx = Object.assign(fx, JSON.parse(localStorage.getItem("ducpt_settings_v1") || "{}")); } catch {}
     const rate = Number(fx.usdToVnd) > 0 ? Number(fx.usdToVnd) : 25000;
@@ -138,14 +285,15 @@
     setAll('[data-cockpit="paid"]', paid.length);
     setAll('[data-cockpit="pending"]', pendingCount);
     setAll('[data-cockpit="customers"]', new Set([...learners.map(x => x.contact || x.name), ...freeLeads.map(x => x.email || x.contact || x.name)].filter(Boolean)).size);
-    setAll('[data-cockpit="learners"]', learners.length);
+    setAll('[data-cockpit="learners"]', activeLearners.length);
     const rows = document.getElementById("customerRows");
     const header = rows?.previousElementSibling; if (header && !header.querySelector('[data-actions-head]')) header.insertAdjacentHTML("beforeend", '<span data-actions-head>Thao tác</span>');
-    const paidRows = learners.slice().reverse().map(x => `<div class="row"><span>${esc(x.name || "Học viên")}</span><span>${esc(x.contact || x.email || "Chưa cập nhật")}</span><span>${esc(x.product || "Khóa học")}</span><span>${x.paymentSource === "app" ? "App" : "Xác nhận thực tế"}</span><span>${x.entitlement ? "Đã mở" : "Đang khóa"}</span><span class="customer-actions"><button type="button" data-edit="${esc(x.orderId)}">Sửa</button><button type="button" class="delete" data-delete="${esc(x.orderId)}">Xóa</button></span></div>`);
+    const paidRows = learners.slice().reverse().map(x => `<div class="row"><span>${esc(x.name || "Học viên")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.product || defaultCourseTitle)}<small>${esc(courseIdFrom(x))}</small></span><span>${x.paymentSource === "app" ? "App" : "Xác nhận thực tế"}</span><span><select class="access-select" data-access-package="${esc(x.orderId)}"><option value="free"${x.entitlement ? "" : " selected"}>Free</option><option value="premium"${x.entitlement ? " selected" : ""}>Premium</option></select><small>${x.entitlement ? "Được học video Premium" : "Chỉ học bài Free"}</small></span><span class="customer-actions">${x.entitlement ? `<button type="button" data-pause="${esc(x.orderId)}">Khóa</button>` : `<button type="button" data-open="${esc(x.orderId)}">Mở</button>`}<button type="button" data-edit="${esc(x.orderId)}">Sửa</button><button type="button" class="delete" data-delete="${esc(x.orderId)}">Xóa</button></span></div>`);
     const leadRows = freeLeads.map(x => {
       const plan = Array.isArray(x.nurturePlan) ? x.nurturePlan : [];
       const next = plan.find(step => Number(step.day) >= Number(x.nextEmailDay || 0)) || plan[0] || {};
-      return `<div class="row"><span>${esc(x.name || "Lead Free")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.course || "Doanh nghiệp một người")}</span><span>${esc(x.source || "Course")}</span><span>Free · chưa mua</span><span class="customer-actions"><button type="button" title="${esc(next.subject || "Chưa có kịch bản")}">Email ngày ${esc(next.day ?? 0)}</button></span></div>`;
+      const key = String(x.email || x.contact || x.name || "").trim().toLowerCase();
+      return `<div class="row"><span>${esc(x.name || "Lead Free")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.course || defaultCourseTitle)}<small>${esc(normalizeCourseId(x.course || defaultCourseId) || defaultCourseId)}</small></span><span>${esc(x.source || "Course")}</span><span><select class="access-select" data-upgrade-lead-select="${esc(key)}"><option value="free" selected>Free</option><option value="premium">Premium</option></select><small>Chưa thanh toán</small></span><span class="customer-actions"><button type="button" data-upgrade-lead="${esc(key)}">Nâng Premium</button><button type="button" title="${esc(next.subject || "Chưa có kịch bản")}">Email ngày ${esc(next.day ?? 0)}</button></span></div>`;
     });
     if (rows) rows.innerHTML = paidRows.concat(leadRows).join("") || '<div class="row"><span>Chưa có học viên/lead</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
   };
@@ -156,7 +304,10 @@
     const data = Object.fromEntries(new FormData(event.currentTarget));
     const paid = data.status === "paid";
     const wasEditing = Boolean(editingOrderId);
-    const normalized = {...data, amount:Number(data.amount), currency:data.currency === "USD" ? "USD" : "VND", entitlement:paid};
+    const active = (data.accessStatus || "active") === "active";
+    const premium = paid && active && (data.accessPackage || "premium") !== "free";
+    const courseId = normalizeCourseId(data.courseId || data.product || defaultCourseId) || defaultCourseId;
+    const normalized = {...data, product:data.product || defaultCourseTitle, courseId, courseIds:[courseId], email:String(data.email || "").trim().toLowerCase(), amount:Number(data.amount), currency:data.currency === "USD" ? "USD" : "VND", role:premium ? "premium" : "free", entitlement:premium, accessPackage:data.accessPackage || "premium", accessStatus:data.accessStatus || "active"};
     let savedRecord = null;
     if (submitButton) submitButton.disabled = true;
     try {
@@ -171,8 +322,22 @@
         records.push(savedRecord);
       }
       localStorage.setItem(key, JSON.stringify(records)); render();
-      if (statusNode) statusNode.textContent = paid ? "Đã lưu Passport. Đang đẩy về DG Office 8790..." : "Đã lưu chờ xác nhận.";
+      if (statusNode) statusNode.textContent = paid ? "Đã lưu Passport. Đang mở quyền Premium cho học viên..." : "Đã lưu chờ xác nhận.";
       if (paid && savedRecord) {
+        try {
+          await syncCourseEntitlement(savedRecord);
+          savedRecord.courseEntitlementSyncedAt = new Date().toISOString();
+          savedRecord.courseEntitlementError = "";
+          savedRecord.courseEntitlementFingerprint = syncFingerprint(savedRecord);
+          records = records.map(item => item.orderId === savedRecord.orderId ? {...item, ...savedRecord} : item);
+          localStorage.setItem(key, JSON.stringify(records));
+          if (statusNode) statusNode.textContent = "Đã mở quyền Premium. Đang đẩy về DG Office 8790...";
+        } catch (error) {
+          savedRecord.courseEntitlementError = error.message || "Không mở được quyền Premium";
+          records = records.map(item => item.orderId === savedRecord.orderId ? {...item, ...savedRecord} : item);
+          localStorage.setItem(key, JSON.stringify(records));
+          if (statusNode) statusNode.textContent = "Đã lưu thanh toán, nhưng chưa mở được quyền Premium: " + savedRecord.courseEntitlementError;
+        }
         try {
           const result = await pushRevenueToDGOffice(savedRecord);
           savedRecord.dgOfficeSyncedAt = new Date().toISOString();
@@ -181,7 +346,7 @@
           savedRecord.dgOfficeSyncFingerprint = syncFingerprint(savedRecord);
           records = records.map(item => item.orderId === savedRecord.orderId ? {...item, ...savedRecord} : item);
           localStorage.setItem(key, JSON.stringify(records));
-          if (statusNode) statusNode.textContent = result.ledger?.replaced ? "Đã cập nhật ledger DG Office 8790." : "Đã đẩy doanh thu vào DG Office 8790.";
+          if (statusNode) statusNode.textContent = result.ledger?.replaced ? "Đã mở Premium và cập nhật ledger DG Office 8790." : "Đã mở Premium và đẩy doanh thu vào DG Office 8790.";
         } catch (error) {
           savedRecord.dgOfficeSyncError = error.message || "Không gọi được DG Office";
           records = records.map(item => item.orderId === savedRecord.orderId ? {...item, ...savedRecord} : item);
@@ -198,15 +363,99 @@
         submitButton.disabled = false;
       }
       event.currentTarget.reset();
+      if (event.currentTarget.elements.product) event.currentTarget.elements.product.value = defaultCourseTitle;
+      if (event.currentTarget.elements.courseId) event.currentTarget.elements.courseId.value = defaultCourseId;
+      if (event.currentTarget.elements.accessPackage) event.currentTarget.elements.accessPackage.value = "premium";
+      if (event.currentTarget.elements.accessStatus) event.currentTarget.elements.accessStatus.value = "active";
     }
   });
-  document.getElementById("customerRows")?.addEventListener("click", event => {
-    const edit = event.target.closest("[data-edit]"); const remove = event.target.closest("[data-delete]");
-    if (edit) { const item = records.find(x => x.orderId === edit.dataset.edit); if (!item) return; editingOrderId = item.orderId; ["name","contact","product","amount","currency","paymentSource","status"].forEach(name => { const field=form.elements[name]; if(field) field.value=item[name] ?? ""; }); form.querySelector('button[type="submit"]').textContent="Lưu thay đổi"; form.scrollIntoView({behavior:"smooth",block:"start"}); }
+  const fillPaymentForm = item => {
+    if (!form || !item) return;
+    const courseId = courseIdFrom(item);
+    const data = {
+      name:item.name || "",
+      contact:item.contact || "",
+      email:String(item.email || "").trim().toLowerCase(),
+      product:item.product || item.course || defaultCourseTitle,
+      courseId,
+      amount:item.amount ?? 3000000,
+      currency:item.currency || "VND",
+      paymentSource:item.paymentSource || "manual",
+      status:item.status || "paid",
+      accessPackage:item.accessPackage || "premium",
+      accessStatus:item.accessStatus || "active"
+    };
+    Object.entries(data).forEach(([name, value]) => { const field = form.elements[name]; if (field) field.value = value; });
+    form.querySelector('button[type="submit"]').textContent = item.orderId ? "Lưu thay đổi" : "Lưu & mở Premium cho học viên";
+    form.scrollIntoView({ behavior:"smooth", block:"start" });
+  };
+  const updateCourseAccess = async (orderId, patch) => {
+    const statusNode = document.getElementById("paymentStatus");
+    const item = records.find(x => x.orderId === orderId);
+    if (!item) return;
+    const courseId = courseIdFrom({ ...item, ...patch });
+    const next = { ...item, ...patch, courseId, courseIds:[courseId], updatedAt:new Date().toISOString() };
+    records = records.map(x => x.orderId === orderId ? next : x);
+    localStorage.setItem(key, JSON.stringify(records));
+    render();
+    if (statusNode) statusNode.textContent = next.entitlement ? "Đang mở Premium cho đúng khóa..." : "Đang khóa quyền học...";
+    try {
+      await syncCourseEntitlement(next);
+      records = records.map(x => x.orderId === orderId ? { ...next, courseEntitlementSyncedAt:new Date().toISOString(), courseEntitlementError:"", courseEntitlementFingerprint:syncFingerprint(next) } : x);
+      localStorage.setItem(key, JSON.stringify(records));
+      if (statusNode) statusNode.textContent = next.entitlement ? "Đã mở Premium cho khóa này." : "Đã khóa quyền học cho khóa này.";
+    } catch (error) {
+      records = records.map(x => x.orderId === orderId ? { ...next, courseEntitlementError:error.message || "Không đồng bộ được quyền học" } : x);
+      localStorage.setItem(key, JSON.stringify(records));
+      if (statusNode) statusNode.textContent = "Đã lưu local, nhưng chưa đồng bộ được quyền học: " + (error.message || "");
+    }
+    render();
+  };
+  document.getElementById("customerRows")?.addEventListener("click", async event => {
+    const edit = event.target.closest("[data-edit]");
+    const remove = event.target.closest("[data-delete]");
+    const open = event.target.closest("[data-open]");
+    const pause = event.target.closest("[data-pause]");
+    const upgrade = event.target.closest("[data-upgrade-lead]");
+    if (edit) { const item = records.find(x => x.orderId === edit.dataset.edit); if (!item) return; editingOrderId = item.orderId; fillPaymentForm(item); return; }
+    if (open) { await updateCourseAccess(open.dataset.open, { status:"paid", purchaseStatus:"paid", accessPackage:"premium", accessStatus:"active", role:"premium", entitlement:true }); return; }
+    if (pause) { await updateCourseAccess(pause.dataset.pause, { accessStatus:"paused", accessPackage:"premium", role:"free", entitlement:false }); return; }
+    if (upgrade) {
+      const leadKeyValue = String(upgrade.dataset.upgradeLead || "").trim().toLowerCase();
+      const lead = readAllLeads().find(x => [x.email, x.contact, x.name].map(v => String(v || "").trim().toLowerCase()).includes(leadKeyValue));
+      editingOrderId = "";
+      fillPaymentForm({ name:lead?.name || "", contact:lead?.contact || "", email:lead?.email || "", product:lead?.course || defaultCourseTitle, courseId:normalizeCourseId(lead?.course || defaultCourseId) || defaultCourseId, amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active" });
+      const statusNode = document.getElementById("paymentStatus");
+      if (statusNode) statusNode.textContent = "Kiểm tra email, khóa học và số tiền rồi bấm Lưu để nâng Premium.";
+      return;
+    }
     if (remove && confirm("Xóa học viên và giao dịch này?")) { records = records.filter(x => x.orderId !== remove.dataset.delete); localStorage.setItem(key, JSON.stringify(records)); if(editingOrderId===remove.dataset.delete) editingOrderId=""; render(); }
   });
+  document.getElementById("customerRows")?.addEventListener("change", async event => {
+    const select = event.target.closest("[data-access-package]");
+    const leadSelect = event.target.closest("[data-upgrade-lead-select]");
+    if (select) {
+      const orderId = select.dataset.accessPackage;
+      if (select.value === "premium") {
+        await updateCourseAccess(orderId, { status:"paid", purchaseStatus:"paid", accessPackage:"premium", accessStatus:"active", role:"premium", entitlement:true });
+      } else {
+        await updateCourseAccess(orderId, { accessPackage:"free", accessStatus:"paused", role:"free", entitlement:false });
+      }
+      return;
+    }
+    if (leadSelect && leadSelect.value === "premium") {
+      const leadKeyValue = String(leadSelect.dataset.upgradeLeadSelect || "").trim().toLowerCase();
+      const lead = readAllLeads().find(x => [x.email, x.contact, x.name].map(v => String(v || "").trim().toLowerCase()).includes(leadKeyValue));
+      fillPaymentForm({ name:lead?.name || "", contact:lead?.contact || "", email:lead?.email || "", product:lead?.course || defaultCourseTitle, courseId:normalizeCourseId(lead?.course || defaultCourseId) || defaultCourseId, amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active" });
+      const statusNode = document.getElementById("paymentStatus");
+      if (statusNode) statusNode.textContent = "Lead đang là Free. Kiểm tra thanh toán rồi bấm Lưu để mở Premium.";
+      leadSelect.value = "free";
+    }
+  });
   window.addEventListener("ducpt:settings", render);
-  document.getElementById("cockpitRefresh")?.addEventListener("click", () => { render(); syncPaidRecordsToDGOffice(); });
+  document.getElementById("cockpitRefresh")?.addEventListener("click", () => { loadRemoteSignups(); render(); syncCourseEntitlements(); syncPaidRecordsToDGOffice(); });
   render();
+  setTimeout(() => loadRemoteSignups({silent:true}), 250);
+  setTimeout(() => syncCourseEntitlements({silent:true}), 500);
   setTimeout(() => syncPaidRecordsToDGOffice({silent:true}), 800);
 })();

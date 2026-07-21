@@ -3,6 +3,7 @@
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const ROOT = __dirname;
 const UPLOAD_DIR = path.join(ROOT, "passport", "uploads");
@@ -32,8 +33,18 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === "GET" && url.pathname === "/api/passport/course-entitlement") {
+    sendJson(res, 200, { ok: true, data: findCourseEntitlement(url) });
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/passport/course-signups") {
     saveSignup(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/customer/portal/login") {
+    loginCustomerPortal(req, res);
     return;
   }
 
@@ -356,20 +367,31 @@ function saveSignup(req, res) {
       return;
     }
     const now = new Date().toISOString();
+    const courseId = normalizeCourseId(body.courseId || body.courseKey || body.course || "");
+    const role = normalizeSignupRole(body);
+    const accessPackage = normalizeAccessPackage(body.accessPackage || body.package || body.packageId || (role === "premium" ? "premium" : "free"));
     const record = {
       id: `signup-${Date.now()}`,
       course: String(body.course || "Doanh nghiệp một người").slice(0, 160),
+      courseId,
       name: String(body.name || "").slice(0, 160),
       contact: String(body.contact || "").slice(0, 160),
       email: String(body.email || "").trim().toLowerCase().slice(0, 160),
       note: String(body.note || "").slice(0, 2000),
-      role: String(body.role || "free").slice(0, 40),
+      role: role.slice(0, 40),
       source: String(body.source || "course-signup").slice(0, 80),
       funnelStage: String(body.funnelStage || "free_not_paid").slice(0, 80),
       purchaseStatus: String(body.purchaseStatus || "not_paid").slice(0, 80),
       nextEmailDay: Number(body.nextEmailDay || 0),
       nurturePlan: Array.isArray(body.nurturePlan) ? body.nurturePlan.slice(0, 12) : [],
       status: String(body.status || "free").slice(0, 40),
+      entitlement: Boolean(role === "premium"),
+      accessPackage,
+      accessStatus: normalizeAccessStatus(body.accessStatus || body.entitlementStatus || ""),
+      courseIds: normalizeCourseIds(body.courseIds || courseId),
+      orderId: String(body.orderId || "").slice(0, 100),
+      paidAt: String(body.paidAt || "").slice(0, 80),
+      expiresAt: String(body.expiresAt || "").slice(0, 80),
       createdAt: now,
       updatedAt: now
     };
@@ -378,8 +400,7 @@ function saveSignup(req, res) {
       return;
     }
     const rows = readSignups();
-    const key = (record.email || record.contact).toLowerCase();
-    const index = rows.findIndex((item) => String(item.email || item.contact || "").toLowerCase() === key);
+    const index = findSignupIndex(rows, record);
     if (index >= 0) {
       rows[index] = { ...rows[index], ...record, id: rows[index].id || record.id, createdAt: rows[index].createdAt || record.createdAt, updatedAt: now };
       fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
@@ -398,6 +419,176 @@ function readSignups() {
   } catch {
     return [];
   }
+}
+
+function findCourseEntitlement(url) {
+  const wanted = normalizeEntitlementKey(url.searchParams.get("email") || url.searchParams.get("contact") || "");
+  const wantedCourse = normalizeCourseId(url.searchParams.get("courseId") || url.searchParams.get("course") || "");
+  if (!wanted) return { role: "guest", entitlement: false, purchaseStatus: "not_found" };
+  const rows = readSignups();
+  const identityRows = rows.filter((item) => identityKeys(item).includes(wanted));
+  const row = identityRows.find((item) => courseMatches(item, wantedCourse));
+  if (!row) {
+    return {
+      role: "free",
+      entitlement: false,
+      purchaseStatus: identityRows.length ? "course_not_granted" : "not_found",
+      courseId: wantedCourse,
+      courseIds: []
+    };
+  }
+  return entitlementPayload(row, wantedCourse);
+}
+
+function normalizeEntitlementKey(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function normalizeAccessPackage(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (["member", "membership", "premium", "paid", "full"].includes(raw)) return "premium";
+  if (["free", "trial"].includes(raw)) return "free";
+  return raw || "premium";
+}
+
+function normalizeAccessStatus(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  return ["active", "paused", "expired"].includes(raw) ? raw : "active";
+}
+
+function normalizeCourseId(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (!raw) return "";
+  return raw.normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+}
+
+function normalizeCourseIds(value) {
+  const list = Array.isArray(value) ? value : String(value || "").split(",");
+  return [...new Set(list.map(normalizeCourseId).filter(Boolean))].slice(0, 20);
+}
+
+function identityKeys(row) {
+  return [row && row.email, row && row.contact].map(normalizeEntitlementKey).filter(Boolean);
+}
+
+function rowCourseKeys(row) {
+  return [...new Set([
+    ...normalizeCourseIds(row && (row.courseIds || row.courseId)),
+    normalizeCourseId(row && row.course),
+    normalizeCourseId(row && row.product)
+  ].filter(Boolean))];
+}
+
+function courseMatches(row, wantedCourse) {
+  if (!wantedCourse) return true;
+  const keys = rowCourseKeys(row);
+  return !keys.length || keys.includes(wantedCourse);
+}
+
+function findSignupIndex(rows, record) {
+  const keys = identityKeys(record);
+  if (!keys.length) return -1;
+  return rows.findIndex((item) => identityKeys(item).some((key) => keys.includes(key)));
+}
+
+function hasPaidEntitlement(row) {
+  const status = normalizeAccessStatus(row && row.accessStatus);
+  if (status !== "active") return false;
+  const expiresAt = String(row && row.expiresAt || "").trim();
+  if (expiresAt && /^\d{4}-\d{2}-\d{2}/.test(expiresAt) && expiresAt < new Date().toISOString().slice(0, 10)) return false;
+  if (normalizeAccessPackage(row && row.accessPackage) === "free") return false;
+  return Boolean(row && (row.entitlement || row.role === "premium" || /paid|success|received|complete/i.test(String(row.purchaseStatus || row.status || ""))));
+}
+
+function normalizeSignupRole(body) {
+  const active = normalizeAccessStatus(body.accessStatus || body.entitlementStatus || "") === "active";
+  const pkg = normalizeAccessPackage(body.accessPackage || body.package || body.packageId || "");
+  const paid = Boolean(body.entitlement || body.role === "premium" || /paid|success|received|complete/i.test(String(body.purchaseStatus || body.status || "")));
+  return paid && active && pkg !== "free" ? "premium" : "free";
+}
+
+function entitlementPayload(row, wantedCourse) {
+  const paid = hasPaidEntitlement(row);
+  const courseIds = normalizeCourseIds(row.courseIds || row.courseId);
+  const courseId = wantedCourse || courseIds[0] || normalizeCourseId(row.course || row.product || "");
+  return {
+    role: paid ? "premium" : "free",
+    entitlement: paid,
+    purchaseStatus: paid ? "paid" : String(row.purchaseStatus || row.status || "not_paid"),
+    accessPackage: normalizeAccessPackage(row.accessPackage || row.package || ""),
+    accessStatus: normalizeAccessStatus(row.accessStatus || ""),
+    email: String(row.email || "").toLowerCase(),
+    name: String(row.name || ""),
+    contact: String(row.contact || ""),
+    course: String(row.course || ""),
+    courseId,
+    courseIds: courseIds.length ? courseIds : (courseId ? [courseId] : []),
+    updatedAt: row.updatedAt || row.createdAt || ""
+  };
+}
+
+function loginCustomerPortal(req, res) {
+  readJsonBody(req, res, (body) => {
+    const now = new Date().toISOString();
+    const email = String(body.email || body.contact || "").trim().toLowerCase();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      sendJson(res, 400, { ok: false, error: "Email khong hop le" });
+      return;
+    }
+    const rows = readSignups();
+    let index = rows.findIndex((item) => identityKeys(item).includes(email));
+    if (index < 0) {
+      const courseId = normalizeCourseId(body.courseId || body.courseKey || body.course || "");
+      const record = {
+        id: `signup-${Date.now()}`,
+        course: String(body.course || "DUCPT").slice(0, 160),
+        courseId,
+        name: String(body.name || "").slice(0, 160),
+        contact: String(body.contact || "").slice(0, 160),
+        email,
+        note: String(body.note || "").slice(0, 2000),
+        role: "free",
+        source: "customer-portal-email-login",
+        funnelStage: "free_not_paid",
+        purchaseStatus: "not_paid",
+        nextEmailDay: 0,
+        nurturePlan: [],
+        status: "free",
+        entitlement: false,
+        accessPackage: "free",
+        accessStatus: "active",
+        courseIds: courseId ? [courseId] : [],
+        orderId: "",
+        paidAt: "",
+        expiresAt: "",
+        createdAt: now,
+        updatedAt: now,
+        lastLoginAt: now
+      };
+      rows.unshift(record);
+      index = 0;
+    } else {
+      rows[index] = { ...rows[index], lastLoginAt: now };
+    }
+    fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
+    const entitlement = entitlementPayload(rows[index]);
+    sendJson(res, 200, {
+      ok: true,
+      ...entitlement,
+      sessionToken: "portal-" + crypto.randomBytes(18).toString("hex"),
+      customerName: entitlement.name || email.split("@")[0],
+      productName: entitlement.course || (entitlement.entitlement ? "Khoa hoc DUCPT Premium" : "Tai khoan DUCPT Free"),
+      productCount: entitlement.entitlement ? 1 : 0,
+      progress: entitlement.entitlement ? 15 : 0,
+      template: "custom",
+      note: entitlement.entitlement ? "Tai khoan da duoc cap quyen hoc. Vao trang khoa hoc de xem bai da mo." : "Tai khoan Free da duoc tao. DUCPT se kich hoat Premium sau khi xac nhan thanh toan."
+    });
+  });
 }
 
 function readCourseVideos() {
@@ -457,28 +648,38 @@ function normalizeCourseData(input) {
       cover: String(course.cover || seed.course.cover).slice(0, 500),
       updatedAt: course.updatedAt || new Date().toISOString()
     },
-    lessons: lessons.map((lesson, index) => normalizeLesson(lesson, index)).sort((a, b) => a.sort - b.sort)
+    lessons: lessons.map((lesson, index) => normalizeLesson(lesson, index)).sort((a, b) => a.sort - b.sort),
+    schemaVersion: Number((input && input.schemaVersion) || 2),
+    accessModel: input && input.accessModel ? input.accessModel : seed.accessModel
   };
 }
 
 function normalizeLesson(lesson, index) {
-  const youtubeId = youtubeIdFromUrl(lesson.youtubeUrl || lesson.url || lesson.videoUrl || lesson.publicUrl || "") || String(lesson.youtubeId || "");
-  const directVideoUrl = youtubeId ? "" : String(lesson.videoUrl || lesson.publicUrl || lesson.storageUrl || lesson.assetUrl || lesson.url || "").trim();
+  const rawDirect = String(lesson.videoUrl || lesson.publicUrl || lesson.storageUrl || lesson.assetUrl || "").trim();
+  const youtubeId = youtubeIdFromUrl(lesson.youtubeUrl || lesson.url || "") || youtubeIdFromUrl(rawDirect) || String(lesson.youtubeId || "");
+  const directVideoUrl = youtubeIdFromUrl(rawDirect) ? "" : rawDirect;
   const youtubeUrl = youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(lesson.youtubeUrl || "").trim();
   return {
     id: String(lesson.id || `lesson-${Date.now()}-${index}`).slice(0, 80),
     lessonNo: Number(lesson.lessonNo || lesson.order || index + 1),
     sort: Number(lesson.sort || lesson.lessonNo || lesson.order || index + 1),
+    module: String(lesson.module || "").slice(0, 40),
+    moduleNo: String(lesson.moduleNo || "").slice(0, 40),
     youtubeUrl,
     youtubeId,
     videoUrl: directVideoUrl,
-    sourceType: youtubeId ? "youtube" : directVideoUrl ? "direct" : String(lesson.sourceType || "youtube").slice(0, 24),
+    sourceType: directVideoUrl ? "direct" : youtubeId ? "youtube" : String(lesson.sourceType || "youtube").slice(0, 24),
     title: String(lesson.title || "Bài học mới").slice(0, 240),
     description: String(lesson.description || lesson.note || "").slice(0, 4000),
+    objective: String(lesson.objective || "").slice(0, 1200),
+    learnPoints: Array.isArray(lesson.learnPoints) ? lesson.learnPoints.map((x) => String(x).slice(0, 300)).slice(0, 12) : [],
     resourceUrl: String(lesson.resourceUrl || lesson.materialUrl || lesson.noteUrl || "").slice(0, 500),
     thumbnail: String(lesson.thumbnail || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : "")).slice(0, 500),
     duration: String(lesson.duration || "").slice(0, 40),
     status: ["draft", "published", "hidden"].includes(lesson.status) ? lesson.status : "draft",
+    access: ["free", "premium", "hidden"].includes(lesson.access) ? lesson.access : "free",
+    type: String(lesson.type || "").slice(0, 80),
+    orientation: String(lesson.orientation || "").slice(0, 30),
     updatedAt: lesson.updatedAt || new Date().toISOString()
   };
 }
@@ -493,7 +694,11 @@ function defaultCourseVideos() {
       cover: "/assets/hvd-horizontal.svg",
       updatedAt: new Date().toISOString()
     },
-    lessons: []
+    lessons: [],
+    accessModel: {
+      free: "Xem ngay",
+      premium: "Cần đăng ký học"
+    }
   };
 }
 
