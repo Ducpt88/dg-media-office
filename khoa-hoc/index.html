@@ -488,7 +488,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         ];
         function courseAccessKey(){return slugCourseId(state.course.id||state.course.slug||state.course.courseId||state.course.title||"doanh-nghiep-mot-nguoi")}
         function slugCourseId(value){return String(value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80)}
-        function localCourseKeys(row){const list=Array.isArray(row.courseIds)?row.courseIds:String(row.courseIds||row.courseId||"").split(",");return [...new Set(list.map(slugCourseId).concat([slugCourseId(row.course),slugCourseId(row.product)]).filter(Boolean))]}
+        function localCourseKeys(row){const list=Array.isArray(row.courseIds)&&row.courseIds.length?row.courseIds:String(row.courseId||row.courseIds||"").split(",");return [...new Set(list.map(slugCourseId).concat([slugCourseId(row.courseId),slugCourseId(row.course),slugCourseId(row.product)]).filter(Boolean))]}
         function localCourseMatches(row,key){const keys=localCourseKeys(row);return !key||!keys.length||keys.includes(key)}
         function signupPayload(input,source){
           const email=String(input.email||"").trim().toLowerCase();
@@ -635,15 +635,23 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         async function activateFreeAccount(record,st){
           if(!record.email||!record.name||!record.contact||!record.note){if(st){st.style.color="#b42318";st.textContent="Điền đủ Email, Họ tên, Zalo/SĐT và Mong muốn học để vào lớp."}return}
           if(st){st.style.color="#047857";st.textContent="Đang mở quyền học..."}
-          if(record.password){record.passHash=await sha256Hex(passSalted(record.password,record.email));delete record.password}
-          try{localStorage.setItem(MAIL_KEY,record.email)}catch(e){}
-          saveStudentProfile(record);
-          rememberEmailLead(record);
-          saveLeadRemote(record);
-          setRole("free");
+          const freeRecord={...record,role:"free",entitlement:false,accessPackage:"free",accessStatus:"active",funnelStage:"free_not_paid",purchaseStatus:"not_paid"};
+          if(freeRecord.password){freeRecord.passHash=await sha256Hex(passSalted(freeRecord.password,freeRecord.email));delete freeRecord.password}
+          const saved=studentProfile();
+          const sameEmail=saved&&String(saved.email||"").trim().toLowerCase()===freeRecord.email;
+          const savedPremium=sameEmail&&saved.role==="premium"&&localCourseMatches(saved,courseAccessKey())?{...saved,role:"premium",entitlement:true,purchaseStatus:"paid",source:saved.source||"saved-premium-profile"}:null;
+          const paidLocal=localPaidEntitlement(freeRecord.email);
+          const accessRecord=paidLocal?{...freeRecord,...paidLocal,passHash:freeRecord.passHash||paidLocal.passHash||""}:(savedPremium?{...freeRecord,...savedPremium,passHash:freeRecord.passHash||savedPremium.passHash||""}:freeRecord);
+          const role=accessRecord.role==="premium"?"premium":"free";
+          try{localStorage.setItem(MAIL_KEY,freeRecord.email)}catch(e){}
+          saveStudentProfile(accessRecord);
+          rememberEmailLead({...accessRecord,role,funnelStage:role==="premium"?"paid_student":"free_not_paid",purchaseStatus:role==="premium"?"paid":"not_paid"});
+          saveLeadRemote(freeRecord);
+          setRole(role);
           const freeN=state.lessons.filter(l=>l.access!=="premium").length;
           if(st)st.textContent=`Đã mở quyền học. Bạn xem được ${freeN} bài FREE ngay bây giờ.`;
-          openFirstFreeLesson();
+          if(role==="premium"&&st)st.textContent="Da dang nhap Premium. Ban xem duoc toan bo bai trong khoa nay.";
+          openFirstUnlockedLesson(role);
         }
         fillSignupForm(studentProfile());
         if(sf)sf.addEventListener("submit",event=>{event.preventDefault();const fd=new FormData(sf);activateFreeAccount(signupPayload(Object.fromEntries(fd.entries()),"course-student-form"),document.getElementById("signupStatus"))});
