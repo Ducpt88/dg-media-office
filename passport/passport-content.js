@@ -1556,11 +1556,21 @@
 
   function studentPreviewHtml() {
     const published = data.lessons.filter((item) => item.status === "published").sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
-    const rows = published.length ? published.map((item, index) => {
-      const no = item.lessonNo || index + 1;
-      return `<div class="ytc-preview-card"><img src="${esc(thumbFor(item))}" alt=""><div><b>Buổi ${esc(no)}: ${esc(item.title || "Bài học chưa có tiêu đề")}</b><p>${esc(item.description || item.resourceUrl || "Mô tả bài học đang được cập nhật.")}</p><span class="ytc-status">${esc(item.duration || sourceLabel(item))}</span></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem như học viên</a></div>`;
+    const modules = Array.isArray(data.course.modules) ? data.course.modules : [];
+    const moduleCodes = modules.map((m) => m.code);
+    const groups = modules.map((m) => ({ title: m.title, items: published.filter((l) => l.module === m.code) })).filter((g) => g.items.length);
+    const rest = published.filter((l) => !moduleCodes.includes(l.module));
+    if (rest.length) groups.push({ title: "Chưa xếp chương / để ngoài khóa", items: rest });
+    const rows = groups.length ? groups.map((group, gi) => {
+      const total = group.items.reduce((sum, l) => sum + durationSeconds(l.duration), 0);
+      const free = group.items.filter((l) => l.access !== "premium").length;
+      const items = group.items.map((item, index) => {
+        const access = item.access === "premium" ? '<span class="ca-tag prem">💎 PREMIUM · NÂNG GÓI ĐỂ XEM</span>' : '<span class="ca-tag free">FREE</span>';
+        return `<div class="ca-row"><span class="n">${String(index + 1).padStart(2, "0")}</span><span class="t">${esc(item.title || "Bài học chưa có tiêu đề")}</span><span class="m"><span class="ca-tag">${esc(item.duration || sourceLabel(item))}</span>${access}<span class="ca-tag pub">Đang hiển thị</span></span></div>`;
+      }).join("");
+      return `<section class="ca-ch"><div class="ca-ch-head"><b>${gi + 1}. ${esc(group.title)}</b><span>Số lượng: <i>${group.items.length}</i> video · Thời lượng: <i>${formatHMS(total)}</i> · Đang hiển thị: <i>${group.items.length}</i> · Miễn phí: <i>${free}</i></span></div>${items}</section>`;
     }).join("") : `<div class="cs-empty">Chưa có bài học published. Chuyển về Góc nhìn quản trị để xuất bản ít nhất một bài học.</div>`;
-    return `<article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Góc nhìn học viên</h3><div class="pc-hint">Đây là danh sách bài học học viên sẽ thấy trên trang /khoa-hoc/. Chỉ các bài published xuất hiện ở đây.</div></div><span class="ytc-status">${published.length} bài đang hiển thị</span></div><div class="ytc-preview-list">${rows}</div></article>`;
+    return `<article class="ytc-panel" style="margin-top:14px"><div class="pc-tools"><div><h3 style="margin:0">Góc nhìn học viên</h3><div class="pc-hint">Đây là cây chương học viên sẽ thấy trên trang /khoa-hoc/. Bài published luôn hiện trong danh sách; bài PREMIUM hiện khóa xem và yêu cầu nâng gói.</div></div><span class="ytc-status">${published.length} bài · ${groups.length} chương đang hiển thị</span></div><div class="ca-list">${rows}</div><div class="ytc-actions" style="margin-top:12px"><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">Xem như học viên</a></div></article>`;
   }
 
   function lessonListHtml() {

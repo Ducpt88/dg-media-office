@@ -253,6 +253,27 @@
       "type": "review",
       "thumbnail": "",
       "updatedAt": "2026-07-20T11:06:08+07:00"
+    },
+    {
+      "id": "yt-x0Ie2UzGkLE",
+      "lessonNo": 6,
+      "sort": 6,
+      "module": "M1",
+      "moduleNo": "",
+      "youtubeId": "x0Ie2UzGkLE",
+      "youtubeUrl": "https://www.youtube.com/watch?v=x0Ie2UzGkLE",
+      "videoUrl": "",
+      "sourceType": "youtube",
+      "resourceUrl": "",
+      "title": "Mô hình Công Ty 1 Người OCP",
+      "description": "",
+      "objective": "",
+      "duration": "",
+      "status": "published",
+      "access": "free",
+      "type": "",
+      "thumbnail": "https://i.ytimg.com/vi/x0Ie2UzGkLE/hqdefault.jpg",
+      "updatedAt": "2026-07-20T04:15:22.821Z"
     }
   ],
   "schemaVersion": 2,
