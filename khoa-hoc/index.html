@@ -322,7 +322,7 @@ window.__dgHeroStats = function (course, lessons) {
 </script>
 </head>
 <body>
-  <header class="header"><nav class="nav"><a href="/"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></a><a class="active" href="/khoa-hoc/">Khóa học</a><a href="/bai-viet/">Bài viết</a><a href="/dich-vu/">Dịch vụ đào tạo</a><a href="/cong-cu-ai/">Công cụ AI</a><a href="/ve-chung-toi/">Về chúng tôi</a><span class="grow"></span><a class="login" href="#dang-ky-hoc">Đăng nhập học viên</a><a class="signup" href="#dang-ky-hoc">Đăng ký học</a></nav></header>
+  <header class="header"><nav class="nav"><a href="/"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></a><a class="active" href="/khoa-hoc/">Khóa học</a><a href="/bai-viet/">Bài viết</a><a href="/dich-vu/">Dịch vụ đào tạo</a><a href="/cong-cu-ai/">Công cụ AI</a><a href="/ve-chung-toi/">Về chúng tôi</a><span class="grow"></span><a class="login" href="#dang-nhap-hoc-vien">Đăng nhập học viên</a><a class="signup" href="#dang-ky-hoc">Đăng ký học</a></nav></header>
   <section class="course-hero"><div class="inner">
     <span class="eyebrow">Khóa học thực chiến · DUCPT</span>
     <h1 id="courseTitle">Doanh nghiệp một người</h1>
@@ -434,11 +434,13 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       const state={course:{},lessons:[]};
       window.__coursePackagerReady=true;
       if(els.playerFrame)els.playerFrame.addEventListener("contextmenu",e=>e.preventDefault());
-      /* Mọi nút trỏ tới #dang-ky-hoc đều mở popup thay vì nhảy neo */
-      document.addEventListener("click",function(e){const a=e.target.closest('a[href="#dang-ky-hoc"],a[href$="#dang-ky-hoc"]');
-        if(a){e.preventDefault();if(getRole()==="guest"){if(!quickLoginStoredStudent())regModal(true)}else document.querySelector("#hoc-ngay")?.scrollIntoView({behavior:"smooth",block:"start"})}});
+      /* Tách đăng nhập và đăng ký: login chỉ email/vào lại, signup mới mở form đủ thông tin. */
+      document.addEventListener("click",function(e){const a=e.target.closest('a[href="#dang-ky-hoc"],a[href$="#dang-ky-hoc"],a[href="#dang-nhap-hoc-vien"],a[href$="#dang-nhap-hoc-vien"]');
+        if(a){e.preventDefault();const login=a.classList.contains("login")||a.getAttribute("href").includes("dang-nhap-hoc-vien");if(getRole()==="guest"){if(login){if(!quickLoginStoredStudent())showStudentLoginModal()}else showSignupModal()}else document.querySelector("#hoc-ngay")?.scrollIntoView({behavior:"smooth",block:"start"})}});
       document.addEventListener("keydown",function(e){if(e.key==="Escape")regModal(false)});
       let quickLoginStoredStudent=function(){const fn=window.__ducptQuickLoginStoredStudent;return typeof fn==="function"?fn():false};
+      let showStudentLoginModal=function(){const fn=window.__ducptShowStudentLoginModal;return typeof fn==="function"?fn():regModal(true)};
+      let showSignupModal=function(){const fn=window.__ducptShowSignupModal;return typeof fn==="function"?fn():regModal(true)};
       loadPackagedCourse();
       async function loadPackagedCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/api/passport/course-videos",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
          (localStorage) truoc khi duoc day len web. Trinh duyet nay co phien quan tri
@@ -482,7 +484,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           }catch(e){}},600);
         }
         function savedStudentReady(record){
-          return !!(record&&record.email&&record.name&&record.contact&&record.note);
+          return !!(record&&record.email);
         }
         function studentProfile(){
           try{
@@ -501,6 +503,30 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const form=document.getElementById("courseSignup");if(!form||!record)return;
           ["email","name","contact","note"].forEach(name=>{if(form.elements[name]&&!form.elements[name].value&&record[name])form.elements[name].value=record[name]});
         }
+        function ensureStudentLoginForm(){
+          let form=document.getElementById("courseLogin");if(form)return form;
+          const signup=document.getElementById("courseSignup");if(!signup)return null;
+          form=document.createElement("form");form.className="signup-form";form.id="courseLogin";
+          form.innerHTML='<label>Email học viên<input name="email" type="email" required autocomplete="email" placeholder="email@example.com"></label><button class="primary-btn" type="submit">Đăng nhập và vào học</button><div id="loginStatus" class="asset-note"></div><button class="ghost-btn" type="button" id="switchSignup">Tạo tài khoản mới</button>';
+          signup.parentNode.insertBefore(form,signup);
+          form.addEventListener("submit",event=>{event.preventDefault();const email=String(new FormData(form).get("email")||"").trim().toLowerCase();const st=document.getElementById("loginStatus");if(!email){if(st){st.style.color="#b42318";st.textContent="Nhập email học viên để vào lại khu học."}return}let record=studentProfile();if(!record||String(record.email||"").toLowerCase()!==email)record={email,name:"",contact:"",note:"",role:"free"};saveStudentProfile(record);try{localStorage.setItem(MAIL_KEY,email)}catch(e){}rememberEmailLead({...record,email,course:state.course.title||"Doanh nghiệp một người",source:"course-student-email-login",role:"free",funnelStage:"free_not_paid",purchaseStatus:"not_paid"});if(st){st.style.color="#047857";st.textContent="Đã đăng nhập học viên. Bạn có thể học các bài FREE ngay."}setRole("free");openFirstFreeLesson()});
+          form.querySelector("#switchSignup").addEventListener("click",showSignupMode);
+          return form;
+        }
+        function showSignupMode(){
+          const login=document.getElementById("courseLogin");if(login)login.style.display="none";
+          const signup=document.getElementById("courseSignup");if(signup)signup.style.display="";
+          const card=document.getElementById("dang-ky-hoc");if(card){const eye=card.querySelector(".eyebrow"),notice=card.querySelector(".notice"),nurture=card.querySelector(".nurture-note");if(eye)eye.textContent="Đăng ký học viên Free";if(notice)notice.style.display="";if(nurture)nurture.style.display="";if(els.registerTitle)els.registerTitle.textContent=state.course.title||"Doanh nghiệp một người";if(els.coursePrice)els.coursePrice.style.display=""}
+          const st=document.getElementById("signupStatus");if(st)st.textContent="";
+          regModal(true);
+        }
+        function showLoginMode(){
+          const login=ensureStudentLoginForm();const signup=document.getElementById("courseSignup");if(signup)signup.style.display="none";if(login)login.style.display="";
+          const saved=studentProfile();if(login&&login.elements.email&&!login.elements.email.value)login.elements.email.value=(saved&&saved.email)||getEmail()||"";
+          const card=document.getElementById("dang-ky-hoc");if(card){const eye=card.querySelector(".eyebrow"),notice=card.querySelector(".notice"),nurture=card.querySelector(".nurture-note");if(eye)eye.textContent="Đăng nhập học viên";if(notice)notice.style.display="none";if(nurture)nurture.style.display="none";if(els.registerTitle)els.registerTitle.textContent="Vào lại khu học viên";if(els.coursePrice)els.coursePrice.style.display="none"}
+          const st=document.getElementById("loginStatus");if(st){st.style.color="#475569";st.textContent="Nhập email đã đăng ký để vào lại tài khoản Free trên trình duyệt này."}
+          regModal(true);setTimeout(()=>{try{login&&login.elements.email&&login.elements.email.focus()}catch(e){}},80);
+        }
         function quickLoginStoredStudent(){
           const saved=studentProfile();
           fillSignupForm(saved);
@@ -517,6 +543,8 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           return true;
         }
         window.__ducptQuickLoginStoredStudent=quickLoginStoredStudent;
+        window.__ducptShowStudentLoginModal=showLoginMode;
+        window.__ducptShowSignupModal=showSignupMode;
         async function activateFreeAccount(record,st){
           if(!record.email||!record.name||!record.contact||!record.note){if(st){st.style.color="#b42318";st.textContent="Điền đủ Email, Họ tên, Zalo/SĐT và Mong muốn học để vào lớp."}return}
           if(st){st.style.color="#047857";st.textContent="Đang mở quyền học..."}
