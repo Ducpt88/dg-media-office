@@ -283,7 +283,11 @@
   function swapNavLogin(session, menu) {
     var nodes = document.querySelectorAll("header a, header button, nav a, nav button, .top a, .top button");
     var hidden = [];
-    var host = null;
+    var host = document.querySelector("header .nav, .header .nav, nav.nav, header nav, nav");
+    var stale = document.getElementById("dgsAccountChip");
+    if (stale) stale.remove();
+    var staleFloat = document.querySelector(".dgs-float");
+    if (staleFloat) staleFloat.remove();
     Array.prototype.forEach.call(nodes, function (el) {
       var txt = (el.textContent || "").replace(/\s+/g, " ").trim();
       if (!LOGIN_TEXT.test(txt) && !el.hasAttribute("data-open-customer-login")) return;
@@ -306,7 +310,9 @@
 
     var chip = document.createElement("button");
     chip.type = "button";
+    chip.id = "dgsAccountChip";
     chip.className = "dgs-chip";
+    chip.style.display = "inline-flex";
     var studentMode = readViewMode() === "student";
     var subtitle = studentMode ? (studentRole === "premium" ? "Học viên Premium" : "Học viên Free") : "Quản trị · đã đăng nhập";
     if (studentMode) chip.className = "dgs-chip is-student";
