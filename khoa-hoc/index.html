@@ -182,7 +182,7 @@
     .player-frame{position:relative}
     .ytwrap{position:relative;width:100%;height:100%;background:#000;overflow:hidden}
     .ytwrap>div:first-child,.ytwrap iframe{width:100%;height:100%;border:0;display:block}
-    .ytwrap iframe{pointer-events:none!important}
+    .ytwrap iframe{pointer-events:auto}
     /* Lớp chắn chuột: YouTube không nhận được hover/click nên không hiện tiêu đề,
        nút chia sẻ hay "Xem trên YouTube" */
     .ytbrand-mask{position:absolute;left:0;right:0;z-index:2;pointer-events:none;background:#000}
@@ -428,7 +428,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         box.classList.add("open");
       }
 
-      function selectLesson(id){if(window.__coursePackagerReady)return;const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lesson.description||"Bài học đang được cập nhật mô tả.";els.metricDuration.textContent=lesson.duration||"Từ YouTube";els.playerFrame.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(lesson.youtubeId)}?enablejsapi=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&rel=0&modestbranding=1&playsinline=1" title="${escapeHtml(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`}
+      function selectLesson(id){if(window.__coursePackagerReady)return;const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lesson.description||"Bài học đang được cập nhật mô tả.";els.metricDuration.textContent=lesson.duration||"Từ YouTube";els.playerFrame.innerHTML=`<iframe src="https://www.youtube.com/embed/${escapeHtml(lesson.youtubeId)}?enablejsapi=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&cc_load_policy=0&rel=0&modestbranding=1&playsinline=1" title="${escapeHtml(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`}
     els.signup.addEventListener("submit",async event=>{event.preventDefault();if(window.__coursePackagerReady)return;const record=Object.fromEntries(new FormData(event.currentTarget).entries());record.course=state.course.title||"Doanh nghiệp một người";record.createdAt=new Date().toISOString();els.signupStatus.textContent="Đang gửi đăng ký...";try{const res=await fetch("/api/passport/course-signups",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});const payload=await res.json();if(!payload.ok)throw new Error(payload.error||"Không lưu được đăng ký");els.signupStatus.textContent="Đã gửi đăng ký. DUCPT sẽ liên hệ để mở quyền học.";event.currentTarget.reset()}catch{els.signupStatus.textContent="Chưa gửi được đăng ký. Vui lòng liên hệ Zalo hoặc thử lại sau."}});
     function escapeHtml(value){return String(value||"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]))}
   </script>
@@ -489,6 +489,32 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
             if(dau){selectPackagedLesson(dau.id);document.querySelector(".course-player")?.scrollIntoView({behavior:"smooth",block:"center"});}
           }catch(e){}},600);
         }
+        function openFirstUnlockedLesson(role){
+          setTimeout(()=>{try{
+            const canPremium=role==="premium"||role==="admin";
+            const dau=state.lessons.find(l=>l.access!=="premium"||canPremium)||state.lessons[0];
+            if(dau){selectPackagedLesson(dau.id);document.querySelector(".course-player")?.scrollIntoView({behavior:"smooth",block:"center"});}
+          }catch(e){}},600);
+        }
+        function localPaidEntitlement(email){
+          try{
+            const key=String(email||"").trim().toLowerCase();if(!key)return null;
+            const rows=JSON.parse(localStorage.getItem("ducpt_orders_v1")||"[]");if(!Array.isArray(rows))return null;
+            const paid=/paid|success|received|complete/i;
+            const row=rows.find(x=>paid.test(String(x.status||""))&&[x.email,x.contact,x.name].map(v=>String(v||"").trim().toLowerCase()).includes(key));
+            return row?{role:"premium",entitlement:true,purchaseStatus:"paid",name:row.name||"",contact:row.contact||"",email:key,source:"local-passport-order"}:null;
+          }catch(e){return null}
+        }
+        async function resolveStudentAccess(email,record){
+          const local=localPaidEntitlement(email);if(local)return {...(record||{}),...local};
+          try{
+            const res=await fetch(`/api/passport/course-entitlement?email=${encodeURIComponent(email)}`,{cache:"no-store"});
+            const payload=await res.json();
+            const data=payload&&payload.ok?payload.data:null;
+            if(data&&data.entitlement)return {...(record||{}),...data,role:"premium",purchaseStatus:"paid",source:"course-entitlement-api"};
+          }catch(e){}
+          return {...(record||{}),email,role:(record&&record.role==="premium")?"premium":"free",purchaseStatus:(record&&record.purchaseStatus)||"not_paid"};
+        }
         function savedStudentReady(record){
           return !!(record&&record.email);
         }
@@ -501,7 +527,8 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         }
         function saveStudentProfile(record){
           try{
-            const profile={email:String(record.email||"").trim().toLowerCase(),name:String(record.name||"").trim(),contact:String(record.contact||"").trim(),note:String(record.note||"").trim(),role:"free",updatedAt:new Date().toISOString()};
+            const role=["free","premium"].includes(record.role)?record.role:"free";
+            const profile={email:String(record.email||"").trim().toLowerCase(),name:String(record.name||"").trim(),contact:String(record.contact||"").trim(),note:String(record.note||"").trim(),role,purchaseStatus:String(record.purchaseStatus||""),updatedAt:new Date().toISOString()};
             localStorage.setItem(STUDENT_PROFILE_KEY,JSON.stringify(profile));
           }catch(e){}
         }
@@ -515,7 +542,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           form=document.createElement("form");form.className="signup-form";form.id="courseLogin";
           form.innerHTML='<label>Email học viên<input name="email" type="email" required autocomplete="email" placeholder="email@example.com"></label><button class="primary-btn" type="submit">Đăng nhập và vào học</button><div id="loginStatus" class="asset-note"></div><button class="ghost-btn" type="button" id="switchSignup">Tạo tài khoản mới</button>';
           signup.parentNode.insertBefore(form,signup);
-          form.addEventListener("submit",event=>{event.preventDefault();const email=String(new FormData(form).get("email")||"").trim().toLowerCase();const st=document.getElementById("loginStatus");if(!email){if(st){st.style.color="#b42318";st.textContent="Nhập email học viên để vào lại khu học."}return}let record=studentProfile();if(!record||String(record.email||"").toLowerCase()!==email)record={email,name:"",contact:"",note:"",role:"free"};saveStudentProfile(record);try{localStorage.setItem(MAIL_KEY,email)}catch(e){}rememberEmailLead({...record,email,course:state.course.title||"Doanh nghiệp một người",source:"course-student-email-login",role:"free",funnelStage:"free_not_paid",purchaseStatus:"not_paid"});if(st){st.style.color="#047857";st.textContent="Đã đăng nhập học viên. Bạn có thể học các bài FREE ngay."}setRole("free");openFirstFreeLesson()});
+          form.addEventListener("submit",async event=>{event.preventDefault();const email=String(new FormData(form).get("email")||"").trim().toLowerCase();const st=document.getElementById("loginStatus");if(!email){if(st){st.style.color="#b42318";st.textContent="Nhập email học viên để vào lại khu học."}return}if(st){st.style.color="#475569";st.textContent="Đang kiểm tra quyền học..."}let record=studentProfile();if(!record||String(record.email||"").toLowerCase()!==email)record={email,name:"",contact:"",note:"",role:"free"};record=await resolveStudentAccess(email,record);saveStudentProfile(record);try{localStorage.setItem(MAIL_KEY,email)}catch(e){}const isPrem=record.role==="premium";rememberEmailLead({...record,email,course:state.course.title||"Doanh nghiệp một người",source:"course-student-email-login",role:record.role,funnelStage:isPrem?"paid_student":"free_not_paid",purchaseStatus:isPrem?"paid":"not_paid"});if(st){st.style.color="#047857";st.textContent=isPrem?"Đã xác nhận Premium. Bạn có thể học toàn bộ bài đã mở.":"Đã đăng nhập học viên. Bạn có thể học các bài FREE ngay."}setRole(record.role);openFirstUnlockedLesson(record.role)});
           form.querySelector("#switchSignup").addEventListener("click",showSignupMode);
           return form;
         }
@@ -542,10 +569,12 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
             return false;
           }
           try{localStorage.setItem(MAIL_KEY,saved.email)}catch(e){}
-          rememberEmailLead({...saved,course:state.course.title||"Doanh nghiệp một người",source:"course-student-return-login",role:"free",funnelStage:"free_not_paid",purchaseStatus:"not_paid",nurturePlan:nurturePlan,nextEmailDay:0});
-          setRole("free");
-          if(st){st.style.color="#047857";st.textContent="Đã đăng nhập bằng tài khoản học viên đã lưu. Bạn có thể học các bài FREE ngay."}
-          openFirstFreeLesson();
+          const role=saved.role==="premium"?"premium":"free";
+          rememberEmailLead({...saved,course:state.course.title||"Doanh nghiệp một người",source:"course-student-return-login",role,funnelStage:role==="premium"?"paid_student":"free_not_paid",purchaseStatus:role==="premium"?"paid":"not_paid",nurturePlan:nurturePlan,nextEmailDay:0});
+          setRole(role);
+          if(st){st.style.color="#047857";st.textContent=role==="premium"?"Đã đăng nhập Premium. Bạn có thể học toàn bộ bài đã mở.":"Đã đăng nhập bằng tài khoản học viên đã lưu. Bạn có thể học các bài FREE ngay."}
+          openFirstUnlockedLesson(role);
+          resolveStudentAccess(saved.email,saved).then(access=>{if(access&&access.role==="premium"&&role!=="premium"){saveStudentProfile(access);setRole("premium");openFirstUnlockedLesson("premium")}});
           return true;
         }
         window.__ducptQuickLoginStoredStudent=quickLoginStoredStudent;
@@ -656,104 +685,36 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         setTimeout(()=>{clearInterval(t);finish()},3000)})}
       function fmtT(s){s=Math.max(0,Math.floor(s||0));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;
         return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0")}
-      async function mountSecurePlayer(videoId){
+      /* Trình phát nhẹ & CHẮC CHẮN PHÁT ĐƯỢC.
+         Cách cũ tự phát bằng IFrame API (playVideo) hay bị chặn autoplay nên video đứng ở 0:00,
+         lộ màn chờ YouTube (logo + nút đỏ) mà lớp pointer-events:none lại chặn luôn nút play của họ.
+         Cách mới: bấm poster mới nạp iframe autoplay NGAY TRONG cú chạm của người dùng — chạy ổn
+         cả trên điện thoại — rồi để chính YouTube điều khiển (phát/tua/toàn màn hình). */
+      function mountSecurePlayer(videoId){
         const f=els.playerFrame;if(!f)return;
         try{if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy()}catch(e){}
-        ytPlayer=null;
-        f.innerHTML='<div class="ytwrap" id="ytWrap"><div id="ytHost"></div><i class="ytbrand-mask top"></i><i class="ytbrand-mask bottom"></i><i class="ytcaption-shield" id="ytCaptionShield"></i><div class="ythit" id="ytHit"></div>'+
-          '<div class="ytbar"><button id="ytPlay" aria-label="Phát/Dừng">▶</button>'+
-          '<div class="ytseek" id="ytSeek"><i id="ytFill"></i></div>'+
-          '<span class="yttime" id="ytTime">0:00 / 0:00</span>'+
-          '<div class="ytvol" id="ytVolWrap"><button id="ytMute" aria-label="Âm lượng" title="Âm lượng">🔊</button>'+
-          '<input id="ytVol" class="ytvol-range" type="range" min="0" max="100" step="1" value="100" aria-label="Mức âm lượng"></div>'+
-          '<div class="ytrate" id="ytRateWrap"><button id="ytRate" aria-label="Tốc độ phát" title="Tốc độ phát">1×</button>'+
-          '<div class="ytrate-menu" id="ytRateMenu"></div></div>'+
-          '<button id="ytFs" aria-label="Toàn màn hình">⛶</button></div>'+
-          
-          '<div class="ytposter" id="ytPoster">'+
-          (window.__curThumb?'<img class="pp-thumb" src="'+escapeHtml(window.__curThumb)+'" alt="" onerror="this.remove()">':'')+
+        ytPlayer=null;clearInterval(window.__ducptTick);
+        const thumb=window.__curThumb?'<img class="pp-thumb" src="'+escapeHtml(window.__curThumb)+'" alt="" onerror="this.remove()">':'';
+        f.innerHTML='<div class="ytwrap" id="ytWrap"><i class="ytbrand-mask top"></i>'+
+          '<div class="ytposter" id="ytPoster">'+thumb+
           '<div class="pp-btn"><i></i></div>'+
-          '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div>'+
-          '<div class="ytload" id="ytLoad">Đang tải bài học…</div></div>';
-        let wantsPlay=false,fallbackMode=false,playWarnTimer=null;
-        const paintPosterHint=text=>{const small=document.querySelector("#ytPoster .pp-cap small");if(small)small.textContent=text};
-        const fallbackSrc=auto=>`https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=${auto?1:0}&playsinline=1&enablejsapi=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&rel=0&modestbranding=1`;
-        const mountFallback=()=>{
-          const host=document.getElementById("ytHost");if(!host)return;
-          fallbackMode=true;
-          clearTimeout(playWarnTimer);
-          host.innerHTML=`<iframe src="${fallbackSrc(true)}" title="${escapeHtml(window.__curLessonTitle||"Bài học DUCPT")}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
-          const l=document.getElementById("ytLoad");if(l)l.remove();
-          const po=document.getElementById("ytPoster");if(po)po.style.display="none";
-          setCaptionShield(true);
-          const btn=document.getElementById("ytPlay");if(btn)btn.textContent="❚❚";
+          '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div></div>';
+        const wrap=f.querySelector("#ytWrap"),poster=f.querySelector("#ytPoster");
+        if(!wrap||!poster)return;
+        let started=false;
+        const play=e=>{
+          if(e){try{e.preventDefault();e.stopPropagation()}catch(x){}}
+          if(started)return;started=true;
+          const ifr=document.createElement("iframe");
+          ifr.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(videoId)+
+            "?autoplay=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&cc_load_policy=0";
+          ifr.title=window.__curLessonTitle||"Bài học";
+          ifr.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
+          ifr.setAttribute("allowfullscreen","");
+          wrap.insertBefore(ifr,wrap.firstChild);
+          poster.style.display="none";
         };
-        const requestPlay=()=>{
-          wantsPlay=true;
-          mountFallback();
-          const l=document.getElementById("ytLoad");if(l)l.textContent="Đang mở bài học...";
-          paintPosterHint("Đang mở bài học...");
-          try{
-            if(!fallbackMode&&ytPlayer&&ytPlayer.playVideo){
-              ytPlayer.playVideo();
-              clearTimeout(playWarnTimer);
-              playWarnTimer=setTimeout(()=>{
-                try{
-                  if(!ytPlayer.getPlayerState||ytPlayer.getPlayerState()!==1)paintPosterHint("Nếu video chưa chạy, bấm lại một lần nữa");
-                }catch(e){paintPosterHint("Nếu video chưa chạy, bấm lại một lần nữa")}
-              },4500);
-            }
-          }catch(e){}
-        };
-        const earlyTargets=[document.getElementById("ytPoster"),document.getElementById("ytPlay"),document.getElementById("ytHit")].filter(Boolean);
-        earlyTargets.forEach(target=>{
-          const start=e=>{try{e.preventDefault();e.stopPropagation()}catch(x){}requestPlay()};
-          target.onpointerdown=start;target.onmousedown=start;target.ontouchstart=start;target.onclick=start;
-          ["pointerdown","mousedown","touchstart","click"].forEach(type=>target.addEventListener(type,start,{passive:false}));
-        });
-        /* Da bo watermark tren video: khong hien ma/chu tat de khong lo nguon video. */
-        await loadYTApi();
-        if(fallbackMode)return;
-        if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát. Kiểm tra mạng rồi bấm lại.";paintPosterHint("Chưa tải được trình phát");return}
-        ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube.com",
-          playerVars:{enablejsapi:1,controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,cc_lang_pref:"",disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin,widget_referrer:location.origin},
-          events:{onReady:function(){const l=document.getElementById("ytLoad");if(l)l.remove();
-            /* Poster cua DG che kin man cho cua YouTube (nut play do, thanh tieu de, nut chia se).
-               Chi go poster khi video da THUC SU chay, nen khong bao gio lo giao dien YouTube. */
-            const po=document.getElementById("ytPoster");
-            if(wantsPlay)requestPlay();
-            wire()},
-          onStateChange:function(ev){const po=document.getElementById("ytPoster");if(!po)return;
-            if(ev.data===1){clearTimeout(playWarnTimer);po.style.display="none";setCaptionShield(true)}
-            else if(ev.data===0||ev.data===-1){po.style.display="";setCaptionShield(false)}
-            else if(ev.data===2){setCaptionShield(false)}} ,
-          onError:function(){paintPosterHint("Trình phát bị chặn, hãy tải lại trang hoặc dùng nguồn video trực tiếp")},
-          onApiChange:function(){}}});
-        function setCaptionShield(on){
-          const wrap=document.getElementById("ytWrap");
-          if(wrap)wrap.classList.toggle("caption-shield-on",!!on);
-        }
-        function wire(){
-          wireVolume(); wireRate();
-          const btn=document.getElementById("ytPlay"),hit=document.getElementById("ytHit"),
-                seek=document.getElementById("ytSeek"),fill=document.getElementById("ytFill"),
-                time=document.getElementById("ytTime"),fs=document.getElementById("ytFs"),wrap=document.getElementById("ytWrap");
-          const toggle=()=>{if(fallbackMode){mountFallback();return}const st=ytPlayer.getPlayerState();if(st===1)ytPlayer.pauseVideo();else ytPlayer.playVideo()};
-          if(hit)hit.addEventListener("click",toggle);
-          if(btn)btn.addEventListener("click",toggle);
-          if(seek)seek.addEventListener("click",e=>{const r=seek.getBoundingClientRect();
-            const d=ytPlayer.getDuration()||0;ytPlayer.seekTo(d*((e.clientX-r.left)/r.width),true)});
-          if(fs)fs.addEventListener("click",()=>{if(document.fullscreenElement)document.exitFullscreen();
-            else if(wrap&&wrap.requestFullscreen)wrap.requestFullscreen()});
-          clearInterval(window.__ducptTick);
-          window.__ducptTick=setInterval(()=>{
-            if(!ytPlayer||!ytPlayer.getDuration)return;
-            const d=ytPlayer.getDuration()||0,c=ytPlayer.getCurrentTime()||0;
-            if(fill)fill.style.width=(d?(c/d*100):0)+"%";
-            if(time)time.textContent=fmtT(c)+" / "+fmtT(d);
-            if(btn)btn.textContent=(ytPlayer.getPlayerState&&ytPlayer.getPlayerState()===1)?"❚❚":"▶";
-          },500);
-        }
+        ["click","touchend"].forEach(t=>poster.addEventListener(t,play,{passive:false}));
       }
       function isPortraitLesson(lesson){const raw=`${lesson.rawTitle||""} ${lesson.youtubeUrl||""} ${lesson.title||""}`.toLowerCase();if(raw.includes("/shorts/")||raw.includes("#shorts"))return true;return String(lesson.orientation||"").toLowerCase()==="portrait"}
       /* Thu ra thu vao tung chuong. Nho trang thai trong localStorage de lan sau mo lai van nhu cu. */
