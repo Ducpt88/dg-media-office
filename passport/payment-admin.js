@@ -31,8 +31,9 @@
     #paymentForm label{display:grid;grid-template-columns:150px minmax(0,1fr);align-items:center;gap:12px;font-size:13px;font-weight:700}
     #paymentForm .searchbox{width:100%;min-width:0}#paymentForm>button{margin-top:18px!important}#paymentStatus{display:inline-block;margin:18px 0 0 12px;color:var(--green);font-size:12px}
     #customerRows small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
-    #customerRows .access-select{width:100%;min-width:105px;border:1px solid var(--line);border-radius:8px;background:#fff;padding:6px 8px;font-weight:800}
-    #customerRows .row,.view#customers .headrow{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr .8fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
+    #customerRows .access-select{width:auto;min-width:116px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:4px 20px 4px 0;color:var(--ink);font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+    #customerRows .access-select:focus{outline:0;border-bottom-color:var(--blue)}
+    #customerRows .row,.view#customers .headrow{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
     .customer-actions button{padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;cursor:pointer}.customer-actions .delete{color:#b42318}
     @media(max-width:900px){#paymentForm .grid2{grid-template-columns:1fr}#paymentForm label{grid-template-columns:135px minmax(0,1fr)}}
   `;
@@ -287,15 +288,15 @@
     setAll('[data-cockpit="customers"]', new Set([...learners.map(x => x.contact || x.name), ...freeLeads.map(x => x.email || x.contact || x.name)].filter(Boolean)).size);
     setAll('[data-cockpit="learners"]', activeLearners.length);
     const rows = document.getElementById("customerRows");
-    const header = rows?.previousElementSibling; if (header && !header.querySelector('[data-actions-head]')) header.insertAdjacentHTML("beforeend", '<span data-actions-head>Thao tác</span>');
-    const paidRows = learners.slice().reverse().map(x => `<div class="row"><span>${esc(x.name || "Học viên")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.product || defaultCourseTitle)}<small>${esc(courseIdFrom(x))}</small></span><span>${x.paymentSource === "app" ? "App" : "Xác nhận thực tế"}</span><span><select class="access-select" data-access-package="${esc(x.orderId)}"><option value="free"${x.entitlement ? "" : " selected"}>Free</option><option value="premium"${x.entitlement ? " selected" : ""}>Premium</option></select><small>${x.entitlement ? "Được học video Premium" : "Chỉ học bài Free"}</small></span><span class="customer-actions">${x.entitlement ? `<button type="button" data-pause="${esc(x.orderId)}">Khóa</button>` : `<button type="button" data-open="${esc(x.orderId)}">Mở</button>`}<button type="button" data-edit="${esc(x.orderId)}">Sửa</button><button type="button" class="delete" data-delete="${esc(x.orderId)}">Xóa</button></span></div>`);
+    const header = rows?.previousElementSibling; header?.querySelector('[data-actions-head]')?.remove();
+    const paidRows = learners.slice().reverse().map(x => `<div class="row"><span>${esc(x.name || "Học viên")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.product || defaultCourseTitle)}<small>${esc(courseIdFrom(x))}</small></span><span>${x.paymentSource === "app" ? "App" : "Xác nhận thực tế"}</span><span><select class="access-select" data-access-package="${esc(x.orderId)}"><option value="free"${x.entitlement ? "" : " selected"}>Free</option><option value="premium"${x.entitlement ? " selected" : ""}>Premium</option></select></span></div>`);
     const leadRows = freeLeads.map(x => {
       const plan = Array.isArray(x.nurturePlan) ? x.nurturePlan : [];
       const next = plan.find(step => Number(step.day) >= Number(x.nextEmailDay || 0)) || plan[0] || {};
       const key = String(x.email || x.contact || x.name || "").trim().toLowerCase();
-      return `<div class="row"><span>${esc(x.name || "Lead Free")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.course || defaultCourseTitle)}<small>${esc(normalizeCourseId(x.course || defaultCourseId) || defaultCourseId)}</small></span><span>${esc(x.source || "Course")}</span><span><select class="access-select" data-upgrade-lead-select="${esc(key)}"><option value="free" selected>Free</option><option value="premium">Premium</option></select><small>Chưa thanh toán</small></span><span class="customer-actions"><button type="button" data-upgrade-lead="${esc(key)}">Nâng Premium</button><button type="button" title="${esc(next.subject || "Chưa có kịch bản")}">Email ngày ${esc(next.day ?? 0)}</button></span></div>`;
+      return `<div class="row"><span>${esc(x.name || "Lead Free")}</span><span>${esc(x.email || x.contact || "Chưa cập nhật")}</span><span>${esc(x.course || defaultCourseTitle)}<small>${esc(normalizeCourseId(x.course || defaultCourseId) || defaultCourseId)}</small></span><span>${esc(x.source || "Course")}</span><span><select class="access-select" data-upgrade-lead-select="${esc(key)}"><option value="free" selected>Free</option><option value="premium">Premium</option></select></span></div>`;
     });
-    if (rows) rows.innerHTML = paidRows.concat(leadRows).join("") || '<div class="row"><span>Chưa có học viên/lead</span><span>—</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
+    if (rows) rows.innerHTML = paidRows.concat(leadRows).join("") || '<div class="row"><span>Chưa có học viên/lead</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
   };
   form?.addEventListener("submit", async event => {
     event.preventDefault();
