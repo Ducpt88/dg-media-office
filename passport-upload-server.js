@@ -4,6 +4,8 @@ const http = require("http");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const net = require("net");
+const tls = require("tls");
 
 const ROOT = __dirname;
 const UPLOAD_DIR = path.join(ROOT, "passport", "uploads");
@@ -402,15 +404,34 @@ function saveSignup(req, res) {
     const rows = readSignups();
     const index = findSignupIndex(rows, record);
     if (index >= 0) {
+      const wasRegistered = Boolean(rows[index].registrationEmailSentAt);
       rows[index] = { ...rows[index], ...record, id: rows[index].id || record.id, createdAt: rows[index].createdAt || record.createdAt, updatedAt: now };
       fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
-      sendJson(res, 200, { ok: true, data: rows[index] });
+      sendSignupResponse(res, rows, index, !wasRegistered && isCourseStudentSignup(record));
       return;
     }
     rows.unshift(record);
     fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
-    sendJson(res, 200, { ok: true, data: record });
+    sendSignupResponse(res, rows, 0, isCourseStudentSignup(record));
   });
+}
+
+function isCourseStudentSignup(record) {
+  const source = String(record && record.source || "");
+  return Boolean(record && record.email && /^(course-student-form|course-signup|customer-portal-email-login)$/.test(source));
+}
+
+async function sendSignupResponse(res, rows, index, shouldSendEmail) {
+  const record = rows[index];
+  let email = { skipped: true, reason: shouldSendEmail ? "smtp_not_configured" : "not_a_new_student_signup" };
+  if (shouldSendEmail) {
+    email = await sendRegistrationEmail(record);
+    if (email.sent) {
+      rows[index] = { ...record, registrationEmailSentAt: new Date().toISOString(), registrationEmailMessageId: email.messageId || "" };
+      fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
+    }
+  }
+  sendJson(res, 200, { ok: true, data: rows[index], email });
 }
 
 function readSignups() {
@@ -419,6 +440,206 @@ function readSignups() {
   } catch {
     return [];
   }
+}
+
+function smtpConfig() {
+  const host = String(process.env.SMTP_HOST || "").trim();
+  const from = String(process.env.MAIL_FROM || process.env.SMTP_FROM || "").trim();
+  const user = String(process.env.SMTP_USER || "").trim();
+  const pass = String(process.env.SMTP_PASS || "").trim();
+  if (!host || !from) return null;
+  return {
+    host,
+    port: Number(process.env.SMTP_PORT || 587),
+    secure: /^true|1|yes$/i.test(String(process.env.SMTP_SECURE || "")),
+    starttls: !/^false|0|no$/i.test(String(process.env.SMTP_STARTTLS || "true")),
+    user,
+    pass,
+    from,
+    replyTo: String(process.env.MAIL_REPLY_TO || from).trim(),
+    siteUrl: String(process.env.PUBLIC_SITE_URL || "https://ducpt.com").replace(/\/+$/, "")
+  };
+}
+
+async function sendRegistrationEmail(record) {
+  const cfg = smtpConfig();
+  if (!cfg) return { sent: false, skipped: true, reason: "smtp_not_configured" };
+  const to = String(record.email || "").trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to)) return { sent: false, skipped: true, reason: "invalid_email" };
+  const name = String(record.name || "hoc vien").trim();
+  const course = String(record.course || "khoa hoc DUCPT").trim();
+  const courseUrl = cfg.siteUrl + "/khoa-hoc/";
+  const subject = "Dang ky hoc thanh cong - DUCPT";
+  const text = [
+    `Chao ${name},`,
+    "",
+    `DUCPT da nhan dang ky cua ban cho khoa: ${course}.`,
+    "",
+    "Tai khoan cua ban hien la Free va co the vao hoc ngay cac bai FREE.",
+    "Neu ban da thanh toan, DUCPT se kich hoat Premium cho dung khoa hoc sau khi doi soat.",
+    "",
+    `Vao hoc tai: ${courseUrl}`,
+    "",
+    "Cam on ban da dang ky,",
+    "DUCPT"
+  ].join("\n");
+  const html = [
+    `<p>Chao ${escapeHtml(name)},</p>`,
+    `<p>DUCPT da nhan dang ky cua ban cho khoa: <b>${escapeHtml(course)}</b>.</p>`,
+    `<p>Tai khoan cua ban hien la <b>Free</b> va co the vao hoc ngay cac bai <b>FREE</b>.</p>`,
+    `<p>Neu ban da thanh toan, DUCPT se kich hoat <b>Premium</b> cho dung khoa hoc sau khi doi soat.</p>`,
+    `<p><a href="${escapeHtml(courseUrl)}">Vao hoc ngay</a></p>`,
+    `<p>Cam on ban da dang ky,<br>DUCPT</p>`
+  ].join("");
+  try {
+    const messageId = await smtpSend(cfg, { to, subject, text, html });
+    return { sent: true, messageId };
+  } catch (error) {
+    console.error("[mail] registration email failed:", error.message);
+    return { sent: false, error: error.message };
+  }
+}
+
+function encodeHeader(value) {
+  return String(value || "").replace(/[\r\n]+/g, " ").trim();
+}
+
+function emailAddress(value) {
+  const text = String(value || "").trim();
+  const match = text.match(/<([^<>@\s]+@[^<>\s]+)>$/);
+  return (match ? match[1] : text).replace(/[<>]/g, "");
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[char]));
+}
+
+async function smtpSend(cfg, mail) {
+  const messageId = `${Date.now()}.${crypto.randomBytes(8).toString("hex")}@ducpt.local`;
+  const boundary = `ducpt-${crypto.randomBytes(12).toString("hex")}`;
+  const fromAddress = emailAddress(cfg.from);
+  const headers = [
+    `From: ${encodeHeader(cfg.from)}`,
+    `To: ${encodeHeader(mail.to)}`,
+    `Reply-To: ${encodeHeader(cfg.replyTo)}`,
+    `Subject: ${encodeHeader(mail.subject)}`,
+    `Message-ID: <${messageId}>`,
+    "MIME-Version: 1.0",
+    `Content-Type: multipart/alternative; boundary="${boundary}"`
+  ].join("\r\n");
+  const body = [
+    `--${boundary}`,
+    'Content-Type: text/plain; charset="UTF-8"',
+    "Content-Transfer-Encoding: 8bit",
+    "",
+    mail.text,
+    `--${boundary}`,
+    'Content-Type: text/html; charset="UTF-8"',
+    "Content-Transfer-Encoding: 8bit",
+    "",
+    mail.html,
+    `--${boundary}--`,
+    ""
+  ].join("\r\n");
+  const raw = `${headers}\r\n\r\n${body}`.replace(/\r?\n\./g, "\r\n..");
+  await withSmtp(cfg, async (client) => {
+    const local = "ducpt.local";
+    await client.expect(220);
+    await client.cmd(`EHLO ${local}`, 250);
+    if (!cfg.secure && cfg.starttls && client.features.has("STARTTLS")) {
+      await client.cmd("STARTTLS", 220);
+      await client.upgrade();
+      await client.cmd(`EHLO ${local}`, 250);
+    }
+    if (cfg.user || cfg.pass) {
+      await client.cmd("AUTH LOGIN", 334);
+      await client.cmd(Buffer.from(cfg.user, "utf8").toString("base64"), 334);
+      await client.cmd(Buffer.from(cfg.pass, "utf8").toString("base64"), 235);
+    }
+    await client.cmd(`MAIL FROM:<${fromAddress}>`, 250);
+    await client.cmd(`RCPT TO:<${emailAddress(mail.to)}>`, [250, 251]);
+    await client.cmd("DATA", 354);
+    await client.cmd(`${raw}\r\n.`, 250);
+    await client.cmd("QUIT", 221).catch(() => {});
+  });
+  return messageId;
+}
+
+function withSmtp(cfg, run) {
+  return new Promise((resolve, reject) => {
+    const socket = cfg.secure ? tls.connect({ host: cfg.host, port: cfg.port, servername: cfg.host }) : net.connect({ host: cfg.host, port: cfg.port });
+    const client = smtpClient(socket, cfg.host);
+    client.setTimeout(20000, () => reject(new Error("SMTP timeout")));
+    client.onError(reject);
+    run(client).then(resolve, reject).finally(() => client.close());
+  });
+}
+
+function smtpClient(socket, servername) {
+  let conn = socket;
+  let buffer = "";
+  const waiters = [];
+  const features = new Set();
+  let errorHandler = () => {};
+  function bind(next) {
+    conn = next;
+    conn.setEncoding("utf8");
+    conn.on("data", (chunk) => {
+      buffer += chunk;
+      flush();
+    });
+    conn.on("error", (error) => errorHandler(error));
+  }
+  bind(socket);
+  function flush() {
+    while (waiters.length) {
+      const lines = buffer.split(/\r?\n/);
+      const completeIndex = lines.findIndex((line) => /^\d{3} /.test(line));
+      if (completeIndex < 0) return;
+      const responseLines = lines.slice(0, completeIndex + 1);
+      buffer = lines.slice(completeIndex + 1).join("\r\n");
+      responseLines.forEach((line) => {
+        const item = line.slice(4).trim().toUpperCase();
+        if (item) features.add(item.split(/\s+/)[0]);
+      });
+      waiters.shift()(responseLines);
+    }
+  }
+  function expect(codes) {
+    const allowed = Array.isArray(codes) ? codes : [codes];
+    return new Promise((resolve, reject) => {
+      waiters.push((lines) => {
+        const code = Number(lines[lines.length - 1].slice(0, 3));
+        if (allowed.includes(code)) resolve(lines);
+        else reject(new Error(`SMTP ${code}: ${lines.join(" | ")}`));
+      });
+      flush();
+    });
+  }
+  return {
+    features,
+    setTimeout(ms, fn) { conn.setTimeout(ms, fn); },
+    onError(fn) { errorHandler = fn; },
+    close() { try { conn.destroy(); } catch {} },
+    expect,
+    async cmd(command, codes) {
+      conn.write(command + "\r\n");
+      return expect(codes);
+    },
+    async upgrade() {
+      await new Promise((resolve, reject) => {
+        const secure = tls.connect({ socket: conn, servername }, resolve);
+        secure.on("error", reject);
+        bind(secure);
+      });
+    }
+  };
 }
 
 function findCourseEntitlement(url) {
