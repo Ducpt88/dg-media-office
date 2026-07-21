@@ -182,7 +182,7 @@
     .player-frame{position:relative}
     .ytwrap{position:relative;width:100%;height:100%;background:#000;overflow:hidden}
     .ytwrap>div:first-child,.ytwrap iframe{width:100%;height:100%;border:0;display:block}
-    .ytwrap iframe{pointer-events:auto}
+    .ytwrap iframe{pointer-events:none!important}
     /* Lớp chắn chuột: YouTube không nhận được hover/click nên không hiện tiêu đề,
        nút chia sẻ hay "Xem trên YouTube" */
     .ytbrand-mask{position:absolute;left:0;right:0;z-index:2;pointer-events:none;background:#000}
@@ -448,6 +448,9 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       let showStudentLoginModal=function(){const fn=window.__ducptShowStudentLoginModal;return typeof fn==="function"?fn():regModal(true)};
       let showSignupModal=function(){const fn=window.__ducptShowSignupModal;return typeof fn==="function"?fn():regModal(true)};
       loadPackagedCourse();
+      /* Nạp sẵn API YouTube ngay từ đầu để lúc học viên bấm là trình phát sẵn sàng,
+         phát được kèm tiếng (tạo player trong cú chạm mà không phải chờ tải script). */
+      try{setTimeout(function(){try{loadYTApi()}catch(e){}},1200)}catch(e){}
       async function loadPackagedCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/api/passport/course-videos",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
          (localStorage) truoc khi duoc day len web. Trinh duyet nay co phien quan tri
          thi gop bai nhap vao ngay — luu xong mo trang ngoai la thay va hoc duoc luon.
@@ -685,36 +688,71 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         setTimeout(()=>{clearInterval(t);finish()},3000)})}
       function fmtT(s){s=Math.max(0,Math.floor(s||0));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;
         return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0")}
-      /* Trình phát nhẹ & CHẮC CHẮN PHÁT ĐƯỢC.
-         Cách cũ tự phát bằng IFrame API (playVideo) hay bị chặn autoplay nên video đứng ở 0:00,
-         lộ màn chờ YouTube (logo + nút đỏ) mà lớp pointer-events:none lại chặn luôn nút play của họ.
-         Cách mới: bấm poster mới nạp iframe autoplay NGAY TRONG cú chạm của người dùng — chạy ổn
-         cả trên điện thoại — rồi để chính YouTube điều khiển (phát/tua/toàn màn hình). */
+      /* Trình phát riêng của DG — KHÔNG lộ là YouTube (ẩn logo, tiêu đề, nút chia sẻ) mà vẫn
+         PHÁT ĐƯỢC và CÓ TIẾNG. Bí quyết: chỉ tạo trình phát NGAY TRONG cú chạm của học viên với
+         autoplay=1 (nên trình duyệt cho phát kèm tiếng) rồi ÉP unMute + âm lượng; controls=0 +
+         lớp che để không hiện giao diện YouTube; điều khiển bằng thanh riêng bên dưới. */
       function mountSecurePlayer(videoId){
         const f=els.playerFrame;if(!f)return;
         try{if(ytPlayer&&ytPlayer.destroy)ytPlayer.destroy()}catch(e){}
         ytPlayer=null;clearInterval(window.__ducptTick);
-        const thumb=window.__curThumb?'<img class="pp-thumb" src="'+escapeHtml(window.__curThumb)+'" alt="" onerror="this.remove()">':'';
-        f.innerHTML='<div class="ytwrap" id="ytWrap"><i class="ytbrand-mask top"></i>'+
-          '<div class="ytposter" id="ytPoster">'+thumb+
+        f.innerHTML='<div class="ytwrap" id="ytWrap"><div id="ytHost"></div><i class="ytbrand-mask top"></i><i class="ytbrand-mask bottom"></i><i class="ytcaption-shield" id="ytCaptionShield"></i><div class="ythit" id="ytHit"></div>'+
+          '<div class="ytbar"><button id="ytPlay" aria-label="Phát/Dừng">▶</button>'+
+          '<div class="ytseek" id="ytSeek"><i id="ytFill"></i></div>'+
+          '<span class="yttime" id="ytTime">0:00 / 0:00</span>'+
+          '<div class="ytvol" id="ytVolWrap"><button id="ytMute" aria-label="Âm lượng" title="Âm lượng">🔊</button>'+
+          '<input id="ytVol" class="ytvol-range" type="range" min="0" max="100" step="1" value="100" aria-label="Mức âm lượng"></div>'+
+          '<div class="ytrate" id="ytRateWrap"><button id="ytRate" aria-label="Tốc độ phát" title="Tốc độ phát">1×</button>'+
+          '<div class="ytrate-menu" id="ytRateMenu"></div></div>'+
+          '<button id="ytFs" aria-label="Toàn màn hình">⛶</button></div>'+
+          '<div class="ytposter" id="ytPoster">'+
+          (window.__curThumb?'<img class="pp-thumb" src="'+escapeHtml(window.__curThumb)+'" alt="" onerror="this.remove()">':'')+
           '<div class="pp-btn"><i></i></div>'+
-          '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div></div>';
-        const wrap=f.querySelector("#ytWrap"),poster=f.querySelector("#ytPoster");
-        if(!wrap||!poster)return;
+          '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div>'+
+          '<div class="ytload" id="ytLoad" style="display:none">Đang mở bài học…</div></div>';
+        const paintPosterHint=text=>{const s=document.querySelector("#ytPoster .pp-cap small");if(s)s.textContent=text};
         let started=false;
-        const play=e=>{
+        function setCaptionShield(on){const w=document.getElementById("ytWrap");if(w)w.classList.toggle("caption-shield-on",!!on)}
+        function forceSound(){try{ytPlayer.unMute();let v=Number(localStorage.getItem(VOL_KEY));if(!(v>0))v=100;ytPlayer.setVolume(v)}catch(e){}}
+        function wire(){
+          wireVolume();wireRate();
+          const btn=document.getElementById("ytPlay"),hit=document.getElementById("ytHit"),
+                seek=document.getElementById("ytSeek"),fill=document.getElementById("ytFill"),
+                time=document.getElementById("ytTime"),fs=document.getElementById("ytFs"),wrap=document.getElementById("ytWrap");
+          const toggle=()=>{try{const st=ytPlayer.getPlayerState();if(st===1)ytPlayer.pauseVideo();else{forceSound();ytPlayer.playVideo()}}catch(e){}};
+          if(hit)hit.addEventListener("click",toggle);
+          if(btn)btn.addEventListener("click",toggle);
+          if(seek)seek.addEventListener("click",e=>{const r=seek.getBoundingClientRect();const d=ytPlayer.getDuration()||0;ytPlayer.seekTo(d*((e.clientX-r.left)/r.width),true)});
+          if(fs)fs.addEventListener("click",()=>{if(document.fullscreenElement)document.exitFullscreen();else if(wrap&&wrap.requestFullscreen)wrap.requestFullscreen()});
+          clearInterval(window.__ducptTick);
+          window.__ducptTick=setInterval(()=>{
+            if(!ytPlayer||!ytPlayer.getDuration)return;
+            const d=ytPlayer.getDuration()||0,c=ytPlayer.getCurrentTime()||0;
+            if(fill)fill.style.width=(d?(c/d*100):0)+"%";
+            if(time)time.textContent=fmtT(c)+" / "+fmtT(d);
+            if(btn)btn.textContent=(ytPlayer.getPlayerState&&ytPlayer.getPlayerState()===1)?"❚❚":"▶";
+          },500);
+        }
+        const start=async e=>{
           if(e){try{e.preventDefault();e.stopPropagation()}catch(x){}}
           if(started)return;started=true;
-          const ifr=document.createElement("iframe");
-          ifr.src="https://www.youtube-nocookie.com/embed/"+encodeURIComponent(videoId)+
-            "?autoplay=1&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&cc_load_policy=0";
-          ifr.title=window.__curLessonTitle||"Bài học";
-          ifr.setAttribute("allow","accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share");
-          ifr.setAttribute("allowfullscreen","");
-          wrap.insertBefore(ifr,wrap.firstChild);
-          poster.style.display="none";
+          const load=document.getElementById("ytLoad");if(load)load.style.display="";
+          paintPosterHint("Đang mở bài học…");
+          await loadYTApi();
+          if(!window.YT||!window.YT.Player){if(load)load.textContent="Chưa mở được trình phát, kiểm tra mạng rồi bấm lại.";started=false;paintPosterHint("Bấm để phát");return}
+          ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube-nocookie.com",
+            playerVars:{controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,cc_lang_pref:"",disablekb:1,fs:0,playsinline:1,autoplay:1,origin:location.origin,widget_referrer:location.origin},
+            events:{
+              onReady:function(ev){forceSound();try{ev.target.playVideo()}catch(e){}wire();},
+              onStateChange:function(ev){const po=document.getElementById("ytPoster");if(!po)return;
+                if(ev.data===1){const l=document.getElementById("ytLoad");if(l)l.remove();po.style.display="none";forceSound();setCaptionShield(true)}
+                else if(ev.data===0||ev.data===-1){po.style.display="";setCaptionShield(false)}
+                else if(ev.data===2){setCaptionShield(false)}},
+              onError:function(){paintPosterHint("Trình phát bị chặn, bấm lại hoặc tải lại trang")}
+            }});
+          window.__ytp=ytPlayer;
         };
-        ["click","touchend"].forEach(t=>poster.addEventListener(t,play,{passive:false}));
+        ["click","touchend"].forEach(t=>{const po=document.getElementById("ytPoster");if(po)po.addEventListener(t,start,{passive:false})});
       }
       function isPortraitLesson(lesson){const raw=`${lesson.rawTitle||""} ${lesson.youtubeUrl||""} ${lesson.title||""}`.toLowerCase();if(raw.includes("/shorts/")||raw.includes("#shorts"))return true;return String(lesson.orientation||"").toLowerCase()==="portrait"}
       /* Thu ra thu vao tung chuong. Nho trang thai trong localStorage de lan sau mo lai van nhu cu. */
