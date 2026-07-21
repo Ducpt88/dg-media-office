@@ -215,6 +215,11 @@
     .gate.reg{background:linear-gradient(120deg,#2563eb,#7c3aed)}
     .gate.up{background:linear-gradient(120deg,#7c3aed,#c026d3)}
     .gate.note{background:linear-gradient(120deg,#334155,#0f172a)}
+    .gate .pcode{display:flex;gap:8px;margin-top:14px;width:100%;max-width:340px}
+    .gate .pcode input{flex:1;min-width:0;height:44px;border-radius:10px;border:0;padding:0 13px;font:inherit;font-size:14px}
+    .gate .pcode button{height:44px;padding:0 16px;border-radius:10px;border:0;background:#fff;color:#7c3aed;font-weight:900;cursor:pointer;white-space:nowrap}
+    .gate .pcode-st{margin-top:9px;font-size:12.5px;min-height:16px;color:#fff}
+    .gate .pcode-hint{margin-top:10px;font-size:12px;color:rgba(255,255,255,.8)}
     .acct{display:flex;gap:11px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;background:#f8fbff;margin-bottom:14px}
     .acct .av{width:38px;height:38px;border-radius:999px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;display:grid;place-items:center;font-weight:900;flex:none}
     .acct b{display:block;font-size:13.5px;line-height:1.2}.acct span{display:block;color:var(--muted);font-size:11.5px}
@@ -359,7 +364,7 @@ window.__dgHeroStats = function (course, lessons) {
         </div>
         <div class="lesson-list" id="lessonList"></div>
       </aside>
-      <aside class="panel register-card" id="dang-ky-hoc"><span class="eyebrow">Đăng ký học viên Free</span><h2 id="registerTitle">Doanh nghiệp một người</h2><p>Điền thông tin một lần để vào học ngay. Tài khoản Free chỉ xem được video Free; video Premium sẽ bị khóa và yêu cầu nâng gói.</p><div id="acctBox"></div><div class="price" id="coursePrice">Liên hệ <small>Tư vấn theo nhu cầu học</small></div><form class="signup-form" id="courseSignup"><label>Email<input name="email" type="email" required autocomplete="email" placeholder="email@example.com"></label><label>Họ tên<input name="name" required autocomplete="name" placeholder="Tên học viên"></label><label>SĐT/Zalo<input name="contact" required autocomplete="tel" placeholder="Số điện thoại hoặc Zalo"></label><label>Mong muốn học<textarea name="note" required placeholder="Bạn muốn học để đạt điều gì?"></textarea></label><button class="primary-btn" type="submit">Đăng ký và vào học</button><div id="signupStatus" class="asset-note"></div></form><p class="nurture-note">Sau khi đăng ký Free, hệ thống lưu bạn vào danh sách chăm sóc email: nhắc học bài miễn phí, gửi case study và mời nâng cấp khi phù hợp.</p><div class="notice"><b>Đăng ký xong mới xem video.</b> Bài <b>FREE</b> xem được ngay; bài <b>PREMIUM</b> chỉ mở khi nâng cấp.</div></aside>
+      <aside class="panel register-card" id="dang-ky-hoc"><span class="eyebrow">Đăng ký học viên Free</span><h2 id="registerTitle">Doanh nghiệp một người</h2><p>Điền thông tin một lần để vào học ngay. Tài khoản Free chỉ xem được video Free; video Premium sẽ bị khóa và yêu cầu nâng gói.</p><div id="acctBox"></div><div class="price" id="coursePrice">Liên hệ <small>Tư vấn theo nhu cầu học</small></div><form class="signup-form" id="courseSignup"><label>Email<input name="email" type="email" required autocomplete="email" placeholder="email@example.com"></label><label>Họ tên<input name="name" required autocomplete="name" placeholder="Tên học viên"></label><label>SĐT/Zalo<input name="contact" required autocomplete="tel" placeholder="Số điện thoại hoặc Zalo"></label><label>Mong muốn học<textarea name="note" required placeholder="Bạn muốn học để đạt điều gì?"></textarea></label><label>Mật khẩu<input name="password" type="password" required autocomplete="new-password" minlength="4" placeholder="Đặt mật khẩu để lần sau đăng nhập lại"></label><button class="primary-btn" type="submit">Đăng ký và vào học</button><div id="signupStatus" class="asset-note"></div></form><p class="nurture-note">Sau khi đăng ký Free, hệ thống lưu bạn vào danh sách chăm sóc email: nhắc học bài miễn phí, gửi case study và mời nâng cấp khi phù hợp.</p><div class="notice"><b>Đăng ký xong mới xem video.</b> Bài <b>FREE</b> xem được ngay; bài <b>PREMIUM</b> chỉ mở khi nâng cấp.</div></aside>
     </div>
   </main>
   <footer><div class="site-footer"><div class="footer-grid"><section class="footer-brand"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"><p>Nền tảng học và ứng dụng AI thực chiến dành cho cá nhân và doanh nghiệp Việt Nam.</p></section><section class="footer-col"><h3>Khóa học</h3><a href="/khoa-hoc/">Doanh nghiệp một người</a><a href="/khoa-hoc/#dang-ky-hoc">Khu học viên</a></section><section class="footer-col"><h3>Dịch vụ</h3><a href="/dich-vu/">Đào tạo doanh nghiệp</a><a href="/cong-cu-ai/">Công cụ AI</a></section><section class="footer-col"><h3>Hỗ trợ</h3><a href="https://zalo.me/0963249467">Liên hệ Zalo</a><a href="#dang-ky-hoc">Đăng ký học</a></section><section class="footer-col"><h3>Kết nối</h3><a href="https://www.facebook.com/ducserving">Facebook</a><a href="https://www.youtube.com/@ducdg2">YouTube</a></section></div></div></footer>
@@ -442,7 +447,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       if(els.playerFrame)els.playerFrame.addEventListener("contextmenu",e=>e.preventDefault());
       /* Tách đăng nhập và đăng ký: login chỉ email/vào lại, signup mới mở form đủ thông tin. */
       document.addEventListener("click",function(e){const a=e.target.closest('a[href="#dang-ky-hoc"],a[href$="#dang-ky-hoc"],a[href="#dang-nhap-hoc-vien"],a[href$="#dang-nhap-hoc-vien"]');
-        if(a){e.preventDefault();const login=a.classList.contains("login")||a.getAttribute("href").includes("dang-nhap-hoc-vien");if(getRole()==="guest"){if(login){if(!quickLoginStoredStudent())showStudentLoginModal()}else showSignupModal()}else document.querySelector("#hoc-ngay")?.scrollIntoView({behavior:"smooth",block:"start"})}});
+        if(a){e.preventDefault();const login=a.classList.contains("login")||a.getAttribute("href").includes("dang-nhap-hoc-vien");if(getRole()==="guest"){if(login){showStudentLoginModal()}else showSignupModal()}else document.querySelector("#hoc-ngay")?.scrollIntoView({behavior:"smooth",block:"start"})}});
       document.addEventListener("keydown",function(e){if(e.key==="Escape")regModal(false)});
       let quickLoginStoredStudent=function(){const fn=window.__ducptQuickLoginStoredStudent;return typeof fn==="function"?fn():false};
       let showStudentLoginModal=function(){const fn=window.__ducptShowStudentLoginModal;return typeof fn==="function"?fn():regModal(true)};
@@ -469,7 +474,10 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           }
         }
       }catch{}
-      state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.status==="published"&&item.access!=="hidden"&&(playableSource(item)||item.access==="premium")).sort((a,b)=>(Number(a.sort)||999)-(Number(b.sort)||999));const first=state.lessons.find(l=>l.access!=="premium")||state.lessons[0];refreshCourseUi(first);
+      state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.status==="published"&&item.access!=="hidden"&&(playableSource(item)||item.access==="premium")).sort((a,b)=>(Number(a.sort)||999)-(Number(b.sort)||999));
+      /* Nạp danh sách mã Premium (dạng băm) để học viên nhập mã tự mở khóa Premium trên máy họ. */
+      try{const pr=await fetch("/passport/premium-access.json",{cache:"no-store"});const pj=await pr.json();state.premiumHashes=Array.isArray(pj&&pj.premiumCodeHashes)?pj.premiumCodeHashes:[]}catch(e){state.premiumHashes=[]}
+      const first=state.lessons.find(l=>l.access!=="premium")||state.lessons[0];refreshCourseUi(first);
         const sf=document.getElementById("courseSignup");
         const nurturePlan=[
           {day:0,subject:"Mở tài khoản Free DUCPT",goal:"Gửi link quay lại khóa học và bài free đầu tiên"},
@@ -481,7 +489,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         function signupPayload(input,source){
           const email=String(input.email||"").trim().toLowerCase();
           const name=String(input.name||"").trim();
-          return {course:state.course.title||"Doanh nghiệp một người",name,email,contact:String(input.contact||"").trim(),note:String(input.note||"").trim(),source:source||"course-signup",role:"free",funnelStage:"free_not_paid",purchaseStatus:"not_paid",nurturePlan:nurturePlan,createdAt:new Date().toISOString(),nextEmailDay:0};
+          return {course:state.course.title||"Doanh nghiệp một người",name,email,contact:String(input.contact||"").trim(),note:String(input.note||"").trim(),password:String(input.password||""),source:source||"course-signup",role:"free",funnelStage:"free_not_paid",purchaseStatus:"not_paid",nurturePlan:nurturePlan,createdAt:new Date().toISOString(),nextEmailDay:0};
         }
         async function saveLeadRemote(record){
           try{await fetch("/api/passport/course-signups",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)})}catch(e){}
@@ -518,6 +526,25 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           }catch(e){}
           return {...(record||{}),email,role:(record&&record.role==="premium")?"premium":"free",purchaseStatus:(record&&record.purchaseStatus)||"not_paid"};
         }
+        async function sha256Hex(str){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(String(str||"")));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return ""}}
+        function passSalted(pass,email){return String(pass||"")+"::"+String(email||"").trim().toLowerCase()}
+        async function tryPremiumCode(code,st){
+          const raw=String(code||"").trim();
+          if(!raw){if(st){st.style.color="#fecaca";st.textContent="Nhập mã Premium anh gửi cho bạn."}return false}
+          const h=await sha256Hex(raw);
+          const list=Array.isArray(state.premiumHashes)?state.premiumHashes:[];
+          if(list.includes(h)){
+            const prof=studentProfile()||{email:getEmail()||"",role:"free"};
+            saveStudentProfile({...prof,role:"premium",purchaseStatus:"paid",source:"premium-code"});
+            try{localStorage.setItem("ducpt-premium-code-ok","1")}catch(e){}
+            setRole("premium");
+            if(st){st.style.color="#bbf7d0";st.textContent="Đã mở Premium! Bạn xem được toàn bộ bài học."}
+            return true;
+          }
+          if(st){st.style.color="#fecaca";st.textContent="Mã Premium chưa đúng. Kiểm tra lại hoặc liên hệ Zalo."}
+          return false;
+        }
+        window.__ducptTryPremiumCode=tryPremiumCode;
         function savedStudentReady(record){
           return !!(record&&record.email);
         }
@@ -525,13 +552,15 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           try{
             const raw=JSON.parse(localStorage.getItem(STUDENT_PROFILE_KEY)||"null");
             if(!raw||typeof raw!=="object")return null;
-            return {email:String(raw.email||"").trim().toLowerCase(),name:String(raw.name||"").trim(),contact:String(raw.contact||"").trim(),note:String(raw.note||"").trim(),role:raw.role||"free",updatedAt:raw.updatedAt||""};
+            return {email:String(raw.email||"").trim().toLowerCase(),name:String(raw.name||"").trim(),contact:String(raw.contact||"").trim(),note:String(raw.note||"").trim(),role:raw.role||"free",passHash:String(raw.passHash||""),purchaseStatus:String(raw.purchaseStatus||""),updatedAt:raw.updatedAt||""};
           }catch(e){return null}
         }
         function saveStudentProfile(record){
           try{
-            const role=["free","premium"].includes(record.role)?record.role:"free";
-            const profile={email:String(record.email||"").trim().toLowerCase(),name:String(record.name||"").trim(),contact:String(record.contact||"").trim(),note:String(record.note||"").trim(),role,purchaseStatus:String(record.purchaseStatus||""),updatedAt:new Date().toISOString()};
+            /* Gộp với hồ sơ cũ để KHÔNG mất mật khẩu (passHash) hay quyền Premium khi lưu lại. */
+            const prev=studentProfile()||{};
+            const role=["free","premium"].includes(record.role)?record.role:(prev.role||"free");
+            const profile={email:String(record.email||prev.email||"").trim().toLowerCase(),name:String(record.name||prev.name||"").trim(),contact:String(record.contact||prev.contact||"").trim(),note:String(record.note||prev.note||"").trim(),role,purchaseStatus:String(record.purchaseStatus||prev.purchaseStatus||""),passHash:String(record.passHash||prev.passHash||""),updatedAt:new Date().toISOString()};
             localStorage.setItem(STUDENT_PROFILE_KEY,JSON.stringify(profile));
           }catch(e){}
         }
@@ -543,9 +572,24 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           let form=document.getElementById("courseLogin");if(form)return form;
           const signup=document.getElementById("courseSignup");if(!signup)return null;
           form=document.createElement("form");form.className="signup-form";form.id="courseLogin";
-          form.innerHTML='<label>Email học viên<input name="email" type="email" required autocomplete="email" placeholder="email@example.com"></label><button class="primary-btn" type="submit">Đăng nhập và vào học</button><div id="loginStatus" class="asset-note"></div><button class="ghost-btn" type="button" id="switchSignup">Tạo tài khoản mới</button>';
+          form.innerHTML='<label>Email học viên<input name="email" type="email" required autocomplete="email" placeholder="email@example.com"></label><label>Mật khẩu<input name="password" type="password" required autocomplete="current-password" placeholder="Mật khẩu đã đặt lúc đăng ký"></label><button class="primary-btn" type="submit">Đăng nhập và vào học</button><div id="loginStatus" class="asset-note"></div><button class="ghost-btn" type="button" id="switchSignup">Chưa có tài khoản? Đăng ký</button>';
           signup.parentNode.insertBefore(form,signup);
-          form.addEventListener("submit",async event=>{event.preventDefault();const email=String(new FormData(form).get("email")||"").trim().toLowerCase();const st=document.getElementById("loginStatus");if(!email){if(st){st.style.color="#b42318";st.textContent="Nhập email học viên để vào lại khu học."}return}if(st){st.style.color="#475569";st.textContent="Đang kiểm tra quyền học..."}let record=studentProfile();if(!record||String(record.email||"").toLowerCase()!==email)record={email,name:"",contact:"",note:"",role:"free"};record=await resolveStudentAccess(email,record);saveStudentProfile(record);try{localStorage.setItem(MAIL_KEY,email)}catch(e){}const isPrem=record.role==="premium";rememberEmailLead({...record,email,course:state.course.title||"Doanh nghiệp một người",source:"course-student-email-login",role:record.role,funnelStage:isPrem?"paid_student":"free_not_paid",purchaseStatus:isPrem?"paid":"not_paid"});if(st){st.style.color="#047857";st.textContent=isPrem?"Đã xác nhận Premium. Bạn có thể học toàn bộ bài đã mở.":"Đã đăng nhập học viên. Bạn có thể học các bài FREE ngay."}setRole(record.role);openFirstUnlockedLesson(record.role)});
+          form.addEventListener("submit",async event=>{event.preventDefault();const fd=new FormData(form);const email=String(fd.get("email")||"").trim().toLowerCase();const pass=String(fd.get("password")||"");const st=document.getElementById("loginStatus");
+            if(!email||!pass){if(st){st.style.color="#b42318";st.textContent="Nhập cả email và mật khẩu để đăng nhập."}return}
+            if(st){st.style.color="#475569";st.textContent="Đang kiểm tra..."}
+            const prof=studentProfile();
+            if(!prof||String(prof.email||"").toLowerCase()!==email){if(st){st.style.color="#b42318";st.textContent="Máy này chưa có tài khoản với email đó. Nếu là lần đầu, hãy bấm nút Đăng ký bên dưới."}return}
+            const h=await sha256Hex(passSalted(pass,email));
+            if(prof.passHash&&prof.passHash!==h){if(st){st.style.color="#b42318";st.textContent="Mật khẩu chưa đúng. Thử lại nhé."}return}
+            let record={...prof,passHash:prof.passHash||h};
+            const resolved=await resolveStudentAccess(email,record);
+            const role=(resolved.role==="premium"||prof.role==="premium")?"premium":"free";
+            record={...record,...resolved,role,passHash:record.passHash};
+            saveStudentProfile(record);try{localStorage.setItem(MAIL_KEY,email)}catch(e){}
+            const isPrem=role==="premium";
+            rememberEmailLead({...record,password:undefined,email,course:state.course.title||"Doanh nghiệp một người",source:"course-student-login",role,funnelStage:isPrem?"paid_student":"free_not_paid",purchaseStatus:isPrem?"paid":"not_paid"});
+            if(st){st.style.color="#047857";st.textContent=isPrem?"Đã đăng nhập Premium. Bạn xem được toàn bộ bài học.":"Đã đăng nhập. Bạn xem được các bài FREE ngay."}
+            setRole(role);openFirstUnlockedLesson(role)});
           form.querySelector("#switchSignup").addEventListener("click",showSignupMode);
           return form;
         }
@@ -560,7 +604,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const login=ensureStudentLoginForm();const signup=document.getElementById("courseSignup");if(signup)signup.style.display="none";if(login)login.style.display="";
           const saved=studentProfile();if(login&&login.elements.email&&!login.elements.email.value)login.elements.email.value=(saved&&saved.email)||getEmail()||"";
           const card=document.getElementById("dang-ky-hoc");if(card){const eye=card.querySelector(".eyebrow"),notice=card.querySelector(".notice"),nurture=card.querySelector(".nurture-note");if(eye)eye.textContent="Đăng nhập học viên";if(notice)notice.style.display="none";if(nurture)nurture.style.display="none";if(els.registerTitle)els.registerTitle.textContent="Vào lại khu học viên";if(els.coursePrice)els.coursePrice.style.display="none"}
-          const st=document.getElementById("loginStatus");if(st){st.style.color="#475569";st.textContent="Nhập email đã đăng ký để vào lại tài khoản Free trên trình duyệt này."}
+          const st=document.getElementById("loginStatus");if(st){st.style.color="#475569";st.textContent="Nhập email và mật khẩu đã đặt lúc đăng ký để vào lại khu học."}
           regModal(true);setTimeout(()=>{try{login&&login.elements.email&&login.elements.email.focus()}catch(e){}},80);
         }
         function quickLoginStoredStudent(){
@@ -584,8 +628,12 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         window.__ducptShowStudentLoginModal=showLoginMode;
         window.__ducptShowSignupModal=showSignupMode;
         async function activateFreeAccount(record,st){
-          if(!record.email||!record.name||!record.contact||!record.note){if(st){st.style.color="#b42318";st.textContent="Điền đủ Email, Họ tên, Zalo/SĐT và Mong muốn học để vào lớp."}return}
+          if(!record.email||!record.name||!record.contact||!record.note||!record.password){if(st){st.style.color="#b42318";st.textContent="Điền đủ Email, Họ tên, Zalo/SĐT, Mong muốn học và Mật khẩu để vào lớp."}return}
+          if(String(record.password).length<4){if(st){st.style.color="#b42318";st.textContent="Mật khẩu tối thiểu 4 ký tự."}return}
           if(st){st.style.color="#047857";st.textContent="Đang mở quyền học..."}
+          /* Băm mật khẩu, KHÔNG lưu mật khẩu thô ở bất cứ đâu. */
+          record.passHash=await sha256Hex(passSalted(record.password,record.email));
+          delete record.password;
           try{localStorage.setItem(MAIL_KEY,record.email)}catch(e){}
           saveStudentProfile(record);
           rememberEmailLead(record);
@@ -841,7 +889,12 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           els.playerFrame.innerHTML=`<div class="gate reg"><div class="ic">🔐</div><b>Đăng ký để xem bài học</b><p>${lesson.access==="premium"?"Đây là bài PREMIUM. Hãy đăng ký tài khoản trước, sau đó nâng cấp để mở khóa.":"Bài này miễn phí — chỉ cần tạo tài khoản DUCPT là xem được ngay."}</p><a href="#dang-ky-hoc">Đăng ký miễn phí</a></div>`;return}
         /* Đã đăng ký nhưng chưa nâng cấp, bấm bài PREMIUM */
         if(lesson.access==="premium"&&!canPlay(lesson)){head();els.currentDesc.textContent="Bài học này dành cho học viên đã nâng cấp Premium.";
-          els.playerFrame.innerHTML=`<div class="gate up"><div class="ic">💎</div><b>Bài học PREMIUM</b><p>${escapeHtml(lesson.title)}</p><a href="https://zalo.me/0963249467">Nâng cấp để mở khóa</a></div>`;return}
+          els.playerFrame.innerHTML=`<div class="gate up"><div class="ic">💎</div><b>Bài học PREMIUM</b><p>${escapeHtml(lesson.title)}</p><a href="https://zalo.me/0963249467">Nâng cấp để mở khóa</a><div class="pcode"><input id="pcodeInput" type="text" autocomplete="off" placeholder="Đã trả phí? Nhập mã Premium"><button id="pcodeBtn" type="button">Mở khóa</button></div><div id="pcodeStatus" class="pcode-st"></div><div class="pcode-hint">Mã Premium do DUCPT gửi riêng sau khi bạn thanh toán.</div></div>`;
+          const pbtn=document.getElementById("pcodeBtn"),pinp=document.getElementById("pcodeInput"),pst=document.getElementById("pcodeStatus");
+          const doCode=async()=>{const fn=window.__ducptTryPremiumCode;if(typeof fn!=="function"){if(pst){pst.style.color="#fecaca";pst.textContent="Chưa sẵn sàng, tải lại trang rồi thử lại."}return}const ok=await fn(pinp&&pinp.value,pst);if(ok)setTimeout(()=>selectPackagedLesson(id),500)};
+          if(pbtn)pbtn.addEventListener("click",doCode);
+          if(pinp)pinp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();doCode()}});
+          return}
         /* Premium/Admin xem bài premium: nguồn video chỉ trả về khi đã đấu Supabase */
         if(lesson.access==="premium"&&!playableSource(lesson)){head();els.currentDesc.textContent="Bạn có quyền xem bài này. Nguồn video sẽ được trả về sau khi kết nối đăng nhập Supabase.";
           els.playerFrame.innerHTML=`<div class="gate note"><div class="ic">🛠</div><b>Đã mở quyền — chờ đấu nối nguồn video</b><p>Mã video của bài PREMIUM được cố tình gỡ khỏi dữ liệu công khai. Sau khi bật Supabase, hệ thống sẽ trả mã riêng cho người có quyền.</p></div>`;return}
