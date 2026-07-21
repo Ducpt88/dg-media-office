@@ -81,12 +81,23 @@
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[char]));
   const readLeads = () => { try { const list = JSON.parse(localStorage.getItem(leadKey) || "[]"); return Array.isArray(list) ? list : []; } catch { return []; } };
   const readJsonList = storageKey => { try { const list = JSON.parse(localStorage.getItem(storageKey) || "[]"); return Array.isArray(list) ? list : []; } catch { return []; } };
-  const readSignupInbox = () => {
-    const rows = readJsonList(signupInboxKey);
+  const readCurrentStudentRows = () => {
+    const rows = [];
     try {
       const profile = JSON.parse(localStorage.getItem(studentProfileKey) || "null");
-      if (profile && profile.email) rows.unshift({ ...profile, source:"student-profile", status:"free", purchaseStatus:profile.purchaseStatus || "not_paid" });
+      if (profile && profile.email) rows.push({ ...profile, source:"student-profile", status:"free", purchaseStatus:profile.purchaseStatus || "not_paid", role:profile.role || "free" });
     } catch {}
+    try {
+      const email = String(localStorage.getItem("ducpt-email") || "").trim().toLowerCase();
+      const role = String(localStorage.getItem("ducpt-role") || "free").trim().toLowerCase();
+      const hasAdminSession = !!JSON.parse(localStorage.getItem("ducpt-admin-session") || "null");
+      if (email && !hasAdminSession) rows.push({ email, name:"Học viên", source:"current-student-email", status:"free", purchaseStatus:"not_paid", role:role === "premium" ? "premium" : "free" });
+    } catch {}
+    return rows;
+  };
+  const readSignupInbox = () => {
+    const rows = readJsonList(signupInboxKey);
+    readCurrentStudentRows().forEach(item => rows.unshift(item));
     readJsonList(registerKey).forEach(item => rows.push({ ...item, course:item.interest || item.course || defaultCourseTitle, source:item.source || "register-page", status:item.status || "free", purchaseStatus:item.purchaseStatus || "not_paid" }));
     return rows;
   };
@@ -391,7 +402,7 @@
   };
   const render = () => {
     const paid = records.filter(item => /paid|success/i.test(item.status || ""));
-    const paidKeys = new Set(paid.flatMap(item => [item.email, item.contact, item.name].map(x => String(x || "").trim().toLowerCase()).filter(Boolean)));
+    const paidKeys = new Set(paid.flatMap(item => [item.email, item.contact].map(x => String(x || "").trim().toLowerCase()).filter(Boolean)));
     const freeLeads = readAllLeads().filter(item => {
       const k = String(item.email || item.contact || item.name || "").trim().toLowerCase();
       return k && !paidKeys.has(k) && !/paid|success|premium/i.test(item.purchaseStatus || item.status || "");
