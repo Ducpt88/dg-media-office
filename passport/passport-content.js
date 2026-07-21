@@ -541,7 +541,7 @@
 
   function draw() {
     const lesson = data.lessons.find((item) => item.id === editingId) || emptyLesson();
-    const publishedCount = data.lessons.filter((item) => item.status === "published").length;
+    const publishedCount = data.lessons.filter((item) => item.status === "published" && item.access !== "hidden").length;
     view.innerHTML = `
       <div class="pc-tools">
         <div><h2 style="margin:0 0 4px">Quan ly khoa hoc YouTube</h2><div class="pc-hint">Dan link YouTube, dong bo tieu de/thumbnail, sua mo ta va xuat ban len trang /khoa-hoc/. Du lieu luu vao server JSON, khong day video len GitHub.</div></div>
@@ -1211,7 +1211,7 @@
     const view = document.getElementById("courseAdmin");
     if (!view) return;
     const lesson = data.lessons.find((item) => item.id === editingId) || emptyLesson();
-    const publishedCount = data.lessons.filter((item) => item.status === "published").length;
+    const publishedCount = studentVisibleLessons().length;
     view.innerHTML = `
       <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quản lý học viên & video khóa học</h2><div class="pc-hint">Dán link YouTube, sửa mô tả, sắp xếp bài học và xuất bản lên trang /khoa-hoc/. Trên ducpt.com, nút Lưu sẽ commit file JSON thẳng vào GitHub nếu không có API server.</div></div><div class="pc-right"><span class="pc-draft" data-draft-at>${draftStamp()}</span><span class="pc-saved" data-saved></span><div class="ytc-view-switch"><button class="${viewMode==="admin"?"is-active":""}" data-view-mode="admin" type="button">${ICO.edit}Quản trị</button><button class="${viewMode==="student"?"is-active":""}" data-view-mode="student" type="button">${ICO.eye}Học viên</button></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">${ICO.eye}Mở trang học</a><button class="btn primary" data-save-all type="button">${ICO.save}Lưu tất cả</button></div></div>
       ${window.__ducptDraftRecovered ? `<div class="draft-alert"><b>⚠ Có ${window.__ducptDraftRecovered} bài đang lưu trên máy này, CHƯA lên website.</b><span>Bài vẫn còn nguyên và đã được khôi phục vào danh sách bên phải. Muốn học viên thấy được thì phải đẩy lên website: mở mục <b>Cài đặt lưu trữ</b> ở cuối trang, điền token GitHub một lần, rồi bấm <b>Lưu tất cả</b>.</span></div>` : ""}
@@ -1236,6 +1236,16 @@
 
   function sourceLabel(lesson) {
     return lesson.youtubeId ? "YouTube" : playableUrl(lesson) ? "Video file/storage" : "Chưa gắn video";
+  }
+
+  function hasPlayableSource(lesson) {
+    return !!(lesson.youtubeId || playableUrl(lesson));
+  }
+
+  function studentVisibleLessons() {
+    return data.lessons
+      .filter((item) => item.status === "published" && item.access !== "hidden" && (hasPlayableSource(item) || item.access === "premium"))
+      .sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
   }
 
   function thumbFor(lesson) {
@@ -1555,7 +1565,7 @@
   }
 
   function studentPreviewHtml() {
-    const published = data.lessons.filter((item) => item.status === "published").sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
+    const published = studentVisibleLessons();
     const modules = Array.isArray(data.course.modules) ? data.course.modules : [];
     const moduleCodes = modules.map((m) => m.code);
     const groups = modules.map((m) => ({ title: m.title, items: published.filter((l) => l.module === m.code) })).filter((g) => g.items.length);
@@ -1655,6 +1665,7 @@
   function saveDraftNow() {
     try {
       collectCourse(document.getElementById("courseAdmin"));
+      collectLessonForm(document.getElementById("courseAdmin"));
     } catch (e) {}
     try {
       /* CHAN GHI DE MAT VIEC: khong bao gio luu de len ban nhap dang co NHIEU bai hon.
@@ -1703,11 +1714,17 @@
     view.querySelector("[data-save-all]").addEventListener("click", saveAll);
     bindThumbTools(view);
     bindAutoDraft(view);
-    view.querySelectorAll("[data-view-mode]").forEach((button) => button.addEventListener("click", () => { viewMode = button.dataset.viewMode; draw(); }));
+    view.querySelectorAll("[data-view-mode]").forEach((button) => button.addEventListener("click", () => {
+      collectCourse(view);
+      collectLessonForm(view);
+      viewMode = button.dataset.viewMode;
+      saveDraftNow();
+      draw();
+    }));
     view.querySelector("[data-import-youtube]")?.addEventListener("click", importYoutube);
     view.querySelector("[data-upload-video-button]")?.addEventListener("click", () => view.querySelector("[data-upload-video]")?.click());
     view.querySelector("[data-upload-video]")?.addEventListener("change", uploadVideoFile);
-    view.querySelector("[data-new-lesson]")?.addEventListener("click", () => { editingId = ""; draw(); });
+    view.querySelector("[data-new-lesson]")?.addEventListener("click", () => { collectCourse(view); collectLessonForm(view); saveDraftNow(); editingId = ""; draw(); });
     view.querySelectorAll("[data-use-asset]").forEach((button) => button.addEventListener("click", () => {
       const assetUrl = button.dataset.assetUrl || "";
       const assetName = button.dataset.assetName || "";
@@ -1767,6 +1784,45 @@
   function collectCourse(view) {
     view.querySelectorAll("[data-course-field]").forEach((el) => { data.course[el.dataset.courseField] = el.value.trim(); });
     data.course.updatedAt = new Date().toISOString();
+  }
+
+  function collectLessonForm(view) {
+    const form = view && view.querySelector("[data-lesson-form]");
+    if (!form) return null;
+    const rec = Object.fromEntries(new FormData(form).entries());
+    const id = String(rec.id || editingId || "").trim();
+    if (!id) return null;
+    const old = data.lessons.find((item) => item.id === id) || {};
+    const youtubeId = youtubeIdFromUrl(rec.youtubeUrl || rec.videoUrl || "") || old.youtubeId || "";
+    const directVideoUrl = youtubeId ? "" : String(rec.videoUrl || old.videoUrl || "").trim();
+    const next = {
+      ...old,
+      id,
+      module: String(rec.module || old.module || "OFF"),
+      moduleNo: String(rec.moduleNo || "").trim(),
+      access: String(rec.access || old.access || "free"),
+      objective: String(rec.objective || "").trim(),
+      type: String(rec.type || old.type || "").trim(),
+      lessonNo: Number(rec.lessonNo) || Number(old.lessonNo) || data.lessons.length + 1,
+      sort: Number(rec.sort) || Number(rec.lessonNo) || Number(old.sort) || data.lessons.length + 1,
+      youtubeUrl: youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(rec.youtubeUrl || old.youtubeUrl || "").trim(),
+      youtubeId,
+      videoUrl: directVideoUrl,
+      sourceType: youtubeId ? "youtube" : directVideoUrl ? "direct" : (old.sourceType || "youtube"),
+      resourceUrl: String(rec.resourceUrl || old.resourceUrl || "").trim(),
+      title: String(rec.title || old.title || "").trim(),
+      duration: String(rec.duration || "").trim(),
+      status: String(rec.status || old.status || "draft"),
+      thumbnail: String(rec.thumbnail || "").trim() || (youtubeId ? `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg` : old.thumbnail || data.course.cover || ""),
+      description: String(rec.description || "").trim(),
+      updatedAt: new Date().toISOString()
+    };
+    if (!next.title && !next.youtubeId && !next.videoUrl) return null;
+    const index = data.lessons.findIndex((item) => item.id === id);
+    if (index >= 0) data.lessons[index] = next;
+    else data.lessons.push(next);
+    editingId = next.id;
+    return next;
   }
 
   async function importYoutube() {
@@ -1840,6 +1896,7 @@
   async function saveAll() {
     const view = document.getElementById("courseAdmin");
     collectCourse(view);
+    collectLessonForm(view);
     data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
     try { localStorage.setItem("ducpt_course_videos_draft_v1", JSON.stringify(data)); } catch {}
     try {
