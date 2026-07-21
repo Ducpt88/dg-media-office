@@ -17,6 +17,7 @@
   var MAIL_KEY = "ducpt-email";
   var VIEW_MODE_KEY = "ducpt-admin-view-mode"; // admin | student
   var EMAIL_LEADS_KEY = "ducpt-email-leads-v1";
+  var STUDENT_PROFILE_KEY = "ducpt-student-profile-v1";
   var PREVIEW_KEY = "ducpt-admin-preview";   // legacy key, giữ để migrate từ bản cũ
 
   /* Trang nào sửa ở mục nào trong Passport — để nút "Sửa trang này" nhảy đúng chỗ */
@@ -73,6 +74,14 @@
   }
   function writeEmailLeads(list) {
     try { write(EMAIL_LEADS_KEY, JSON.stringify((list || []).slice(0, 200))); } catch (e) {}
+  }
+  function currentStudentRole() {
+    try {
+      var profile = JSON.parse(read(STUDENT_PROFILE_KEY) || "null");
+      if (profile && profile.role === "premium") return "premium";
+    } catch (e) {}
+    if (read(ROLE_KEY) === "premium" || read("ducpt-premium-code-ok") === "1") return "premium";
+    return "free";
   }
   function recordEmailLead(input) {
     var data = typeof input === "string" ? { email: input } : (input || {});
@@ -147,16 +156,19 @@
   };
 
   /* Trang ngoài đọc vai qua ducpt-role. Có phiên quản trị thì đặt admin,
-     còn chế độ học viên thì hạ xuống free để xem đúng giao diện người dùng. */
+     còn chế độ học viên thì dùng quyền học viên thật đã lưu: Premium vẫn là Premium. */
   function syncRole(session) {
     if (!session) return;
     var mode = readViewMode();
-    write(ROLE_KEY, mode === "student" ? "free" : "admin");
+    var role = mode === "student" ? currentStudentRole() : "admin";
+    write(ROLE_KEY, role);
     if (session.email) write(MAIL_KEY, session.email);
     recordEmailLead({
       email: session.email || "",
       name: session.name || "",
-      role: mode === "student" ? "free" : "admin",
+      role: role,
+      funnelStage: role === "premium" ? "paid_student" : "",
+      purchaseStatus: role === "premium" ? "paid" : "",
       source: "admin-session"
     });
   }
@@ -222,10 +234,11 @@
   function render(session) {
     injectStyle();
     var mode = readViewMode();
+    var studentRole = currentStudentRole();
     var target = editTarget();
     /* Giữ đúng chữ "Đ" như avatar trong Passport để hai nơi là một danh tính */
     var initial = (session.initial || "Đ").trim().charAt(0).toUpperCase() || "Đ";
-    var modeLabel = mode === "student" ? "👤 Chế độ học viên" : "⚙ Chế độ quản trị";
+    var modeLabel = mode === "student" ? "👤 Chế độ học viên " + (studentRole === "premium" ? "Premium" : "Free") : "⚙ Chế độ quản trị";
 
     /* Thanh quản trị đã bỏ theo yêu cầu Founder — mọi thứ dồn vào menu này,
        mở bằng chip tài khoản trên nav (hoặc avatar nổi nếu trang không có nav). */
@@ -235,7 +248,7 @@
       '<div class="dgs-who"><b>' + (session.name || 'Quản trị viên') + '</b><span>' + (session.email || 'Owner · DUCPT') + '</span></div>' +
       '<div class="dgs-mode-now">' + modeLabel + '</div>' +
       '<button type="button" data-dgs-mode="admin" class="' + (mode === "admin" ? "on" : "") + '">Quyền Admin</button>' +
-      '<button type="button" data-dgs-mode="student" class="' + (mode === "student" ? "on" : "") + '">Quyền học viên</button>' +
+      '<button type="button" data-dgs-mode="student" class="' + (mode === "student" ? "on" : "") + '">Quyền học viên ' + (studentRole === "premium" ? "Premium" : "Free") + '</button>' +
       '<a href="/passport/">Về trang Passport</a>' +
       (target ? '<a href="/passport/#' + target.view + '">Sửa trang này (' + target.label + ')</a>' : '') +
       '<button type="button" class="danger" data-dgs-logout>Đăng xuất quản trị</button>';
@@ -248,8 +261,9 @@
 
     Array.prototype.forEach.call(document.querySelectorAll("[data-dgs-mode]"), function (btn) {
       btn.addEventListener("click", function () {
-        writeViewMode(btn.getAttribute("data-dgs-mode") === "student" ? "student" : "admin");
-        write(ROLE_KEY, btn.getAttribute("data-dgs-mode") === "student" ? "free" : "admin");
+        var nextMode = btn.getAttribute("data-dgs-mode") === "student" ? "student" : "admin";
+        writeViewMode(nextMode);
+        write(ROLE_KEY, nextMode === "student" ? currentStudentRole() : "admin");
         location.reload();
       });
     });
@@ -294,7 +308,7 @@
     chip.type = "button";
     chip.className = "dgs-chip";
     var studentMode = readViewMode() === "student";
-    var subtitle = studentMode ? "Đang xem như học viên" : "Quản trị · đã đăng nhập";
+    var subtitle = studentMode ? (studentRole === "premium" ? "Học viên Premium" : "Học viên Free") : "Quản trị · đã đăng nhập";
     if (studentMode) chip.className = "dgs-chip is-student";
     chip.innerHTML = '<span class="dgs-chip-av">' + (session.initial || "Đ") + '</span>' +
       '<span class="dgs-chip-txt"><b>' + (session.name || "Quản trị viên") + '</b><i>' + subtitle + '</i></span>';
@@ -304,6 +318,18 @@
     });
     host.appendChild(chip);
     return hidden.length;
+  }
+
+  function refreshStudentModeLabels() {
+    if (readViewMode() !== "student") return;
+    var role = currentStudentRole();
+    var label = role === "premium" ? "Premium" : "Free";
+    var mode = document.querySelector(".dgs-mode-now");
+    if (mode) mode.textContent = "👤 Chế độ học viên " + label;
+    var btn = document.querySelector('[data-dgs-mode="student"]');
+    if (btn) btn.textContent = "Quyền học viên " + label;
+    var chipSub = document.querySelector(".dgs-chip-txt i");
+    if (chipSub) chipSub.textContent = "Học viên " + label;
   }
 
   function replaceAuthPrompt(session) {
@@ -349,4 +375,5 @@
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
+  window.addEventListener("ducpt:role-changed", refreshStudentModeLabels);
 })();
