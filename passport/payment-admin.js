@@ -8,6 +8,7 @@
   const seed = { orderId:"MANUAL-20260711-001", name:"Học viên chưa cập nhật tên", contact:"", product:defaultCourseTitle, courseId:defaultCourseId, courseIds:[defaultCourseId], amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active", entitlement:true, createdAt:"2026-07-11T00:00:00+07:00" };
   let records = [];
   let remoteSignups = [];
+  let courseCatalog = [{ id:defaultCourseId, title:defaultCourseTitle }];
   try { records = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
   records = records.map((item, index) => {
     const courseId = courseIdFrom(item);
@@ -72,6 +73,66 @@
   const money = (value, currency = "VND") => new Intl.NumberFormat(currency === "USD" ? "en-US" : "vi-VN", { style:"currency", currency }).format(Number(value) || 0);
   const esc = value => String(value ?? "").replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" }[char]));
   const readLeads = () => { try { const list = JSON.parse(localStorage.getItem(leadKey) || "[]"); return Array.isArray(list) ? list : []; } catch { return []; } };
+  const addCourseOption = item => {
+    const title = String(item?.title || item?.name || item?.course || item?.product || "").trim();
+    const id = normalizeCourseId(item?.id || item?.courseId || item?.slug || title || defaultCourseId) || defaultCourseId;
+    if (!title) return;
+    const exists = courseCatalog.some(course => course.id === id || course.title.toLowerCase() === title.toLowerCase());
+    if (!exists) courseCatalog.push({ id, title });
+  };
+  const selectedCourseOption = () => {
+    const field = form?.elements?.product;
+    return field && field.tagName === "SELECT" ? field.selectedOptions[0] : null;
+  };
+  const syncSelectedCourseId = () => {
+    const option = selectedCourseOption();
+    const courseId = form?.elements?.courseId;
+    if (courseId && option?.dataset?.courseId) courseId.value = option.dataset.courseId;
+  };
+  const refreshCourseSelect = (selectedTitle = "", selectedId = "") => {
+    if (!form?.elements?.product) return;
+    let field = form.elements.product;
+    if (field.tagName !== "SELECT") {
+      const select = document.createElement("select");
+      select.className = field.className || "searchbox";
+      select.name = field.name;
+      select.required = field.required;
+      selectedTitle = selectedTitle || field.value;
+      field.replaceWith(select);
+      field = select;
+    }
+    addCourseOption({ title:selectedTitle || defaultCourseTitle, id:selectedId || selectedTitle || defaultCourseId });
+    const currentTitle = selectedTitle || field.value || defaultCourseTitle;
+    const currentId = normalizeCourseId(selectedId || currentTitle || defaultCourseId);
+    courseCatalog.sort((a, b) => a.title.localeCompare(b.title, "vi"));
+    field.innerHTML = courseCatalog.map(course => `<option value="${esc(course.title)}" data-course-id="${esc(course.id)}"${course.id === currentId || course.title === currentTitle ? " selected" : ""}>${esc(course.title)}</option>`).join("");
+    if (![...field.options].some(option => option.selected) && field.options[0]) field.options[0].selected = true;
+    syncSelectedCourseId();
+  };
+  const collectCourseCatalog = () => {
+    addCourseOption({ id:defaultCourseId, title:defaultCourseTitle });
+    try {
+      const list = JSON.parse(localStorage.getItem("ducpt_courses_v2") || "[]");
+      if (Array.isArray(list)) list.filter(course => course?.status !== "hidden").forEach(course => addCourseOption({ id:course.courseId || course.slug || course.name || course.title || course.id, title:course.name || course.title }));
+    } catch {}
+    records.forEach(addCourseOption);
+    readLeads().forEach(addCourseOption);
+    remoteSignups.forEach(addCourseOption);
+    refreshCourseSelect();
+  };
+  const loadCourseCatalog = async () => {
+    collectCourseCatalog();
+    try {
+      const response = await fetch("/passport/course-videos.json", { cache:"no-store" });
+      const body = await response.json();
+      const data = body?.ok ? body.data : body;
+      if (data?.course) addCourseOption({ id:data.course.id || data.course.slug || data.course.courseId || data.course.title, title:data.course.title || data.course.name });
+    } catch {}
+    refreshCourseSelect();
+  };
+  form?.addEventListener("change", event => {
+    if (event.target && event.target.name === "product") syncSelectedCourseId();
+  });
   const paidStatus = item => /paid|success|received|complete/i.test(item.status || "");
   const identityOf = item => String(item.email || item.contact || item.name || "").trim().toLowerCase();
   const leadKeyOf = item => `${identityOf(item)}|${courseIdFrom(item)}`;
@@ -105,6 +166,7 @@
       const body = await response.json().catch(() => ({}));
       if (!response.ok || !body.ok || !Array.isArray(body.data)) throw new Error(body.error || `HTTP ${response.status}`);
       remoteSignups = body.data.map(normalizeSignupRow);
+      collectCourseCatalog();
       render();
       if (!options.silent && statusNode) statusNode.textContent = `Đã nạp ${remoteSignups.length} học viên đăng ký từ server.`;
     } catch (error) {
@@ -307,7 +369,8 @@
     const wasEditing = Boolean(editingOrderId);
     const active = (data.accessStatus || "active") === "active";
     const premium = paid && active && (data.accessPackage || "premium") !== "free";
-    const courseId = normalizeCourseId(data.courseId || data.product || defaultCourseId) || defaultCourseId;
+    const selectedOption = selectedCourseOption();
+    const courseId = normalizeCourseId(data.courseId || selectedOption?.dataset?.courseId || data.product || defaultCourseId) || defaultCourseId;
     const normalized = {...data, product:data.product || defaultCourseTitle, courseId, courseIds:[courseId], email:String(data.email || "").trim().toLowerCase(), amount:Number(data.amount), currency:data.currency === "USD" ? "USD" : "VND", role:premium ? "premium" : "free", entitlement:premium, accessPackage:data.accessPackage || "premium", accessStatus:data.accessStatus || "active"};
     let savedRecord = null;
     if (submitButton) submitButton.disabled = true;
@@ -364,7 +427,7 @@
         submitButton.disabled = false;
       }
       event.currentTarget.reset();
-      if (event.currentTarget.elements.product) event.currentTarget.elements.product.value = defaultCourseTitle;
+      refreshCourseSelect(defaultCourseTitle, defaultCourseId);
       if (event.currentTarget.elements.courseId) event.currentTarget.elements.courseId.value = defaultCourseId;
       if (event.currentTarget.elements.accessPackage) event.currentTarget.elements.accessPackage.value = "premium";
       if (event.currentTarget.elements.accessStatus) event.currentTarget.elements.accessStatus.value = "active";
@@ -386,7 +449,9 @@
       accessPackage:item.accessPackage || "premium",
       accessStatus:item.accessStatus || "active"
     };
+    refreshCourseSelect(data.product, courseId);
     Object.entries(data).forEach(([name, value]) => { const field = form.elements[name]; if (field) field.value = value; });
+    syncSelectedCourseId();
     form.querySelector('button[type="submit"]').textContent = item.orderId ? "Lưu thay đổi" : "Lưu & mở Premium cho học viên";
     form.scrollIntoView({ behavior:"smooth", block:"start" });
   };
@@ -455,6 +520,7 @@
   });
   window.addEventListener("ducpt:settings", render);
   document.getElementById("cockpitRefresh")?.addEventListener("click", () => { loadRemoteSignups(); render(); syncCourseEntitlements(); syncPaidRecordsToDGOffice(); });
+  loadCourseCatalog();
   render();
   setTimeout(() => loadRemoteSignups({silent:true}), 250);
   setTimeout(() => syncCourseEntitlements({silent:true}), 500);
