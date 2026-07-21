@@ -97,6 +97,7 @@
     .soon-head b{font-size:14px}.soon-head span{color:var(--muted);font-size:12px}
     .pp-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;opacity:.62}
     .ytposter .pp-btn,.ytposter .pp-cap{position:relative;z-index:1}
+    .ytposter *{pointer-events:none}
     .ytposter .pp-cap{text-shadow:0 2px 10px rgba(0,0,0,.85)}
     .ytposter{position:absolute;inset:0;z-index:6;display:grid;place-items:center;gap:0;cursor:pointer;
       background:radial-gradient(circle at 50% 42%,rgba(37,99,235,.28),transparent 62%),linear-gradient(180deg,#0b1220,#060b14)}
@@ -199,7 +200,7 @@
     .ytseek{flex:1;height:5px;border-radius:99px;background:rgba(255,255,255,.22);cursor:pointer;position:relative}
     .ytseek i{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:#3b82f6;width:0}
     .yttime{font-size:12px;color:#c7d6e6;font-variant-numeric:tabular-nums;white-space:nowrap}
-    .ytload{position:absolute;inset:0;z-index:8;display:grid;place-items:center;color:#8fa3bb;font-size:13px;background:#000}
+    .ytload{position:absolute;inset:0;z-index:5;display:grid;place-items:center;color:#8fa3bb;font-size:13px;background:#000;pointer-events:none}
     .pf-wm{position:absolute;z-index:5;pointer-events:none;user-select:none;color:rgba(255,255,255,.34);font-size:12.5px;font-weight:800;letter-spacing:.04em;text-shadow:0 1px 3px rgba(0,0,0,.65);white-space:nowrap;transition:left 3s linear,top 3s linear}
     .adminbar{position:fixed;left:50%;transform:translateX(-50%);bottom:16px;z-index:80;display:flex;gap:6px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 18px 44px -18px rgba(16,24,40,.45)}
     .adminbar .lbl{font-size:11px;font-weight:900;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;padding:0 6px}
@@ -565,8 +566,8 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         fillSignupForm(studentProfile());
         if(sf)sf.addEventListener("submit",event=>{event.preventDefault();const fd=new FormData(sf);activateFreeAccount(signupPayload(Object.fromEntries(fd.entries()),"course-student-form"),document.getElementById("signupStatus"))});
       }
-      function playableSource(lesson){const youtubeId=youtubeIdFromLesson(lesson);if(youtubeId)return{type:"youtube",id:youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,label:"Video bài học"};const url=directVideoUrl(lesson);return url?{type:"video",url,label:"Video khóa học"}:null}
-      function directVideoUrl(lesson){return String(lesson.videoUrl||lesson.publicUrl||lesson.storageUrl||lesson.assetUrl||(!youtubeIdFromLesson(lesson)?lesson.youtubeUrl:"")||"").trim()}
+      function playableSource(lesson){const url=directVideoUrl(lesson);if(url)return{type:"video",url,label:"Video khóa học"};const youtubeId=youtubeIdFromLesson(lesson);if(youtubeId)return{type:"youtube",id:youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,label:"Video bài học"};return null}
+      function directVideoUrl(lesson){const raw=String(lesson.videoUrl||lesson.publicUrl||lesson.storageUrl||lesson.assetUrl||(!youtubeIdFromLesson(lesson)?lesson.youtubeUrl:"")||"").trim();return youtubeIdFromUrl(raw)?"":raw}
       function youtubeIdFromLesson(lesson){return cleanId(lesson.youtubeId)||youtubeIdFromUrl(lesson.youtubeUrl||lesson.url||"")}
       function thumbFor(lesson){const source=playableSource(lesson);/* Uu tien anh Founder tu tai len; khong co thi lay anh GOC cua video YouTube (maxres), thieu maxres thi tu roi ve hq. */return lesson.thumbnail||(source&&source.type==="youtube"?`https://i.ytimg.com/vi/${source.id}/maxresdefault.jpg`:"")||state.course.cover||"/assets/course/doanh-nghiep-1-nguoi.png"}
       function thumbFallback(lesson){const s=playableSource(lesson);return s&&s.type==="youtube"?`https://i.ytimg.com/vi/${s.id}/hqdefault.jpg`:(state.course.cover||"/assets/course/doanh-nghiep-1-nguoi.png")}
@@ -649,9 +650,10 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         if(window.YT&&window.YT.Player)return res();
         if(!document.getElementById("ytapi")){const s=document.createElement("script");s.id="ytapi";s.src="https://www.youtube.com/iframe_api";document.head.appendChild(s)}
         const prev=window.onYouTubeIframeAPIReady;
-        window.onYouTubeIframeAPIReady=function(){try{prev&&prev()}catch(e){}res()};
-        const t=setInterval(()=>{if(window.YT&&window.YT.Player){clearInterval(t);res()}},150);
-        setTimeout(()=>{clearInterval(t);res()},8000)})}
+        let done=false;const finish=()=>{if(done)return;done=true;res()};
+        window.onYouTubeIframeAPIReady=function(){try{prev&&prev()}catch(e){}finish()};
+        const t=setInterval(()=>{if(window.YT&&window.YT.Player){clearInterval(t);finish()}},150);
+        setTimeout(()=>{clearInterval(t);finish()},3000)})}
       function fmtT(s){s=Math.max(0,Math.floor(s||0));const h=Math.floor(s/3600),m=Math.floor(s%3600/60),x=s%60;
         return (h?h+":"+String(m).padStart(2,"0"):String(m))+":"+String(x).padStart(2,"0")}
       async function mountSecurePlayer(videoId){
@@ -673,69 +675,70 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           '<div class="pp-btn"><i></i></div>'+
           '<div class="pp-cap">'+escapeHtml(window.__curLessonTitle||"Bài học DUCPT")+'<small>Bấm để phát</small></div></div>'+
           '<div class="ytload" id="ytLoad">Đang tải bài học…</div></div>';
-        let wantsPlay=false, fallbackTimer=null;
-        const fallbackAutoplay=()=>{
-          const host=document.getElementById("ytHost");
-          if(!host)return;
-          host.innerHTML=`<iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(videoId)}?autoplay=1&playsinline=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&rel=0&modestbranding=1" title="${escapeHtml(window.__curLessonTitle||"Bài học DUCPT")}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`;
+        let wantsPlay=false,fallbackMode=false,playWarnTimer=null;
+        const paintPosterHint=text=>{const small=document.querySelector("#ytPoster .pp-cap small");if(small)small.textContent=text};
+        const fallbackSrc=auto=>`https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=${auto?1:0}&playsinline=1&enablejsapi=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&rel=0&modestbranding=1`;
+        const mountFallback=()=>{
+          const host=document.getElementById("ytHost");if(!host)return;
+          fallbackMode=true;
+          clearTimeout(playWarnTimer);
+          host.innerHTML=`<iframe src="${fallbackSrc(true)}" title="${escapeHtml(window.__curLessonTitle||"Bài học DUCPT")}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
+          const l=document.getElementById("ytLoad");if(l)l.remove();
           const po=document.getElementById("ytPoster");if(po)po.style.display="none";
+          setCaptionShield(true);
+          const btn=document.getElementById("ytPlay");if(btn)btn.textContent="❚❚";
         };
         const requestPlay=()=>{
           wantsPlay=true;
-          const l=document.getElementById("ytLoad");if(l)l.textContent="Đang phát bài học...";
+          mountFallback();
+          const l=document.getElementById("ytLoad");if(l)l.textContent="Đang mở bài học...";
+          paintPosterHint("Đang mở bài học...");
           try{
-            if(ytPlayer&&ytPlayer.playVideo){
+            if(!fallbackMode&&ytPlayer&&ytPlayer.playVideo){
               ytPlayer.playVideo();
-              forceCaptionsOff();
-              clearTimeout(fallbackTimer);
-              fallbackTimer=setTimeout(()=>{
-                try{if(!ytPlayer.getPlayerState||ytPlayer.getPlayerState()!==1)fallbackAutoplay()}
-                catch(e){fallbackAutoplay()}
-              },1200);
-            }else{
-              clearTimeout(fallbackTimer);
-              fallbackTimer=setTimeout(fallbackAutoplay,800);
+              clearTimeout(playWarnTimer);
+              playWarnTimer=setTimeout(()=>{
+                try{
+                  if(!ytPlayer.getPlayerState||ytPlayer.getPlayerState()!==1)paintPosterHint("Nếu video chưa chạy, bấm lại một lần nữa");
+                }catch(e){paintPosterHint("Nếu video chưa chạy, bấm lại một lần nữa")}
+              },4500);
             }
-          }catch(e){fallbackAutoplay()}
+          }catch(e){}
         };
-        const poEarly=document.getElementById("ytPoster");
-        if(poEarly)poEarly.addEventListener("click",requestPlay);
+        const earlyTargets=[document.getElementById("ytPoster"),document.getElementById("ytPlay"),document.getElementById("ytHit")].filter(Boolean);
+        earlyTargets.forEach(target=>{
+          const start=e=>{try{e.preventDefault();e.stopPropagation()}catch(x){}requestPlay()};
+          target.onpointerdown=start;target.onmousedown=start;target.ontouchstart=start;target.onclick=start;
+          ["pointerdown","mousedown","touchstart","click"].forEach(type=>target.addEventListener(type,start,{passive:false}));
+        });
         /* Da bo watermark tren video: khong hien ma/chu tat de khong lo nguon video. */
         await loadYTApi();
-        if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát.";if(wantsPlay)fallbackAutoplay();return}
-        ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube-nocookie.com",
+        if(fallbackMode)return;
+        if(!window.YT||!window.YT.Player){const l=document.getElementById("ytLoad");if(l)l.textContent="Không tải được trình phát. Kiểm tra mạng rồi bấm lại.";paintPosterHint("Chưa tải được trình phát");return}
+        ytPlayer=new YT.Player("ytHost",{videoId:videoId,host:"https://www.youtube.com",
           playerVars:{enablejsapi:1,controls:0,rel:0,modestbranding:1,iv_load_policy:3,cc_load_policy:0,cc_lang_pref:"",disablekb:1,fs:0,playsinline:1,autoplay:0,origin:location.origin,widget_referrer:location.origin},
           events:{onReady:function(){const l=document.getElementById("ytLoad");if(l)l.remove();
             /* Poster cua DG che kin man cho cua YouTube (nut play do, thanh tieu de, nut chia se).
                Chi go poster khi video da THUC SU chay, nen khong bao gio lo giao dien YouTube. */
             const po=document.getElementById("ytPoster");
             if(wantsPlay)requestPlay();
-            forceCaptionsOff();
             wire()},
           onStateChange:function(ev){const po=document.getElementById("ytPoster");if(!po)return;
-            if(ev.data===1){po.style.display="none";setCaptionShield(true);forceCaptionsOff()}
+            if(ev.data===1){clearTimeout(playWarnTimer);po.style.display="none";setCaptionShield(true)}
             else if(ev.data===0||ev.data===-1){po.style.display="";setCaptionShield(false)}
             else if(ev.data===2){setCaptionShield(false)}} ,
-          onApiChange:function(){forceCaptionsOff()}}});
+          onError:function(){paintPosterHint("Trình phát bị chặn, hãy tải lại trang hoặc dùng nguồn video trực tiếp")},
+          onApiChange:function(){}}});
         function setCaptionShield(on){
           const wrap=document.getElementById("ytWrap");
           if(wrap)wrap.classList.toggle("caption-shield-on",!!on);
-        }
-        function forceCaptionsOff(){
-          try{if(!ytPlayer)return;
-            if(ytPlayer.setOption){
-              try{ytPlayer.setOption("captions","track",{})}catch(e){}
-              try{ytPlayer.setOption("captions","fontSize",-1)}catch(e){}
-              try{ytPlayer.setOption("captions","reload",true)}catch(e){}
-            }
-          }catch(e){}
         }
         function wire(){
           wireVolume(); wireRate();
           const btn=document.getElementById("ytPlay"),hit=document.getElementById("ytHit"),
                 seek=document.getElementById("ytSeek"),fill=document.getElementById("ytFill"),
                 time=document.getElementById("ytTime"),fs=document.getElementById("ytFs"),wrap=document.getElementById("ytWrap");
-          const toggle=()=>{const st=ytPlayer.getPlayerState();if(st===1)ytPlayer.pauseVideo();else ytPlayer.playVideo()};
+          const toggle=()=>{if(fallbackMode){mountFallback();return}const st=ytPlayer.getPlayerState();if(st===1)ytPlayer.pauseVideo();else ytPlayer.playVideo()};
           if(hit)hit.addEventListener("click",toggle);
           if(btn)btn.addEventListener("click",toggle);
           if(seek)seek.addEventListener("click",e=>{const r=seek.getBoundingClientRect();
