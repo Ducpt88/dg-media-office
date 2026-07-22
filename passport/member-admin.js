@@ -101,6 +101,7 @@
           if (!res.ok) throw new Error((data && (data.message || data.hint)) || ("HTTP " + res.status));
           DS = Array.isArray(data) ? data : [];
           window.SUPABASE_PROFILES = DS;
+          try { window.dispatchEvent(new CustomEvent("ducpt:supabase-profiles", { detail: { rows: DS } })); } catch (e) {}
           hienBang(); capNhatSo(); veBang();
           kiemTraQuyenAdmin(token);
         });
@@ -244,6 +245,7 @@
           }
           DS = DS.map(function (x) { return x.id === uid ? Object.assign({}, x, than) : x; });
           window.SUPABASE_PROFILES = DS;
+          try { window.dispatchEvent(new CustomEvent("ducpt:supabase-profiles", { detail: { rows: DS } })); } catch (e) {}
           capNhatSo();
           selectEl.dataset.cu = chon;
           bao("Đã đổi quyền thành " + chon.toUpperCase() + ".");

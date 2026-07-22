@@ -102,6 +102,32 @@
     readJsonList(registerKey).forEach(item => rows.push({ ...item, course:item.interest || item.course || defaultCourseTitle, source:item.source || "register-page", status:item.status || "free", purchaseStatus:item.purchaseStatus || "not_paid" }));
     return rows;
   };
+  const readSupabaseProfiles = () => {
+    try {
+      const rows = Array.isArray(window.SUPABASE_PROFILES) ? window.SUPABASE_PROFILES : [];
+      return rows.map(item => ({
+        id:item.id || "",
+        email:String(item.email || "").trim().toLowerCase(),
+        name:item.full_name || item.name || "",
+        contact:item.contact || "",
+        note:item.note || "",
+        course:item.signup_product || item.product || defaultCourseTitle,
+        product:item.signup_product || item.product || defaultCourseTitle,
+        courseId:item.signup_product_key || item.product_key || item.courseId || defaultCourseId,
+        courseIds:[item.signup_product_key || item.product_key || item.courseId || defaultCourseId].filter(Boolean),
+        role:item.plan === "premium" || item.role === "admin" ? "premium" : "free",
+        accessPackage:item.plan === "premium" || item.role === "admin" ? "premium" : "free",
+        accessStatus:"active",
+        entitlement:item.plan === "premium" || item.role === "admin",
+        purchaseStatus:item.plan === "premium" || item.role === "admin" ? "paid" : "not_paid",
+        status:item.plan === "premium" || item.role === "admin" ? "paid" : "free",
+        source:item.source || "supabase-profiles",
+        createdAt:item.created_at || ""
+      })).filter(item => item.email);
+    } catch {
+      return [];
+    }
+  };
   const addCourseOption = item => {
     const title = String(item?.title || item?.name || item?.course || item?.product || "").trim();
     const id = normalizeCourseId(item?.id || item?.courseId || item?.slug || title || defaultCourseId) || defaultCourseId;
@@ -172,8 +198,9 @@
     return {
       ...item,
       orderId:item.orderId || item.id || "",
-      product:item.product || item.course || defaultCourseTitle,
-      course:item.course || item.product || defaultCourseTitle,
+      name:item.name || item.full_name || "",
+      product:item.product || item.course || item.signup_product || defaultCourseTitle,
+      course:item.course || item.product || item.signup_product || defaultCourseTitle,
       courseId,
       courseIds:Array.isArray(item.courseIds) && item.courseIds.length ? item.courseIds.map(normalizeCourseId).filter(Boolean) : [courseId],
       source:item.source || "course-signup-server",
@@ -182,7 +209,7 @@
   };
   const readAllLeads = () => {
     const seen = new Set();
-    return readLeads().concat(readSignupInbox()).concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
+    return readLeads().concat(readSignupInbox()).concat(readSupabaseProfiles().filter(isFreeSignup)).concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
       const key = leadKeyOf(item);
       if (!identityOf(item) || seen.has(key) || isSystemLead(item)) return false;
       seen.add(key);
@@ -670,6 +697,7 @@
   });
   window.addEventListener("focus", refreshCustomerRows);
   window.addEventListener("pageshow", refreshCustomerRows);
+  window.addEventListener("ducpt:supabase-profiles", refreshCustomerRows);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshCustomerRows(); });
   window.addEventListener("ducpt:settings", render);
   document.getElementById("cockpitRefresh")?.addEventListener("click", () => { loadRemoteSignups(); render(); syncCourseEntitlements(); syncPaidRecordsToDGOffice(); });
