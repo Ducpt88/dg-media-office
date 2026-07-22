@@ -38,7 +38,7 @@
     #customerRows small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
     #customerRows .access-select{width:auto;min-width:116px;border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:4px 20px 4px 0;color:var(--ink);font:inherit;font-size:11px;font-weight:700;cursor:pointer}
     #customerRows .access-select:focus{outline:0;border-bottom-color:var(--blue)}
-    #customerRows .row,.view#customers .headrow{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
+    #customerRows .row,#customerRowsHead{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
     .customer-actions button{padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;cursor:pointer}.customer-actions .delete{color:#b42318}
     .signup-inbox-alert{position:fixed;right:18px;bottom:18px;z-index:80;display:none;align-items:center;gap:10px;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.18);cursor:pointer;text-align:left}
     .signup-inbox-alert.show{display:flex}.signup-inbox-alert b{display:block;font-size:13px}.signup-inbox-alert em{font-style:normal;color:#2563eb}.signup-inbox-alert span{display:block;color:var(--muted);font-size:11px}.signup-inbox-alert i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#eff6ff;color:#2563eb;font-style:normal;font-weight:900;flex:none}
