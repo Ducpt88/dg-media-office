@@ -219,9 +219,16 @@
     };
   }
 
+  /* Tra ve access_token con han (tu gia han neu sap het). "" neu chua dang nhap.
+     Dung cho cac trang quan tri can goi thang REST. */
+  function token() {
+    return phienConHan().then(function (p) { return p ? p.access_token : ""; });
+  }
+
   global.DUCPTAuth = {
     sanSang: sanSang,
     cauHinh: cauHinh,
+    token: token,
     dangKy: dangKy,
     dangNhap: dangNhap,
     dangXuat: dangXuat,
