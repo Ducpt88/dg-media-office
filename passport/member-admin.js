@@ -125,20 +125,32 @@
       if (me && me.role === "admin") { if (canhBao) canhBao.remove(); return; }
       if (canhBao) return;
       var panel = $("supabasePanel"); if (!panel) return;
+      var emailToi = (me && me.email) || "email-cua-anh@example.com";
+      var sql = "update public.profiles set role='admin', plan='premium'\nwhere email = '" + emailToi + "';";
+      var ref = (URL_SB.match(/https?:\/\/([a-z0-9]+)\.supabase\.co/i) || [])[1] || "";
+      var sqlUrl = ref ? ("https://supabase.com/dashboard/project/" + ref + "/sql/new") : "https://supabase.com/dashboard";
       var box = document.createElement("article");
       box.id = "adminWarn"; box.className = "card";
-      box.style.cssText = "margin-bottom:14px;border:1px solid #f59e0b;background:#fffbeb;padding:16px";
+      box.style.cssText = "margin-bottom:14px;border:2px solid #f59e0b;background:#fffbeb;padding:18px";
       box.innerHTML =
-        '<b style="color:#92400e;display:block;margin-bottom:6px">⚠ Tài khoản này chưa phải Admin</b>'
-        + '<p style="color:#92400e;font-size:12px;line-height:1.6;margin:0 0 10px">'
-        + 'Nên danh sách dưới đây <b>chỉ hiện đúng tài khoản của anh</b>, không phải toàn bộ học viên, '
-        + 'và anh chưa đổi được ai lên Premium. Mở <b>Supabase → SQL Editor</b> chạy đúng câu này một lần:</p>'
-        + '<code style="display:block;padding:10px;border-radius:8px;background:#1f2937;color:#e5e7eb;'
-        + 'font-size:11.5px;line-height:1.6;overflow-x:auto;white-space:pre">'
-        + "update public.profiles set role='admin', plan='premium'\nwhere email = '" + esc(me && me.email || "email-cua-anh@example.com") + "';"
-        + '</code>'
-        + '<p style="color:#92400e;font-size:11.5px;margin:9px 0 0">Chạy xong bấm <b>↻ Tải lại</b> là thấy đủ danh sách.</p>';
+        '<b style="color:#92400e;display:block;margin-bottom:6px;font-size:15px">⚠ Còn 1 bước cuối để thấy TẤT CẢ học viên</b>'
+        + '<p style="color:#92400e;font-size:12.5px;line-height:1.65;margin:0 0 12px">'
+        + 'Data đăng ký <b>đã về đủ trong Supabase</b>, nhưng vì bảo mật, chỉ tài khoản Admin mới xem được danh sách người khác. '
+        + 'Tài khoản <b>' + esc(emailToi) + '</b> của anh chưa phải Admin nên đang chỉ thấy 1 dòng. Làm 3 bước, 30 giây:</p>'
+        + '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">'
+        +   '<a class="btn primary" id="btnMoSql" href="' + sqlUrl + '" target="_blank" rel="noopener" style="text-decoration:none">1 · Mở Supabase SQL Editor →</a>'
+        +   '<button class="btn ghost" type="button" id="btnCopySql">2 · Copy câu lệnh</button>'
+        + '</div>'
+        + '<code id="sqlText" style="display:block;padding:11px;border-radius:8px;background:#1f2937;color:#e5e7eb;'
+        + 'font-size:11.5px;line-height:1.6;overflow-x:auto;white-space:pre">' + esc(sql) + '</code>'
+        + '<p style="color:#92400e;font-size:12px;margin:11px 0 0">3 · Dán vào ô SQL, bấm <b>Run</b>, quay lại đây bấm <b>↻ Tải lại</b> là thấy đủ danh sách và đổi được Premium.</p>';
       panel.insertBefore(box, panel.firstChild);
+      var btnCopy = $("btnCopySql");
+      if (btnCopy) btnCopy.addEventListener("click", function () {
+        var xong = function () { btnCopy.textContent = "✓ Đã copy — dán vào SQL Editor"; setTimeout(function () { btnCopy.textContent = "2 · Copy câu lệnh"; }, 2500); };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(sql).then(xong, xong);
+        else { var t = document.getElementById("sqlText"); var rg = document.createRange(); rg.selectNode(t); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(rg); try { document.execCommand("copy"); } catch (e) {} xong(); }
+      });
     }).catch(function () {});
   }
 
