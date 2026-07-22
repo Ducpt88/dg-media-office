@@ -224,9 +224,67 @@
         var o = $("supabasePassword"); if (o) o.value = "";
         return napDanhSach();
       }).catch(function (er) {
-        if (st) { st.textContent = String(er && er.message || "Đăng nhập thất bại"); st.style.color = "#b42318"; }
+        var m = String(er && er.message || "");
+        if (st) {
+          st.style.color = "#b42318";
+          if (/Invalid login|credential/i.test(m)) {
+            /* Supabase tra cung mot loi cho "sai mat khau" va "chua co tai khoan".
+               Mat khau quan tri cu cua trang Passport KHONG phai tai khoan Supabase. */
+            st.innerHTML = 'Email này chưa có tài khoản Supabase, hoặc sai mật khẩu.<br>'
+              + 'Mật khẩu cũ của trang Passport <b>không dùng được ở đây</b> — Supabase là hệ tài khoản riêng.<br>'
+              + 'Bấm <b>“Tạo tài khoản quản trị”</b> bên dưới để tạo một lần.';
+          } else st.textContent = m || "Đăng nhập thất bại";
+        }
+        hienNutTao();
       });
     });
+    hienNutTao();
+  }
+
+  /* ---------- Tao tai khoan quan tri ngay tai cho ---------- */
+  function hienNutTao() {
+    if ($("btnTaoAdmin")) return;
+    var gate = $("supabaseGate"); if (!gate) return;
+    var card = gate.querySelector(".card") || gate;
+    var box = document.createElement("div");
+    box.id = "btnTaoAdmin";
+    box.style.cssText = "margin-top:14px;padding-top:14px;border-top:1px solid var(--line)";
+    box.innerHTML = '<button class="btn ghost" type="button" id="taoAdminBtn" style="width:100%">'
+      + '+ Tạo tài khoản quản trị (dùng email &amp; mật khẩu điền ở trên)</button>'
+      + '<div id="taoAdminKq" style="margin-top:10px;font-size:12px;line-height:1.6"></div>';
+    card.appendChild(box);
+    $("taoAdminBtn").addEventListener("click", taoAdmin);
+  }
+
+  function taoAdmin() {
+    var em = String(($("supabaseEmail") || {}).value || "").trim().toLowerCase();
+    var pw = String(($("supabasePassword") || {}).value || "");
+    var kq = $("taoAdminKq");
+    if (!em || pw.length < 6) {
+      kq.style.color = "#b42318";
+      kq.textContent = "Điền email và mật khẩu (ít nhất 6 ký tự) ở ô trên rồi bấm lại.";
+      return;
+    }
+    kq.style.color = "var(--muted)"; kq.textContent = "Đang tạo tài khoản...";
+    Auth.dangKy({ email: em, password: pw, hoTen: "Quản trị DUCPT", nguon: "passport-admin" })
+      .then(function () { return napDanhSach(); })
+      .then(function () {
+        kq.style.color = "#047857";
+        kq.innerHTML = '✅ Đã tạo và đăng nhập xong.<br>'
+          + 'Còn <b>một bước cuối</b>: mở <b>Supabase → SQL Editor</b>, dán câu này rồi Run, xong bấm <b>↻ Tải lại</b>:'
+          + '<code style="display:block;margin-top:8px;padding:10px;border-radius:8px;background:#1f2937;color:#e5e7eb;'
+          + 'font-size:11.5px;white-space:pre;overflow-x:auto">'
+          + "update public.profiles set role='admin', plan='premium'\nwhere email = '" + esc(em) + "';"
+          + '</code>';
+      })
+      .catch(function (er) {
+        var m = String(er && er.message || "");
+        kq.style.color = "#b42318";
+        if (/already registered|already been registered/i.test(m)) {
+          kq.textContent = "Email này ĐÃ có tài khoản Supabase rồi — vậy là sai mật khẩu. "
+            + "Đổi mật khẩu tại Supabase → Authentication → Users.";
+        } else kq.textContent = "Chưa tạo được: " + m;
+      });
   }
 
   function khoiDong() {
