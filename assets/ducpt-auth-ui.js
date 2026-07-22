@@ -224,19 +224,33 @@
   function timNav() {
     return document.querySelector("header nav .nav-inner") || document.querySelector("header nav") || document.querySelector("header");
   }
+  /* An chip cu cua rieng trang khoa-hoc (id navAcct / class na-chip) bang CSS !important,
+     vi trang khoa-hoc tu ve lai chip do moi khi doi quyen — inline style.display se bi no ghi de,
+     chi co rule !important trong stylesheet moi thang duoc. Toggle theo trang thai dang nhap. */
+  function anChipCuKhoaHoc(bat) {
+    var id = "dab-hide-legacy-chip";
+    var el = document.getElementById(id);
+    if (bat) {
+      if (!el) {
+        el = document.createElement("style"); el.id = id;
+        el.textContent = "#navAcct,.na-chip{display:none!important}";
+        document.head.appendChild(el);
+      }
+    } else if (el) { el.remove(); }
+  }
+
   function capNhatNav(q) {
     var nav = timNav(); if (!nav) return;
     var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
     var cu = document.getElementById("dabAcct"); if (cu) cu.remove();
-    // Chip cu cua rieng trang khoa-hoc (id navAcct / class na-chip) — de khong hien 2 chip trung.
-    var chipCuKhoaHoc = document.getElementById("navAcct") || document.querySelector(".na-chip");
 
     if (!q || !q.daDangNhap) {
       loginBtns.forEach(function (b) { b.style.display = ""; });
+      anChipCuKhoaHoc(false);
       return;
     }
     loginBtns.forEach(function (b) { b.style.display = "none"; });
-    if (chipCuKhoaHoc) chipCuKhoaHoc.style.display = "none";
+    anChipCuKhoaHoc(true);
 
     var laP = q.plan === "premium" || q.role === "admin";
     var ten = q.hoTen || q.email || "Học viên";
