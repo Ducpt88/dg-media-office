@@ -226,14 +226,17 @@
   }
   function capNhatNav(q) {
     var nav = timNav(); if (!nav) return;
-    var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
+    var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
     var cu = document.getElementById("dabAcct"); if (cu) cu.remove();
+    // Chip cu cua rieng trang khoa-hoc (id navAcct / class na-chip) — de khong hien 2 chip trung.
+    var chipCuKhoaHoc = document.getElementById("navAcct") || document.querySelector(".na-chip");
 
     if (!q || !q.daDangNhap) {
       loginBtns.forEach(function (b) { b.style.display = ""; });
       return;
     }
     loginBtns.forEach(function (b) { b.style.display = "none"; });
+    if (chipCuKhoaHoc) chipCuKhoaHoc.style.display = "none";
 
     var laP = q.plan === "premium" || q.role === "admin";
     var ten = q.hoTen || q.email || "Học viên";
