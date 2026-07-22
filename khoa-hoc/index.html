@@ -115,7 +115,7 @@
   <link rel="apple-touch-icon" href="/assets/hvd-monogram.svg">
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
-  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script>
+  <script>try{window.DUCPT_API_BASE=String(window.DUCPT_API_BASE||localStorage.getItem("ducpt-api-base")||"https://ducpt-passport-api.onrender.com").replace(/\/+$/,"")}catch(e){window.DUCPT_API_BASE="https://ducpt-passport-api.onrender.com"}</script>
   <style>
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
     body{background:var(--bg)}
@@ -618,6 +618,15 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
             localStorage.setItem(key,JSON.stringify(list.slice(0,300)));
           }catch(e){}
         }
+        function localSignupExists(email){
+          try{
+            const key="ducpt_course_signup_inbox_v1";
+            const needle=String(email||"").trim().toLowerCase();
+            if(!needle)return false;
+            const list=JSON.parse(localStorage.getItem(key)||"[]");
+            return Array.isArray(list)&&list.some(x=>String(x&&x.email||"").trim().toLowerCase()===needle);
+          }catch(e){return false}
+        }
         /* HỘP THƯ CHỜ ĐĂNG KÝ: máy chủ chưa nhận được (chưa deploy / mất mạng / lỗi tạm)
            thì phiếu đăng ký xếp hàng trong localStorage và tự gửi lại mỗi lần mở trang.
            Không có phiếu nào bị mất im lặng như trước. */
@@ -807,9 +816,10 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const paidLocal=localPaidEntitlement(freeRecord.email);
           const accessRecord=paidLocal?{...freeRecord,...paidLocal,passHash:freeRecord.passHash||paidLocal.passHash||""}:(savedPremium?{...freeRecord,...savedPremium,passHash:freeRecord.passHash||savedPremium.passHash||""}:freeRecord);
           const role=accessRecord.role==="premium"?"premium":"free";
+          if(localSignupExists(freeRecord.email)){if(st){st.style.color="#b42318";st.textContent="Email nay da dang ky. Vui long dang nhap lai de vao khu hoc vien."}showLoginMode();return}
           const remoteSaved=await saveLeadRemote(freeRecord);
           if(remoteSaved&&remoteSaved.duplicate){if(st){st.style.color="#b42318";st.textContent="Email nay da dang ky. Vui long dang nhap lai de vao khu hoc vien."}showLoginMode();return}
-          if(!remoteSaved){if(st){st.style.color="#b42318";st.textContent="Chua luu duoc dang ky vao Passport. Vui long thu lai sau."}return}
+          if(!remoteSaved&&st){st.style.color="#92400e";st.textContent="Passport API chua nhan. Da luu tam vao bang hoc vien tren may nay va se tu gui lai."}
           try{localStorage.setItem(MAIL_KEY,freeRecord.email)}catch(e){}
           saveStudentProfile(accessRecord);
           rememberEmailLead({...accessRecord,role,funnelStage:role==="premium"?"paid_student":"free_not_paid",purchaseStatus:role==="premium"?"paid":"not_paid"});
