@@ -856,9 +856,11 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         /* Founder yeu cau bo khoi tai khoan chiem ca bang ngang. Danh tinh + Dang xuat gom len
            chip goc phai tren nav; loi moi Nang cap Premium chuyen xuong canh bai PREMIUM (dung luc can). */
         const box=document.getElementById("acctChip");if(box)box.innerHTML="";
+        const rawAdminSession=(()=>{try{return !!localStorage.getItem("ducpt-admin-session")}catch(e){return false}})();
         const r=getRole();
         const nav=document.querySelector("header .nav");if(!nav)return;
         const old=document.getElementById("navAcct");if(old)old.remove();
+        if(rawAdminSession)return;
         if(r==="guest")return;
         /* Co phien quan tri thi ducpt-session.js da dung chip rieng — khong ve chip thu hai. */
         try{if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get())return}catch(e){}
@@ -1086,5 +1088,5 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       function cleanId(value){const match=String(value||"").match(/[A-Za-z0-9_-]{11}/);return match?match[0]:""}
     })();
   </script>
-<script src="/assets/ducpt-session.js?v=20260721-student-role-3" defer></script></body>
+<script src="/assets/ducpt-session.js?v=20260722-single-account-1" defer></script></body>
 </html>

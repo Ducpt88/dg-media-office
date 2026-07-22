@@ -303,6 +303,19 @@
      CTA bán hàng nằm trong NỘI DUNG trang thì giữ nguyên — admin cần thấy trang y như khách. */
   var LOGIN_TEXT = /^(đăng nhập|đăng ký học|đăng ký miễn phí|đăng ký ngay)$/i;
 
+  function removeLegacyCourseAccountChip() {
+    Array.prototype.forEach.call(document.querySelectorAll("#navAcct,.nav-acct,.na-chip"), function (el) {
+      var root = el.closest && el.closest("#navAcct,.nav-acct");
+      (root || el).remove();
+    });
+    if (!document.getElementById("dgs-hide-legacy-course-chip")) {
+      var el = document.createElement("style");
+      el.id = "dgs-hide-legacy-course-chip";
+      el.textContent = "#navAcct,.nav-acct,.na-chip{display:none!important}";
+      document.head.appendChild(el);
+    }
+  }
+
   function swapNavLogin(session, menu) {
     var nodes = document.querySelectorAll("header a, header button, nav a, nav button, .top a, .top button");
     var hidden = [];
@@ -311,6 +324,7 @@
     if (stale) stale.remove();
     var staleFloat = document.querySelector(".dgs-float");
     if (staleFloat) staleFloat.remove();
+    removeLegacyCourseAccountChip();
     Array.prototype.forEach.call(nodes, function (el) {
       var txt = (el.textContent || "").replace(/\s+/g, " ").trim();
       if (!LOGIN_TEXT.test(txt) && !el.hasAttribute("data-open-customer-login")) return;
