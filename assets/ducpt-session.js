@@ -166,6 +166,9 @@
     return entry;
   }
   function clearSession() { drop(SESSION_KEY); drop(PREVIEW_KEY); drop(VIEW_MODE_KEY); drop(ROLE_KEY); }
+  function endAuthPending() {
+    try { document.documentElement.classList.remove("dgs-auth-pending"); } catch (e) {}
+  }
 
   window.DUCPTAdminSession = window.DUCPTAdminSession || {
     get: readSession,
@@ -180,7 +183,7 @@
   /* Trang ngoài đọc vai qua ducpt-role. Có phiên quản trị thì đặt admin,
      còn chế độ học viên thì dùng quyền học viên thật đã lưu: Premium vẫn là Premium. */
   function syncRole(session) {
-    if (!session) return;
+    if (!session) { endAuthPending(); return; }
     var mode = readViewMode();
     var role = mode === "student" ? currentStudentRole() : "admin";
     write(ROLE_KEY, role);
@@ -435,11 +438,12 @@
 
   function boot() {
     var session = readSession();
-    if (!session) return;          // khách thường: không chèn gì, trang giữ nguyên như cũ
+    if (!session) { endAuthPending(); return; } // khách thường: mở lại nút đăng nhập sau khi JS sẵn sàng
     watchPublicAuthAccountChip();
     syncRole(session);
     var menu = render(session);
     swapNavLogin(session, menu);
+    endAuthPending();
     replaceAuthPrompt(session);
     try { window.dispatchEvent(new CustomEvent("ducpt:admin-session-ready", { detail: { session: session, preview: isPreviewingAsStudent(), viewMode: readViewMode() } })); } catch (e) {}
   }

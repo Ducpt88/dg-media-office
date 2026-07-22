@@ -41,6 +41,10 @@
   }
   anChipPublicNeuCoAdmin();
 
+  function ketThucChoAuth() {
+    try { document.documentElement.classList.remove("dgs-auth-pending"); } catch (e) {}
+  }
+
   function passportApi(path) {
     var base = String(window.DUCPT_API_BASE || "").replace(/\/+$/, "");
     return base + path;
@@ -346,10 +350,12 @@
     if (!q || !q.daDangNhap) {
       loginBtns.forEach(function (b) { b.style.display = ""; });
       anChipCuKhoaHoc(false);
+      ketThucChoAuth();
       return;
     }
     loginBtns.forEach(function (b) { b.style.display = "none"; });
     anChipCuKhoaHoc(true);
+    ketThucChoAuth();
 
     var laP = q.plan === "premium" || q.role === "admin";
     var ten = q.hoTen || q.email || "Học viên";

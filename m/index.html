@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi">
-<head><script id="dgs-preauth">(function(){try{var s=JSON.parse(localStorage.getItem("ducpt-admin-session")||"null");if(s&&s.role==="owner"&&Date.now()<Number(s.expiresAt)){document.documentElement.classList.add("dgs-admin-preauth");document.write('<style id="dgs-admin-preauth-style">.dgs-admin-preauth header a[href="/dang-nhap/"],.dgs-admin-preauth header a[href="/dang-ky/"],.dgs-admin-preauth nav a[href="/dang-nhap/"],.dgs-admin-preauth nav a[href="/dang-ky/"],.dgs-admin-preauth .login,.dgs-admin-preauth .signup,.dgs-admin-preauth .nav-login,.dgs-admin-preauth .nav-signup,.dgs-admin-preauth [data-open-customer-login],.dgs-admin-preauth #customerLoginModal,.dgs-admin-preauth .customer-login-modal,.dgs-admin-preauth .dab-modal,.dgs-admin-preauth .dab-backdrop,.dgs-admin-preauth #dabAcct,.dgs-admin-preauth .dab-acct,.dgs-admin-preauth .dab-chip{display:none!important}</style>')}}catch(e){}})();</script>
+<head><script id="dgs-preauth">(function(){try{document.documentElement.classList.add("dgs-auth-pending");var s=JSON.parse(localStorage.getItem("ducpt-admin-session")||"null");var old=sessionStorage.getItem("ducptAdminSession");if((s&&s.role==="owner"&&Date.now()<Number(s.expiresAt))||old){document.documentElement.classList.add("dgs-admin-preauth")}document.write('<style id="dgs-admin-preauth-style">.dgs-auth-pending header a[href="/dang-nhap/"],.dgs-auth-pending header a[href="/dang-ky/"],.dgs-auth-pending nav a[href="/dang-nhap/"],.dgs-auth-pending nav a[href="/dang-ky/"],.dgs-auth-pending .login,.dgs-auth-pending .signup,.dgs-auth-pending .nav-login,.dgs-auth-pending .nav-signup,.dgs-auth-pending [data-open-customer-login],.dgs-auth-pending #customerLoginModal,.dgs-auth-pending .customer-login-modal,.dgs-admin-preauth .dab-modal,.dgs-admin-preauth .dab-backdrop,.dgs-admin-preauth #dabAcct,.dgs-admin-preauth .dab-acct,.dgs-admin-preauth .dab-chip{display:none!important}</style>')}catch(e){}})();</script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DG BRAND LTD Ecosystem Map</title>
@@ -438,5 +438,5 @@ document.getElementById("coreNode").onclick=()=>{activeId="verba";filter="all";r
 document.querySelectorAll("[data-view]").forEach(b=>b.onclick=()=>{document.querySelectorAll("[data-view]").forEach(x=>x.classList.remove("active"));b.classList.add("active");filter=b.dataset.view==="proof"?"source":b.dataset.view==="growth"?"sales":"all";renderAll()});
 renderAll();
 </script>
-<script src="/assets/ducpt-session.js?v=20260722-one-chip-3" defer></script></body>
+<script src="/assets/ducpt-session.js?v=20260722-one-chip-4" defer></script></body>
 </html>
