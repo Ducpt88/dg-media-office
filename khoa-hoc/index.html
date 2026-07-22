@@ -803,7 +803,15 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           openFirstUnlockedLesson(role);
         }
         fillSignupForm(studentProfile());
-        if(sf)sf.addEventListener("submit",event=>{event.preventDefault();const fd=new FormData(sf);activateFreeAccount(signupPayload(Object.fromEntries(fd.entries()),"course-student-form"),document.getElementById("signupStatus"))});
+        if(sf)sf.addEventListener("submit",event=>{event.preventDefault();const fd=Object.fromEntries(new FormData(sf).entries());
+          /* Nối vào hệ tài khoản chung Supabase để email đăng ký VỀ ĐÚNG trang quản trị.
+             Mở hộp đăng ký Supabase (đã hoạt động) và điền sẵn thông tin học viên vừa gõ. */
+          if(window.DUCPTAuth&&window.DUCPTAuth.sanSang&&window.DUCPTAuth.sanSang()&&window.DUCPTAuthUI&&window.DUCPTAuthUI.moModal){
+            window.DUCPTAuthUI.moModal("signup");
+            setTimeout(()=>{try{const df=document.getElementById("dabForm");if(df){if(df.name)df.name.value=fd.name||"";if(df.email)df.email.value=fd.email||"";if(df.contact)df.contact.value=fd.contact||"";if(df.note)df.note.value=fd.note||"";if(df.password&&fd.password)df.password.value=fd.password;try{(df.password&&!df.password.value?df.password:df.email).focus()}catch(e){}}}catch(e){}},90);
+            return;
+          }
+          activateFreeAccount(signupPayload(fd,"course-student-form"),document.getElementById("signupStatus"))});
       }
       function playableSource(lesson){const url=directVideoUrl(lesson);if(url)return{type:"video",url,label:"Video khóa học"};const youtubeId=youtubeIdFromLesson(lesson);if(youtubeId)return{type:"youtube",id:youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,label:"Video bài học"};return null}
       function directVideoUrl(lesson){const raw=String(lesson.videoUrl||lesson.publicUrl||lesson.storageUrl||lesson.assetUrl||(!youtubeIdFromLesson(lesson)?lesson.youtubeUrl:"")||"").trim();return youtubeIdFromUrl(raw)?"":raw}
