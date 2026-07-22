@@ -11,8 +11,8 @@
    TUYET DOI KHONG dan service_role key vao day — no bo qua moi RLS. */
 (function () {
   var mac_dinh = {
-    url: "",         // vi du: "https://abcdefgh.supabase.co"
-    anonKey: ""      // vi du: "eyJhbGciOiJIUzI1NiIs..."
+    url: "https://nfvewetbgdfmfajaqxev.supabase.co",   // project "ducpt"
+    anonKey: "sb_publishable_bXANL2mh7qL74dnGCc1UWg_CiZk0URc"   // publishable key (cong khai, RLS bao ve)
   };
   /* Cho phep doi nhanh tren trinh duyet (dung khi test), khong phai dang lai web */
   var deTest = null;

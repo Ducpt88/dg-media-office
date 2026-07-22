@@ -18,6 +18,17 @@
 --   Phan cuoi file nay siet lai: GHI = chi admin.
 -- ============================================================
 
+-- ---------- 0. HAM PHU TRO (dinh nghia neu chua co, de file nay chay DOC LAP
+--             tren project trong, khong phu thuoc schema.sql da chay truoc) ----------
+create or replace function public.set_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end $$;
+
 -- ---------- 1. HO SO THANH VIEN ----------
 create table if not exists public.profiles (
   id         uuid primary key references auth.users(id) on delete cascade,
@@ -207,6 +218,9 @@ declare t text;
 begin
   foreach t in array array['settings','products','services','tools','courses','articles','about']
   loop
+    -- Bo qua bang chua ton tai (project trong / schema.sql chua chay) — khong loi.
+    if to_regclass('public.'||t) is null then continue; end if;
+    execute format('alter table public.%1$s enable row level security;', t);
     -- doc: ai cung doc duoc (web ngoai hien thi)
     execute format('drop policy if exists %1$s_read on public.%1$s;', t);
     execute format('create policy %1$s_read on public.%1$s for select using (true);', t);
@@ -220,6 +234,8 @@ begin
   -- Bang nhay cam: hoc vien KHONG duoc dong vao
   foreach t in array array['orders','tickets']
   loop
+    if to_regclass('public.'||t) is null then continue; end if;
+    execute format('alter table public.%1$s enable row level security;', t);
     execute format('drop policy if exists %1$s_auth on public.%1$s;', t);
     execute format('drop policy if exists %1$s_admin on public.%1$s;', t);
     execute format('create policy %1$s_admin on public.%1$s for all
@@ -244,12 +260,19 @@ begin
 end $$;
 
 -- Kho video: ghi chi admin (truoc day moi authenticated deu ghi/xoa duoc).
-drop policy if exists course_videos_auth_write on storage.objects;
-drop policy if exists course_videos_admin_write on storage.objects;
-create policy course_videos_admin_write on storage.objects
-  for all to authenticated
-  using (bucket_id = 'course-videos' and public.is_admin())
-  with check (bucket_id = 'course-videos' and public.is_admin());
+-- Boc trong DO...EXCEPTION: neu thieu quyen tren storage.objects thi BO QUA,
+-- khong lam hong ca script (bang profiles van duoc tao).
+do $$
+begin
+  drop policy if exists course_videos_auth_write on storage.objects;
+  drop policy if exists course_videos_admin_write on storage.objects;
+  create policy course_videos_admin_write on storage.objects
+    for all to authenticated
+    using (bucket_id = 'course-videos' and public.is_admin())
+    with check (bucket_id = 'course-videos' and public.is_admin());
+exception when others then
+  raise notice 'Bo qua policy storage.objects (thieu quyen hoac chua co storage): %', sqlerrm;
+end $$;
 
 -- ============================================================
 -- 10. TU TAY CAP QUYEN (chay khi can, thay email that vao)
