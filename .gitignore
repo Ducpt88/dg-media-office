@@ -6,3 +6,6 @@ passport/uploads/
 .chrome-audit/
 .chrome-audit2/
 .chrome-audit*/
+
+.chrome-verify*/
+test-results/

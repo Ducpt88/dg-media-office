@@ -132,7 +132,10 @@
           full_name: String(tt.hoTen || "").trim(),
           contact: String(tt.lienHe || "").trim(),
           note: String(tt.ghiChu || "").trim(),
-          source: String(tt.nguon || "web").trim()
+          source: String(tt.nguon || "web").trim(),
+          /* Khoa hoc / clip ma nguoi nay dang ky — de bang Khach hang hien duoc */
+          product_key: String(tt.maSanPham || "").trim(),
+          product: String(tt.tenSanPham || "").trim()
         }
       }
     }).then(function (data) {

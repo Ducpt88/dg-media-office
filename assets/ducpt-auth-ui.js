@@ -158,7 +158,8 @@
       xong();
     };
     if (tab === "signup") {
-      Auth.dangKy({ email: d.email, password: d.password, hoTen: d.name, lienHe: d.contact, ghiChu: d.note, nguon: nguonTrang() })
+      Auth.dangKy({ email: d.email, password: d.password, hoTen: d.name, lienHe: d.contact, ghiChu: d.note,
+                    nguon: nguonTrang(), maSanPham: maSanPhamTrang(), tenSanPham: tenSanPhamTrang() })
         .then(function (r) {
           if (r.canXacNhanEmail) {
             statusEl.style.color = "#047857";
@@ -187,6 +188,20 @@
     if (/CHUA_CAU_HINH/i.test(msg)) return "Máy chủ tài khoản chưa kết nối. Liên hệ quản trị.";
     if (/Email not confirmed/i.test(msg)) return "Tài khoản chưa xác nhận email. Kiểm tra hộp thư.";
     return msg || "Có lỗi xảy ra, thử lại giúp mình.";
+  }
+  /* Ten khoa hoc/clip de hien trong bang Khach hang cua Founder.
+     Uu tien ten that dang hien tren trang, khong doan bua. */
+  function tenSanPhamTrang() {
+    var m = document.querySelector('meta[name="ducpt-product-name"]');
+    if (m && m.content) return m.content.trim();
+    if (/\/khoa-hoc\//.test(location.pathname)) {
+      var h = document.getElementById("courseTitle") || document.querySelector("h1");
+      var t = h ? String(h.textContent || "").trim() : "";
+      return t || "Doanh nghiệp một người";
+    }
+    if (location.pathname === "/" || /index\.html$/.test(location.pathname)) return "Đăng ký từ trang chủ";
+    if (/\/dang-ky\//.test(location.pathname)) return "Đăng ký từ trang Đăng ký";
+    return "";
   }
   function nguonTrang() {
     if (/\/khoa-hoc\//.test(location.pathname)) return "khoa-hoc";
@@ -224,9 +239,6 @@
   function timNav() {
     return document.querySelector("header nav .nav-inner") || document.querySelector("header nav") || document.querySelector("header");
   }
-  function coPhienQuanTri() {
-    try { return !!localStorage.getItem("ducpt-admin-session"); } catch (e) { return false; }
-  }
   /* An chip cu cua rieng trang khoa-hoc (id navAcct / class na-chip) bang CSS !important,
      vi trang khoa-hoc tu ve lai chip do moi khi doi quyen — inline style.display se bi no ghi de,
      chi co rule !important trong stylesheet moi thang duoc. Toggle theo trang thai dang nhap. */
@@ -246,10 +258,6 @@
     var nav = timNav(); if (!nav) return;
     var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
     var cu = document.getElementById("dabAcct"); if (cu) cu.remove();
-    if (coPhienQuanTri()) {
-      anChipCuKhoaHoc(true);
-      return;
-    }
 
     if (!q || !q.daDangNhap) {
       loginBtns.forEach(function (b) { b.style.display = ""; });

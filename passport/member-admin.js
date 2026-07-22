@@ -24,10 +24,21 @@
   var PHIEN_CU = "ducpt-supabase-passport-session";   // ban cu, chi co access_token
 
   var $ = function (id) { return document.getElementById(id); };
+  var thieuCotKhoa = false;
   function esc(v) {
     return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
       return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;" })[c];
     });
+  }
+  /* Khoa hoc / clip ma thanh vien da dang ky. Chua co cot moi thi suy tu nguon. */
+  function khoaDangKy(p) {
+    if (p.signup_product) return p.signup_product;
+    var s = String(p.source || "");
+    if (/khoa-hoc|course/i.test(s)) return "Doanh nghiệp một người";
+    if (/trang-chu|^\/$/.test(s)) return "Đăng ký từ trang chủ";
+    if (/register-page|dang-ky/i.test(s)) return "Đăng ký từ trang Đăng ký";
+    if (/passport-admin/i.test(s)) return "Tài khoản quản trị";
+    return s || "—";
   }
   function ngay(s) {
     try { var d = new Date(s); if (isNaN(d)) return esc(s || "");
@@ -63,11 +74,28 @@
 
   /* ---------- Nap danh sach ---------- */
   var DS = [];
+  var COT_DAY_DU = "id,email,full_name,contact,note,plan,role,created_at,source,signup_product,signup_product_key";
+  var COT_TOI_THIEU = "id,email,full_name,contact,note,plan,role,created_at,source";
+  var cot = COT_DAY_DU;
+
   function napDanhSach() {
     return layToken().then(function (token) {
       if (!token) { hienDangNhap(""); return; }
-      return fetch(URL_SB + "/rest/v1/profiles?order=created_at.desc&select=id,email,full_name,contact,note,plan,role,created_at", {
-        headers: { apikey: KEY, Authorization: "Bearer " + token }
+      var goiBang = function (ds) {
+        return fetch(URL_SB + "/rest/v1/profiles?order=created_at.desc&select=" + ds, {
+          headers: { apikey: KEY, Authorization: "Bearer " + token }
+        });
+      };
+      /* Neu Founder chua chay add-signup-product.sql thi 2 cot moi chua ton tai,
+         PostgREST tra 400. Khi do tu lui ve bo cot cu de bang VAN chay,
+         chi mat rieng cot "Khoa dang ky". */
+      return goiBang(cot).then(function (res) {
+        if (res.status === 400 && cot === COT_DAY_DU) {
+          cot = COT_TOI_THIEU;
+          thieuCotKhoa = true;
+          return goiBang(cot);
+        }
+        return res;
       }).then(function (res) {
         return res.json().then(function (data) {
           if (!res.ok) throw new Error((data && (data.message || data.hint)) || ("HTTP " + res.status));
@@ -114,6 +142,22 @@
     }).catch(function () {});
   }
 
+  /* Chua chay add-signup-product.sql thi cot "Khoa dang ky" chi la suy doan tu nguon.
+     Bao ro de Founder biet, khong de tuong da chinh xac. */
+  function nhacChayScript() {
+    if ($("nhacSql")) return;
+    var panel = $("supabasePanel"); if (!panel) return;
+    var box = document.createElement("article");
+    box.id = "nhacSql"; box.className = "card";
+    box.style.cssText = "margin-bottom:14px;border:1px solid #60a5fa;background:#eff6ff;padding:14px";
+    box.innerHTML = '<b style="color:#1d4ed8;display:block;margin-bottom:6px">ℹ Cột “Khóa đăng ký” đang là suy đoán</b>'
+      + '<p style="color:#1d4ed8;font-size:12px;line-height:1.6;margin:0">'
+      + 'Database chưa có ô lưu khóa học nên cột này đang đoán theo trang mà họ đăng ký. '
+      + 'Chạy file <b>supabase/add-signup-product.sql</b> trong <b>Supabase → SQL Editor</b> một lần '
+      + 'là từ đó ghi đúng tên khóa học/clip thật.</p>';
+    panel.insertBefore(box, panel.firstChild);
+  }
+
   function capNhatSo() {
     var s = function (id, v) { var e = $(id); if (e) e.textContent = v; };
     s("supabaseCount", DS.length);
@@ -135,6 +179,7 @@
         + (DS.length ? "Không có ai khớp từ khóa" : "Chưa có ai đăng ký") + '</span></div>';
       return;
     }
+    if (thieuCotKhoa) nhacChayScript();
     rows.innerHTML = loc.map(function (p) {
       var laAdmin = p.role === "admin";
       var giaTri = laAdmin ? "admin" : (p.plan === "premium" ? "premium" : "free");
@@ -142,6 +187,7 @@
         + '<span>' + esc(p.email || "") + '</span>'
         + '<span>' + esc(p.full_name || "") + '</span>'
         + '<span>' + esc(p.contact || "") + '</span>'
+        + '<span><span class="khoa-tag">' + esc(khoaDangKy(p)) + '</span></span>'
         + '<span style="font-size:10px">' + esc(p.note || "") + '</span>'
         + '<span><select class="plan-select" data-uid="' + esc(p.id) + '" data-cu="' + giaTri + '">'
         +   '<option value="free"' + (giaTri === "free" ? " selected" : "") + '>FREE</option>'
