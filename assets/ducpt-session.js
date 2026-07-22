@@ -416,7 +416,19 @@
     if (logout) logout.addEventListener("click", function () { clearSession(); location.reload(); });
   }
 
+  /* Da co tai khoan Supabase (dang nhap tren website) thi day la TAI KHOAN DUY NHAT.
+     He phien cu nhuong han — khong ve chip thu hai, tranh mot nguoi hien hai chip. */
+  function hasSupabaseSession() {
+    try {
+      var raw = localStorage.getItem("ducpt-auth-session-v1");
+      if (!raw) return false;
+      var s = JSON.parse(raw);
+      return !!(s && s.access_token);
+    } catch (e) { return false; }
+  }
+
   function boot() {
+    if (hasSupabaseSession()) return;   // nhuong cho tai khoan Supabase — chi mot chip duy nhat
     var session = readSession();
     if (!session) return;          // khách thường: không chèn gì, trang giữ nguyên như cũ
     syncRole(session);

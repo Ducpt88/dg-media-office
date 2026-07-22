@@ -254,10 +254,18 @@
     } else if (el) { el.remove(); }
   }
 
+  /* Don sach chip cua he phien cu (Hoang Van Duc / Quan tri) — mot nguoi chi mot chip. */
+  function donChipCu() {
+    Array.prototype.forEach.call(document.querySelectorAll("#dgsAccountChip,.dgs-chip,.dgs-float"), function (el) {
+      el.remove();
+    });
+  }
+
   function capNhatNav(q) {
     var nav = timNav(); if (!nav) return;
     var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
     var cu = document.getElementById("dabAcct"); if (cu) cu.remove();
+    if (q && q.daDangNhap) donChipCu();
 
     if (!q || !q.daDangNhap) {
       loginBtns.forEach(function (b) { b.style.display = ""; });
@@ -279,6 +287,7 @@
       + '<div class="who"><b>' + esc(ten) + '</b><span>' + esc(q.email || "") + '</span></div>'
       + '<div class="state ' + (laP ? "p" : "f") + '">' + (q.role === "admin" ? "🛠 QUẢN TRỊ" : (laP ? "💎 PREMIUM · mở toàn bộ" : "TÀI KHOẢN FREE")) + '</div>'
       + '<a href="/khoa-hoc/">Vào khu học</a>'
+      + (q.role === "admin" ? '<a href="/passport/">🛠 Trang quản trị</a>' : "")
       + (laP ? "" : '<a href="https://zalo.me/0963249467">💎 Nâng cấp Premium</a>')
       + '<button type="button" class="out" data-ducpt-logout>Đăng xuất</button>'
       + '</div>';
