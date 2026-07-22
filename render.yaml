@@ -6,9 +6,15 @@ services:
     buildCommand: ""
     startCommand: node passport-upload-server.js
     healthCheckPath: /api/passport/course-signups
+    disks:
+      - name: passport-data
+        mountPath: /var/data
+        sizeGB: 1
     envVars:
       - key: HOST
         value: 0.0.0.0
+      - key: PASSPORT_DATA_DIR
+        value: /var/data
       - key: PUBLIC_SITE_URL
         value: https://ducpt.com
       - key: CORS_ORIGIN

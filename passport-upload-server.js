@@ -8,12 +8,17 @@ const net = require("net");
 const tls = require("tls");
 
 const ROOT = __dirname;
+const DATA_DIR = process.env.PASSPORT_DATA_DIR || path.join(ROOT, "passport");
 const UPLOAD_DIR = path.join(ROOT, "passport", "uploads");
-const SIGNUP_FILE = path.join(ROOT, "passport", "course-signups.json");
+const SIGNUP_FILE = path.join(DATA_DIR, "course-signups.json");
 const COURSE_VIDEO_FILE = path.join(ROOT, "passport", "course-videos.json");
+const PREMIUM_ACCESS_FILE = path.join(ROOT, "passport", "premium-access.json");
+const PREMIUM_CODE_CLAIMS_FILE = path.join(DATA_DIR, "premium-code-claims.json");
+const PREMIUM_CODE_SECRET = process.env.DUCPT_PREMIUM_CODE_SECRET || "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
+fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 loadDotEnv(path.join(ROOT, ".env"));
 
@@ -50,6 +55,11 @@ const server = http.createServer((req, res) => {
 
   if (req.method === "POST" && url.pathname === "/api/passport/course-signups") {
     saveSignup(req, res);
+    return;
+  }
+
+  if (req.method === "POST" && url.pathname === "/api/passport/premium-code/claim") {
+    claimPremiumCode(req, res);
     return;
   }
 
@@ -280,6 +290,12 @@ function serveStatic(req, res, pathname) {
     return;
   }
 
+  if (isSensitiveStaticPath(absolute)) {
+    res.writeHead(404);
+    res.end("Not found");
+    return;
+  }
+
   let filePath = path.join(ROOT, "index.html");
   if (fs.existsSync(absolute)) {
     const stat = fs.statSync(absolute);
@@ -290,6 +306,16 @@ function serveStatic(req, res, pathname) {
   }
 
   sendFile(req, res, filePath);
+}
+
+function isSensitiveStaticPath(filePath) {
+  const rel = path.relative(ROOT, filePath).replace(/\\/g, "/").toLowerCase();
+  const base = path.basename(rel);
+  if (!rel || rel.startsWith("..")) return true;
+  if (base === ".env" || base.startsWith(".env.")) return true;
+  if (["passport-upload-server.js", "render.yaml", "package.json", "package-lock.json"].includes(base)) return true;
+  if (rel.endsWith("/premium-code-claims.json") || rel.endsWith("/course-signups.json")) return true;
+  return false;
 }
 
 function sendFile(req, res, filePath) {
@@ -421,6 +447,15 @@ function saveSignup(req, res) {
     const rows = readSignups();
     const index = findSignupIndex(rows, record);
     if (index >= 0) {
+      if (shouldBlockDuplicateSignup(record, rows[index])) {
+        sendJson(res, 409, {
+          ok: false,
+          error: "EMAIL_ALREADY_REGISTERED",
+          message: "Email nay da dang ky. Vui long dang nhap lai.",
+          data: entitlementPayload(rows[index], courseId)
+        });
+        return;
+      }
       const wasRegistered = Boolean(rows[index].registrationEmailSentAt);
       rows[index] = { ...rows[index], ...record, id: rows[index].id || record.id, createdAt: rows[index].createdAt || record.createdAt, updatedAt: now };
       fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
@@ -436,6 +471,14 @@ function saveSignup(req, res) {
 function isCourseStudentSignup(record) {
   const source = String(record && record.source || "");
   return Boolean(record && record.email && /^(course-student-form|course-signup|customer-portal-email-login)$/.test(source));
+}
+
+function shouldBlockDuplicateSignup(record, existing) {
+  if (!record || !existing || !record.email) return false;
+  const source = String(record.source || "");
+  const publicSignup = /^(course-student-form|course-signup|supabase-auth-signup|register-page)$/i.test(source);
+  if (!publicSignup) return false;
+  return identityKeys(existing).includes(normalizeEntitlementKey(record.email));
 }
 
 async function sendSignupResponse(res, rows, index, shouldSendEmail) {
@@ -457,6 +500,159 @@ function readSignups() {
   } catch {
     return [];
   }
+}
+
+function claimPremiumCode(req, res) {
+  readJsonBody(req, res, (body) => {
+    const now = new Date().toISOString();
+    const code = normalizePremiumCode(body.code);
+    const owner = normalizeEntitlementKey(body.owner || body.email || body.contact || "");
+    const courseId = normalizeCourseId(body.courseId || body.course || "doanh-nghiep-mot-nguoi") || "doanh-nghiep-mot-nguoi";
+    const course = String(body.course || "Doanh nghiệp một người").slice(0, 160);
+    if (!code) {
+      sendJson(res, 400, { ok: false, error: "MISSING_CODE" });
+      return;
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(owner)) {
+      sendJson(res, 400, { ok: false, error: "OWNER_EMAIL_REQUIRED" });
+      return;
+    }
+    if (!premiumCodeLooksValid(code)) {
+      sendJson(res, 400, { ok: false, error: "INVALID_CODE" });
+      return;
+    }
+
+    const claims = readPremiumCodeClaims();
+    const codeHash = sha256(code);
+    const existing = claims.find((item) => item.codeHash === codeHash);
+    if (existing && existing.owner !== owner) {
+      sendJson(res, 409, {
+        ok: false,
+        error: "CODE_ALREADY_USED",
+        data: {
+          owner: maskEmail(existing.owner),
+          claimedAt: existing.claimedAt || "",
+          courseId: existing.courseId || ""
+        }
+      });
+      return;
+    }
+
+    const record = existing || {
+      id: "pc-" + crypto.randomBytes(8).toString("hex"),
+      codeHash,
+      codePrefix: code.slice(0, 8),
+      owner,
+      courseId,
+      course,
+      claimedAt: now,
+      createdAt: now
+    };
+    record.owner = owner;
+    record.courseId = record.courseId || courseId;
+    record.course = record.course || course;
+    record.lastSeenAt = now;
+    if (!existing) claims.unshift(record);
+    fs.writeFileSync(PREMIUM_CODE_CLAIMS_FILE, JSON.stringify(claims.slice(0, 5000), null, 2), "utf8");
+    upsertPremiumSignupForClaim({ owner, courseId, course, claimId: record.id, now });
+    sendJson(res, 200, {
+      ok: true,
+      data: {
+        role: "premium",
+        entitlement: true,
+        owner,
+        courseId,
+        course,
+        claimId: record.id,
+        firstClaim: !existing,
+        claimedAt: record.claimedAt
+      }
+    });
+  });
+}
+
+function normalizePremiumCode(value) {
+  return String(value || "").trim().toUpperCase().replace(/\s+/g, "");
+}
+
+function premiumCodeLooksValid(code) {
+  if (/^DGP-([A-Z0-9]{4,12})-([0-9A-F]{6})$/.test(code)) return verifySignedPremiumCode(code);
+  return readLegacyPremiumCodeHashes().includes(sha256(code));
+}
+
+function verifySignedPremiumCode(code) {
+  const match = code.match(/^DGP-([A-Z0-9]{4,12})-([0-9A-F]{6})$/);
+  if (!match) return false;
+  return sha256(`${match[1]}|${PREMIUM_CODE_SECRET}`).slice(0, 6).toUpperCase() === match[2];
+}
+
+function readLegacyPremiumCodeHashes() {
+  try {
+    const data = JSON.parse(fs.readFileSync(PREMIUM_ACCESS_FILE, "utf8"));
+    return Array.isArray(data.premiumCodeHashes) ? data.premiumCodeHashes.map((x) => String(x).toLowerCase()) : [];
+  } catch {
+    return [];
+  }
+}
+
+function readPremiumCodeClaims() {
+  try {
+    const data = JSON.parse(fs.readFileSync(PREMIUM_CODE_CLAIMS_FILE, "utf8"));
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function upsertPremiumSignupForClaim({ owner, courseId, course, claimId, now }) {
+  const rows = readSignups();
+  const record = {
+    id: "signup-" + sha256(owner).slice(0, 12),
+    name: "",
+    email: owner,
+    contact: "",
+    note: "Mo Premium bang ma dung 1 nguoi",
+    course,
+    courseId,
+    courseIds: [courseId],
+    role: "premium",
+    status: "paid",
+    entitlement: true,
+    accessPackage: "premium",
+    accessStatus: "active",
+    purchaseStatus: "paid",
+    source: "premium-code-claim",
+    orderId: claimId,
+    paidAt: now,
+    createdAt: now,
+    updatedAt: now
+  };
+  const index = findSignupIndex(rows, record);
+  if (index >= 0) {
+    rows[index] = {
+      ...rows[index],
+      ...record,
+      id: rows[index].id || record.id,
+      name: rows[index].name || record.name,
+      createdAt: rows[index].createdAt || record.createdAt,
+      updatedAt: now
+    };
+  } else {
+    rows.unshift(record);
+  }
+  fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2), "utf8");
+}
+
+function sha256(value) {
+  return crypto.createHash("sha256").update(String(value || ""), "utf8").digest("hex");
+}
+
+function maskEmail(value) {
+  const email = String(value || "");
+  const parts = email.split("@");
+  if (parts.length !== 2) return "";
+  const name = parts[0];
+  return `${name.slice(0, 2)}***@${parts[1]}`;
 }
 
 function smtpConfig() {

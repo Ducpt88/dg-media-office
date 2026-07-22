@@ -19,6 +19,48 @@
 
   var Auth = window.DUCPTAuth;
 
+  function passportApi(path) {
+    var base = String(window.DUCPT_API_BASE || "").replace(/\/+$/, "");
+    return base + path;
+  }
+
+  function slugCourse(value) {
+    var raw = String(value || "").trim().toLowerCase().replace(/^course:/, "");
+    try { raw = raw.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); } catch (e) {}
+    return raw.replace(/Ä‘/g, "d").replace(/đ/g, "d").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
+  }
+
+  function dongBoDangKyPassport(d) {
+    try {
+      var email = String(d && d.email || "").trim().toLowerCase();
+      if (!email || !window.DUCPT_API_BASE) return Promise.resolve(false);
+      var productKey = maSanPhamTrang();
+      var courseId = slugCourse(productKey || tenSanPhamTrang() || "doanh-nghiep-mot-nguoi") || "doanh-nghiep-mot-nguoi";
+      return fetch(passportApi("/api/passport/course-signups"), {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          course: tenSanPhamTrang() || "Doanh nghiep mot nguoi",
+          courseId: courseId,
+          courseIds: [courseId],
+          name: String(d.name || "").trim(),
+          email: email,
+          contact: String(d.contact || "").trim(),
+          note: String(d.note || "").trim(),
+          role: "free",
+          accessPackage: "free",
+          accessStatus: "active",
+          funnelStage: "free_not_paid",
+          purchaseStatus: "not_paid",
+          source: "supabase-auth-signup",
+          createdAt: new Date().toISOString()
+        })
+      }).then(function (res) { return res.ok; }).catch(function () { return false; });
+    } catch (e) {
+      return Promise.resolve(false);
+    }
+  }
+
   /* ma san pham cua trang hien tai (de bac cau quyen dung khoa hoc dang mo) */
   function maSanPhamTrang() {
     var m = document.querySelector('meta[name="ducpt-product-key"]');
@@ -161,6 +203,7 @@
       Auth.dangKy({ email: d.email, password: d.password, hoTen: d.name, lienHe: d.contact, ghiChu: d.note,
                     nguon: nguonTrang(), maSanPham: maSanPhamTrang(), tenSanPham: tenSanPhamTrang() })
         .then(function (r) {
+          dongBoDangKyPassport(d);
           if (r.canXacNhanEmail) {
             statusEl.style.color = "#047857";
             statusEl.textContent = "Đã tạo tài khoản. Kiểm tra email để xác nhận rồi đăng nhập.";
@@ -227,6 +270,8 @@
           role = (ma && q.sanPham.indexOf(ma) >= 0) ? "premium" : "free";
         }
       }
+      var premiumCodeOk = localStorage.getItem("ducpt-premium-code-ok") === "1";
+      if (role === "guest" && premiumCodeOk) role = "premium";
       if (role === "guest") { localStorage.removeItem("ducpt-role"); localStorage.removeItem("ducpt-email"); }
       else { localStorage.setItem("ducpt-role", role); if (q.email) localStorage.setItem("ducpt-email", q.email); }
       // danh thuc trang khoa hoc cap nhat UI

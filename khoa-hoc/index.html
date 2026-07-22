@@ -311,7 +311,8 @@
     .gate.reg{background:linear-gradient(120deg,#2563eb,#7c3aed)}
     .gate.up{background:linear-gradient(120deg,#7c3aed,#c026d3)}
     .gate.note{background:linear-gradient(120deg,#334155,#0f172a)}
-    .gate .pcode{display:flex;gap:8px;margin-top:14px;width:100%;max-width:340px}
+    .gate .pcode{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:14px;width:100%;max-width:390px}
+    .gate .pcode .owner{grid-column:1/-1}
     .gate .pcode input{flex:1;min-width:0;height:44px;border-radius:10px;border:0;padding:0 13px;font:inherit;font-size:14px}
     .gate .pcode button{height:44px;padding:0 16px;border-radius:10px;border:0;background:#fff;color:#7c3aed;font-weight:900;cursor:pointer;white-space:nowrap}
     .gate .pcode-st{margin-top:9px;font-size:12.5px;min-height:16px;color:#fff}
@@ -540,7 +541,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       }
 
       function selectLesson(id){if(window.__coursePackagerReady)return;const lesson=state.lessons.find(item=>item.id===id);if(!lesson)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lesson.description||"Bài học đang được cập nhật mô tả.";els.metricDuration.textContent=lesson.duration||"Từ YouTube";els.playerFrame.innerHTML=`<iframe src="https://www.youtube.com/embed/${escapeHtml(lesson.youtubeId)}?enablejsapi=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&cc_load_policy=0&rel=0&modestbranding=1&playsinline=1" title="${escapeHtml(lesson.title)}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"></iframe>`}
-    els.signup.addEventListener("submit",async event=>{event.preventDefault();if(window.__coursePackagerReady)return;const record=Object.fromEntries(new FormData(event.currentTarget).entries());const slug=value=>String(value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);record.course=state.course.title||"Doanh nghiệp một người";record.courseId=slug(state.course.id||state.course.slug||state.course.courseId||state.course.title||"doanh-nghiep-mot-nguoi");record.courseIds=[record.courseId];record.createdAt=new Date().toISOString();els.signupStatus.textContent="Đang gửi đăng ký...";try{const res=await fetch(apiUrl("/api/passport/course-signups"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});const payload=await res.json();if(!payload.ok)throw new Error(payload.error||"Không lưu được đăng ký");els.signupStatus.textContent="Đã gửi đăng ký. DUCPT sẽ liên hệ để mở quyền học.";event.currentTarget.reset()}catch{els.signupStatus.textContent="Chưa gửi được đăng ký. Vui lòng liên hệ Zalo hoặc thử lại sau."}});
+    els.signup.addEventListener("submit",async event=>{event.preventDefault();if(window.__coursePackagerReady)return;const record=Object.fromEntries(new FormData(event.currentTarget).entries());const slug=value=>String(value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,80);record.course=state.course.title||"Doanh nghiệp một người";record.courseId=slug(state.course.id||state.course.slug||state.course.courseId||state.course.title||"doanh-nghiep-mot-nguoi");record.courseIds=[record.courseId];record.createdAt=new Date().toISOString();els.signupStatus.textContent="Đang gửi đăng ký...";try{const res=await fetch(apiUrl("/api/passport/course-signups"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});const payload=await res.json();if(!res.ok||!payload.ok){const err=new Error(payload.error||"Không lưu được đăng ký");err.status=res.status;throw err}els.signupStatus.textContent="Đã gửi đăng ký. DUCPT sẽ liên hệ để mở quyền học.";event.currentTarget.reset()}catch(e){els.signupStatus.textContent=e&&e.status===409?"Email này đã đăng ký. Vui lòng đăng nhập lại để vào khu học viên.":"Chưa gửi được đăng ký. Vui lòng liên hệ Zalo hoặc thử lại sau."}});
     function escapeHtml(value){return String(value||"").replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[char]))}
   </script>
   <script>
@@ -632,17 +633,17 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         async function postSignupRemote(record){
           const res=await fetch(apiUrl("/api/passport/course-signups"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});
           const body=await res.json().catch(()=>({}));
-          if(!res.ok||!body.ok)throw new Error((body&&body.error)||("HTTP "+res.status));
+          if(!res.ok||!body.ok){const err=new Error((body&&body.error)||("HTTP "+res.status));err.status=res.status;err.data=body&&body.data;throw err}
           return body;
         }
         async function saveLeadRemote(record){
           try{await postSignupRemote(record);return true}
-          catch(e){queueSignupOutbox(record);return false}
+          catch(e){if(e&&e.status===409&&e.message==="EMAIL_ALREADY_REGISTERED")return {duplicate:true,error:e};queueSignupOutbox(record);return false}
         }
         async function flushSignupOutbox(){
           const list=readSignupOutbox();if(!list.length)return;
           const rest=[];
-          for(const item of list){try{await postSignupRemote(item)}catch(e){rest.push(item)}}
+          for(const item of list){try{await postSignupRemote(item)}catch(e){if(!(e&&e.status===409))rest.push(item)}}
           writeSignupOutbox(rest);
         }
         setTimeout(()=>{flushSignupOutbox()},1500);
@@ -682,21 +683,37 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         }
         async function sha256Hex(str){try{const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(String(str||"")));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("")}catch(e){return ""}}
         function passSalted(pass,email){return String(pass||"")+"::"+String(email||"").trim().toLowerCase()}
+        function premiumCodeOwner(){
+          const typed=String((document.getElementById("pcodeOwner")||{}).value||"").trim().toLowerCase();
+          const saved=studentProfile();
+          return typed||getEmail()||String(saved&&saved.email||"").trim().toLowerCase();
+        }
+        async function claimPremiumCode(raw,owner){
+          const res=await fetch(apiUrl("/api/passport/premium-code/claim"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({code:raw,owner,courseId:courseAccessKey(),course:state.course.title||"Doanh nghiệp một người"})});
+          const body=await res.json().catch(()=>({}));
+          if(!res.ok||!body.ok){const err=new Error((body&&body.error)||("HTTP "+res.status));err.status=res.status;err.data=body&&body.data;throw err}
+          return body.data||{};
+        }
         async function tryPremiumCode(code,st){
           const raw=String(code||"").trim();
           if(!raw){if(st){st.style.color="#fecaca";st.textContent="Nhập mã Premium anh gửi cho bạn."}return false}
-          const h=await sha256Hex(raw);
-          const list=Array.isArray(state.premiumHashes)?state.premiumHashes:[];
-          if(list.includes(h)){
-            const prof=studentProfile()||{email:getEmail()||"",role:"free"};
-            saveStudentProfile({...prof,role:"premium",purchaseStatus:"paid",source:"premium-code"});
+          const owner=premiumCodeOwner();
+          if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(owner)){if(st){st.style.color="#fecaca";st.textContent="Nhap email cua nguoi duoc cap ma de khoa ma cho dung 1 nguoi."}return false}
+          {
+            if(st){st.style.color="#fff";st.textContent="Dang kiem tra va khoa ma cho email nay..."}
+            let serverClaim=null;
+            try{serverClaim=await claimPremiumCode(raw,owner)}catch(e){
+              if(st){st.style.color="#fecaca";st.textContent=e&&e.status===409?"Ma nay da duoc dung cho "+((e.data&&e.data.owner)||"mot email khac")+". Khong the dung chung.":e&&e.status===400?"Ma Premium chua dung hoac email chua hop le. Kiem tra lai hoac lien he Zalo.":"Chua khoa duoc ma tren may chu. De chong dung chung, vui long thu lai khi co ket noi."}
+              return false;
+            }
+            const serverProf=studentProfile()||{email:owner,role:"free"};
+            saveStudentProfile({...serverProf,email:owner,role:"premium",purchaseStatus:"paid",source:"premium-code",courseId:(serverClaim&&serverClaim.courseId)||courseAccessKey()});
+            try{localStorage.setItem(MAIL_KEY,owner)}catch(e){}
             try{localStorage.setItem("ducpt-premium-code-ok","1")}catch(e){}
             setRole("premium");
-            if(st){st.style.color="#bbf7d0";st.textContent="Đã mở Premium! Bạn xem được toàn bộ bài học."}
+            if(st){st.style.color="#bbf7d0";st.textContent="Da mo Premium! Ban xem duoc toan bo bai hoc."}
             return true;
           }
-          if(st){st.style.color="#fecaca";st.textContent="Mã Premium chưa đúng. Kiểm tra lại hoặc liên hệ Zalo."}
-          return false;
         }
         window.__ducptTryPremiumCode=tryPremiumCode;
         function savedStudentReady(record){
@@ -790,11 +807,12 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const paidLocal=localPaidEntitlement(freeRecord.email);
           const accessRecord=paidLocal?{...freeRecord,...paidLocal,passHash:freeRecord.passHash||paidLocal.passHash||""}:(savedPremium?{...freeRecord,...savedPremium,passHash:freeRecord.passHash||savedPremium.passHash||""}:freeRecord);
           const role=accessRecord.role==="premium"?"premium":"free";
+          const remoteSaved=await saveLeadRemote(freeRecord);
+          if(remoteSaved&&remoteSaved.duplicate){if(st){st.style.color="#b42318";st.textContent="Email nay da dang ky. Vui long dang nhap lai de vao khu hoc vien."}showLoginMode();return}
           try{localStorage.setItem(MAIL_KEY,freeRecord.email)}catch(e){}
           saveStudentProfile(accessRecord);
           rememberEmailLead({...accessRecord,role,funnelStage:role==="premium"?"paid_student":"free_not_paid",purchaseStatus:role==="premium"?"paid":"not_paid"});
           rememberSignupInbox(freeRecord);
-          saveLeadRemote(freeRecord);
           switchLinkedSessionToStudent();
           setRole(role);
           const freeN=state.lessons.filter(l=>l.access!=="premium").length;
@@ -803,10 +821,14 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           openFirstUnlockedLesson(role);
         }
         fillSignupForm(studentProfile());
-        if(sf)sf.addEventListener("submit",event=>{event.preventDefault();const fd=Object.fromEntries(new FormData(sf).entries());
+        if(sf)sf.addEventListener("submit",async event=>{event.preventDefault();const fd=Object.fromEntries(new FormData(sf).entries());
           /* Nối vào hệ tài khoản chung Supabase để email đăng ký VỀ ĐÚNG trang quản trị.
              Mở hộp đăng ký Supabase (đã hoạt động) và điền sẵn thông tin học viên vừa gõ. */
           if(window.DUCPTAuth&&window.DUCPTAuth.sanSang&&window.DUCPTAuth.sanSang()&&window.DUCPTAuthUI&&window.DUCPTAuthUI.moModal){
+            const st=document.getElementById("signupStatus");
+            if(st){st.style.color="#475569";st.textContent="Dang kiem tra email dang ky..."}
+            const remoteSaved=await saveLeadRemote(signupPayload(fd,"course-student-form"));
+            if(remoteSaved&&remoteSaved.duplicate){if(st){st.style.color="#b42318";st.textContent="Email nay da dang ky. Vui long dang nhap lai de vao khu hoc vien."}showLoginMode();return}
             window.DUCPTAuthUI.moModal("signup");
             setTimeout(()=>{try{const df=document.getElementById("dabForm");if(df){if(df.name)df.name.value=fd.name||"";if(df.email)df.email.value=fd.email||"";if(df.contact)df.contact.value=fd.contact||"";if(df.note)df.note.value=fd.note||"";if(df.password&&fd.password)df.password.value=fd.password;try{(df.password&&!df.password.value?df.password:df.email).focus()}catch(e){}}}catch(e){}},90);
             return;
@@ -837,7 +859,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
       const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1", STUDENT_PROFILE_KEY="ducpt-student-profile-v1";
       function storedStudentRole(){try{const prof=studentProfile();if(prof&&prof.role==="premium")return"premium";const r=localStorage.getItem(ROLE_KEY);return r==="premium"||localStorage.getItem("ducpt-premium-code-ok")==="1"?"premium":"free"}catch(e){return"free"}}
-      function getRole(){try{if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get()){const mode=window.DUCPTAdminSession.getViewMode?window.DUCPTAdminSession.getViewMode():"admin";return mode==="student"?storedStudentRole():"admin"}const r=localStorage.getItem(ROLE_KEY);return ["free","premium","admin"].includes(r)?r:"guest"}catch(e){return "guest"}}
+      function getRole(){try{if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get()){const mode=window.DUCPTAdminSession.getViewMode?window.DUCPTAdminSession.getViewMode():"admin";return mode==="student"?storedStudentRole():"admin"}const r=localStorage.getItem(ROLE_KEY);const base=["free","premium","admin"].includes(r)?r:"guest";/* Mã Premium mở khóa bền vững trên máy này, kể cả khi chưa đăng nhập Supabase (cầu nối auth có thể ép về guest). */if(base!=="admin"&&localStorage.getItem("ducpt-premium-code-ok")==="1")return "premium";return base}catch(e){return "guest"}}
       function hasLinkedSession(){try{return !!(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get())}catch(e){return false}}
       function switchLinkedSessionToStudent(){try{const api=window.DUCPTAdminSession;if(api&&api.get&&api.get()&&typeof api.setViewMode==="function")api.setViewMode("student")}catch(e){}}
       function getEmail(){try{return localStorage.getItem(MAIL_KEY)||""}catch(e){return ""}}
@@ -1084,10 +1106,13 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         function head(){els.currentTitle.textContent=lesson.title;els.metricDuration.textContent=lessonDuration(lesson);const lpx=document.getElementById("currentLearn");if(lpx)lpx.innerHTML=(Array.isArray(lesson.learnPoints)?lesson.learnPoints:[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}
         /* Khách chưa đăng ký: chặn tất cả, kể cả bài FREE */
         if(role==="guest"){head();els.currentDesc.textContent="Bạn cần có tài khoản DUCPT để xem bài học này.";
-          els.playerFrame.innerHTML=`<div class="gate reg"><div class="ic">🔐</div><b>Đăng ký để xem bài học</b><p>${lesson.access==="premium"?"Đây là bài PREMIUM. Hãy đăng ký tài khoản trước, sau đó nâng cấp để mở khóa.":"Bài này miễn phí — chỉ cần tạo tài khoản DUCPT là xem được ngay."}</p><a href="#dang-ky-hoc">Đăng ký miễn phí</a></div>`;return}
+          const isPrem=lesson.access==="premium";
+          els.playerFrame.innerHTML=`<div class="gate reg"><div class="ic">🔐</div><b>${isPrem?"Bài học PREMIUM":"Đăng ký để xem bài học"}</b><p>${isPrem?"Đã trả phí và có mã Premium? Nhập email + mã Premium bên dưới. Mã sẽ khóa cho đúng email đầu tiên dùng.":"Bài này miễn phí — chỉ cần tạo tài khoản DUCPT là xem được ngay."}</p><a href="#dang-ky-hoc">Đăng ký miễn phí</a>${isPrem?`<div class="pcode"><input class="owner" id="pcodeOwner" type="email" autocomplete="email" placeholder="Email người được cấp mã"><input id="pcodeInput" type="text" autocomplete="off" placeholder="Nhập mã Premium"><button id="pcodeBtn" type="button">Mở khóa</button></div><div id="pcodeStatus" class="pcode-st"></div>`:""}</div>`;
+          if(isPrem){const pbtn=document.getElementById("pcodeBtn"),pinp=document.getElementById("pcodeInput"),pst=document.getElementById("pcodeStatus");const doCode=async()=>{const fn=window.__ducptTryPremiumCode;if(typeof fn!=="function"){if(pst){pst.style.color="#fecaca";pst.textContent="Chưa sẵn sàng, tải lại trang rồi thử lại."}return}const ok=await fn(pinp&&pinp.value,pst);if(ok)setTimeout(()=>selectPackagedLesson(id),500)};if(pbtn)pbtn.addEventListener("click",doCode);if(pinp)pinp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();doCode()}})}
+          return}
         /* Đã đăng ký nhưng chưa nâng cấp, bấm bài PREMIUM */
         if(lesson.access==="premium"&&!canPlay(lesson)){head();els.currentDesc.textContent="Bài học này dành cho học viên đã nâng cấp Premium.";
-          els.playerFrame.innerHTML=`<div class="gate up"><div class="ic">💎</div><b>Bài học PREMIUM</b><p>${escapeHtml(lesson.title)}</p><a href="https://zalo.me/0963249467">Nâng cấp để mở khóa</a><div class="pcode"><input id="pcodeInput" type="text" autocomplete="off" placeholder="Đã trả phí? Nhập mã Premium"><button id="pcodeBtn" type="button">Mở khóa</button></div><div id="pcodeStatus" class="pcode-st"></div><div class="pcode-hint">Mã Premium do DUCPT gửi riêng sau khi bạn thanh toán.</div></div>`;
+          els.playerFrame.innerHTML=`<div class="gate up"><div class="ic">💎</div><b>Bài học PREMIUM</b><p>${escapeHtml(lesson.title)}</p><a href="https://zalo.me/0963249467">Nâng cấp để mở khóa</a><div class="pcode"><input class="owner" id="pcodeOwner" type="email" autocomplete="email" placeholder="Email người được cấp mã"><input id="pcodeInput" type="text" autocomplete="off" placeholder="Đã trả phí? Nhập mã Premium"><button id="pcodeBtn" type="button">Mở khóa</button></div><div id="pcodeStatus" class="pcode-st"></div><div class="pcode-hint">Mã Premium chỉ dùng cho 1 email đầu tiên kích hoạt.</div></div>`;
           const pbtn=document.getElementById("pcodeBtn"),pinp=document.getElementById("pcodeInput"),pst=document.getElementById("pcodeStatus");
           const doCode=async()=>{const fn=window.__ducptTryPremiumCode;if(typeof fn!=="function"){if(pst){pst.style.color="#fecaca";pst.textContent="Chưa sẵn sàng, tải lại trang rồi thử lại."}return}const ok=await fn(pinp&&pinp.value,pst);if(ok)setTimeout(()=>selectPackagedLesson(id),500)};
           if(pbtn)pbtn.addEventListener("click",doCode);
