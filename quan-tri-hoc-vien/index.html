@@ -1,0 +1,170 @@
+<!doctype html><html lang="vi"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="same-origin">
+<title>Quản trị học viên · DUCPT</title>
+<link rel="icon" href="/assets/hvd-monogram.svg">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0e1a;--card:rgba(255,255,255,.05);--line:rgba(255,255,255,.12);--ink:#f2f5ff;--muted:#9aa3bd;--cyan:#6ee7ff;--violet:#a78bfa;--green:#5eead4;--amber:#f6d58d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Be Vietnam Pro",sans-serif;line-height:1.5}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 12% 8%,#1746a144,transparent 32%),radial-gradient(circle at 92% 4%,#6d28d944,transparent 30%)}
+button,input{font:inherit}
+.top{display:flex;align-items:center;gap:16px;max-width:1200px;margin:16px auto;padding:12px 20px;border:1px solid var(--line);border-radius:16px;background:var(--card);backdrop-filter:blur(18px)}
+.top img{width:120px}.top .sp{flex:1}
+.wrap{max-width:1200px;margin:0 auto;padding:10px 20px 70px}
+.h{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:10px 0 18px}
+.h h1{margin:0;font-size:26px}.h .cnt{color:var(--cyan);font-weight:900}
+.btn{padding:10px 16px;border:0;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--violet));color:#07101e;font-weight:900;cursor:pointer}
+.btn.ghost{background:var(--card);border:1px solid var(--line);color:var(--ink)}
+.gate{max-width:440px;margin:8vh auto;padding:26px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+.gate h2{margin:0 0 6px}.gate p{color:var(--muted);font-size:14px}
+.field{display:grid;gap:6px;margin-top:14px;color:var(--muted);font-size:12px;font-weight:800}
+.field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.06);color:var(--ink);outline:0}
+.field input:focus{border-color:var(--cyan)}
+.gate .btn{width:100%;margin-top:16px}
+.st{min-height:20px;margin-top:12px;font-size:12.5px}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
+.search{flex:1;min-width:200px;padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.06);color:var(--ink);outline:0}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.02)}
+table{width:100%;border-collapse:collapse;min-width:820px}
+th,td{padding:11px 13px;text-align:left;border-bottom:1px solid rgba(255,255,255,.07);font-size:13px;vertical-align:top}
+th{position:sticky;top:0;background:#111726;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;z-index:1}
+tr:hover td{background:rgba(255,255,255,.03)}
+.tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:800}
+.tag.free{background:#1f2937;color:#93c5fd}.tag.premium{background:#064e3b;color:#6ee7b7}.tag.admin{background:#4c1d95;color:#ddd6fe}
+.mail{color:var(--cyan);overflow-wrap:anywhere}
+.muted{color:var(--muted)}.small{font-size:11.5px}
+.empty{padding:40px;text-align:center;color:var(--muted)}
+.err{color:#fca5a5}.ok{color:var(--green)}
+@media(max-width:600px){.top img{width:100px}}
+</style></head><body>
+<header class="top"><a href="/"><img src="/assets/hvd-horizontal.svg" alt="DUCPT"></a>
+<span class="sp"></span>
+<span id="who" class="small muted"></span>
+<button id="logoutBtn" class="btn ghost" style="display:none" data-ducpt-logout>Đăng xuất</button>
+</header>
+
+<main class="wrap">
+  <!-- Cong dang nhap admin -->
+  <section id="gate" class="gate" style="display:none">
+    <h2>Khu quản trị học viên</h2>
+    <p>Đăng nhập bằng <b>tài khoản admin DUCPT</b> để xem danh sách học viên đã đăng ký (đọc trực tiếp từ Supabase).</p>
+    <form id="loginForm">
+      <label class="field">Email<input name="email" type="email" required autocomplete="email" placeholder="email admin"></label>
+      <label class="field">Mật khẩu<input name="password" type="password" required autocomplete="current-password" placeholder="Mật khẩu"></label>
+      <button class="btn" type="submit">Đăng nhập</button>
+      <div class="st" id="loginSt"></div>
+    </form>
+  </section>
+
+  <!-- Bang danh sach -->
+  <section id="panel" style="display:none">
+    <div class="h"><h1>Học viên đã đăng ký</h1><span class="cnt" id="count">…</span></div>
+    <div class="toolbar">
+      <input id="search" class="search" placeholder="Tìm theo email, tên, SĐT…">
+      <button id="refresh" class="btn ghost">↻ Tải lại</button>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>Email</th><th>Họ tên</th><th>SĐT/Zalo</th><th>Mong muốn học</th><th>Gói</th><th>Nguồn</th><th>Ngày đăng ký</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="8" class="empty">Đang tải…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="st small muted" id="dataSt"></div>
+  </section>
+</main>
+
+<script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-2"></script>
+<script src="/assets/ducpt-auth.js?v=20260722-signup-rail-2"></script>
+<script>
+(function(){
+  "use strict";
+  var $=function(id){return document.getElementById(id)};
+  var cfg=window.DUCPT_SUPABASE||{};
+  var ALL=[];
+
+  function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,function(c){return({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"})[c]})}
+  function ngay(s){try{var d=new Date(s);if(isNaN(d))return esc(s||"");return d.toLocaleString("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"})}catch(e){return esc(s||"")}}
+  function token(){try{return JSON.parse(localStorage.getItem("ducpt-auth-session-v1")||"null").access_token||""}catch(e){return""}}
+
+  function show(view){ $("gate").style.display=view==="gate"?"":"none"; $("panel").style.display=view==="panel"?"":"none"; }
+
+  // Kiem tra quyen: chi admin moi vao duoc
+  function kiemTra(){
+    if(!window.DUCPTAuth||!window.DUCPTAuth.sanSang()){
+      $("gate").style.display=""; $("loginSt").className="st err";
+      $("loginSt").textContent="Hệ tài khoản chưa kết nối máy chủ. Liên hệ kỹ thuật."; return;
+    }
+    window.DUCPTAuth.quyen(true).then(function(q){
+      if(q&&q.daDangNhap){
+        $("who").textContent=(q.hoTen||q.email)+" · "+(q.role==="admin"?"Quản trị":q.plan);
+        $("logoutBtn").style.display="";
+      }
+      if(q&&q.daDangNhap&&q.role==="admin"){ show("panel"); taiDanhSach(); }
+      else if(q&&q.daDangNhap){ show("gate"); $("loginSt").className="st err";
+        $("loginSt").textContent="Tài khoản này chưa có quyền admin. Cần đặt role='admin' trong Supabase."; }
+      else show("gate");
+    });
+  }
+
+  // Doc danh sach profiles (RLS cho admin doc tat ca)
+  function taiDanhSach(){
+    $("rows").innerHTML='<tr><td colspan="8" class="empty">Đang tải…</td></tr>';
+    var url=cfg.url+"/rest/v1/profiles?select=email,full_name,contact,note,plan,role,source,created_at&order=created_at.desc";
+    fetch(url,{headers:{apikey:cfg.anonKey,Authorization:"Bearer "+token()}})
+      .then(function(r){return r.json().then(function(j){return{ok:r.ok,status:r.status,j:j}})})
+      .then(function(res){
+        if(!res.ok){throw new Error((res.j&&res.j.message)||("HTTP "+res.status))}
+        ALL=Array.isArray(res.j)?res.j:[];
+        render();
+        $("dataSt").className="st small ok";
+        $("dataSt").textContent="Đọc trực tiếp từ Supabase (bảng profiles) lúc "+new Date().toLocaleTimeString("vi-VN");
+      })
+      .catch(function(e){
+        $("rows").innerHTML='<tr><td colspan="8" class="empty err">Lỗi tải: '+esc(e.message)+'</td></tr>';
+      });
+  }
+
+  function render(){
+    var q=($("search").value||"").trim().toLowerCase();
+    var list=ALL.filter(function(r){
+      if(!q)return true;
+      return [r.email,r.full_name,r.contact,r.note].some(function(v){return String(v||"").toLowerCase().indexOf(q)>=0});
+    });
+    $("count").textContent=list.length+(q?(" / "+ALL.length):"")+" học viên";
+    if(!list.length){ $("rows").innerHTML='<tr><td colspan="8" class="empty">Chưa có học viên nào'+(q?" khớp tìm kiếm":"")+'.</td></tr>'; return; }
+    $("rows").innerHTML=list.map(function(r,i){
+      var plan=r.role==="admin"?'<span class="tag admin">ADMIN</span>':(r.plan==="premium"?'<span class="tag premium">PREMIUM</span>':'<span class="tag free">FREE</span>');
+      return '<tr><td class="muted">'+(i+1)+'</td>'
+        +'<td class="mail">'+esc(r.email)+'</td>'
+        +'<td>'+esc(r.full_name||"")+'</td>'
+        +'<td>'+esc(r.contact||"")+'</td>'
+        +'<td class="small">'+esc(r.note||"")+'</td>'
+        +'<td>'+plan+'</td>'
+        +'<td class="small muted">'+esc(r.source||"")+'</td>'
+        +'<td class="small muted">'+ngay(r.created_at)+'</td></tr>';
+    }).join("");
+  }
+
+  // Su kien
+  $("search").addEventListener("input",render);
+  $("refresh").addEventListener("click",taiDanhSach);
+  $("loginForm").addEventListener("submit",function(e){
+    e.preventDefault();
+    var d=Object.fromEntries(new FormData(e.currentTarget).entries());
+    $("loginSt").className="st"; $("loginSt").textContent="Đang đăng nhập...";
+    window.DUCPTAuth.dangNhap({email:d.email,password:d.password})
+      .then(function(){ $("loginSt").className="st ok"; $("loginSt").textContent="Đăng nhập xong. Kiểm tra quyền..."; kiemTra(); })
+      .catch(function(err){ $("loginSt").className="st err";
+        var m=String(err&&err.message||"");
+        $("loginSt").textContent=/Invalid login|invalid_grant|credential/i.test(m)?"Email hoặc mật khẩu chưa đúng.":/Email not confirmed/i.test(m)?"Tài khoản chưa xác nhận email.":(m||"Đăng nhập thất bại."); });
+  });
+  document.addEventListener("click",function(e){
+    if(e.target.closest("[data-ducpt-logout]")){ e.preventDefault();
+      window.DUCPTAuth.dangXuat().then(function(){ $("logoutBtn").style.display="none"; $("who").textContent=""; show("gate"); }); }
+  });
+
+  kiemTra();
+})();
+</script>
+</body></html>
