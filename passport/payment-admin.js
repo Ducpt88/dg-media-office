@@ -2,6 +2,8 @@
   const key = "ducpt_orders_v1";
   const leadKey = "ducpt-email-leads-v1";
   const signupInboxKey = "ducpt_course_signup_inbox_v1";
+  const signupSheetApiKey = "ducpt-signup-sheet-api";
+  const signupSheetAdminKey = "ducpt-signup-sheet-admin-key";
   const studentProfileKey = "ducpt-student-profile-v1";
   const registerKey = "ducpt_registrations_v1";
   const apiUrl = path => String(window.DUCPT_API_BASE || "").replace(/\/+$/, "") + path;
@@ -41,12 +43,71 @@
     #customerRows .access-select:focus{outline:0;border-bottom-color:var(--blue)}
     #customerRows .row,#customerRowsHead{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
     .customer-actions button{padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;cursor:pointer}.customer-actions .delete{color:#b42318}
+    .sheet-bridge-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.sheet-bridge-row label{display:grid;gap:6px;font-size:12px;font-weight:800;color:var(--muted)}.sheet-bridge-row .searchbox{width:100%}.sheet-bridge-status{font-size:12px;color:var(--muted);margin-top:10px}
     .signup-inbox-alert{position:fixed;right:18px;bottom:18px;z-index:80;display:none;align-items:center;gap:10px;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.18);cursor:pointer;text-align:left}
     .signup-inbox-alert.show{display:flex}.signup-inbox-alert b{display:block;font-size:13px}.signup-inbox-alert em{font-style:normal;color:#2563eb}.signup-inbox-alert span{display:block;color:var(--muted);font-size:11px}.signup-inbox-alert i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#eff6ff;color:#2563eb;font-style:normal;font-weight:900;flex:none}
     .signup-inbox-panel{margin:14px 0}.signup-inbox-panel .head{margin-bottom:10px}.signup-inbox-list{display:grid;gap:8px}.signup-inbox-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}.signup-inbox-item b{display:block;font-size:13px}.signup-inbox-item span{display:block;margin-top:2px;color:var(--muted);font-size:11px}.signup-inbox-item button{padding:7px 10px;border:1px solid #dbeafe;border-radius:9px;background:#eff6ff;color:#1d4ed8;font-weight:800;cursor:pointer}.signup-inbox-note{margin-top:9px;color:#92400e;font-size:11px}
     @media(max-width:900px){#paymentForm .grid2{grid-template-columns:1fr}#paymentForm label{grid-template-columns:135px minmax(0,1fr)}}
   `;
   document.head.appendChild(style);
+  const sheetApiUrl = () => {
+    try { return String(window.DUCPT_SIGNUP_SHEET_API || localStorage.getItem(signupSheetApiKey) || "").trim(); }
+    catch { return String(window.DUCPT_SIGNUP_SHEET_API || "").trim(); }
+  };
+  const sheetAdminKey = () => {
+    try { return String(localStorage.getItem(signupSheetAdminKey) || "").trim(); }
+    catch { return ""; }
+  };
+  const sheetUrl = (params = {}) => {
+    const base = sheetApiUrl();
+    if (!base) return "";
+    const url = new URL(base, location.href);
+    Object.entries(params).forEach(([name, value]) => {
+      if (value !== undefined && value !== null && value !== "") url.searchParams.set(name, value);
+    });
+    const key = sheetAdminKey();
+    if (key) url.searchParams.set("key", key);
+    return url.toString();
+  };
+  const postSheet = async payload => {
+    const url = sheetApiUrl();
+    if (!url) throw new Error("SHEET_API_MISSING");
+    const body = { ...payload };
+    const key = sheetAdminKey();
+    if (key) body.adminKey = key;
+    const response = await fetch(url, { method:"POST", cache:"no-store", body:JSON.stringify(body) });
+    const data = await response.json().catch(() => ({}));
+    if (!data.ok) throw new Error(data.error || `Sheet HTTP ${response.status}`);
+    return data;
+  };
+  const renderSheetBridgeSettings = () => {
+    const view = document.getElementById("settings");
+    if (!view || document.getElementById("signupSheetBridgeCard")) return;
+    const card = document.createElement("article");
+    card.className = "card";
+    card.id = "signupSheetBridgeCard";
+    card.style.marginBottom = "14px";
+    card.innerHTML = `<div class="head"><div><h2>Danh sách học viên Google Sheet</h2><p>Trang khóa học gửi đăng ký vào Apps Script; Passport đọc lại ngay trong bảng Khách hàng.</p></div></div><div class="sheet-bridge-row"><label>Apps Script Web App URL<input class="searchbox" id="signupSheetApiUrl" placeholder="https://script.google.com/macros/s/.../exec"></label><label>Admin key nếu có<input class="searchbox" id="signupSheetAdminKey" type="password" placeholder="Để trống nếu Apps Script không đặt key"></label><button class="btn primary" id="signupSheetSave" type="button">Lưu & nạp</button></div><div class="sheet-bridge-status" id="signupSheetStatus"></div>`;
+    const fx = document.getElementById("fxCard");
+    if (fx) fx.insertAdjacentElement("afterend", card);
+    else view.insertAdjacentElement("afterbegin", card);
+    const urlInput = card.querySelector("#signupSheetApiUrl");
+    const keyInput = card.querySelector("#signupSheetAdminKey");
+    const status = card.querySelector("#signupSheetStatus");
+    urlInput.value = sheetApiUrl();
+    keyInput.value = sheetAdminKey();
+    card.querySelector("#signupSheetSave")?.addEventListener("click", async () => {
+      try {
+        localStorage.setItem(signupSheetApiKey, String(urlInput.value || "").trim());
+        localStorage.setItem(signupSheetAdminKey, String(keyInput.value || "").trim());
+        if (status) status.textContent = "Đã lưu. Đang nạp danh sách từ Google Sheet...";
+        await loadRemoteSignups({ silent:true });
+        if (status) status.textContent = `Đã nạp ${remoteSignups.length} dòng từ nguồn trung tâm.`;
+      } catch (error) {
+        if (status) status.textContent = "Chưa nạp được Sheet: " + (error.message || "không rõ lỗi");
+      }
+    });
+  };
   const amountInput = document.querySelector('#paymentForm [name="amount"]');
   if (amountInput) {
     const label = amountInput.closest("label");
@@ -171,7 +232,7 @@
     const courseId = courseIdFrom(item);
     return {
       ...item,
-      orderId:item.orderId || item.id || "",
+      orderId:item.orderId || item.id || item.claimId || "",
       name:item.name || item.full_name || "",
       product:item.product || item.course || item.signup_product || defaultCourseTitle,
       course:item.course || item.product || item.signup_product || defaultCourseTitle,
@@ -238,20 +299,53 @@
   };
   const loadRemoteSignups = async (options = {}) => {
     const statusNode = document.getElementById("paymentStatus");
+    const combined = [];
+    const errors = [];
+    let sheetCount = 0;
+    let apiCount = 0;
+    let sheetLoaded = false;
+    let apiLoaded = false;
+    const pushRows = rows => {
+      rows.map(normalizeSignupRow).forEach(item => {
+        const key = leadKeyOf(item);
+        if (!key || combined.some(row => leadKeyOf(row) === key)) return;
+        combined.push(item);
+      });
+    };
+    const listUrl = sheetUrl({ action:"list", ts:Date.now() });
+    if (listUrl) {
+      try {
+        const response = await fetch(listUrl, { cache:"no-store" });
+        const body = await response.json().catch(() => ({}));
+        if (!response.ok || !body.ok || !Array.isArray(body.data)) throw new Error(body.error || `Sheet HTTP ${response.status}`);
+        sheetLoaded = true;
+        sheetCount = body.data.length;
+        pushRows(body.data.map(item => ({ ...item, source:item.source || "google-sheet-signup" })));
+      } catch (error) {
+        errors.push("Sheet: " + (error.message || "không nạp được"));
+      }
+    }
     try {
       const response = await fetch(apiUrl("/api/passport/course-signups"), { cache:"no-store" });
       const body = await response.json().catch(() => ({}));
       if (!response.ok || !body.ok || !Array.isArray(body.data)) throw new Error(body.error || `HTTP ${response.status}`);
-      remoteSignups = body.data.map(normalizeSignupRow);
+      apiLoaded = true;
+      apiCount = body.data.length;
+      pushRows(body.data);
+    } catch (error) {
+      errors.push("API: " + (error.message || "không nạp được"));
+    }
+    if (sheetLoaded || apiLoaded) {
+      remoteSignups = combined;
       remoteSignupError = "";
       collectCourseCatalog();
       render();
       showSignupInboxAlert(readAllLeads().filter(item => item.source !== "passport-payment-admin").length);
-      if (!options.silent && statusNode) statusNode.textContent = `Đã nạp ${remoteSignups.length} học viên đăng ký từ Passport.`;
-    } catch (error) {
-      remoteSignupError = error.message || "Không gọi được API";
+      if (!options.silent && statusNode) statusNode.textContent = `Đã nạp ${remoteSignups.length} học viên (${sheetCount} Sheet, ${apiCount} API).`;
+    } else {
+      remoteSignupError = errors.join(" | ") || "Không gọi được nguồn đăng ký";
       render();
-      if (!options.silent && statusNode) statusNode.textContent = "API Passport chưa nạp được. Bảng vẫn hiển thị dữ liệu đang có trong Passport.";
+      if (!options.silent && statusNode) statusNode.textContent = "Chưa nạp được Sheet/API. Bảng vẫn hiển thị dữ liệu đang có trong Passport.";
     }
   };
   const syncCourseEntitlement = async record => {
@@ -280,15 +374,26 @@
       orderId:record.orderId || "",
       paidAt:record.updatedAt || record.createdAt || new Date().toISOString()
     };
-    const response = await fetch(apiUrl("/api/passport/course-signups"), {
-      method:"POST",
-      cache:"no-store",
-      headers:{ "Content-Type":"application/json" },
-      body:JSON.stringify(payload)
-    });
-    const body = await response.json().catch(() => ({}));
-    if (!response.ok || !body.ok) throw new Error(body.error || `Course entitlement HTTP ${response.status}`);
-    return body;
+    let sheetSaved = false;
+    let sheetResult = null;
+    if (sheetApiUrl()) {
+      sheetResult = await postSheet({ ...payload, action:"upsertAccess" });
+      sheetSaved = true;
+    }
+    try {
+      const response = await fetch(apiUrl("/api/passport/course-signups"), {
+        method:"POST",
+        cache:"no-store",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify(payload)
+      });
+      const body = await response.json().catch(() => ({}));
+      if (!response.ok || !body.ok) throw new Error(body.error || `Course entitlement HTTP ${response.status}`);
+      return body;
+    } catch (error) {
+      if (sheetSaved) return { ok:true, sheet:sheetResult, apiError:error.message || "" };
+      throw error;
+    }
   };
   const syncFingerprint = item => [
     item.orderId || "",
@@ -406,13 +511,18 @@
     if (statusNode && (!options.silent || failed)) statusNode.textContent = failed ? `Đã mở ${ok} quyền, ${failed} dòng chưa đồng bộ được.` : `Đã đồng bộ ${ok} quyền học.`;
   };
   const render = () => {
-    const paid = records.filter(item => /paid|success/i.test(item.status || ""));
+    const remotePaid = remoteSignups.filter(item => !isFreeSignup(item) && !isSystemLead(item));
+    const mergedRecords = records.concat(remotePaid.filter(remote => {
+      const key = leadKeyOf(remote);
+      return key && !records.some(local => leadKeyOf(local) === key);
+    })).map(item => ({ ...normalizeSignupRow(item), remoteOnly:!records.some(local => local === item || leadKeyOf(local) === leadKeyOf(item)) }));
+    const paid = mergedRecords.filter(item => /paid|success/i.test(item.status || ""));
     const paidKeys = new Set(paid.flatMap(item => [item.email, item.contact].map(x => String(x || "").trim().toLowerCase()).filter(Boolean)));
     const freeLeads = readAllLeads().filter(item => {
       const k = String(item.email || item.contact || item.name || "").trim().toLowerCase();
       return k && !paidKeys.has(k) && !/paid|success|premium/i.test(item.purchaseStatus || item.status || "");
     });
-    const learners = records.filter(item => item.entitlement || /paid|success/i.test(item.status || ""));
+    const learners = mergedRecords.filter(item => item.entitlement || /paid|success/i.test(item.status || ""));
     const activeLearners = learners.filter(item => item.entitlement && (item.accessStatus || "active") === "active");
     const set = (id, value) => { const node = document.getElementById(id); if (node) node.textContent = value; };
     set("paidMetric", paid.length); set("customerMetric", new Set([...learners.map(x => x.contact || x.name), ...freeLeads.map(x => x.email || x.contact || x.name)].filter(Boolean)).size);
@@ -423,7 +533,7 @@
     const totalVnd = (totals.VND || 0) + (totals.USD || 0) * rate;
     const revenueText = fx.baseCurrency === "USD" ? money(totalVnd / rate, "USD") : money(totalVnd, "VND");
     const revenue = document.querySelector('[data-kpi="revenue"]'); if (revenue) revenue.textContent = revenueText;
-    const pendingCount = records.filter(item => !/paid|success/i.test(item.status || "")).length;
+    const pendingCount = mergedRecords.filter(item => !/paid|success/i.test(item.status || "")).length;
     const setAll = (sel, value) => document.querySelectorAll(sel).forEach(node => { node.textContent = value; });
     setAll('[data-cockpit="revenue"]', revenueText);
     setAll('[data-cockpit="paid"]', paid.length);
@@ -636,7 +746,7 @@
     render();
   };
   window.addEventListener("storage", event => {
-    if ([key, leadKey, signupInboxKey, studentProfileKey, registerKey, "ducpt_courses_v2"].includes(event.key)) refreshCustomerRows();
+    if ([key, leadKey, signupInboxKey, signupSheetApiKey, signupSheetAdminKey, studentProfileKey, registerKey, "ducpt_courses_v2"].includes(event.key)) refreshCustomerRows();
   });
   window.addEventListener("focus", refreshCustomerRows);
   window.addEventListener("pageshow", refreshCustomerRows);
@@ -644,6 +754,7 @@
   window.addEventListener("ducpt:settings", render);
   document.getElementById("cockpitRefresh")?.addEventListener("click", () => { loadRemoteSignups(); render(); syncCourseEntitlements(); syncPaidRecordsToDGOffice(); });
   loadCourseCatalog();
+  renderSheetBridgeSettings();
   render();
   setTimeout(() => loadRemoteSignups({silent:true}), 250);
   setTimeout(() => syncCourseEntitlements({silent:true}), 500);
