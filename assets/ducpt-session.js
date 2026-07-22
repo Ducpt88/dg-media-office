@@ -316,6 +316,13 @@
     }
   }
 
+  function removePublicAuthAccountChip() {
+    Array.prototype.forEach.call(document.querySelectorAll("#dabAcct,.dab-acct,.dab-chip"), function (el) {
+      var root = el.closest && el.closest("#dabAcct,.dab-acct");
+      (root || el).remove();
+    });
+  }
+
   function swapNavLogin(session, menu) {
     var nodes = document.querySelectorAll("header a, header button, nav a, nav button, .top a, .top button");
     var hidden = [];
@@ -324,6 +331,7 @@
     if (stale) stale.remove();
     var staleFloat = document.querySelector(".dgs-float");
     if (staleFloat) staleFloat.remove();
+    removePublicAuthAccountChip();
     removeLegacyCourseAccountChip();
     Array.prototype.forEach.call(nodes, function (el) {
       var txt = (el.textContent || "").replace(/\s+/g, " ").trim();

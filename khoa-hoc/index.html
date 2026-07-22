@@ -115,7 +115,7 @@
   <link rel="apple-touch-icon" href="/assets/hvd-monogram.svg">
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
-  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-signup-rail-3"></script>
+  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-single-account-2"></script>
   <style>
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
     body{background:var(--bg)}
@@ -857,10 +857,15 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
            chip goc phai tren nav; loi moi Nang cap Premium chuyen xuong canh bai PREMIUM (dung luc can). */
         const box=document.getElementById("acctChip");if(box)box.innerHTML="";
         const rawAdminSession=(()=>{try{return !!localStorage.getItem("ducpt-admin-session")}catch(e){return false}})();
+        const hasCustomerSession=!!(window.DUCPTAuth&&typeof window.DUCPTAuth.coPhien==="function"&&window.DUCPTAuth.coPhien());
         const r=getRole();
         const nav=document.querySelector("header .nav");if(!nav)return;
         const old=document.getElementById("navAcct");if(old)old.remove();
-        if(rawAdminSession)return;
+        if(rawAdminSession){
+          const dab=document.getElementById("dabAcct");if(dab)dab.remove();
+          return;
+        }
+        if(hasCustomerSession)return;
         if(r==="guest")return;
         /* Co phien quan tri thi ducpt-session.js da dung chip rieng — khong ve chip thu hai. */
         try{if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get())return}catch(e){}
@@ -1088,5 +1093,5 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       function cleanId(value){const match=String(value||"").match(/[A-Za-z0-9_-]{11}/);return match?match[0]:""}
     })();
   </script>
-<script src="/assets/ducpt-session.js?v=20260722-single-account-1" defer></script></body>
+<script src="/assets/ducpt-session.js?v=20260722-single-account-2" defer></script></body>
 </html>

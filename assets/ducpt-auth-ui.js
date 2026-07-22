@@ -224,6 +224,9 @@
   function timNav() {
     return document.querySelector("header nav .nav-inner") || document.querySelector("header nav") || document.querySelector("header");
   }
+  function coPhienQuanTri() {
+    try { return !!localStorage.getItem("ducpt-admin-session"); } catch (e) { return false; }
+  }
   /* An chip cu cua rieng trang khoa-hoc (id navAcct / class na-chip) bang CSS !important,
      vi trang khoa-hoc tu ve lai chip do moi khi doi quyen — inline style.display se bi no ghi de,
      chi co rule !important trong stylesheet moi thang duoc. Toggle theo trang thai dang nhap. */
@@ -243,6 +246,10 @@
     var nav = timNav(); if (!nav) return;
     var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
     var cu = document.getElementById("dabAcct"); if (cu) cu.remove();
+    if (coPhienQuanTri()) {
+      anChipCuKhoaHoc(true);
+      return;
+    }
 
     if (!q || !q.daDangNhap) {
       loginBtns.forEach(function (b) { b.style.display = ""; });
