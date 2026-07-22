@@ -115,7 +115,7 @@
   <link rel="apple-touch-icon" href="/assets/hvd-monogram.svg">
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
-  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260722-khoa-dangky-2"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-one-chip-3"></script>
+  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script>
   <style>
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
     body{background:var(--bg)}
@@ -809,6 +809,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const role=accessRecord.role==="premium"?"premium":"free";
           const remoteSaved=await saveLeadRemote(freeRecord);
           if(remoteSaved&&remoteSaved.duplicate){if(st){st.style.color="#b42318";st.textContent="Email nay da dang ky. Vui long dang nhap lai de vao khu hoc vien."}showLoginMode();return}
+          if(!remoteSaved){if(st){st.style.color="#b42318";st.textContent="Chua luu duoc dang ky vao Passport. Vui long thu lai sau."}return}
           try{localStorage.setItem(MAIL_KEY,freeRecord.email)}catch(e){}
           saveStudentProfile(accessRecord);
           rememberEmailLead({...accessRecord,role,funnelStage:role==="premium"?"paid_student":"free_not_paid",purchaseStatus:role==="premium"?"paid":"not_paid"});
@@ -822,17 +823,6 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         }
         fillSignupForm(studentProfile());
         if(sf)sf.addEventListener("submit",async event=>{event.preventDefault();const fd=Object.fromEntries(new FormData(sf).entries());
-          /* Nối vào hệ tài khoản chung Supabase để email đăng ký VỀ ĐÚNG trang quản trị.
-             Mở hộp đăng ký Supabase (đã hoạt động) và điền sẵn thông tin học viên vừa gõ. */
-          if(window.DUCPTAuth&&window.DUCPTAuth.sanSang&&window.DUCPTAuth.sanSang()&&window.DUCPTAuthUI&&window.DUCPTAuthUI.moModal){
-            const st=document.getElementById("signupStatus");
-            if(st){st.style.color="#475569";st.textContent="Dang kiem tra email dang ky..."}
-            const remoteSaved=await saveLeadRemote(signupPayload(fd,"course-student-form"));
-            if(remoteSaved&&remoteSaved.duplicate){if(st){st.style.color="#b42318";st.textContent="Email nay da dang ky. Vui long dang nhap lai de vao khu hoc vien."}showLoginMode();return}
-            window.DUCPTAuthUI.moModal("signup");
-            setTimeout(()=>{try{const df=document.getElementById("dabForm");if(df){if(df.name)df.name.value=fd.name||"";if(df.email)df.email.value=fd.email||"";if(df.contact)df.contact.value=fd.contact||"";if(df.note)df.note.value=fd.note||"";if(df.password&&fd.password)df.password.value=fd.password;try{(df.password&&!df.password.value?df.password:df.email).focus()}catch(e){}}}catch(e){}},90);
-            return;
-          }
           activateFreeAccount(signupPayload(fd,"course-student-form"),document.getElementById("signupStatus"))});
       }
       function playableSource(lesson){const url=directVideoUrl(lesson);if(url)return{type:"video",url,label:"Video khóa học"};const youtubeId=youtubeIdFromLesson(lesson);if(youtubeId)return{type:"youtube",id:youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,label:"Video bài học"};return null}
@@ -859,7 +849,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
       const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1", STUDENT_PROFILE_KEY="ducpt-student-profile-v1";
       function storedStudentRole(){try{const prof=studentProfile();if(prof&&prof.role==="premium")return"premium";const r=localStorage.getItem(ROLE_KEY);return r==="premium"||localStorage.getItem("ducpt-premium-code-ok")==="1"?"premium":"free"}catch(e){return"free"}}
-      function getRole(){try{if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get()){const mode=window.DUCPTAdminSession.getViewMode?window.DUCPTAdminSession.getViewMode():"admin";return mode==="student"?storedStudentRole():"admin"}const r=localStorage.getItem(ROLE_KEY);const base=["free","premium","admin"].includes(r)?r:"guest";/* Mã Premium mở khóa bền vững trên máy này, kể cả khi chưa đăng nhập Supabase (cầu nối auth có thể ép về guest). */if(base!=="admin"&&localStorage.getItem("ducpt-premium-code-ok")==="1")return "premium";return base}catch(e){return "guest"}}
+      function getRole(){try{if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get()){const mode=window.DUCPTAdminSession.getViewMode?window.DUCPTAdminSession.getViewMode():"admin";return mode==="student"?storedStudentRole():"admin"}const r=localStorage.getItem(ROLE_KEY);const base=["free","premium","admin"].includes(r)?r:"guest";/* Mã Premium mở khóa bền vững trên máy này, kể cả khi chưa đăng nhập Passport (cầu nối auth có thể ép về guest). */if(base!=="admin"&&localStorage.getItem("ducpt-premium-code-ok")==="1")return "premium";return base}catch(e){return "guest"}}
       function hasLinkedSession(){try{return !!(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get())}catch(e){return false}}
       function switchLinkedSessionToStudent(){try{const api=window.DUCPTAdminSession;if(api&&api.get&&api.get()&&typeof api.setViewMode==="function")api.setViewMode("student")}catch(e){}}
       function getEmail(){try{return localStorage.getItem(MAIL_KEY)||""}catch(e){return ""}}
@@ -1118,9 +1108,9 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           if(pbtn)pbtn.addEventListener("click",doCode);
           if(pinp)pinp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();doCode()}});
           return}
-        /* Premium/Admin xem bài premium: nguồn video chỉ trả về khi đã đấu Supabase */
-        if(lesson.access==="premium"&&!playableSource(lesson)){head();els.currentDesc.textContent="Bạn có quyền xem bài này. Nguồn video sẽ được trả về sau khi kết nối đăng nhập Supabase.";
-          els.playerFrame.innerHTML=`<div class="gate note"><div class="ic">🛠</div><b>Đã mở quyền — chờ đấu nối nguồn video</b><p>Mã video của bài PREMIUM được cố tình gỡ khỏi dữ liệu công khai. Sau khi bật Supabase, hệ thống sẽ trả mã riêng cho người có quyền.</p></div>`;return}
+        /* Premium/Admin xem bài premium: nguồn video chỉ trả về khi đã đấu Passport */
+        if(lesson.access==="premium"&&!playableSource(lesson)){head();els.currentDesc.textContent="Bạn có quyền xem bài này. Nguồn video sẽ được trả về sau khi kết nối đăng nhập Passport.";
+          els.playerFrame.innerHTML=`<div class="gate note"><div class="ic">🛠</div><b>Đã mở quyền — chờ đấu nối nguồn video</b><p>Mã video của bài PREMIUM được cố tình gỡ khỏi dữ liệu công khai. Sau khi bật Passport, hệ thống sẽ trả mã riêng cho người có quyền.</p></div>`;return}
         const source=playableSource(lesson);if(!source)return;document.querySelectorAll(".lesson-item").forEach(row=>row.classList.toggle("active",row.dataset.id===id));els.currentTitle.textContent=lesson.title;els.currentDesc.textContent=lessonDescription(lesson);const lp=document.getElementById("currentLearn");if(lp)lp.innerHTML=(Array.isArray(lesson.learnPoints)?lesson.learnPoints:[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("");els.metricDuration.textContent=lessonDuration(lesson);const srcMetric=sourceMetric();if(srcMetric)srcMetric.textContent=source.label;const port=isPortraitLesson(lesson);els.playerFrame.classList.toggle("is-portrait",port);if(pnl)pnl.classList.toggle("pf-side",port);if(source.type==="youtube"){mountSecurePlayer(source.id);return}els.playerFrame.innerHTML=`<video controls playsinline preload="metadata" poster="${escapeHtml(thumbFor(lesson))}" src="${escapeHtml(source.url)}" style="width:100%;height:100%;display:block;background:#0b1220"></video>`}
       function youtubeIdFromUrl(value){const text=String(value||"").trim();if(/^[A-Za-z0-9_-]{11}$/.test(text))return text;try{const url=new URL(text,location.href);if(url.hostname.includes("youtu.be"))return cleanId(url.pathname.slice(1));if(url.pathname.startsWith("/shorts/"))return cleanId(url.pathname.split("/")[2]);if(url.pathname.startsWith("/embed/"))return cleanId(url.pathname.split("/")[2]);return cleanId(url.searchParams.get("v"))}catch{return""}}
       function cleanId(value){const match=String(value||"").match(/[A-Za-z0-9_-]{11}/);return match?match[0]:""}

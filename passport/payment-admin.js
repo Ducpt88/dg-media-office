@@ -102,32 +102,6 @@
     readJsonList(registerKey).forEach(item => rows.push({ ...item, course:item.interest || item.course || defaultCourseTitle, source:item.source || "register-page", status:item.status || "free", purchaseStatus:item.purchaseStatus || "not_paid" }));
     return rows;
   };
-  const readSupabaseProfiles = () => {
-    try {
-      const rows = Array.isArray(window.SUPABASE_PROFILES) ? window.SUPABASE_PROFILES : [];
-      return rows.map(item => ({
-        id:item.id || "",
-        email:String(item.email || "").trim().toLowerCase(),
-        name:item.full_name || item.name || "",
-        contact:item.contact || "",
-        note:item.note || "",
-        course:item.signup_product || item.product || defaultCourseTitle,
-        product:item.signup_product || item.product || defaultCourseTitle,
-        courseId:item.signup_product_key || item.product_key || item.courseId || defaultCourseId,
-        courseIds:[item.signup_product_key || item.product_key || item.courseId || defaultCourseId].filter(Boolean),
-        role:item.plan === "premium" || item.role === "admin" ? "premium" : "free",
-        accessPackage:item.plan === "premium" || item.role === "admin" ? "premium" : "free",
-        accessStatus:"active",
-        entitlement:item.plan === "premium" || item.role === "admin",
-        purchaseStatus:item.plan === "premium" || item.role === "admin" ? "paid" : "not_paid",
-        status:item.plan === "premium" || item.role === "admin" ? "paid" : "free",
-        source:item.source || "supabase-profiles",
-        createdAt:item.created_at || ""
-      })).filter(item => item.email);
-    } catch {
-      return [];
-    }
-  };
   const addCourseOption = item => {
     const title = String(item?.title || item?.name || item?.course || item?.product || "").trim();
     const id = normalizeCourseId(item?.id || item?.courseId || item?.slug || title || defaultCourseId) || defaultCourseId;
@@ -209,7 +183,7 @@
   };
   const readAllLeads = () => {
     const seen = new Set();
-    return readLeads().concat(readSignupInbox()).concat(readSupabaseProfiles().filter(isFreeSignup)).concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
+    return readLeads().concat(readSignupInbox()).concat(remoteSignups.filter(isFreeSignup)).map(normalizeSignupRow).filter(item => {
       const key = leadKeyOf(item);
       if (!identityOf(item) || seen.has(key) || isSystemLead(item)) return false;
       seen.add(key);
@@ -237,25 +211,6 @@
         const key = esc(identityOf(item));
         return `<div class="signup-inbox-item"><div><b>${esc(item.name || "Lead Free")}</b><span>${esc(item.email || item.contact || "Chưa có email")} · ${esc(item.course || item.product || defaultCourseTitle)} · ${esc(item.source || "course-signup")}</span></div><button type="button" data-fill-lead="${key}">Điền form</button></div>`;
       }).join("")}</div><div class="signup-inbox-note">Live API hiện chưa nối server chung, nên hộp này đọc các đăng ký đã lưu trên trình duyệt/domain hiện tại.</div>`;
-  };
-  const renderLearningSignupPanel = leads => {
-    const view = document.getElementById("learning");
-    if (!view) return;
-    let panel = document.getElementById("learningSignupPanel");
-    if (!panel) {
-      panel = document.createElement("article");
-      panel.id = "learningSignupPanel";
-      panel.className = "card signup-inbox-panel";
-      const firstCard = view.querySelector(".card");
-      if (firstCard) firstCard.insertAdjacentElement("beforebegin", panel);
-      else view.prepend(panel);
-    }
-    const warning = remoteSignupError ? `<div class="signup-inbox-note" style="color:#b42318">Chưa nạp được đăng ký từ server Passport: ${esc(remoteSignupError)}. Bản live cần deploy/restart API để học viên mới hiện tự động.</div>` : "";
-    const rows = leads.slice(0, 10).map(item => {
-      const key = esc(identityOf(item));
-      return `<div class="signup-inbox-item"><div><b>${esc(item.name || "Lead Free")}</b><span>${esc(item.email || item.contact || "Chưa có email")} · ${esc(item.course || item.product || defaultCourseTitle)} · ${esc(item.source || "course-signup")}</span></div><button type="button" data-fill-lead="${key}">Nâng quyền</button></div>`;
-    }).join("");
-    panel.innerHTML = `<div class="head"><div><h2>Học viên đăng ký mới</h2><p>Danh sách email học viên Free từ website để nâng Premium nhanh.</p></div><span class="badge">${leads.length} lead</span></div>${warning}${rows ? `<div class="signup-inbox-list">${rows}</div>` : `<div class="pc-empty">Chưa nạp được học viên đăng ký mới.</div>`}`;
   };
   const showSignupInboxAlert = count => {
     let node = document.getElementById("signupInboxAlert");
@@ -292,11 +247,11 @@
       collectCourseCatalog();
       render();
       showSignupInboxAlert(readAllLeads().filter(item => item.source !== "passport-payment-admin").length);
-      if (!options.silent && statusNode) statusNode.textContent = `Đã nạp ${remoteSignups.length} học viên đăng ký từ server.`;
+      if (!options.silent && statusNode) statusNode.textContent = `Đã nạp ${remoteSignups.length} học viên đăng ký từ Passport.`;
     } catch (error) {
       remoteSignupError = error.message || "Không gọi được API";
       render();
-      if (!options.silent && statusNode) statusNode.textContent = "Chưa nạp được danh sách đăng ký từ server: " + (error.message || "");
+      if (!options.silent && statusNode) statusNode.textContent = "API Passport chưa nạp được. Bảng vẫn hiển thị dữ liệu đang có trong Passport.";
     }
   };
   const syncCourseEntitlement = async record => {
@@ -486,7 +441,6 @@
     });
     if (rows) rows.innerHTML = paidRows.concat(leadRows).join("") || '<div class="row"><span>Chưa có học viên/lead</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
     renderSignupInboxPanel(freeLeads);
-    renderLearningSignupPanel(freeLeads);
     showSignupInboxAlert(freeLeads.length);
   };
   form?.addEventListener("submit", async event => {
@@ -635,17 +589,6 @@
     }
     if (remove && confirm("Xóa học viên và giao dịch này?")) { records = records.filter(x => x.orderId !== remove.dataset.delete); localStorage.setItem(key, JSON.stringify(records)); if(editingOrderId===remove.dataset.delete) editingOrderId=""; render(); }
   });
-  document.getElementById("learning")?.addEventListener("click", event => {
-    const fillLead = event.target.closest("[data-fill-lead]");
-    if (!fillLead) return;
-    const leadKeyValue = String(fillLead.dataset.fillLead || "").trim().toLowerCase();
-    const lead = readAllLeads().find(x => [x.email, x.contact, x.name].map(v => String(v || "").trim().toLowerCase()).includes(leadKeyValue));
-    const customerBtn = document.querySelector('[data-view="customers"]');
-    if (customerBtn) customerBtn.click();
-    fillPaymentForm({ name:lead?.name || "", contact:lead?.contact || "", email:lead?.email || "", product:lead?.course || defaultCourseTitle, courseId:normalizeCourseId(lead?.courseId || lead?.course || defaultCourseId) || defaultCourseId, amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active" });
-    const statusNode = document.getElementById("paymentStatus");
-    if (statusNode) statusNode.textContent = "Đã điền học viên từ mục Học viên & video. Kiểm tra rồi bấm Lưu để mở Premium.";
-  });
   document.getElementById("customerRows")?.addEventListener("change", async event => {
     const select = event.target.closest("[data-access-package]");
     const leadSelect = event.target.closest("[data-upgrade-lead-select]");
@@ -697,13 +640,12 @@
   });
   window.addEventListener("focus", refreshCustomerRows);
   window.addEventListener("pageshow", refreshCustomerRows);
-  window.addEventListener("ducpt:supabase-profiles", refreshCustomerRows);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshCustomerRows(); });
   window.addEventListener("ducpt:settings", render);
   document.getElementById("cockpitRefresh")?.addEventListener("click", () => { loadRemoteSignups(); render(); syncCourseEntitlements(); syncPaidRecordsToDGOffice(); });
   loadCourseCatalog();
   render();
-  setTimeout(() => loadRemoteSignups({silent:false}), 250);
+  setTimeout(() => loadRemoteSignups({silent:true}), 250);
   setTimeout(() => syncCourseEntitlements({silent:true}), 500);
   setTimeout(() => syncPaidRecordsToDGOffice({silent:true}), 800);
 })();
