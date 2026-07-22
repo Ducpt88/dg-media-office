@@ -19,6 +19,28 @@
 
   var Auth = window.DUCPTAuth;
 
+  function docPhienQuanTri() {
+    try {
+      var raw = localStorage.getItem("ducpt-admin-session");
+      if (!raw) return null;
+      var s = JSON.parse(raw);
+      if (!s || s.role !== "owner" || Number(s.expiresAt) <= Date.now()) return null;
+      return s;
+    } catch (e) { return null; }
+  }
+
+  function anChipPublicNeuCoAdmin() {
+    if (!docPhienQuanTri()) return false;
+    if (!document.getElementById("dgs-hide-public-auth-chip")) {
+      var el = document.createElement("style");
+      el.id = "dgs-hide-public-auth-chip";
+      el.textContent = "#dabAcct,.dab-acct,.dab-chip{display:none!important}";
+      document.head.appendChild(el);
+    }
+    return true;
+  }
+  anChipPublicNeuCoAdmin();
+
   function passportApi(path) {
     var base = String(window.DUCPT_API_BASE || "").replace(/\/+$/, "");
     return base + path;
@@ -285,12 +307,7 @@
     return document.querySelector("header nav .nav-inner") || document.querySelector("header nav") || document.querySelector("header");
   }
   function coPhienQuanTri() {
-    try {
-      var raw = localStorage.getItem("ducpt-admin-session");
-      if (!raw) return false;
-      var s = JSON.parse(raw);
-      return !!(s && s.role === "owner" && Number(s.expiresAt) > Date.now());
-    } catch (e) { return false; }
+    return !!docPhienQuanTri();
   }
   /* An chip cu cua rieng trang khoa-hoc (id navAcct / class na-chip) bang CSS !important,
      vi trang khoa-hoc tu ve lai chip do moi khi doi quyen — inline style.display se bi no ghi de,
@@ -319,6 +336,7 @@
     var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
     var cu = document.getElementById("dabAcct"); if (cu) cu.remove();
     if (coPhienQuanTri()) {
+      anChipPublicNeuCoAdmin();
       loginBtns.forEach(function (b) { b.style.display = "none"; });
       anChipCuKhoaHoc(true);
       return;
