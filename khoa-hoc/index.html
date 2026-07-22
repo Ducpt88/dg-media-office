@@ -115,6 +115,7 @@
   <link rel="apple-touch-icon" href="/assets/hvd-monogram.svg">
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
+  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-2"></script><script src="/assets/ducpt-auth.js?v=20260722-signup-rail-2"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-signup-rail-2"></script>
   <style>
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
     body{background:var(--bg)}
@@ -616,9 +617,35 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
             localStorage.setItem(key,JSON.stringify(list.slice(0,300)));
           }catch(e){}
         }
-        async function saveLeadRemote(record){
-          try{await fetch(apiUrl("/api/passport/course-signups"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)})}catch(e){}
+        /* HỘP THƯ CHỜ ĐĂNG KÝ: máy chủ chưa nhận được (chưa deploy / mất mạng / lỗi tạm)
+           thì phiếu đăng ký xếp hàng trong localStorage và tự gửi lại mỗi lần mở trang.
+           Không có phiếu nào bị mất im lặng như trước. */
+        const SIGNUP_OUTBOX_KEY="ducpt_signup_outbox_v1";
+        function readSignupOutbox(){try{const v=JSON.parse(localStorage.getItem(SIGNUP_OUTBOX_KEY)||"[]");return Array.isArray(v)?v:[]}catch(e){return[]}}
+        function writeSignupOutbox(list){try{localStorage.setItem(SIGNUP_OUTBOX_KEY,JSON.stringify(list.slice(0,50)))}catch(e){}}
+        function queueSignupOutbox(record){
+          const email=String(record&&record.email||"").trim().toLowerCase();if(!email)return;
+          const list=readSignupOutbox().filter(x=>String(x.email||"").trim().toLowerCase()!==email);
+          list.unshift({...record,queuedAt:new Date().toISOString()});
+          writeSignupOutbox(list);
         }
+        async function postSignupRemote(record){
+          const res=await fetch(apiUrl("/api/passport/course-signups"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});
+          const body=await res.json().catch(()=>({}));
+          if(!res.ok||!body.ok)throw new Error((body&&body.error)||("HTTP "+res.status));
+          return body;
+        }
+        async function saveLeadRemote(record){
+          try{await postSignupRemote(record);return true}
+          catch(e){queueSignupOutbox(record);return false}
+        }
+        async function flushSignupOutbox(){
+          const list=readSignupOutbox();if(!list.length)return;
+          const rest=[];
+          for(const item of list){try{await postSignupRemote(item)}catch(e){rest.push(item)}}
+          writeSignupOutbox(rest);
+        }
+        setTimeout(()=>{flushSignupOutbox()},1500);
         function openFirstFreeLesson(){
           setTimeout(()=>{try{
             const dau=state.lessons.find(l=>l.access!=="premium");
