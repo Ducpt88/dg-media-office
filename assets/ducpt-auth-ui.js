@@ -337,7 +337,7 @@
 
   function capNhatNav(q) {
     var nav = timNav(); if (!nav) return;
-    var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"]');
+    var loginBtns = nav.querySelectorAll('.nav-login,[data-open-customer-login],.nav-signup,a.login,a.signup,a[href="/dang-ky/"],a[href="/dang-nhap/"],a[href="#dang-ky-hoc"],a[href$="#dang-ky-hoc"],a[href="#dang-nhap-hoc-vien"],a[href$="#dang-nhap-hoc-vien"]');
     var cu = document.getElementById("dabAcct"); if (cu) cu.remove();
     if (coPhienQuanTri()) {
       anChipPublicNeuCoAdmin();
