@@ -139,11 +139,51 @@
         }
       }
     }).then(function (data) {
+      /* Founder chon (2026-07-23): don MOI dang ky ve chung mot kho Google Sheet
+         de Passport hien du hoc vien + chi so. Ghi them 1 ban ghi Free sang Sheet,
+         khong chan luong dang nhap (loi Sheet khong lam hong dang ky Supabase). */
+      guiSangSheet({
+        email: email,
+        name: String(tt.hoTen || "").trim(),
+        contact: String(tt.lienHe || "").trim(),
+        note: String(tt.ghiChu || "").trim(),
+        course: String(tt.tenSanPham || "").trim(),
+        courseId: String(tt.maSanPham || "").trim(),
+        source: "supabase-" + (String(tt.nguon || "web").trim() || "web")
+      });
       // Neu du an bat "xac nhan email" thi chua co access_token -> bao trang thai cho.
       var p = chuanHoaPhien(data && data.access_token ? data : (data && data.session) || null);
       if (p) { ghiPhien(p); return { daDangNhap: true, canXacNhanEmail: false }; }
       return { daDangNhap: false, canXacNhanEmail: true };
     });
+  }
+
+  /* Guong ban ghi dang ky sang Google Sheet (kho ma Passport doc). Best-effort:
+     endpoint signup luon ep Free nen an toan; loi mang chi nuot am tham. */
+  /* URL Sheet du phong: nhieu trang (trang chu, bai viet, cong cu) nap ducpt-auth.js
+     nhung KHONG nap ducpt-sheet-config.js. De mirror chay o moi trang, dat URL du phong
+     tai day. URL cong khai, khong bi mat. Doi URL -> sua ca ducpt-sheet-config.js. */
+  var SHEET_API_FALLBACK = "https://script.google.com/macros/s/AKfycbwhlfuljWa6cnb5plFqbwzNwQu9LsbxVloXDcDLR7BROGFM6dHs5EfD_qp1c_1UDtZLmQ/exec";
+
+  function guiSangSheet(tt) {
+    try {
+      var url = String(global.DUCPT_SIGNUP_SHEET_API || SHEET_API_FALLBACK || "").trim();
+      if (!url || !tt || !tt.email) return;
+      global.fetch(url, {
+        method: "POST",
+        cache: "no-store",
+        body: JSON.stringify({
+          action: "signup",
+          email: tt.email,
+          name: tt.name || "",
+          contact: tt.contact || "",
+          note: tt.note || "",
+          course: tt.course || "",
+          courseId: tt.courseId || "",
+          source: tt.source || "supabase-web"
+        })
+      }).catch(function () {});
+    } catch (e) {}
   }
 
   /* ---------- Dang nhap ---------- */

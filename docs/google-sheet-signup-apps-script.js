@@ -3,20 +3,37 @@
 
   Setup:
   1. Open Google Sheets > Extensions > Apps Script.
-  2. Paste this file.
-  3. Optional: set ADMIN_KEY to a private phrase. Keep it empty for the fastest setup.
-  4. Deploy > New deployment > Web app.
+  2. Paste this file (replace everything).
+  3. ADMIN_KEY below is REQUIRED. Paste the same key into
+     ducpt.com/passport/ > Cai dat > "Admin key neu co".
+     Empty ADMIN_KEY = the whole student list is public to anyone.
+  4. Deploy > Manage deployments > edit the existing web app > New version > Deploy.
      Execute as: Me
      Who has access: Anyone
   5. Copy the /exec URL into assets/ducpt-sheet-config.js.
 
   The web app accepts public student signups, lists rows for Passport,
   stores Free/Premium access, and locks one Premium code to one email.
+
+  2026-07-23 fixes (do NOT revert):
+  - "not_paid" contained "paid" -> every free signup was stored as premium
+    and every downgrade back to free was ignored. Status match is now exact.
+  - studentSignup_ is a PUBLIC endpoint, so it can never grant premium;
+    role/entitlement coming from the browser are dropped on signup.
+  - list + upsertAccess now really require ADMIN_KEY.
+  - entitlement lookup returns access fields only (no name/phone/note).
+  - phone numbers keep their leading zero (columns forced to plain text).
 */
+
+/* ID cua Google Sheet chua danh sach hoc vien.
+   BAT BUOC giu lai khi dan de code moi — day la du an Apps Script DOC LAP,
+   khong gan vao bang tinh, nen mat dong nay la getActiveSpreadsheet() tra ve null
+   va toan bo cong dang ky chet ("Cannot read properties of null"). */
+var SPREADSHEET_ID = "1krMiiuOqtG_zXy8nXIdbtOG0ULNPOqlD5m9xPgODFt4";
 
 var SIGNUP_SHEET_NAME = "CourseSignups";
 var CLAIM_SHEET_NAME = "PremiumCodeClaims";
-var ADMIN_KEY = "";
+var ADMIN_KEY = "ducpt-sheet-1bfae5ee0cdd5996ffff";
 var PREMIUM_CODE_SECRET = "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
 
 var SIGNUP_HEADERS = [
@@ -54,6 +71,14 @@ function doPost(e) {
       requireAdminKey_(body.adminKey || body.key);
       return json_(upsertAccess_(body));
     }
+    if (action === "deleteSignup") {
+      requireAdminKey_(body.adminKey || body.key);
+      return json_(deleteSignup_(body));
+    }
+    if (action === "releaseCode") {
+      requireAdminKey_(body.adminKey || body.key);
+      return json_(releaseCode_(body));
+    }
     return json_({ ok: false, error: "UNKNOWN_ACTION" });
   } catch (err) {
     return json_({ ok: false, error: err.message || "SERVER_ERROR" });
@@ -61,7 +86,21 @@ function doPost(e) {
 }
 
 function studentSignup_(body) {
-  var record = normalizeSignup_(body);
+  /* Cong dang ky la endpoint CONG KHAI: khong bao gio tin quyen do trinh duyet gui len.
+     Muon len Premium thi phai qua Passport (upsertAccess co ADMIN_KEY) hoac ma Premium. */
+  var safe = {};
+  for (var k in body) safe[k] = body[k];
+  safe.role = "free";
+  safe.accessPackage = "free";
+  safe.accessStatus = "active";
+  safe.entitlement = false;
+  safe.purchaseStatus = "not_paid";
+  safe.status = "free";
+  safe.funnelStage = "free_not_paid";
+  safe.orderId = "";
+  safe.paidAt = "";
+  safe.claimId = "";
+  var record = normalizeSignup_(safe);
   if (!record.email) return { ok: false, error: "EMAIL_REQUIRED" };
   var sheet = sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS);
   var rows = objects_(sheet);
@@ -87,6 +126,39 @@ function upsertAccess_(body) {
     appendObject_(sheet, SIGNUP_HEADERS, record);
   }
   return { ok: true, data: publicSignup_(record) };
+}
+
+function releaseCode_(body) {
+  /* Go 1 ma Premium khoi email da khoa -> ma tro lai trang thai moi, cap lai cho nguoi khac duoc.
+     Truyen "code" (ma goc) hoac "codeHash". Chi admin goi duoc. */
+  var codeHash = "";
+  if (body.code) codeHash = sha256Hex_(String(body.code).trim().toUpperCase()).toLowerCase();
+  else if (body.codeHash) codeHash = String(body.codeHash).toLowerCase();
+  if (!codeHash) return { ok: false, error: "CODE_REQUIRED" };
+  var sheet = sheet_(CLAIM_SHEET_NAME, CLAIM_HEADERS);
+  var rows = objects_(sheet);
+  var removed = 0;
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (String(rows[i].codeHash || "").toLowerCase() === codeHash) { sheet.deleteRow(i + 2); removed++; }
+  }
+  return { ok: true, data: { removed: removed } };
+}
+
+function deleteSignup_(body) {
+  /* Xoa 1 hang dang ky (vi du hang kiem tra). Chi admin goi duoc. */
+  var email = normEmail_(body.email);
+  if (!email) return { ok: false, error: "EMAIL_REQUIRED" };
+  var sheet = sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS);
+  var rows = objects_(sheet);
+  var courseId = body.courseId || body.course ? normalizeCourseId_(body.courseId || body.course) : "";
+  var removed = 0;
+  for (var i = rows.length - 1; i >= 0; i--) {
+    if (normEmail_(rows[i].email) !== email) continue;
+    if (courseId && normalizeCourseId_(rows[i].courseId || rows[i].course || "") !== courseId) continue;
+    sheet.deleteRow(i + 2);
+    removed++;
+  }
+  return { ok: true, data: { email: email, removed: removed } };
 }
 
 function claimPremiumCode_(body) {
@@ -134,14 +206,17 @@ function claimPremiumCode_(body) {
     if (existing) updateObject_(claimSheet, CLAIM_HEADERS, existing.index, claim);
     else appendObject_(claimSheet, CLAIM_HEADERS, claim);
 
+    /* Founder yeu cau (2026-07-23): ai dung MA MOI thi thong tin phai day thang ve
+       trang Tong quan Khach hang, ghi ro dung ma nao. Ghi note co ten ma + tag nguon rieng
+       "premium-invite-code" de Passport loc/hien "Dung ma moi Premium". */
     upsertAccess_({
       email: owner,
-      name: body.name || "",
-      contact: body.contact || "",
-      note: "Premium code claim",
+      name: String(body.name || "").trim(),
+      contact: String(body.contact || "").trim(),
+      note: "Kich hoat bang MA MOI Premium: " + code,
       course: course,
       courseId: courseId,
-      source: "premium-code-claim",
+      source: "premium-invite-code",
       role: "premium",
       accessPackage: "premium",
       accessStatus: "active",
@@ -172,7 +247,23 @@ function getEntitlement_(p) {
   if (!existing) {
     return { ok: true, data: { email: email, courseId: courseId, role: "free", purchaseStatus: "not_paid" } };
   }
-  return { ok: true, data: publicSignup_(existing.row) };
+  /* Chi tra ve quyen hoc. KHONG tra ten/SDT/ghi chu: day la endpoint cong khai,
+     biet email nguoi khac la doc duoc ho so ho. */
+  var row = publicSignup_(existing.row);
+  return {
+    ok: true,
+    data: {
+      email: email,
+      courseId: row.courseId || courseId,
+      courseIds: row.courseIds || "",
+      course: row.course || "",
+      role: row.role === "premium" ? "premium" : "free",
+      accessPackage: row.accessPackage || "free",
+      accessStatus: row.accessStatus || "active",
+      purchaseStatus: row.purchaseStatus || "not_paid",
+      entitlement: !!row.entitlement
+    }
+  };
 }
 
 function listSignups_() {
@@ -185,7 +276,11 @@ function normalizeSignup_(body) {
   var course = String(body.course || body.product || "Doanh nghiệp một người");
   var courseId = normalizeCourseId_(body.courseId || body.course || body.product || "doanh-nghiep-mot-nguoi");
   var paid = bool_(body.entitlement) || String(body.role || "").toLowerCase() === "premium" ||
-    /paid|success|received|complete/i.test(String(body.purchaseStatus || body.status || ""));
+    paidStatus_(body.purchaseStatus) || paidStatus_(body.status);
+  /* Ha quyen phai an TOAN BO: goi "free" hoac trang thai "paused" thi khong con la premium,
+     neu khong hang se ket o trang thai nua voi (role=premium ma goi=free) va hoc vien van xem het bai. */
+  if (String(body.accessPackage || "").toLowerCase() === "free") paid = false;
+  if (String(body.accessStatus || "").toLowerCase() === "paused") paid = false;
   return {
     createdAt: body.createdAt || stamp,
     updatedAt: body.updatedAt || stamp,
@@ -231,7 +326,8 @@ function findSignup_(rows, email, courseId) {
 }
 
 function requireAdminKey_(key) {
-  if (!ADMIN_KEY) return;
+  /* Fail closed. Quen dat ADMIN_KEY thi khoa luon, khong mo toang danh sach khach hang. */
+  if (!ADMIN_KEY) throw new Error("ADMIN_KEY_NOT_CONFIGURED");
   if (String(key || "") !== String(ADMIN_KEY)) throw new Error("ADMIN_KEY_REQUIRED");
 }
 
@@ -241,13 +337,16 @@ function parseBody_(e) {
 }
 
 function sheet_(name, headers) {
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var ss = SPREADSHEET_ID ? SpreadsheetApp.openById(SPREADSHEET_ID) : SpreadsheetApp.getActiveSpreadsheet();
   var sh = ss.getSheetByName(name) || ss.insertSheet(name);
   if (sh.getLastRow() === 0) sh.appendRow(headers);
   var current = sh.getRange(1, 1, 1, Math.max(headers.length, sh.getLastColumn())).getValues()[0];
   for (var i = 0; i < headers.length; i++) {
     if (current[i] !== headers[i]) sh.getRange(1, i + 1).setValue(headers[i]);
   }
+  /* Ep toan bo cot ve dang VAN BAN. Neu khong, Sheets doc "0912345678" thanh so
+     va nuot mat so 0 dau -> Founder goi lai khach hang sai so. */
+  try { sh.getRange(1, 1, sh.getMaxRows(), headers.length).setNumberFormat("@"); } catch (e) {}
   return sh;
 }
 
@@ -264,11 +363,20 @@ function objects_(sh) {
 }
 
 function appendObject_(sh, headers, obj) {
-  sh.appendRow(headers.map(function (h) { return obj[h] == null ? "" : obj[h]; }));
+  /* KHONG dung appendRow: no tu doan kieu va an mat so 0 dau cua SDT ("0912..." -> 912...).
+     Ep dinh dang VAN BAN len dung o dich TRUOC khi ghi, roi moi setValues. */
+  var row = sh.getLastRow() + 1;
+  writeRow_(sh, headers, row, obj);
 }
 
 function updateObject_(sh, headers, rowIndex, obj) {
-  sh.getRange(rowIndex, 1, 1, headers.length).setValues([headers.map(function (h) { return obj[h] == null ? "" : obj[h]; })]);
+  writeRow_(sh, headers, rowIndex, obj);
+}
+
+function writeRow_(sh, headers, row, obj) {
+  var rng = sh.getRange(row, 1, 1, headers.length);
+  rng.setNumberFormat("@");
+  rng.setValues([headers.map(function (h) { return obj[h] == null ? "" : String(obj[h]); })]);
 }
 
 function merge_(a, b) {
@@ -306,6 +414,10 @@ function normEmail_(value) {
 
 function bool_(value) {
   return value === true || String(value || "").toLowerCase() === "true" || String(value || "") === "1";
+}
+
+function paidStatus_(value) {
+  return /^(paid|success|received|complete)$/i.test(String(value || "").trim());
 }
 
 function now_() {

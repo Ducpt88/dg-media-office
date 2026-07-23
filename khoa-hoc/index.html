@@ -116,7 +116,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
   <script>try{window.DUCPT_API_BASE=String(window.DUCPT_API_BASE||localStorage.getItem("ducpt-api-base")||"https://ducpt-passport-api.onrender.com").replace(/\/+$/,"")}catch(e){window.DUCPT_API_BASE="https://ducpt-passport-api.onrender.com"}</script>
-  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260722-khoa-dangky-2"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-one-chip-6"></script><script src="/assets/ducpt-sheet-config.js?v=20260722-sheet-1"></script>
+  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260723-sheet-mirror-1"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-one-chip-6"></script><script src="/assets/ducpt-sheet-config.js?v=20260722-sheet-1"></script>
   <style>
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
     body{background:var(--bg)}
@@ -721,8 +721,12 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           return typed||getEmail()||String(saved&&saved.email||"").trim().toLowerCase();
         }
         async function claimPremiumCode(raw,owner){
+          /* Gui kem ten/SDT (neu hoc vien da co ho so) de trang Tong quan Khach hang
+             hien du thong tin nguoi dung ma moi, khong chi moi email. */
+          const prof=studentProfile()||{};
+          const info=(prof.email&&String(prof.email).toLowerCase()===String(owner).toLowerCase())?{name:prof.name||"",contact:prof.contact||""}:{};
           try{
-            const body=await postSignupSheet({action:"claimPremiumCode",code:raw,owner,courseId:courseAccessKey(),course:state.course.title||"Doanh nghiệp một người"});
+            const body=await postSignupSheet({action:"claimPremiumCode",code:raw,owner,name:info.name||"",contact:info.contact||"",courseId:courseAccessKey(),course:state.course.title||"Doanh nghiệp một người"});
             return body.data||{};
           }catch(e){
             if(e&&e.message!=="SHEET_API_MISSING"){if(e&&e.message==="CODE_ALREADY_USED")e.status=409;if(e&&e.message==="INVALID_PREMIUM_CODE")e.status=400;throw e}
