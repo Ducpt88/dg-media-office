@@ -1680,8 +1680,6 @@
       localStorage.setItem(DRAFT_AT_KEY, now.toISOString());
       const el = document.querySelector("[data-draft-at]");
       if (el) el.textContent = "Đã lưu nháp " + now.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" });
-      /* Tu dong dang len trang khoa hoc (debounce) — Founder khong phai bam "Luu tat ca". */
-      try { autoPushCourseToSheet(); } catch (e) {}
     } catch (e) {}
   }
 
@@ -1895,47 +1893,28 @@
     }
   }
 
-  /* ---- Tu dong dang video len trang khoa hoc qua Google Sheet (khong can token GitHub) ----
-     Founder them/sua video -> day thang len Sheet -> trang /khoa-hoc/ doc Sheet la thay ngay. */
-  let sheetPushTimer = null;
-  async function pushCourseToSheet() {
-    const url = String(window.DUCPT_SIGNUP_SHEET_API || localStorage.getItem("ducpt-signup-sheet-api") || "").trim();
-    const key = String(localStorage.getItem("ducpt-signup-sheet-admin-key") || "").trim();
-    if (!url) return { skipped: true, reason: "no_url" };
-    if (!key) return { skipped: true, reason: "no_key" };
-    const courseId = (data.course && (data.course.courseId || data.course.id || data.course.slug)) || "doanh-nghiep-mot-nguoi";
-    const res = await fetch(url, { method: "POST", cache: "no-store", body: JSON.stringify({ action: "saveCourseVideos", adminKey: key, courseId, data: { course: data.course, lessons: data.lessons } }) });
-    const body = await res.json().catch(() => ({}));
-    if (!body.ok) throw new Error(body.error || ("Sheet HTTP " + res.status));
-    return body;
-  }
-  function autoPushCourseToSheet() {
-    clearTimeout(sheetPushTimer);
-    sheetPushTimer = setTimeout(() => {
-      pushCourseToSheet().then((r) => {
-        if (r && !r.skipped) { const el = document.querySelector("[data-draft-at]"); if (el) el.textContent = "Đã đăng lên trang khóa học ✓"; }
-      }).catch(() => {});
-    }, 2500);
-  }
-
   async function saveAll() {
     const view = document.getElementById("courseAdmin");
     collectCourse(view);
     collectLessonForm(view);
     data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
     try { localStorage.setItem("ducpt_course_videos_draft_v1", JSON.stringify(data)); } catch {}
-    /* 1) Dang len trang khoa hoc qua Sheet — day la duong CHINH, tu dong, khong can token. */
-    let sheetOk = false, sheetReason = "";
-    try { const r = await pushCourseToSheet(); if (r && r.skipped) sheetReason = r.reason; else sheetOk = true; }
-    catch (e) { sheetReason = (e && e.message) || "error"; }
-    /* 2) GitHub chi la ban sao luu (neu Founder da dien token) — khong bat buoc. */
-    let ghOk = false;
-    try { if (githubConfig().token) { await saveToGitHub(); ghOk = true; } } catch (e) {}
-    draw();
-    if (sheetOk) flash("Đã đăng lên trang khóa học ✓" + (ghOk ? " (đã đồng bộ GitHub)" : ""));
-    else if (ghOk) flash("Đã commit GitHub. Website cập nhật sau khi Pages deploy.");
-    else if (sheetReason === "no_key") flash("Đã lưu nháp. Dán admin key ở Cài đặt (1 lần) là video tự lên trang khóa học.");
-    else flash("Đã lưu nháp trên máy này.");
+    try {
+      const res = await fetch("/api/passport/course-videos/save", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
+      const payload = await res.json();
+      if (!payload.ok) throw new Error(payload.error || "Không lưu được");
+      data = payload.data;
+      draw();
+      flash("Đã lưu lên server");
+    } catch (error) {
+      try {
+        await saveToGitHub();
+        draw();
+        flash("Đã commit lên GitHub. Website sẽ cập nhật sau khi Pages deploy.");
+      } catch (githubError) {
+        flash("Đã lưu nháp trên máy này · Để đăng lên website thật: mở mục Cài đặt lưu trữ bên dưới, điền token 1 lần");
+      }
+    }
   }
 
   function githubConfig() {

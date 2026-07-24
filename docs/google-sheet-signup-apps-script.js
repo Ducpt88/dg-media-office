@@ -40,10 +40,7 @@ var SIGNUP_HEADERS = [
   "createdAt", "updatedAt", "email", "name", "contact", "note",
   "course", "courseId", "courseIds", "source", "role", "accessPackage",
   "accessStatus", "funnelStage", "purchaseStatus", "status",
-  "entitlement", "orderId", "paidAt", "claimId", "lastSeenAt",
-  /* Khoa thiet bi chong chia se tai khoan (Founder 2026-07-23): 1 tai khoan Premium = 1 may.
-     deviceId = ma may da gan; deviceLock = on/off; deviceBoundAt = luc gan. */
-  "deviceId", "deviceLock", "deviceBoundAt"
+  "entitlement", "orderId", "paidAt", "claimId", "lastSeenAt"
 ];
 
 var CLAIM_HEADERS = [
@@ -51,18 +48,11 @@ var CLAIM_HEADERS = [
   "courseId", "claimId", "status"
 ];
 
-/* Noi dung khoa hoc (video/bai hoc) luu ngay tren Sheet -> them video la tu len trang khoa hoc,
-   KHONG can token GitHub, khong can nhac "Luu tat ca". Moi khoa 1 hang, JSON {course,lessons} trong 1 o. */
-var COURSE_SHEET_NAME = "CourseData";
-var COURSE_HEADERS = ["courseKey", "json", "updatedAt"];
-
 function doGet(e) {
   try {
     var p = (e && e.parameter) || {};
     var action = String(p.action || "list");
     if (action === "entitlement") return json_(getEntitlement_(p));
-    /* Noi dung khoa hoc la CONG KHAI (trang khoa hoc ai cung xem) -> khong doi admin key. */
-    if (action === "courseVideos") return json_(getCourseVideos_(p));
     requireAdminKey_(p.key || p.adminKey);
     if (action === "list") return json_({ ok: true, data: listSignups_() });
     return json_({ ok: false, error: "UNKNOWN_ACTION" });
@@ -88,22 +78,6 @@ function doPost(e) {
     if (action === "releaseCode") {
       requireAdminKey_(body.adminKey || body.key);
       return json_(releaseCode_(body));
-    }
-    if (action === "resetDevice") {
-      requireAdminKey_(body.adminKey || body.key);
-      return json_(resetDevice_(body));
-    }
-    if (action === "setDeviceLock") {
-      requireAdminKey_(body.adminKey || body.key);
-      return json_(setDeviceLock_(body));
-    }
-    if (action === "updateStudent") {
-      requireAdminKey_(body.adminKey || body.key);
-      return json_(updateStudent_(body));
-    }
-    if (action === "saveCourseVideos") {
-      requireAdminKey_(body.adminKey || body.key);
-      return json_(saveCourseVideos_(body));
     }
     return json_({ ok: false, error: "UNKNOWN_ACTION" });
   } catch (err) {
@@ -168,74 +142,6 @@ function releaseCode_(body) {
     if (String(rows[i].codeHash || "").toLowerCase() === codeHash) { sheet.deleteRow(i + 2); removed++; }
   }
   return { ok: true, data: { removed: removed } };
-}
-
-function findStudentRows_(sheet, body) {
-  /* Tra ve danh sach {row,index} khop email (+ course neu co). Dung chung cho reset/lock/update. */
-  var email = normEmail_(body.email);
-  if (!email) return { error: "EMAIL_REQUIRED" };
-  var rows = objects_(sheet);
-  var courseId = (body.courseId || body.course) ? normalizeCourseId_(body.courseId || body.course) : "";
-  var hits = [];
-  for (var i = 0; i < rows.length; i++) {
-    if (normEmail_(rows[i].email) !== email) continue;
-    if (courseId && normalizeCourseId_(rows[i].courseId || rows[i].course || "") !== courseId) continue;
-    hits.push({ row: rows[i], index: i + 2 });
-  }
-  return { email: email, hits: hits };
-}
-
-function resetDevice_(body) {
-  /* Go may da gan -> hoc vien dang nhap may moi la gan lai tu dau. Chi admin. */
-  var sheet = sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS);
-  var f = findStudentRows_(sheet, body);
-  if (f.error) return { ok: false, error: f.error };
-  var n = 0;
-  f.hits.forEach(function (h) {
-    h.row.deviceId = "";
-    h.row.deviceBoundAt = "";
-    h.row.updatedAt = now_();
-    updateObject_(sheet, SIGNUP_HEADERS, h.index, h.row);
-    n++;
-  });
-  return { ok: true, data: { email: f.email, reset: n } };
-}
-
-function setDeviceLock_(body) {
-  /* Bat/tat khoa thiet bi cho 1 hoc vien. lock: "on"/"off". Chi admin. */
-  var lock = String(body.lock || body.deviceLock || "on").toLowerCase() === "off" ? "off" : "on";
-  var sheet = sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS);
-  var f = findStudentRows_(sheet, body);
-  if (f.error) return { ok: false, error: f.error };
-  var n = 0;
-  f.hits.forEach(function (h) {
-    h.row.deviceLock = lock;
-    /* Tat khoa thi xoa luon may da gan de khong con chan. */
-    if (lock === "off") { h.row.deviceId = ""; h.row.deviceBoundAt = ""; }
-    h.row.updatedAt = now_();
-    updateObject_(sheet, SIGNUP_HEADERS, h.index, h.row);
-    n++;
-  });
-  return { ok: true, data: { email: f.email, deviceLock: lock, updated: n } };
-}
-
-function updateStudent_(body) {
-  /* Sua thong tin hoc vien (ten/SDT/ghi chu) ma KHONG dong toi quyen hoc. Chi admin. */
-  var sheet = sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS);
-  var f = findStudentRows_(sheet, body);
-  if (f.error) return { ok: false, error: f.error };
-  if (!f.hits.length) return { ok: false, error: "STUDENT_NOT_FOUND" };
-  var has = function (k) { return Object.prototype.hasOwnProperty.call(body, k); };
-  var n = 0;
-  f.hits.forEach(function (h) {
-    if (has("name")) h.row.name = String(body.name || "");
-    if (has("contact")) h.row.contact = String(body.contact || "");
-    if (has("note")) h.row.note = String(body.note || "");
-    h.row.updatedAt = now_();
-    updateObject_(sheet, SIGNUP_HEADERS, h.index, h.row);
-    n++;
-  });
-  return { ok: true, data: { email: f.email, updated: n, name: body.name, contact: body.contact } };
 }
 
 function deleteSignup_(body) {
@@ -336,8 +242,7 @@ function getEntitlement_(p) {
   var email = normEmail_(p.email);
   var courseId = normalizeCourseId_(p.courseId || p.course || "doanh-nghiep-mot-nguoi");
   if (!email) return { ok: false, error: "EMAIL_REQUIRED" };
-  var sheet = sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS);
-  var rows = objects_(sheet);
+  var rows = objects_(sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS));
   var existing = findSignup_(rows, email, courseId);
   if (!existing) {
     return { ok: true, data: { email: email, courseId: courseId, role: "free", purchaseStatus: "not_paid" } };
@@ -345,31 +250,6 @@ function getEntitlement_(p) {
   /* Chi tra ve quyen hoc. KHONG tra ten/SDT/ghi chu: day la endpoint cong khai,
      biet email nguoi khac la doc duoc ho so ho. */
   var row = publicSignup_(existing.row);
-  var isPremium = row.role === "premium";
-
-  /* ---- Khoa thiet bi: 1 tai khoan Premium = 1 may ----
-     Chi ap khi Premium va deviceLock != "off". Thiet bi goi len qua ?deviceId=. */
-  var deviceBlocked = false;
-  var deviceBound = false;
-  var deviceLockOn = String(existing.row.deviceLock || "on").toLowerCase() !== "off";
-  var reqDevice = String(p.deviceId || "").trim();
-  if (isPremium && deviceLockOn && reqDevice) {
-    var stored = String(existing.row.deviceId || "").trim();
-    if (!stored) {
-      /* May dau tien mo Premium -> gan may nay cho tai khoan. */
-      existing.row.deviceId = reqDevice;
-      existing.row.deviceBoundAt = now_();
-      existing.row.updatedAt = now_();
-      updateObject_(sheet, SIGNUP_HEADERS, existing.index, existing.row);
-      deviceBound = true;
-    } else if (stored === reqDevice) {
-      deviceBound = true;
-    } else {
-      /* May khac dang dung cung tai khoan -> chan Premium tren may nay. */
-      deviceBlocked = true;
-    }
-  }
-
   return {
     ok: true,
     data: {
@@ -377,62 +257,17 @@ function getEntitlement_(p) {
       courseId: row.courseId || courseId,
       courseIds: row.courseIds || "",
       course: row.course || "",
-      /* Bi chan thiet bi thi tra role "free" cho may nay -> khoa bai Premium. */
-      role: (isPremium && !deviceBlocked) ? "premium" : "free",
-      accessPackage: (isPremium && !deviceBlocked) ? (row.accessPackage || "premium") : (isPremium ? "premium" : (row.accessPackage || "free")),
+      role: row.role === "premium" ? "premium" : "free",
+      accessPackage: row.accessPackage || "free",
       accessStatus: row.accessStatus || "active",
       purchaseStatus: row.purchaseStatus || "not_paid",
-      entitlement: isPremium && !deviceBlocked,
-      deviceLock: deviceLockOn ? "on" : "off",
-      deviceBound: deviceBound,
-      deviceBlocked: deviceBlocked
+      entitlement: !!row.entitlement
     }
   };
 }
 
 function listSignups_() {
   return objects_(sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS)).map(publicSignup_);
-}
-
-function getCourseVideos_(p) {
-  /* Tra ve noi dung khoa hoc {course,lessons} tu Sheet. Cong khai (khong can key). */
-  var key = normalizeCourseId_(p.courseId || p.course || "doanh-nghiep-mot-nguoi");
-  var rows = objects_(sheet_(COURSE_SHEET_NAME, COURSE_HEADERS));
-  for (var i = 0; i < rows.length; i++) {
-    if (String(rows[i].courseKey || "") === key) {
-      var parsed = null;
-      try { parsed = JSON.parse(rows[i].json || "null"); } catch (e) {}
-      if (parsed && Array.isArray(parsed.lessons)) {
-        return { ok: true, data: parsed, updatedAt: rows[i].updatedAt || "" };
-      }
-      return { ok: true, data: null };
-    }
-  }
-  return { ok: true, data: null };
-}
-
-function saveCourseVideos_(body) {
-  /* Luu noi dung khoa hoc len Sheet. Chi admin. Passport goi ham nay moi khi sua/them video. */
-  var payload = body.data || { course: body.course || {}, lessons: body.lessons || [] };
-  if (!payload || !Array.isArray(payload.lessons)) return { ok: false, error: "NO_LESSONS" };
-  var key = normalizeCourseId_(
-    body.courseId ||
-    (payload.course && (payload.course.courseId || payload.course.id || payload.course.slug)) ||
-    (payload.course && payload.course.title) ||
-    "doanh-nghiep-mot-nguoi"
-  );
-  var jsonStr = JSON.stringify(payload);
-  if (jsonStr.length > 48000) return { ok: false, error: "COURSE_JSON_TOO_BIG" };
-  var sheet = sheet_(COURSE_SHEET_NAME, COURSE_HEADERS);
-  var rows = objects_(sheet);
-  var stamp = now_();
-  var rec = { courseKey: key, json: jsonStr, updatedAt: stamp };
-  var found = false;
-  for (var i = 0; i < rows.length; i++) {
-    if (String(rows[i].courseKey || "") === key) { updateObject_(sheet, COURSE_HEADERS, i + 2, rec); found = true; break; }
-  }
-  if (!found) appendObject_(sheet, COURSE_HEADERS, rec);
-  return { ok: true, data: { courseKey: key, lessons: payload.lessons.length, updatedAt: stamp } };
 }
 
 function normalizeSignup_(body) {
@@ -467,14 +302,7 @@ function normalizeSignup_(body) {
     orderId: String(body.orderId || ""),
     paidAt: String(body.paidAt || ""),
     claimId: String(body.claimId || ""),
-    lastSeenAt: stamp,
-    /* Khoa thiet bi: deviceId de trong (gan luc hoc vien mo Premium lan dau);
-       deviceLock mac dinh "on" (chong chia se). merge_ chi ghi de khi co gia tri moi. */
-    deviceId: String(body.deviceId || ""),
-    /* De TRONG (khong phai "on") de merge_ KHONG ghi de trang thai admin da chinh.
-       O tim quyen coi trong = "on" mac dinh. Chi setDeviceLock moi dat "on"/"off" that. */
-    deviceLock: String(body.deviceLock || ""),
-    deviceBoundAt: String(body.deviceBoundAt || "")
+    lastSeenAt: stamp
   };
 }
 
