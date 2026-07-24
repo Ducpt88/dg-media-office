@@ -144,8 +144,8 @@
       "sort": 1,
       "module": "M1",
       "moduleNo": "1.1",
-      "youtubeId": "IBgN0kbwxK8",
-      "youtubeUrl": "https://www.youtube.com/watch?v=IBgN0kbwxK8",
+      "youtubeId": "",
+      "youtubeUrl": "",
       "title": "Triển khai \"Công Ty 1 Người\": Điều quan trọng nhất bạn đang bỏ qua!",
       "rawTitle": "Vận Hành Doanh Nghiệp 1 Người : Điều quan trọng nhất bạn đang bỏ qua! | Đức DG",
       "description": "Điều quan trọng nhất mà người vận hành doanh nghiệp một người hay bỏ qua khi bắt đầu ứng dụng AI Agent.",
@@ -160,7 +160,8 @@
       "access": "free",
       "type": "clip",
       "thumbnail": "",
-      "updatedAt": "2026-07-20T10:43:46+07:00"
+      "updatedAt": "2026-07-20T10:43:46+07:00",
+      "locked": true
     },
     {
       "id": "yt-tFdYb-H2oyQ",
@@ -168,8 +169,8 @@
       "sort": 2,
       "module": "M7",
       "moduleNo": "7.1",
-      "youtubeId": "tFdYb-H2oyQ",
-      "youtubeUrl": "https://www.youtube.com/watch?v=tFdYb-H2oyQ",
+      "youtubeId": "",
+      "youtubeUrl": "",
       "title": "Setup từ số 0 cho người mới — phần 1: dựng nền",
       "description": "Bắt đầu từ máy trắng: cài đặt, cấu trúc thư mục và những lựa chọn ban đầu quyết định về sau.",
       "objective": "Dựng xong nền để bắt đầu, không phải mò từng bước.",
@@ -183,7 +184,8 @@
       "access": "premium",
       "type": "review",
       "thumbnail": "",
-      "updatedAt": "2026-07-20T11:06:08+07:00"
+      "updatedAt": "2026-07-20T11:06:08+07:00",
+      "locked": true
     },
     {
       "id": "yt-tfmYkwYUTd4",
@@ -191,8 +193,8 @@
       "sort": 3,
       "module": "M7",
       "moduleNo": "7.2",
-      "youtubeId": "tfmYkwYUTd4",
-      "youtubeUrl": "https://www.youtube.com/watch?v=tfmYkwYUTd4",
+      "youtubeId": "",
+      "youtubeUrl": "",
       "title": "Setup từ số 0 cho người mới — phần 2: hoàn tất và chạy thử",
       "description": "Nối nốt phần còn lại và chạy thử lần đầu để chắc chắn mọi thứ hoạt động.",
       "objective": "Chạy được lần đầu và biết cách tự kiểm tra.",
@@ -206,7 +208,8 @@
       "access": "premium",
       "type": "review",
       "thumbnail": "",
-      "updatedAt": "2026-07-20T11:06:08+07:00"
+      "updatedAt": "2026-07-20T11:06:08+07:00",
+      "locked": true
     },
     {
       "id": "yt-2AuTaGh5QWM",
@@ -214,8 +217,8 @@
       "sort": 4,
       "module": "M7",
       "moduleNo": "7.3",
-      "youtubeId": "2AuTaGh5QWM",
-      "youtubeUrl": "https://www.youtube.com/watch?v=2AuTaGh5QWM",
+      "youtubeId": "",
+      "youtubeUrl": "",
       "title": "Giao AI triển khai và tối ưu một dự án thật",
       "description": "Bài dài nhất: xem toàn bộ một dự án được giao cho AI làm, từ nhận việc tới lúc tối ưu xong.",
       "objective": "Biết cách ra đề bài cho AI để nó làm ra kết quả dùng được.",
@@ -229,7 +232,8 @@
       "access": "premium",
       "type": "review",
       "thumbnail": "",
-      "updatedAt": "2026-07-20T11:06:08+07:00"
+      "updatedAt": "2026-07-20T11:06:08+07:00",
+      "locked": true
     },
     {
       "id": "yt-rpJpXQFUEoc",
@@ -237,8 +241,8 @@
       "sort": 5,
       "module": "M7",
       "moduleNo": "7.4",
-      "youtubeId": "rpJpXQFUEoc",
-      "youtubeUrl": "https://www.youtube.com/watch?v=rpJpXQFUEoc",
+      "youtubeId": "",
+      "youtubeUrl": "",
       "title": "Để một Agent cầm đầu dự án — vận hành công ty một người",
       "description": "Bước cuối: giao quyền điều phối cho một Agent để nó tự chia việc, còn bạn chỉ duyệt.",
       "objective": "Chuyển từ tự làm sang chỉ ra đề bài và duyệt.",
@@ -252,7 +256,8 @@
       "access": "premium",
       "type": "review",
       "thumbnail": "",
-      "updatedAt": "2026-07-20T11:06:08+07:00"
+      "updatedAt": "2026-07-20T11:06:08+07:00",
+      "locked": true
     },
     {
       "id": "yt-x0Ie2UzGkLE",
@@ -260,8 +265,8 @@
       "sort": 6,
       "module": "M1",
       "moduleNo": "",
-      "youtubeId": "x0Ie2UzGkLE",
-      "youtubeUrl": "https://www.youtube.com/watch?v=x0Ie2UzGkLE",
+      "youtubeId": "",
+      "youtubeUrl": "",
       "videoUrl": "",
       "sourceType": "youtube",
       "resourceUrl": "",
@@ -272,13 +277,15 @@
       "status": "published",
       "access": "free",
       "type": "",
-      "thumbnail": "https://i.ytimg.com/vi/x0Ie2UzGkLE/hqdefault.jpg",
-      "updatedAt": "2026-07-20T04:15:22.821Z"
+      "thumbnail": "",
+      "updatedAt": "2026-07-20T04:15:22.821Z",
+      "locked": true
     }
   ],
   "schemaVersion": 2,
   "accessModel": {
     "free": "Xem ngay",
     "premium": "Cần đăng ký học"
-  }
+  },
+  "_note": "ID video KHONG luu o file cong khai nay. Noi dung that phuc vu qua Google Sheet (gac cong dang nhap). File nay chi la khung du phong."
 }
