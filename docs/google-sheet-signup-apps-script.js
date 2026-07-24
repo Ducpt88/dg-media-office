@@ -37,7 +37,7 @@ var CLAIM_SHEET_NAME = "PremiumCodeClaims";
    Key that chi dat trong trinh soan Apps Script (ban dang chay tren Google) + Passport localStorage.
    Repo/file cong khai chi giu placeholder. */
 var ADMIN_KEY = "__DAT_TRONG_APPS_SCRIPT_EDITOR__";
-var PREMIUM_CODE_SECRET = "__DAT_TRONG_APPS_SCRIPT_EDITOR__";
+var PREMIUM_CODE_SECRET = "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
 
 var SIGNUP_HEADERS = [
   "createdAt", "updatedAt", "email", "name", "contact", "note",
@@ -455,9 +455,7 @@ function getCourseVideos_(p) {
     var out = {}; for (var k in l) out[k] = l[k];
     var premLesson = String(l.access || "").toLowerCase() === "premium";
     if (premLesson && !premiumOk) {
-      /* Go MOI dau moi video ra khoi du lieu tra ve -> khong lo ID video Premium.
-         Ca lesson.id kieu yt-<youtube_id> cung phai doi thanh ID noi bo, vi no cung lam lo video. */
-      out.id = publicLessonId_(out, i);
+      /* Go MOI dau moi video ra khoi du lieu tra ve -> khong lo ID video Premium. */
       out.youtubeId = ""; out.youtubeUrl = ""; out.videoUrl = ""; out.publicUrl = ""; out.storageUrl = ""; out.assetUrl = "";
       out.locked = true;
     }
@@ -465,14 +463,6 @@ function getCourseVideos_(p) {
   });
 
   return { ok: true, data: { course: courseMeta, lessons: lessons }, premium: premiumOk, deviceBlocked: deviceBlocked };
-}
-
-function publicLessonId_(lesson, index) {
-  var id = String((lesson && lesson.id) || "");
-  if (/^yt-[A-Za-z0-9_-]{11}$/.test(id)) {
-    return "lesson-" + String((lesson && lesson.lessonNo) || (index + 1));
-  }
-  return id || ("lesson-" + String(index + 1));
 }
 
 function saveCourseVideos_(body) {
@@ -625,7 +615,6 @@ function merge_(a, b) {
 }
 
 function premiumCodeLooksValid_(code) {
-  if (!PREMIUM_CODE_SECRET || String(PREMIUM_CODE_SECRET).indexOf("__DAT_") === 0) return false;
   var m = String(code || "").trim().toUpperCase().match(/^DGP-([A-Z0-9]{4,12})-([0-9A-F]{6})$/);
   if (!m) return false;
   return sha256Hex_(m[1] + "|" + PREMIUM_CODE_SECRET).slice(0, 6).toUpperCase() === m[2];

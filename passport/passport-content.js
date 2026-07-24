@@ -1839,7 +1839,7 @@
       if (!payload.ok) throw new Error(payload.error || "Không đồng bộ được");
       const item = payload.data;
       const existing = data.lessons.find((lesson) => lesson.youtubeId === item.youtubeId);
-      const next = { ...(existing || {}), ...item, id: existing ? existing.id : newLessonId(data.lessons.length + 1), lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, videoUrl: existing?.videoUrl || "", sourceType: "youtube", resourceUrl: existing?.resourceUrl || "", duration: existing ? existing.duration : "", description: existing ? existing.description : "", status: existing ? existing.status : "draft", updatedAt: new Date().toISOString() };
+      const next = { ...(existing || {}), ...item, id: existing ? existing.id : item.id, lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, videoUrl: existing?.videoUrl || "", sourceType: "youtube", resourceUrl: existing?.resourceUrl || "", duration: existing ? existing.duration : "", description: existing ? existing.description : "", status: existing ? existing.status : "draft", updatedAt: new Date().toISOString() };
       if (existing) data.lessons[data.lessons.indexOf(existing)] = next; else data.lessons.push(next);
       editingId = next.id;
       input.value = "";
@@ -1849,7 +1849,7 @@
       const youtubeId = youtubeIdFromUrl(youtubeUrl);
       if (!youtubeId) return flash(error.message || "Lỗi đồng bộ YouTube");
       const existing = data.lessons.find((lesson) => lesson.youtubeId === youtubeId);
-      const item = { id: newLessonId(data.lessons.length + 1), youtubeUrl: `https://www.youtube.com/watch?v=${youtubeId}`, youtubeId, videoUrl: "", sourceType: "youtube", resourceUrl: existing?.resourceUrl || "", title: existing?.title || "Bài học mới", description: existing?.description || "", thumbnail: `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`, status: existing?.status || "draft" };
+      const item = { id: `yt-${youtubeId}`, youtubeUrl: `https://www.youtube.com/watch?v=${youtubeId}`, youtubeId, videoUrl: "", sourceType: "youtube", resourceUrl: existing?.resourceUrl || "", title: existing?.title || "Bài học mới", description: existing?.description || "", thumbnail: `https://i.ytimg.com/vi/${youtubeId}/hqdefault.jpg`, status: existing?.status || "draft" };
       const next = { ...(existing || {}), ...item, lessonNo: existing ? existing.lessonNo : data.lessons.length + 1, sort: existing ? existing.sort : data.lessons.length + 1, duration: existing ? existing.duration : "", updatedAt: new Date().toISOString() };
       if (existing) data.lessons[data.lessons.indexOf(existing)] = next; else data.lessons.push(next);
       editingId = next.id;
@@ -1966,7 +1966,7 @@
     const current = await githubFetchFile(cfg);
     const body = {
       message: `Update course videos ${new Date().toISOString()}`,
-      content: base64EncodeUtf8(JSON.stringify(publicCoursePayload(data), null, 2) + "\n"),
+      content: base64EncodeUtf8(JSON.stringify(data, null, 2) + "\n"),
       branch: cfg.branch,
       committer: { name: "DUCPT Passport", email: "passport@ducpt.com" }
     };
@@ -1983,36 +1983,6 @@
     });
     const payload = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(payload.message || `GitHub save failed: ${res.status}`);
-  }
-
-  function newLessonId(index) {
-    return `lesson-${Date.now()}-${String(index || 1).padStart(2, "0")}`;
-  }
-
-  function publicCoursePayload(src) {
-    const clone = JSON.parse(JSON.stringify(src || { course: {}, lessons: [] }));
-    clone.lessons = (clone.lessons || []).map((lesson, index) => {
-      const out = { ...lesson };
-      out.id = publicLessonId(out, index);
-      out.youtubeId = "";
-      out.youtubeUrl = "";
-      out.videoUrl = "";
-      out.publicUrl = "";
-      out.storageUrl = "";
-      out.assetUrl = "";
-      if (String(out.access || "").toLowerCase() === "premium") out.locked = true;
-      return out;
-    });
-    clone._note = "ID video KHONG luu o file cong khai nay. Noi dung that phuc vu qua Google Sheet (gac cong dang nhap). File nay chi la khung du phong.";
-    return clone;
-  }
-
-  function publicLessonId(lesson, index) {
-    const id = String((lesson && lesson.id) || "");
-    if (/^yt-[A-Za-z0-9_-]{11}$/.test(id)) {
-      return `lesson-${String((lesson && lesson.lessonNo) || (index + 1)).padStart(2, "0")}`;
-    }
-    return id || `lesson-${String(index + 1).padStart(2, "0")}`;
   }
 
   async function githubFetchFile(cfg) {
