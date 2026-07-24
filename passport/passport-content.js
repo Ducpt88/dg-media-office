@@ -8,6 +8,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
   if (!base && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(location.hostname)) base = "https://vancouver-altered-less-forum.trycloudflare.com";
   return base ? `${base}/${value.replace(/^\/+/, "")}` : value;
 };
+try { localStorage.removeItem(["ducpt", "github", "course", "config", "v1"].join("_")); } catch {}
 
 /* ============================================================
    DUCPT Passport — Quản lý nội dung SỬA ĐƯỢC (lưu thật)
@@ -808,7 +809,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     collectCourse();
     data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
     try {
-      const res = await fetch(apiUrl("/api/passport/course-videos/save"), {
+      const res = await fetch(apiUrl("/api/passport/course-videos/publish"), {
         method: "POST",
         headers: await courseAdminHeaders(),
         body: JSON.stringify(data)
@@ -817,7 +818,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
       if (!payload.ok) throw new Error(payload.error || "Khong luu duoc");
       data = payload.data;
       draw();
-      flash("Da luu len server");
+      flash("Da luu qua server va gui len website");
     } catch (error) {
       flash(error.message || "Chua luu duoc");
     }
@@ -1289,7 +1290,6 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     });
   }
   const seed = { course: { title: "Doanh nghiệp một người", price: "Liên hệ", contact: "Zalo 0963249467", goal: "Khóa học giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, tạo nội dung kéo khách, bán sản phẩm dịch vụ số và vận hành gọn bằng AI.", cover: "/assets/hvd-horizontal.svg" }, lessons: [] };
-  const githubDefaults = { owner: "Ducpt88", repo: "dg-media-office", branch: "main", path: "passport/course-videos.json" };
   const I = (p) => `<svg class="ytc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
   const ICO = {
     sync: I('<path d="M21 12a9 9 0 1 1-2.6-6.3"/><path d="M21 3v6h-6"/>'),
@@ -1305,6 +1305,8 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
   let legacyAssets = [];
   let editingId = "";
   let viewMode = "admin";
+  let websiteLessonCount = 0;
+  let websiteVisibleCount = 0;
 
   async function courseAdminHeaders() {
     const headers = { "content-type": "application/json" };
@@ -1411,6 +1413,8 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
       const draft = JSON.parse(localStorage.getItem("ducpt_course_videos_draft_v1") || "null");
       const draftLessons = (draft && Array.isArray(draft.lessons)) ? draft.lessons : [];
       const serverLessons = Array.isArray(data.lessons) ? data.lessons : [];
+      websiteLessonCount = serverLessons.length;
+      websiteVisibleCount = visibleLessonList(serverLessons).length;
 
       /* LUẬT CŨ GÂY MẤT VIỆC: chỉ so mốc thời gian, bên nào mới hơn thì thắng.
          Sửa dữ liệu trên máy chủ là bản nháp có bài của Founder bị đè, bài "biến mất".
@@ -1426,7 +1430,9 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
         const draftMatch = draftByKey.get(lessonKey(x));
         return draftMatch ? mergeLessonRecord(x, draftMatch) : x;
       });
-      const chuaLen = draftLessons.filter((x) => !serverIds.has(String(x.id || x.youtubeId || "")) && !serverKeys.has(lessonKey(x)));
+      const chuaLen = draftLessons
+        .filter((x) => !serverIds.has(String(x.id || x.youtubeId || "")) && !serverKeys.has(lessonKey(x)))
+        .map((x) => ({ ...x, _chuaLenWeb: true }));
 
       if (chuaLen.length) {
         /* Giữ nội dung khóa học mới nhất từ máy chủ, nhưng gộp lại các bài chỉ có trong nháp. */
@@ -1461,14 +1467,15 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     if (!view) return;
     const lesson = data.lessons.find((item) => item.id === editingId) || emptyLesson();
     const publishedCount = studentVisibleLessons().length;
+    const localOnlyCount = data.lessons.filter((item) => item._chuaLenWeb).length;
+    const draftOrHiddenCount = data.lessons.filter((item) => item._chuaLenWeb || item.status !== "published" || item.access === "hidden").length;
     view.innerHTML = `
-      <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quản lý học viên & video khóa học</h2><div class="pc-hint">Dán link YouTube, sửa mô tả, sắp xếp bài học và xuất bản lên trang /khoa-hoc/. Trên ducpt.com, nút Lưu sẽ commit file JSON thẳng vào GitHub nếu không có API server.</div></div><div class="pc-right"><span class="pc-draft" data-draft-at>${draftStamp()}</span><span class="pc-saved" data-saved></span><div class="ytc-view-switch"><button class="${viewMode==="admin"?"is-active":""}" data-view-mode="admin" type="button">${ICO.edit}Quản trị</button><button class="${viewMode==="student"?"is-active":""}" data-view-mode="student" type="button">${ICO.eye}Học viên</button></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">${ICO.eye}Mở trang học</a><button class="btn primary" data-save-all type="button">${ICO.save}Lưu tất cả</button></div></div>
-      ${window.__ducptDraftRecovered ? `<div class="draft-alert"><b>⚠ Có ${window.__ducptDraftRecovered} bài đang lưu trên máy này, CHƯA lên website.</b><span>Bài vẫn còn nguyên và đã được khôi phục vào danh sách bên phải. Muốn học viên thấy được thì phải đẩy lên website: mở mục <b>Cài đặt lưu trữ</b> ở cuối trang, điền token GitHub một lần, rồi bấm <b>Lưu tất cả</b>.</span></div>` : ""}
+      <div class="pc-tools"><div><h2 style="margin:0 0 4px">Quản lý học viên & video khóa học</h2><div class="pc-hint">Dán link YouTube, sửa mô tả, sắp xếp bài học và xuất bản lên trang /khoa-hoc/. Nút Lưu gửi dữ liệu qua API máy chủ; secret xuất bản chỉ nằm trong biến môi trường máy chủ.</div></div><div class="pc-right"><span class="pc-draft" data-draft-at>${draftStamp()}</span><span class="pc-saved" data-saved></span><div class="ytc-view-switch"><button class="${viewMode==="admin"?"is-active":""}" data-view-mode="admin" type="button">${ICO.edit}Quản trị</button><button class="${viewMode==="student"?"is-active":""}" data-view-mode="student" type="button">${ICO.eye}Học viên</button></div><a class="btn" href="/khoa-hoc/" target="_blank" rel="noreferrer">${ICO.eye}Mở trang học</a><button class="btn primary" data-save-all type="button">${ICO.save}Lưu tất cả</button></div></div>
+      ${localOnlyCount ? `<div class="draft-alert"><b>⚠ Có ${localOnlyCount} bài chỉ đang lưu trên trình duyệt máy này, CHƯA lên website.</b><span>Những bài này được giữ lại để không mất dữ liệu, nhưng KHÔNG tính là bài học viên thấy trên ducpt.com. Bấm <b>Lưu tất cả</b> để gửi lên API máy chủ và xuất bản ra website thật.</span></div>` : ""}
       <div class="ytc-steps"><div class="ytc-step"><i>1</i><div><b>Dán link YouTube</b><span>Video để chế độ Không công khai (unlisted)</span></div></div><em>→</em><div class="ytc-step"><i>2</i><div><b>Bấm Đồng bộ</b><span>Tự lấy tiêu đề + ảnh thumbnail</span></div></div><em>→</em><div class="ytc-step"><i>3</i><div><b>Sửa mô tả rồi Lưu tất cả</b><span>Bài "Đang hiển thị" sẽ lên trang học viên</span></div></div></div>
-      <div class="cs-metrics"><article class="card metric"><span>${ICO.list}Tổng bài học</span><strong>${data.lessons.length}</strong><small>Trong khóa này</small></article><article class="card metric"><span>${ICO.eye}Đang hiển thị</span><strong>${publishedCount}</strong><small>Học viên thấy trên trang học</small></article><article class="card metric"><span>${ICO.edit}Nháp / tạm ẩn</span><strong>${data.lessons.length - publishedCount}</strong><small>Chỉ mình bạn thấy</small></article><article class="card metric"><span>${ICO.cloud}Lưu trữ</span><strong>${githubConfig().token ? "Đã kết nối" : "Chưa kết nối"}</strong><small>${githubConfig().token ? "Lưu thẳng lên website" : "Mở Cài đặt lưu trữ bên dưới"}</small></article></div>
+      <div class="cs-metrics"><article class="card metric"><span>${ICO.list}Tổng trong admin</span><strong>${data.lessons.length}</strong><small>${websiteLessonCount} bài đã có trên website</small></article><article class="card metric"><span>${ICO.eye}Học viên thấy</span><strong>${websiteLessonCount ? websiteVisibleCount : publishedCount}</strong><small>Đếm từ website/API thật</small></article><article class="card metric"><span>${ICO.edit}Nháp / chưa lên web</span><strong>${draftOrHiddenCount}</strong><small>${localOnlyCount} bài chỉ nằm trên máy này</small></article><article class="card metric"><span>${ICO.cloud}Xuất bản</span><strong>Qua server</strong><small>Commit bởi API máy chủ</small></article></div>
       ${viewMode === "student" ? studentPreviewHtml() : adminEditorHtml(lesson)}
       ${legacyAssetsHtml()}
-      <details class="ytc-collapse"${githubConfig().token ? "" : " open"}><summary>${ICO.cloud}Cài đặt lưu trữ (GitHub) — điền 1 lần là nút Lưu chạy thẳng trên website</summary><article class="ytc-panel ytc-form"><div class="pc-hint">Chỉ cần điền token trên trình duyệt của anh. Token nằm trong localStorage máy anh, không đưa vào repo. Cần quyền Contents: Read and write cho repo Ducpt88/dg-media-office.</div><label>GitHub token<input data-github-field="token" type="password" value="${esc(githubConfig().token)}" placeholder="github_pat_..."></label><div class="ytc-grid"><label>Owner<input data-github-field="owner" value="${esc(githubConfig().owner)}"></label><label>Repo<input data-github-field="repo" value="${esc(githubConfig().repo)}"></label></div><div class="ytc-grid"><label>Branch<input data-github-field="branch" value="${esc(githubConfig().branch)}"></label><label>File path<input data-github-field="path" value="${esc(githubConfig().path)}"></label></div><div class="ytc-actions"><button class="btn" data-save-github-config type="button">Lưu kết nối GitHub</button><button class="btn" data-test-github type="button">Kiểm tra kết nối</button></div></article></details>
       <details class="ytc-collapse"><summary>${ICO.help}Hướng dẫn nhanh: cần gì khi thêm một video?</summary><article class="ytc-panel"><div class="ytc-guide"><div><b>1. Link YouTube</b><span class="ytc-note">Nên để không công khai. Video riêng tư sẽ không xem được khi nhúng trên website.</span></div><div><b>2. Tiêu đề</b><span class="ytc-note">Có thể đồng bộ từ YouTube, nhưng vẫn nên sửa lại cho đúng bài học.</span></div><div><b>3. Mô tả / outline</b><span class="ytc-note">Nhập mục tiêu, nội dung chính, bài tập và link tài liệu kèm theo.</span></div><div><b>4. Trạng thái</b><span class="ytc-note">Draft để soạn, published để học viên học, hidden để tạm ẩn.</span></div></div></article></details>`;
     bind(view);
     if (viewMode !== "student") mountDgPlayer(view, lesson);
@@ -1491,10 +1498,18 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     return !!(lesson.youtubeId || playableUrl(lesson));
   }
 
-  function studentVisibleLessons() {
-    return normalizeLessonList(data.lessons)
-      .filter((item) => item.status === "published" && item.access !== "hidden" && (hasPlayableSource(item) || item.access === "premium"))
+  function lessonIsStudentVisible(item) {
+    return item && !item._chuaLenWeb && item.status === "published" && item.access !== "hidden" && (hasPlayableSource(item) || item.access === "premium");
+  }
+
+  function visibleLessonList(list) {
+    return normalizeLessonList(list)
+      .filter(lessonIsStudentVisible)
       .sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
+  }
+
+  function studentVisibleLessons() {
+    return visibleLessonList(data.lessons);
   }
 
   function thumbFor(lesson) {
@@ -1579,7 +1594,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
         <div class="ca-curri-head">
           <h3>Nội dung khóa học</h3>
           <p>Xếp đúng như trang ngoài — bấm một bài để xem video và sửa ngay</p>
-          <span class="ytc-status" style="margin-top:8px">${data.lessons.length} bài · ${data.lessons.filter((x) => x.status === "published").length} đang hiển thị</span>
+          <span class="ytc-status" style="margin-top:8px">${data.lessons.length} bài trong admin · ${websiteVisibleCount} bài học viên thấy trên website</span>
         </div>
         <div class="ca-list">${chapterListHtml()}</div>
       </aside>
@@ -1806,7 +1821,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
       const live = group.items.filter((l) => l.status === "published").length;
       const rows = group.items.map((item, i) => {
         const access = item.access === "premium" ? '<span class="ca-tag prem">💎 PREMIUM</span>' : item.access === "hidden" ? '<span class="ca-tag">Ẩn khỏi khóa</span>' : '<span class="ca-tag free">FREE</span>';
-        const state = item.status === "published" ? '<span class="ca-tag pub">Đang hiển thị</span>' : item.status === "hidden" ? '<span class="ca-tag hid">Tạm ẩn</span>' : '<span class="ca-tag">Bản nháp</span>';
+        const state = item._chuaLenWeb ? '<span class="ca-tag hid">Chưa lên website</span>' : item.status === "published" ? '<span class="ca-tag pub">Đang hiển thị</span>' : item.status === "hidden" ? '<span class="ca-tag hid">Tạm ẩn</span>' : '<span class="ca-tag">Bản nháp</span>';
         return `<div class="ca-row${item.id === editingId ? " is-active" : ""}" data-lesson-id="${esc(item.id)}" data-select-lesson><span class="n">${String(i + 1).padStart(2, "0")}</span><span class="t">${esc(item.title || "Bài chưa có tiêu đề")}</span><span class="m"><span class="ca-tag">${esc(item.duration || "—")}</span>${access}${state}</span></div>`;
       }).join("");
       return `<section class="ca-ch"><div class="ca-ch-head"><b>${gi + 1}. ${esc(group.title)}</b><span>Số lượng: <i>${group.items.length}</i> video · Thời lượng: <i>${formatHMS(total)}</i> · Đang hiển thị: <i>${live}</i></span></div>${rows}</section>`;
@@ -1997,8 +2012,6 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
       draw();
       flash("Đã đưa file upload vào bài học. Hãy kiểm tra link công khai rồi bấm Lưu tất cả.");
     }));
-    view.querySelector("[data-save-github-config]").addEventListener("click", () => { saveGithubConfig(view); flash("Đã lưu kết nối GitHub trên trình duyệt này"); });
-    view.querySelector("[data-test-github]").addEventListener("click", testGithubConnection);
     view.querySelector("[data-lesson-form]")?.addEventListener("submit", (event) => {
       event.preventDefault();
       collectCourse(view);
@@ -2149,106 +2162,15 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     data.lessons = normalizeLessonList(data.lessons);
     try { localStorage.setItem("ducpt_course_videos_draft_v1", JSON.stringify(data)); } catch {}
     try {
-      const res = await fetch(apiUrl("/api/passport/course-videos/save"), { method: "POST", headers: await courseAdminHeaders(), body: JSON.stringify(data) });
+      const res = await fetch(apiUrl("/api/passport/course-videos/publish"), { method: "POST", headers: await courseAdminHeaders(), body: JSON.stringify(data) });
       const payload = await res.json();
       if (!payload.ok) throw new Error(payload.error || "Không lưu được");
       data = payload.data;
       draw();
-      flash("Đã lưu lên server");
+      flash("Đã lưu qua server và gửi lên website");
     } catch (error) {
-      try {
-        await saveToGitHub();
-        draw();
-        flash("Đã commit lên GitHub. Website sẽ cập nhật sau khi Pages deploy.");
-      } catch (githubError) {
-        flash("Đã lưu nháp trên máy này · Để đăng lên website thật: mở mục Cài đặt lưu trữ bên dưới, điền token 1 lần");
-      }
+      flash((error && error.message) || "Chưa lưu được qua máy chủ");
     }
-  }
-
-  function githubConfig() {
-    try { return { ...githubDefaults, ...JSON.parse(localStorage.getItem("ducpt_github_course_config_v1") || "{}") }; }
-    catch { return { ...githubDefaults }; }
-  }
-
-  function saveGithubConfig(view) {
-    const cfg = githubConfig();
-    view.querySelectorAll("[data-github-field]").forEach((el) => { cfg[el.dataset.githubField] = el.value.trim(); });
-    localStorage.setItem("ducpt_github_course_config_v1", JSON.stringify(cfg));
-  }
-
-  async function testGithubConnection() {
-    const view = document.getElementById("courseAdmin");
-    saveGithubConfig(view);
-    const cfg = githubConfig();
-    if (!cfg.token) return flash("Can dien GitHub token truoc");
-    const file = await githubFetchFile(cfg);
-    flash(file.sha ? "Kết nối GitHub OK" : "Đã kết nối, file chưa có SHA");
-  }
-
-  function publicCourseCatalog(full) {
-    const course = full.course || {};
-    const lessons = Array.isArray(full.lessons) ? full.lessons : [];
-    const hash = (value) => { let h=2166136261; const text=String(value||""); for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)} return (h>>>0).toString(16).padStart(8,"0") };
-    const publicKey = (lesson) => [lesson.module, lesson.moduleNo, lesson.sort, lesson.lessonNo, lesson.title].map((value) => String(value || "").trim().toLowerCase()).join("|");
-    return {
-      ...full,
-      accessMode: "private",
-      lessons: lessons.map((lesson) => {
-        const row = { ...lesson };
-        ["youtubeUrl","youtubeId","url","videoUrl","publicUrl","storageUrl","assetUrl","privateVideoUrl","privateVideoId","sourceUrl","playbackId","muxPlaybackId","cloudflareStreamId","cloudflareId","bunnyVideoId","bunnyId"].forEach((key) => { delete row[key]; });
-        row.id = "lesson-" + hash(publicKey(lesson));
-        row.sourceType = "private";
-        row.videoAccess = "token";
-        if (/ytimg\.com|youtube\.com|youtu\.be|videodelivery\.net|bunnycdn\.com|mediadelivery\.net|mux\.com/i.test(String(row.thumbnail || ""))) row.thumbnail = course.cover || "";
-        return row;
-      })
-    };
-  }
-
-  async function saveToGitHub() {
-    const view = document.getElementById("courseAdmin");
-    saveGithubConfig(view);
-    const cfg = githubConfig();
-    if (!cfg.token) throw new Error("Website live cần GitHub token để lưu trực tiếp");
-    const current = await githubFetchFile(cfg);
-    const body = {
-      message: `Update course videos ${new Date().toISOString()}`,
-      content: base64EncodeUtf8(JSON.stringify(publicCourseCatalog(data), null, 2) + "\n"),
-      branch: cfg.branch,
-      committer: { name: "DUCPT Passport", email: "passport@ducpt.com" }
-    };
-    if (current.sha) body.sha = current.sha;
-    const res = await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${cfg.path.split("/").map(encodeURIComponent).join("/")}`, {
-      method: "PUT",
-      headers: {
-        "accept": "application/vnd.github+json",
-        "authorization": `Bearer ${cfg.token}`,
-        "content-type": "application/json",
-        "x-github-api-version": "2022-11-28"
-      },
-      body: JSON.stringify(body)
-    });
-    const payload = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(payload.message || `GitHub save failed: ${res.status}`);
-  }
-
-  async function githubFetchFile(cfg) {
-    const res = await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}/contents/${cfg.path.split("/").map(encodeURIComponent).join("/")}?ref=${encodeURIComponent(cfg.branch)}`, {
-      headers: {
-        "accept": "application/vnd.github+json",
-        "authorization": `Bearer ${cfg.token}`,
-        "x-github-api-version": "2022-11-28"
-      }
-    });
-    if (res.status === 404) return {};
-    const payload = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(payload.message || `GitHub read failed: ${res.status}`);
-    return payload;
-  }
-
-  function base64EncodeUtf8(text) {
-    return btoa(unescape(encodeURIComponent(text)));
   }
 
   function youtubeIdFromUrl(value) {

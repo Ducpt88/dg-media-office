@@ -361,16 +361,24 @@ function healthStorage() {
     }
   } catch {}
   const secretLeakRisk = fs.existsSync(path.join(ROOT, ".git")) && fs.existsSync(path.join(ROOT, "CNAME"));
+  const duong = publishRoute();
+  const moTaDuong = {
+    token: "đăng bài qua GitHub API (dùng GITHUB_TOKEN trong .env)",
+    git: "đăng bài qua bản sao git sẵn có trên máy — KHÔNG cần token",
+    none: "KHÔNG đăng bài lên website được: không có token, cũng không có bản sao git"
+  }[duong];
   return {
     id: "storage",
     order: 4,
     label: "4. Kho lưu trữ",
     tech: "GitHub Pages (web tĩnh) + đĩa máy chủ (file học viên)",
-    state: "warn",
-    detail: `${uploadCount} tệp trong kho tải lên (${(uploadBytes / 1048576).toFixed(1)} MB) · nằm trên đĩa máy chủ, chưa có bản sao lưu tự động`
+    state: duong === "none" ? "down" : "warn",
+    detail: `${moTaDuong} · ${uploadCount} tệp trong kho tải lên (${(uploadBytes / 1048576).toFixed(1)} MB), nằm trên đĩa máy chủ, chưa có bản sao lưu tự động`
       + (secretLeakRisk ? " · CẢNH BÁO: thư mục này vừa là repo GitHub Pages — mọi file commit đều tải được từ Internet" : ""),
-    metrics: { uploadCount, uploadBytes, dataDir: DATA_DIR, servedByGithubPages: secretLeakRisk },
-    fix: "Tách mã nguồn máy chủ ra khỏi repo GitHub Pages + bật sao lưu định kỳ thư mục dữ liệu"
+    metrics: { publishRoute: duong, uploadCount, uploadBytes, dataDir: DATA_DIR, servedByGithubPages: secretLeakRisk },
+    fix: duong === "none"
+      ? "Đặt GITHUB_TOKEN trong .env, hoặc chạy máy chủ trong bản sao git đã đăng nhập"
+      : "Tách mã nguồn máy chủ ra khỏi repo GitHub Pages + bật sao lưu định kỳ thư mục dữ liệu"
   };
 }
 
@@ -1679,8 +1687,13 @@ async function publishCourseVideos(req, res) {
     sendJson(res, 401, { ok: false, error: "ADMIN_LOGIN_REQUIRED" });
     return;
   }
-  if (!GITHUB_TOKEN) {
-    sendJson(res, 500, { ok: false, error: "GITHUB_TOKEN_NOT_CONFIGURED", message: "May chu chua co GITHUB_TOKEN trong .env — khong the xuat ban len website" });
+  const duong = publishRoute();
+  if (duong === "none") {
+    sendJson(res, 500, {
+      ok: false,
+      error: "PUBLISH_NOT_AVAILABLE",
+      message: "May chu khong xuat ban duoc: khong co GITHUB_TOKEN trong .env, va thu muc nay cung khong phai ban sao git co the day len."
+    });
     return;
   }
   const body = await readJsonBodyAsync(req);
@@ -1689,8 +1702,43 @@ async function publishCourseVideos(req, res) {
   fs.mkdirSync(path.dirname(COURSE_VIDEO_PRIVATE_FILE), { recursive: true });
   fs.writeFileSync(COURSE_VIDEO_PRIVATE_FILE, JSON.stringify(data, null, 2), "utf8");
   fs.writeFileSync(COURSE_VIDEO_FILE, JSON.stringify(publicData, null, 2), "utf8");
-  await commitCourseVideosToGithub(publicData);
-  sendJson(res, 200, { ok: true, data });
+  if (duong === "token") await commitCourseVideosToGithub(publicData);
+  else await commitCourseVideosViaGit();
+  sendJson(res, 200, { ok: true, data, publishedVia: duong });
+}
+
+/* KHONG BAT BUOC PHAI CO TOKEN.
+   Thu muc nay von la ban sao git da dang nhap san (credential.helper = manager).
+   Vi vay may chu chi can goi chinh git de day len — khong phai tao them Personal Access
+   Token, khong phai cat giu chuoi bi mat nao trong .env. Token chi la duong du phong
+   cho truong hop chay tren Render/VPS, noi khong co ban sao git dang nhap. */
+function publishRoute() {
+  if (GITHUB_TOKEN) return "token";
+  if (fs.existsSync(path.join(ROOT, ".git"))) return "git";
+  return "none";
+}
+
+function chayGit(args, timeoutMs = 90000) {
+  return new Promise((ok, no) => {
+    require("child_process").execFile("git", args, { cwd: ROOT, timeout: timeoutMs, windowsHide: true },
+      (err, stdout, stderr) => {
+        if (err) return no(new Error(`GIT_FAILED (${args.join(" ")}): ${String(stderr || err.message).trim().slice(0, 400)}`));
+        ok(String(stdout || "").trim());
+      });
+  });
+}
+
+async function commitCourseVideosViaGit() {
+  const duongDan = "passport/course-videos.json";
+  // Chi commit DUNG mot file nay. Dung pathspec de khong bao gio cuon nham thay doi
+  // dang do dang cua file khac trong repo vao commit.
+  const doiThay = await chayGit(["status", "--porcelain", "--", duongDan]);
+  if (!doiThay) return { changed: false };
+  await chayGit(["add", "--", duongDan]);
+  await chayGit(["-c", "user.name=DUCPT Passport", "-c", "user.email=passport@ducpt.com",
+                 "commit", "-m", `Cap nhat noi dung khoa hoc ${new Date().toISOString()}`, "--", duongDan]);
+  await chayGit(["push", "origin", `HEAD:${GITHUB_BRANCH}`], 120000);
+  return { changed: true };
 }
 
 async function commitCourseVideosToGithub(publicData) {
@@ -1841,6 +1889,10 @@ function normalizeLesson(lesson, index) {
     videoUrl: directVideoUrl,
     sourceType: directVideoUrl ? "direct" : youtubeId ? "youtube" : String(lesson.sourceType || "youtube").slice(0, 24),
     title: String(lesson.title || "Bài học mới").slice(0, 240),
+    // rawTitle: tieu de goc tren YouTube. Trang /khoa-hoc/ dung no de doan video doc
+    // (isPortraitLesson tim "/shorts/" hoac "#shorts"). Truoc day khong nam trong danh
+    // sach truong duoc giu -> lan bam Luu dau tien la mat, video doc hien sai khung.
+    rawTitle: String(lesson.rawTitle || "").slice(0, 300),
     description: String(lesson.description || lesson.note || "").slice(0, 4000),
     objective: String(lesson.objective || "").slice(0, 1200),
     learnPoints: Array.isArray(lesson.learnPoints) ? lesson.learnPoints.map((x) => String(x).slice(0, 300)).slice(0, 12) : [],
