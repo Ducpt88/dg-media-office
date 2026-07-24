@@ -116,7 +116,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
   <script>try{window.DUCPT_API_BASE=String(window.DUCPT_API_BASE||localStorage.getItem("ducpt-api-base")||"https://vancouver-altered-less-forum.trycloudflare.com").replace(/\/+$/,"")}catch(e){window.DUCPT_API_BASE="https://vancouver-altered-less-forum.trycloudflare.com"}</script>
-  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260723-sheet-mirror-1"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-one-chip-6"></script><script src="/assets/ducpt-sheet-config.js?v=20260722-sheet-1"></script>
+  <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260723-sheet-mirror-1"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-one-chip-6"></script><script src="/assets/ducpt-sheet-config.js?v=20260724-sheet-sync-1"></script>
   <style>
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
     body{background:var(--bg)}
@@ -657,12 +657,26 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           if(!body.ok){const err=new Error((body&&body.error)||"SHEET_API_ERROR");err.status=body&&body.error==="EMAIL_ALREADY_REGISTERED"?409:0;err.data=body&&body.data;throw err}
           return body;
         }
-        async function postSignupRemote(record){
-          try{return await postSignupSheet({...record,action:"signup"})}catch(e){if(e&&e.status===409)throw e}
+        async function postSignupApi(record){
           const res=await fetch(apiUrl("/api/passport/course-signups"),{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify(record)});
           const body=await res.json().catch(()=>({}));
           if(!res.ok||!body.ok){const err=new Error((body&&body.error)||("HTTP "+res.status));err.status=res.status;err.data=body&&body.data;throw err}
           return body;
+        }
+        async function mirrorAccessToApi(record,source){
+          try{
+            const email=String(record&&record.email||record&&record.owner||"").trim().toLowerCase();
+            if(!email)return false;
+            const role=record.role==="premium"||record.entitlement?"premium":"free";
+            const courseId=record.courseId||courseAccessKey();
+            await postSignupApi({...record,email,course:record.course||state.course.title||"Doanh nghiệp một người",courseId,courseIds:Array.isArray(record.courseIds)?record.courseIds:[courseId],role,entitlement:role==="premium",accessPackage:role==="premium"?"premium":(record.accessPackage||"free"),accessStatus:record.accessStatus||"active",purchaseStatus:role==="premium"?"paid":(record.purchaseStatus||"not_paid"),source:source||record.source||"course-access-mirror",updatedAt:new Date().toISOString()});
+            return true;
+          }catch(e){return false}
+        }
+        async function postSignupRemote(record){
+          let sheetBody=null;
+          try{sheetBody=await postSignupSheet({...record,action:"signup"})}catch(e){if(e&&e.status===409)throw e}
+          try{return await postSignupApi(record)}catch(e){if(sheetBody)return sheetBody;throw e}
         }
         async function saveLeadRemote(record){
           try{await postSignupRemote(record);return true}
@@ -708,7 +722,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
               const res=await fetch(sheet+join+"action=entitlement&email="+encodeURIComponent(email)+"&courseId="+encodeURIComponent(courseId)+"&course="+encodeURIComponent(state.course.title||"Doanh nghiệp một người")+"&ts="+Date.now(),{cache:"no-store"});
               const payload=await res.json().catch(()=>({}));
               const data=payload&&payload.ok?payload.data:null;
-              if(data&&data.role)return {...(record||{}),...data,role:data.role==="premium"?"premium":"free",purchaseStatus:data.purchaseStatus||"not_paid",source:"course-entitlement-sheet"};
+              if(data&&data.role){const merged={...(record||{}),...data,role:data.role==="premium"?"premium":"free",purchaseStatus:data.purchaseStatus||"not_paid",source:"course-entitlement-sheet"};mirrorAccessToApi(merged,"course-entitlement-sheet-mirror");return merged}
             }
           }catch(e){}
           try{
@@ -734,7 +748,9 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const info=(prof.email&&String(prof.email).toLowerCase()===String(owner).toLowerCase())?{name:prof.name||"",contact:prof.contact||""}:{};
           try{
             const body=await postSignupSheet({action:"claimPremiumCode",code:raw,owner,name:info.name||"",contact:info.contact||"",courseId:courseAccessKey(),course:state.course.title||"Doanh nghiệp một người"});
-            return body.data||{};
+            const data={...(body.data||{}),email:owner,owner,role:"premium",entitlement:true,purchaseStatus:"paid",accessPackage:"premium",accessStatus:"active",courseId:courseAccessKey(),course:state.course.title||"Doanh nghiệp một người"};
+            await mirrorAccessToApi(data,"premium-code-sheet-mirror");
+            return data;
           }catch(e){
             if(e&&e.message!=="SHEET_API_MISSING"){if(e&&e.message==="CODE_ALREADY_USED")e.status=409;if(e&&e.message==="INVALID_PREMIUM_CODE")e.status=400;throw e}
           }

@@ -4,6 +4,7 @@
   const signupInboxKey = "ducpt_course_signup_inbox_v1";
   const signupSheetApiKey = "ducpt-signup-sheet-api";
   const signupSheetAdminKey = "ducpt-signup-sheet-admin-key";
+  const signupSheetCsvKey = "ducpt-signup-sheet-csv-url";
   const studentProfileKey = "ducpt-student-profile-v1";
   const registerKey = "ducpt_registrations_v1";
   const apiUrl = path => String(window.DUCPT_API_BASE || "").replace(/\/+$/, "") + path;
@@ -70,6 +71,10 @@
     if (key) url.searchParams.set("key", key);
     return url.toString();
   };
+  const sheetCsvUrl = () => {
+    try { return String(window.DUCPT_SIGNUP_SHEET_CSV_URL || localStorage.getItem(signupSheetCsvKey) || "").trim(); }
+    catch { return String(window.DUCPT_SIGNUP_SHEET_CSV_URL || "").trim(); }
+  };
   const postSheet = async payload => {
     const url = sheetApiUrl();
     if (!url) throw new Error("SHEET_API_MISSING");
@@ -81,6 +86,71 @@
     if (!data.ok) throw new Error(data.error || `Sheet HTTP ${response.status}`);
     return data;
   };
+  const parseCsv = text => {
+    const rows = [];
+    let row = [];
+    let cell = "";
+    let quote = false;
+    const value = String(text || "");
+    for (let i = 0; i < value.length; i += 1) {
+      const ch = value[i];
+      const next = value[i + 1];
+      if (quote && ch === '"' && next === '"') { cell += '"'; i += 1; continue; }
+      if (ch === '"') { quote = !quote; continue; }
+      if (!quote && ch === ",") { row.push(cell); cell = ""; continue; }
+      if (!quote && (ch === "\n" || ch === "\r")) {
+        if (ch === "\r" && next === "\n") i += 1;
+        row.push(cell);
+        if (row.some(x => String(x || "").trim())) rows.push(row);
+        row = [];
+        cell = "";
+        continue;
+      }
+      cell += ch;
+    }
+    row.push(cell);
+    if (row.some(x => String(x || "").trim())) rows.push(row);
+    return rows;
+  };
+  const headerKey = value => String(value || "").trim().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d")
+    .replace(/[^a-z0-9]+/g, "");
+  const readCsvField = (row, keys) => {
+    for (const key of keys) {
+      if (Object.prototype.hasOwnProperty.call(row, key) && String(row[key] || "").trim()) return String(row[key] || "").trim();
+    }
+    return "";
+  };
+  const normalizeSheetCsvRows = text => {
+    const rows = parseCsv(text);
+    if (rows.length < 2) return [];
+    const headers = rows[0].map(headerKey);
+    return rows.slice(1).map(cells => {
+      const raw = {};
+      headers.forEach((name, index) => { if (name) raw[name] = cells[index] || ""; });
+      const email = readCsvField(raw, ["email", "mail", "gmail", "taikhoan", "lienhe", "contact"]);
+      const contact = readCsvField(raw, ["contact", "lienhe", "sdt", "sodienthoai", "zalo", "phone"]);
+      const status = readCsvField(raw, ["status", "trangthai", "paymentstatus", "purchasestatus", "thanhtoan"]);
+      const pkg = readCsvField(raw, ["accesspackage", "package", "goiquyen", "goi", "plan", "quyen"]);
+      const role = readCsvField(raw, ["role", "vai", "plan", "quyen"]);
+      const premium = /premium|member|paid|success|received|complete|da mo|active/i.test([status, pkg, role].join(" "));
+      return {
+        orderId:readCsvField(raw, ["orderid", "id", "claimid", "madon", "ma"]),
+        name:readCsvField(raw, ["name", "hoten", "hovaten", "fullname", "ten"]),
+        email,
+        contact,
+        course:readCsvField(raw, ["course", "khoahoc", "sanpham", "product"]) || defaultCourseTitle,
+        courseId:readCsvField(raw, ["courseid", "makhoa", "courseids"]),
+        status:premium ? "paid" : (status || "free"),
+        purchaseStatus:premium ? "paid" : (status || "not_paid"),
+        role:premium ? "premium" : (role || "free"),
+        entitlement:premium,
+        accessPackage:premium ? "premium" : (pkg || "free"),
+        accessStatus:readCsvField(raw, ["accessstatus", "trangthaiquyen"]) || "active",
+        source:"google-sheet-csv"
+      };
+    }).filter(item => identityOf(item));
+  };
   const renderSheetBridgeSettings = () => {
     const view = document.getElementById("settings");
     if (!view || document.getElementById("signupSheetBridgeCard")) return;
@@ -88,19 +158,22 @@
     card.className = "card";
     card.id = "signupSheetBridgeCard";
     card.style.marginBottom = "14px";
-    card.innerHTML = `<div class="head"><div><h2>Danh sách học viên Google Sheet</h2><p>Trang khóa học gửi đăng ký vào Apps Script; Passport đọc lại ngay trong bảng Khách hàng.</p></div></div><div class="sheet-bridge-row"><label>Apps Script Web App URL<input class="searchbox" id="signupSheetApiUrl" placeholder="https://script.google.com/macros/s/.../exec"></label><label>Admin key nếu có<input class="searchbox" id="signupSheetAdminKey" type="password" placeholder="Để trống nếu Apps Script không đặt key"></label><button class="btn primary" id="signupSheetSave" type="button">Lưu & nạp</button></div><div class="sheet-bridge-status" id="signupSheetStatus"></div>`;
+    card.innerHTML = `<div class="head"><div><h2>Danh sách học viên Google Sheet</h2><p>Trang khóa học gửi đăng ký vào Apps Script; Passport đọc lại ngay trong bảng Khách hàng.</p></div></div><div class="sheet-bridge-row"><label>Apps Script Web App URL<input class="searchbox" id="signupSheetApiUrl" placeholder="https://script.google.com/macros/s/.../exec"></label><label>Admin key nếu có<input class="searchbox" id="signupSheetAdminKey" type="password" placeholder="Để trống nếu Apps Script không đặt key"></label><button class="btn primary" id="signupSheetSave" type="button">Lưu & nạp</button></div><label style="display:grid;gap:6px;margin-top:10px;font-size:12px;font-weight:800;color:var(--muted)">CSV URL dự phòng nếu Sheet được bật public<input class="searchbox" id="signupSheetCsvUrl" placeholder="https://docs.google.com/spreadsheets/d/.../gviz/tq?tqx=out:csv&gid=..."></label><div class="sheet-bridge-status" id="signupSheetStatus"></div>`;
     const fx = document.getElementById("fxCard");
     if (fx) fx.insertAdjacentElement("afterend", card);
     else view.insertAdjacentElement("afterbegin", card);
     const urlInput = card.querySelector("#signupSheetApiUrl");
     const keyInput = card.querySelector("#signupSheetAdminKey");
+    const csvInput = card.querySelector("#signupSheetCsvUrl");
     const status = card.querySelector("#signupSheetStatus");
     urlInput.value = sheetApiUrl();
     keyInput.value = sheetAdminKey();
+    csvInput.value = sheetCsvUrl();
     card.querySelector("#signupSheetSave")?.addEventListener("click", async () => {
       try {
         localStorage.setItem(signupSheetApiKey, String(urlInput.value || "").trim());
         localStorage.setItem(signupSheetAdminKey, String(keyInput.value || "").trim());
+        localStorage.setItem(signupSheetCsvKey, String(csvInput.value || "").trim());
         if (status) status.textContent = "Đã lưu. Đang nạp danh sách từ Google Sheet...";
         await loadRemoteSignups({ silent:true });
         if (status) status.textContent = `Đã nạp ${remoteSignups.length} dòng từ nguồn trung tâm.`;
@@ -359,6 +432,7 @@
       });
     };
     const listUrl = sheetUrl({ action:"list", ts:Date.now() });
+    const sheetErrors = [];
     if (listUrl) {
       try {
         const response = await fetch(listUrl, { cache:"no-store" });
@@ -369,11 +443,30 @@
         remoteSourceState.sheet = { loaded:true, count:sheetCount, error:"" };
         pushRows(body.data.map(item => ({ ...item, source:item.source || "google-sheet-signup" })));
       } catch (error) {
-        remoteSourceState.sheet = { loaded:false, count:0, error:error.message || "không nạp được" };
-        errors.push("Sheet: " + (error.message || "không nạp được"));
+        sheetErrors.push(error.message || "không nạp được Apps Script");
       }
     } else {
-      remoteSourceState.sheet = { loaded:false, count:0, error:"Chưa cấu hình Sheet" };
+      sheetErrors.push("Chưa cấu hình Sheet");
+    }
+    if (!sheetLoaded && sheetCsvUrl()) {
+      try {
+        const response = await fetch(sheetCsvUrl(), { cache:"no-store" });
+        const text = await response.text();
+        if (!response.ok) throw new Error(`CSV HTTP ${response.status}`);
+        const csvRows = normalizeSheetCsvRows(text);
+        if (!csvRows.length) throw new Error("CSV không có dòng học viên đọc được");
+        sheetLoaded = true;
+        sheetCount = csvRows.length;
+        remoteSourceState.sheet = { loaded:true, count:sheetCount, error:"CSV public" };
+        pushRows(csvRows);
+      } catch (error) {
+        sheetErrors.push(error.message || "không nạp được CSV");
+      }
+    }
+    if (!sheetLoaded) {
+      const sheetError = sheetErrors.join(" | ") || "không nạp được";
+      remoteSourceState.sheet = { loaded:false, count:0, error:sheetError };
+      errors.push("Sheet: " + sheetError);
     }
     try {
       const response = await fetch(apiUrl("/api/passport/course-signups"), { cache:"no-store" });

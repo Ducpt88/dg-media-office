@@ -20,6 +20,7 @@ const COURSE_ACCESS_MODE = String(process.env.DUCPT_COURSE_ACCESS_MODE || "priva
 const COURSE_VIDEO_TOKEN_SECRET = process.env.DUCPT_COURSE_VIDEO_TOKEN_SECRET || PREMIUM_CODE_SECRET;
 const SUPABASE_PUBLIC_URL = (process.env.DUCPT_SUPABASE_URL || process.env.SUPABASE_URL || "https://nfvewetbgdfmfajaqxev.supabase.co").replace(/\/+$/, "");
 const SUPABASE_PUBLIC_ANON_KEY = process.env.DUCPT_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "sb_publishable_bXANL2mh7qL74dnGCc1UWg_CiZk0URc";
+const DEFAULT_SIGNUP_SHEET_API = "https://script.google.com/macros/s/AKfycbwhlfuljWa6cnb5plFqbwzNwQu9LsbxVloXDcDLR7BROGFM6dHs5EfD_qp1c_1UDtZLmQ/exec";
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
@@ -58,7 +59,9 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === "GET" && url.pathname === "/api/passport/course-entitlement") {
-    sendJson(res, 200, { ok: true, data: findCourseEntitlement(url) });
+    findCourseEntitlement(url)
+      .then((data) => sendJson(res, 200, { ok: true, data }))
+      .catch((error) => sendJson(res, 500, { ok: false, error: error.message || "ENTITLEMENT_ERROR" }));
     return;
   }
 
@@ -587,7 +590,10 @@ async function issueCourseVideoToken(req, res) {
     sendJson(res, 404, { ok: false, error: "LESSON_NOT_FOUND" });
     return;
   }
-  const entitlement = findCourseEntitlementFor(identity.email, courseId || normalizeCourseId(data.course && (data.course.id || data.course.title)));
+  let entitlement = findCourseEntitlementFor(identity.email, courseId || normalizeCourseId(data.course && (data.course.id || data.course.title)));
+  if (lesson.access === "premium" && !entitlement.entitlement) {
+    entitlement = await findCourseEntitlementForWithSheet(identity.email, courseId || normalizeCourseId(data.course && (data.course.id || data.course.title)), entitlement);
+  }
   const paid = Boolean(entitlement && entitlement.entitlement);
   if (lesson.access === "premium" && !paid) {
     sendJson(res, 403, { ok: false, error: "PREMIUM_REQUIRED", data: entitlement });
@@ -1138,23 +1144,93 @@ function smtpClient(socket, servername) {
   };
 }
 
-function findCourseEntitlement(url) {
+async function findCourseEntitlement(url) {
   const wanted = normalizeEntitlementKey(url.searchParams.get("email") || url.searchParams.get("contact") || "");
   const wantedCourse = normalizeCourseId(url.searchParams.get("courseId") || url.searchParams.get("course") || "");
   if (!wanted) return { role: "guest", entitlement: false, purchaseStatus: "not_found" };
   const rows = readSignups();
   const identityRows = rows.filter((item) => identityKeys(item).includes(wanted));
   const row = identityRows.find((item) => courseMatches(item, wantedCourse));
-  if (!row) {
-    return {
+  const local = row ? entitlementPayload(row, wantedCourse) : {
       role: "free",
       entitlement: false,
       purchaseStatus: identityRows.length ? "course_not_granted" : "not_found",
       courseId: wantedCourse,
       courseIds: []
     };
-  }
-  return entitlementPayload(row, wantedCourse);
+  return findCourseEntitlementForWithSheet(wanted, wantedCourse, local);
+}
+
+async function findCourseEntitlementForWithSheet(email, wantedCourse, fallback) {
+  const local = fallback || findCourseEntitlementFor(email, wantedCourse);
+  if (local && local.entitlement) return local;
+  const sheet = await fetchSignupSheetEntitlement(email, wantedCourse).catch(() => null);
+  if (!sheet || !sheet.role) return local;
+  upsertSheetEntitlementSignup(sheet);
+  return sheet;
+}
+
+function signupSheetApiUrl() {
+  return String(process.env.DUCPT_SIGNUP_SHEET_API || DEFAULT_SIGNUP_SHEET_API || "").trim();
+}
+
+async function fetchSignupSheetEntitlement(email, wantedCourse) {
+  const api = signupSheetApiUrl();
+  if (!api || typeof fetch !== "function") return null;
+  const url = new URL(api);
+  url.searchParams.set("action", "entitlement");
+  url.searchParams.set("email", normalizeEntitlementKey(email));
+  if (wantedCourse) url.searchParams.set("courseId", normalizeCourseId(wantedCourse));
+  url.searchParams.set("ts", String(Date.now()));
+  const response = await fetch(url.toString(), { cache: "no-store" });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok || !payload.ok || !payload.data) return null;
+  const normalized = normalizeSheetEntitlementPayload(payload.data, wantedCourse);
+  if (!normalized.email) normalized.email = normalizeEntitlementKey(email);
+  return normalized;
+}
+
+function normalizeSheetEntitlementPayload(data, wantedCourse) {
+  const role = String(data.role || "").toLowerCase() === "premium" || data.entitlement ? "premium" : "free";
+  const courseIds = normalizeCourseIds(data.courseIds || data.courseId || wantedCourse);
+  const courseId = wantedCourse || courseIds[0] || normalizeCourseId(data.course || data.product || "");
+  return {
+    role,
+    entitlement: role === "premium",
+    purchaseStatus: role === "premium" ? "paid" : String(data.purchaseStatus || data.status || "not_paid"),
+    accessPackage: role === "premium" ? "premium" : normalizeAccessPackage(data.accessPackage || data.package || "free"),
+    accessStatus: normalizeAccessStatus(data.accessStatus || ""),
+    email: normalizeEntitlementKey(data.email || data.owner || ""),
+    name: String(data.name || ""),
+    contact: String(data.contact || ""),
+    course: String(data.course || data.product || ""),
+    courseId,
+    courseIds: courseIds.length ? courseIds : (courseId ? [courseId] : []),
+    source: "google-sheet-entitlement",
+    updatedAt: data.updatedAt || data.createdAt || new Date().toISOString()
+  };
+}
+
+function upsertSheetEntitlementSignup(entitlement) {
+  if (!entitlement || !entitlement.email) return;
+  const now = new Date().toISOString();
+  const rows = readSignups();
+  const record = {
+    ...entitlement,
+    id: entitlement.id || `SHEET-${hashForId(`${entitlement.email}|${entitlement.courseId || ""}`).slice(0, 12)}`,
+    orderId: entitlement.orderId || `SHEET-${hashForId(`${entitlement.email}|${entitlement.courseId || ""}`).slice(0, 12)}`,
+    source: entitlement.source || "google-sheet-entitlement",
+    createdAt: entitlement.createdAt || now,
+    updatedAt: now
+  };
+  const index = findSignupIndex(rows, record);
+  if (index >= 0) rows[index] = { ...rows[index], ...record, id: rows[index].id || record.id, createdAt: rows[index].createdAt || record.createdAt };
+  else rows.unshift(record);
+  fs.writeFileSync(SIGNUP_FILE, JSON.stringify(rows.slice(0, 1000), null, 2));
+}
+
+function hashForId(value) {
+  return crypto.createHash("sha1").update(String(value || "")).digest("hex");
 }
 
 function normalizeEntitlementKey(value) {
