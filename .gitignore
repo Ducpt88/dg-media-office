@@ -4,6 +4,13 @@ passport/course-videos.private.json
 passport/course-videos.private.*
 passport/uploads/
 
+# Repo nay LA GitHub Pages cua ducpt.com — moi file commit deu tai duoc tu Internet.
+# Secret va danh sach ma Premium bat buoc nam ngoai repo.
+passport/passport-secrets.private.json
+passport/premium-access.private.json
+passport/premium-code-claims.json
+*.private.json
+
 # Ho so Chrome dung khi audit — chua Login Data / Cookies / autofill, TUYET DOI khong day len
 .chrome-audit/
 .chrome-audit2/

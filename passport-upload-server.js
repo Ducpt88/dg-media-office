@@ -8,25 +8,38 @@ const net = require("net");
 const tls = require("tls");
 
 const ROOT = __dirname;
+
+// Nap .env TRUOC khi doc bat ky process.env nao. Truoc day loadDotEnv chay o cuoi khoi
+// hang so, nen moi gia tri khai trong .env (PORT, PASSPORT_DATA_DIR, cac secret) deu bi
+// bo qua im lang — sua .env ma khong thay gi doi la vi loi nay.
+loadDotEnv(path.join(ROOT, ".env"));
+
 const DATA_DIR = process.env.PASSPORT_DATA_DIR || path.join(ROOT, "passport");
 const SIGNUP_FILE = path.join(DATA_DIR, "course-signups.json");
 const COURSE_VIDEO_FILE = path.join(ROOT, "passport", "course-videos.json");
 const COURSE_VIDEO_PRIVATE_FILE = process.env.PASSPORT_COURSE_VIDEO_PRIVATE_FILE || path.join(DATA_DIR, "course-videos.private.json");
 const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 const PREMIUM_ACCESS_FILE = path.join(ROOT, "passport", "premium-access.json");
+const PREMIUM_ACCESS_PRIVATE_FILE = path.join(DATA_DIR, "premium-access.private.json");
 const PREMIUM_CODE_CLAIMS_FILE = path.join(DATA_DIR, "premium-code-claims.json");
-const PREMIUM_CODE_SECRET = process.env.DUCPT_PREMIUM_CODE_SECRET || "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
+const SECRET_FILE = path.join(DATA_DIR, "passport-secrets.private.json");
+
+fs.mkdirSync(DATA_DIR, { recursive: true });
+fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
+// KHONG duoc de secret mac dinh trong ma nguon: repo nay la GitHub Pages cua ducpt.com,
+// nen chinh file server nay tai duoc tai https://ducpt.com/passport-upload-server.js.
+// Secret nam trong DATA_DIR (da .gitignore), tu sinh lan dau, khong bao gio len web.
+const PREMIUM_CODE_SECRET = resolveSecret("premiumCode", process.env.DUCPT_PREMIUM_CODE_SECRET);
+const COURSE_VIDEO_TOKEN_SECRET = resolveSecret("courseVideoToken", process.env.DUCPT_COURSE_VIDEO_TOKEN_SECRET);
 const COURSE_ACCESS_MODE = String(process.env.DUCPT_COURSE_ACCESS_MODE || "private").toLowerCase();
-const COURSE_VIDEO_TOKEN_SECRET = process.env.DUCPT_COURSE_VIDEO_TOKEN_SECRET || PREMIUM_CODE_SECRET;
 const SUPABASE_PUBLIC_URL = (process.env.DUCPT_SUPABASE_URL || process.env.SUPABASE_URL || "https://nfvewetbgdfmfajaqxev.supabase.co").replace(/\/+$/, "");
 const SUPABASE_PUBLIC_ANON_KEY = process.env.DUCPT_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "sb_publishable_bXANL2mh7qL74dnGCc1UWg_CiZk0URc";
 const DEFAULT_SIGNUP_SHEET_API = "https://script.google.com/macros/s/AKfycbwhlfuljWa6cnb5plFqbwzNwQu9LsbxVloXDcDLR7BROGFM6dHs5EfD_qp1c_1UDtZLmQ/exec";
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
-fs.mkdirSync(DATA_DIR, { recursive: true });
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-loadDotEnv(path.join(ROOT, ".env"));
+migratePremiumAccessToPrivate();
 
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://${req.headers.host || `${HOST}:${PORT}`}`);
@@ -118,6 +131,11 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === "GET" && url.pathname === "/api/passport/health") {
+    sendJson(res, 200, systemHealth());
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/passport/sync-supabase") {
     syncSupabase(res).catch((error) => {
       sendJson(res, 500, { ok: false, error: error.message });
@@ -201,6 +219,127 @@ async function handleAssets(req, res) {
     return;
   }
   sendJson(res, 200, { ok: true, data: listUploads() });
+}
+
+/* ============================================================
+   KHAM SUC KHOE 5 TANG — dung 5 o trong so do he thong:
+   1 Database · 2 Authentication · 3 Email · 4 Kho luu tru · 5 Deployment
+   Tra ve JSON that (khong phai HTML), de trang web soi duoc tang nao dang chet.
+   Quy uoc mau: ok = chay that · warn = chay nhung tam bo · down = khong dung duoc.
+   ============================================================ */
+function systemHealth() {
+  const layers = [
+    healthDatabase(),
+    healthAuth(),
+    healthEmail(),
+    healthStorage(),
+    healthDeployment()
+  ];
+  const down = layers.filter((l) => l.state === "down").map((l) => l.id);
+  const warn = layers.filter((l) => l.state === "warn").map((l) => l.id);
+  return {
+    ok: down.length === 0,
+    service: "ducpt-passport-api",
+    checkedAt: new Date().toISOString(),
+    uptimeSeconds: Math.round(process.uptime()),
+    state: down.length ? "down" : (warn.length ? "warn" : "ok"),
+    down,
+    warn,
+    layers
+  };
+}
+
+function healthDatabase() {
+  const signups = readSignups();
+  const sb = databaseStatus();
+  const onDisk = fs.existsSync(SIGNUP_FILE);
+  return {
+    id: "database",
+    order: 1,
+    label: "1. Cơ sở dữ liệu",
+    tech: sb.configured ? "Supabase + file JSON" : "File JSON trên ổ đĩa máy chủ",
+    state: sb.configured ? "ok" : "warn",
+    detail: sb.configured
+      ? `Supabase đã đấu nối · ${signups.length} bản ghi học viên`
+      : `Chưa đấu Supabase (thiếu SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY) — dữ liệu học viên chỉ nằm trong 1 file JSON trên máy chủ, mất máy là mất sạch`,
+    metrics: { signupRows: signups.length, signupFileExists: onDisk, supabaseConfigured: sb.configured },
+    fix: sb.configured ? "" : "Điền SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY vào .env rồi khởi động lại máy chủ"
+  };
+}
+
+function healthAuth() {
+  const adminEmails = String(process.env.DUCPT_ADMIN_EMAILS || process.env.ADMIN_EMAILS || "")
+    .split(/[,;\s]+/).map((x) => x.trim()).filter(Boolean);
+  const hasAdminKey = Boolean(String(process.env.DUCPT_COURSE_ADMIN_KEY || "").trim());
+  const secretsFromFile = !String(process.env.DUCPT_COURSE_VIDEO_TOKEN_SECRET || "").trim();
+  const state = adminEmails.length ? "ok" : "warn";
+  return {
+    id: "auth",
+    order: 2,
+    label: "2. Đăng nhập",
+    tech: "Supabase Auth + khóa quản trị",
+    state,
+    detail: adminEmails.length
+      ? `${adminEmails.length} email quản trị · khóa ký video ${secretsFromFile ? "lấy từ file riêng trên máy chủ" : "lấy từ biến môi trường"}`
+      : "Chưa khai DUCPT_ADMIN_EMAILS — quyền quản trị đang phụ thuộc hoàn toàn vào khóa tĩnh",
+    metrics: { adminEmailCount: adminEmails.length, courseAdminKeySet: hasAdminKey, supabaseUrl: SUPABASE_PUBLIC_URL },
+    fix: adminEmails.length ? "" : "Khai DUCPT_ADMIN_EMAILS trong .env (danh sách email được quyền quản trị)"
+  };
+}
+
+function healthEmail() {
+  const cfg = smtpConfig();
+  return {
+    id: "email",
+    order: 3,
+    label: "3. Email",
+    tech: "SMTP",
+    state: cfg ? "ok" : "down",
+    detail: cfg
+      ? `Đã cấu hình ${cfg.host}:${cfg.port} · gửi từ ${cfg.from}`
+      : "CHƯA cấu hình SMTP — học viên đăng ký xong KHÔNG nhận được email nào, hệ thống im lặng bỏ qua",
+    metrics: { configured: Boolean(cfg), host: cfg ? cfg.host : "", from: cfg ? cfg.from : "" },
+    fix: cfg ? "" : "Điền SMTP_HOST / SMTP_USER / SMTP_PASS / MAIL_FROM vào .env rồi khởi động lại máy chủ"
+  };
+}
+
+function healthStorage() {
+  let uploadCount = 0;
+  let uploadBytes = 0;
+  try {
+    for (const name of fs.readdirSync(UPLOAD_DIR)) {
+      const st = safeStat(path.join(UPLOAD_DIR, name));
+      if (st && st.isFile()) { uploadCount += 1; uploadBytes += st.size; }
+    }
+  } catch {}
+  const secretLeakRisk = fs.existsSync(path.join(ROOT, ".git")) && fs.existsSync(path.join(ROOT, "CNAME"));
+  return {
+    id: "storage",
+    order: 4,
+    label: "4. Kho lưu trữ",
+    tech: "GitHub Pages (web tĩnh) + đĩa máy chủ (file học viên)",
+    state: "warn",
+    detail: `${uploadCount} tệp trong kho tải lên (${(uploadBytes / 1048576).toFixed(1)} MB) · nằm trên đĩa máy chủ, chưa có bản sao lưu tự động`
+      + (secretLeakRisk ? " · CẢNH BÁO: thư mục này vừa là repo GitHub Pages — mọi file commit đều tải được từ Internet" : ""),
+    metrics: { uploadCount, uploadBytes, dataDir: DATA_DIR, servedByGithubPages: secretLeakRisk },
+    fix: "Tách mã nguồn máy chủ ra khỏi repo GitHub Pages + bật sao lưu định kỳ thư mục dữ liệu"
+  };
+}
+
+function healthDeployment() {
+  const onLocalhost = /^(127\.0\.0\.1|localhost)$/i.test(HOST);
+  return {
+    id: "deployment",
+    order: 5,
+    label: "5. Nơi chạy máy chủ",
+    tech: onLocalhost ? "Máy tính cá nhân (qua đường hầm tạm)" : `Máy chủ ${HOST}:${PORT}`,
+    state: onLocalhost ? "down" : "ok",
+    detail: onLocalhost
+      ? `Máy chủ đang chạy ở ${HOST}:${PORT} — tức là trên MÁY CÁ NHÂN. Tắt máy / mất mạng / đổi đường hầm là toàn bộ khóa học, đăng ký, video ngừng hoạt động và địa chỉ API cũ chết vĩnh viễn`
+      : `Chạy trên máy chủ thật ${HOST}:${PORT}`,
+    metrics: { host: HOST, port: PORT, pid: process.pid, node: process.version },
+    fix: onLocalhost ? "Đưa passport-upload-server.js lên Render/VPS (đã có sẵn render.yaml) rồi trỏ DUCPT_API_BASE về địa chỉ cố định" : ""
+  };
 }
 
 function databaseStatus() {
@@ -876,12 +1015,52 @@ function verifySignedPremiumCode(code) {
 }
 
 function readLegacyPremiumCodeHashes() {
+  // Chi doc tu file RIENG trong DATA_DIR. File cong khai passport/premium-access.json
+  // truoc day vua chua hash vua chua ma goc trong truong "note" — ai mo
+  // https://ducpt.com/passport/premium-access.json cung lay duoc ma Premium.
   try {
-    const data = JSON.parse(fs.readFileSync(PREMIUM_ACCESS_FILE, "utf8"));
+    const data = JSON.parse(fs.readFileSync(PREMIUM_ACCESS_PRIVATE_FILE, "utf8"));
     return Array.isArray(data.premiumCodeHashes) ? data.premiumCodeHashes.map((x) => String(x).toLowerCase()) : [];
   } catch {
     return [];
   }
+}
+
+// Chuyen danh sach hash ma Premium tu file cong khai sang file rieng (chay 1 lan).
+// Khach da co ma cu van dung duoc; ma chi khong con nam tren web nua.
+function migratePremiumAccessToPrivate() {
+  try {
+    if (fs.existsSync(PREMIUM_ACCESS_PRIVATE_FILE)) return;
+    const raw = JSON.parse(fs.readFileSync(PREMIUM_ACCESS_FILE, "utf8"));
+    const hashes = Array.isArray(raw.premiumCodeHashes) ? raw.premiumCodeHashes : [];
+    fs.writeFileSync(PREMIUM_ACCESS_PRIVATE_FILE, JSON.stringify({
+      premiumCodeHashes: hashes,
+      note: "File RIENG — khong bao gio commit. Doi ma: thay hash sha256(ma) vao mang nay.",
+      migratedFrom: "passport/premium-access.json",
+      migratedAt: new Date().toISOString()
+    }, null, 2), "utf8");
+    console.log(`[premium] da chuyen ${hashes.length} hash ma Premium sang file rieng: ${PREMIUM_ACCESS_PRIVATE_FILE}`);
+  } catch (error) {
+    console.error("[premium] khong chuyen duoc premium-access sang file rieng:", error.message);
+  }
+}
+
+// Doc secret tu bien moi truong; neu khong co thi lay/tu sinh trong file rieng DATA_DIR.
+// Khong bao gio dung gia tri mac dinh viet cung trong ma nguon.
+function resolveSecret(name, envValue) {
+  const fromEnv = String(envValue || "").trim();
+  if (fromEnv) return fromEnv;
+  let store = {};
+  try { store = JSON.parse(fs.readFileSync(SECRET_FILE, "utf8")) || {}; } catch {}
+  if (typeof store[name] === "string" && store[name].length >= 32) return store[name];
+  store[name] = crypto.randomBytes(32).toString("hex");
+  try {
+    fs.writeFileSync(SECRET_FILE, JSON.stringify(store, null, 2), "utf8");
+    console.log(`[secret] da tu sinh secret "${name}" va luu vao ${SECRET_FILE}`);
+  } catch (error) {
+    console.error(`[secret] KHONG ghi duoc ${SECRET_FILE}: ${error.message} — secret chi song trong phien nay`);
+  }
+  return store[name];
 }
 
 function readPremiumCodeClaims() {
