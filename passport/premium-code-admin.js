@@ -17,28 +17,6 @@
   function load() { try { var a = JSON.parse(localStorage.getItem(KEY) || "[]"); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
   function save(a) { try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {} }
   function ngay(s) { try { var d = new Date(s); return isNaN(d) ? "" : d.toLocaleString("vi-VN", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" }); } catch (e) { return ""; } }
-  function sheetApiUrl() {
-    try { return String(window.DUCPT_SIGNUP_SHEET_API || localStorage.getItem("ducpt-signup-sheet-api") || "").trim(); }
-    catch (e) { return String(window.DUCPT_SIGNUP_SHEET_API || "").trim(); }
-  }
-  function sheetAdminKey() {
-    try { return String(localStorage.getItem("ducpt-signup-sheet-admin-key") || "").trim(); }
-    catch (e) { return ""; }
-  }
-  async function makePremiumCodeOnServer(name, note) {
-    var url = sheetApiUrl();
-    var key = sheetAdminKey();
-    if (!url) throw new Error("Chưa cấu hình Apps Script URL trong Passport.");
-    if (!key) throw new Error("Chưa dán Admin key trong Passport > Cài đặt.");
-    var res = await fetch(url, {
-      method: "POST",
-      cache: "no-store",
-      body: JSON.stringify({ action: "makePremiumCode", adminKey: key, name: name, note: note })
-    });
-    var body = await res.json().catch(function () { return {}; });
-    if (!body.ok || !body.data || !body.data.code) throw new Error(body.error || ("Sheet HTTP " + res.status));
-    return body.data.code;
-  }
 
   var css = ''
     + '#pcodeCard .pc-new{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px}'
@@ -84,7 +62,12 @@
     var name = String(($("pcodeName") || {}).value || "").trim();
     var note = String(($("pcodeNote") || {}).value || "").trim();
     var st = $("pcodeStatus");
-    makePremiumCodeOnServer(name, note).then(function (code) {
+    if (!window.DGPremiumCodes || !window.DGPremiumCodes.make) {
+      if (st) { st.style.color = "#b42318"; st.textContent = "Bộ tạo mã cũ đã tắt để không lộ secret. Cần tạo mã qua server/Apps Script."; }
+      if (btn) btn.disabled = false; return;
+    }
+    window.DGPremiumCodes.make().then(function (code) {
+      if (!code) throw new Error("Bộ tạo mã cũ đã tắt để không lộ secret. Cần tạo mã qua server/Apps Script.");
       var ds = load();
       ds.unshift({ code: code, name: name, note: note, used: false, createdAt: new Date().toISOString() });
       save(ds); ve();
