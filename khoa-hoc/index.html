@@ -547,8 +547,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
   </script>
   <script>
     (function(){
-      // Rollback public course mode: keep the simple public YouTube renderer above active.
-      return;
+      const PUBLIC_COURSE_VIEW=true;
       const $=id=>document.getElementById(id);
       const els={playerFrame:$("playerFrame"),lessonList:$("lessonList"),lessonCount:$("lessonCount"),currentTitle:$("currentTitle"),currentDesc:$("currentDesc"),metricVideos:$("metricVideos"),metricDuration:$("metricDuration"),metricStatus:$("metricStatus"),courseTitle:$("courseTitle"),courseGoal:$("courseGoal"),registerTitle:$("registerTitle"),coursePrice:$("coursePrice")};
       const sourceMetric=()=>document.querySelectorAll(".course-meta .metric strong")[1];
@@ -894,7 +893,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       /* ---- Lớp quyền: guest (chưa đăng ký) | free | premium | admin ---- */
       const ROLE_KEY="ducpt-role", MAIL_KEY="ducpt-email", EMAIL_LEADS_KEY="ducpt-email-leads-v1", STUDENT_PROFILE_KEY="ducpt-student-profile-v1";
       function storedStudentRole(){try{const prof=studentProfile();if(prof&&prof.role==="premium")return"premium";const r=localStorage.getItem(ROLE_KEY);return r==="premium"||localStorage.getItem("ducpt-premium-code-ok")==="1"?"premium":"free"}catch(e){return"free"}}
-      function getRole(){try{if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get()){const mode=window.DUCPTAdminSession.getViewMode?window.DUCPTAdminSession.getViewMode():"admin";return mode==="student"?storedStudentRole():"admin"}const r=localStorage.getItem(ROLE_KEY);const base=["free","premium","admin"].includes(r)?r:"guest";/* Mã Premium mở khóa bền vững trên máy này, kể cả khi chưa đăng nhập Passport (cầu nối auth có thể ép về guest). */if(base!=="admin"&&localStorage.getItem("ducpt-premium-code-ok")==="1")return "premium";return base}catch(e){return "guest"}}
+      function getRole(){try{if(PUBLIC_COURSE_VIEW)return"premium";if(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get()){const mode=window.DUCPTAdminSession.getViewMode?window.DUCPTAdminSession.getViewMode():"admin";return mode==="student"?storedStudentRole():"admin"}const r=localStorage.getItem(ROLE_KEY);const base=["free","premium","admin"].includes(r)?r:"guest";/* Mã Premium mở khóa bền vững trên máy này, kể cả khi chưa đăng nhập Passport (cầu nối auth có thể ép về guest). */if(base!=="admin"&&localStorage.getItem("ducpt-premium-code-ok")==="1")return "premium";return base}catch(e){return "guest"}}
       function hasLinkedSession(){try{return !!(window.DUCPTAdminSession&&window.DUCPTAdminSession.get&&window.DUCPTAdminSession.get())}catch(e){return false}}
       function switchLinkedSessionToStudent(){try{const api=window.DUCPTAdminSession;if(api&&api.get&&api.get()&&typeof api.setViewMode==="function")api.setViewMode("student")}catch(e){}}
       function getEmail(){try{return localStorage.getItem(MAIL_KEY)||""}catch(e){return ""}}
@@ -909,7 +908,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       window.addEventListener("ducpt:admin-session-ready",()=>{refreshCourseUi();syncAdminStudentAccess()});
       setTimeout(syncAdminStudentAccess,350);
       window.addEventListener("storage",e=>{if(e.key===ROLE_KEY||e.key===MAIL_KEY||e.key===STUDENT_PROFILE_KEY)refreshCourseUi()});
-      function canPlay(lesson){const r=getRole();if(r==="guest")return false;if(lesson.access==="premium")return r==="premium"||r==="admin";return true}
+      function canPlay(lesson){if(PUBLIC_COURSE_VIEW)return true;const r=getRole();if(r==="guest")return false;if(lesson.access==="premium")return r==="premium"||r==="admin";return true}
       function isAdminMode(){return false}
       function paintAdminBar(){const bar=document.getElementById("adminBar");if(bar)bar.remove();try{localStorage.removeItem("ducpt-adminui")}catch(e){}}
       function regModal(open){const card=document.getElementById("dang-ky-hoc");let bd=document.getElementById("regBd");
