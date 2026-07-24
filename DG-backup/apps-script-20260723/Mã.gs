@@ -17,7 +17,7 @@
 var SIGNUP_SHEET_NAME = "CourseSignups";
 var CLAIM_SHEET_NAME = "PremiumCodeClaims";
 var ADMIN_KEY = "";
-var PREMIUM_CODE_SECRET = "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
+var PREMIUM_CODE_SECRET = PropertiesService.getScriptProperties().getProperty("PREMIUM_CODE_SECRET") || "";
 
 var SIGNUP_HEADERS = [
   "createdAt", "updatedAt", "email", "name", "contact", "note",
