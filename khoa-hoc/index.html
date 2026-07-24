@@ -565,7 +565,19 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       /* Nạp sẵn API YouTube ngay từ đầu để lúc học viên bấm là trình phát sẵn sàng,
          phát được kèm tiếng (tạo player trong cú chạm mà không phải chờ tải script). */
       try{setTimeout(function(){try{loadYTApi()}catch(e){}},1200)}catch(e){}
-      async function loadPackagedCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch(apiUrl("/api/passport/course-videos"),{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
+      /* Doc noi dung khoa hoc: UU TIEN Google Sheet (Founder them video la tu len, khong can token GitHub),
+         thieu thi moi doc file tinh course-videos.json. */
+      async function fetchCourseFromSheet(){
+        try{
+          const sheet=String(window.DUCPT_SIGNUP_SHEET_API||"").trim();if(!sheet)return null;
+          const cid=(typeof courseAccessKey==="function"?courseAccessKey():"doanh-nghiep-mot-nguoi")||"doanh-nghiep-mot-nguoi";
+          const res=await fetch(sheet+(sheet.indexOf("?")>=0?"&":"?")+"action=courseVideos&courseId="+encodeURIComponent(cid)+"&ts="+Date.now(),{cache:"no-store"});
+          const j=await res.json().catch(()=>null);
+          if(j&&j.ok&&j.data&&Array.isArray(j.data.lessons)&&j.data.lessons.length)return j.data;
+        }catch(e){}
+        return null;
+      }
+      async function loadPackagedCourse(){let payload=null;const fromSheet=await fetchCourseFromSheet();if(fromSheet){payload={ok:true,data:fromSheet}}else{try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch(apiUrl("/api/passport/course-videos"),{cache:"no-store"});payload=await res.json()}catch{payload=null}}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
          (localStorage) truoc khi duoc day len web. Trinh duyet nay co phien quan tri
          thi gop bai nhap vao ngay — luu xong mo trang ngoai la thay va hoc duoc luon.
          Khach thuong van chi thay du lieu da len web that. */
@@ -691,17 +703,29 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
             return row?{role:"premium",entitlement:true,purchaseStatus:"paid",name:row.name||"",contact:row.contact||"",email:key,courseId,courseIds:[courseId],source:"local-passport-order"}:null;
           }catch(e){return null}
         }
+        /* Ma may nay (chong chia se tai khoan). Sinh 1 lan, luu ben tren may. */
+        function ducptDeviceId(){
+          try{
+            let id=localStorage.getItem("ducpt-device-id");
+            if(!id){id="dev-"+(Date.now().toString(36))+"-"+Math.random().toString(36).slice(2,10);localStorage.setItem("ducpt-device-id",id)}
+            return id;
+          }catch(e){return "dev-nostore"}
+        }
         async function resolveStudentAccess(email,record){
-          const local=localPaidEntitlement(email);if(local)return {...(record||{}),...local};
+          const local=localPaidEntitlement(email);if(local){window.__ducptDeviceBlocked=false;return {...(record||{}),...local}}
           try{
             const sheet=signupSheetApiUrl();
             if(sheet){
               const courseId=courseAccessKey();
               const join=sheet.indexOf("?")>=0?"&":"?";
-              const res=await fetch(sheet+join+"action=entitlement&email="+encodeURIComponent(email)+"&courseId="+encodeURIComponent(courseId)+"&course="+encodeURIComponent(state.course.title||"Doanh nghiệp một người")+"&ts="+Date.now(),{cache:"no-store"});
+              const res=await fetch(sheet+join+"action=entitlement&email="+encodeURIComponent(email)+"&courseId="+encodeURIComponent(courseId)+"&course="+encodeURIComponent(state.course.title||"Doanh nghiệp một người")+"&deviceId="+encodeURIComponent(ducptDeviceId())+"&ts="+Date.now(),{cache:"no-store"});
               const payload=await res.json().catch(()=>({}));
               const data=payload&&payload.ok?payload.data:null;
-              if(data&&data.role)return {...(record||{}),...data,role:data.role==="premium"?"premium":"free",purchaseStatus:data.purchaseStatus||"not_paid",source:"course-entitlement-sheet"};
+              if(data&&data.role){
+                /* Bi chan vi tai khoan dang mo o may khac -> nho de hien thong bao rieng. */
+                window.__ducptDeviceBlocked=!!data.deviceBlocked;
+                return {...(record||{}),...data,role:data.role==="premium"?"premium":"free",purchaseStatus:data.purchaseStatus||"not_paid",deviceBlocked:!!data.deviceBlocked,source:"course-entitlement-sheet"};
+              }
             }
           }catch(e){}
           try{
@@ -1142,6 +1166,10 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
           const isPrem=lesson.access==="premium";
           els.playerFrame.innerHTML=`<div class="gate reg"><div class="ic">🔐</div><b>${isPrem?"Bài học PREMIUM":"Đăng ký để xem bài học"}</b><p>${isPrem?"Đã trả phí và có mã Premium? Nhập email + mã Premium bên dưới. Mã sẽ khóa cho đúng email đầu tiên dùng.":"Bài này miễn phí — chỉ cần tạo tài khoản DUCPT là xem được ngay."}</p><a href="#dang-ky-hoc">Đăng ký miễn phí</a>${isPrem?`<div class="pcode"><input class="owner" id="pcodeOwner" type="email" autocomplete="email" placeholder="Email người được cấp mã"><input id="pcodeInput" type="text" autocomplete="off" placeholder="Nhập mã Premium"><button id="pcodeBtn" type="button">Mở khóa</button></div><div id="pcodeStatus" class="pcode-st"></div>`:""}</div>`;
           if(isPrem){const pbtn=document.getElementById("pcodeBtn"),pinp=document.getElementById("pcodeInput"),pst=document.getElementById("pcodeStatus");const doCode=async()=>{const fn=window.__ducptTryPremiumCode;if(typeof fn!=="function"){if(pst){pst.style.color="#fecaca";pst.textContent="Chưa sẵn sàng, tải lại trang rồi thử lại."}return}const ok=await fn(pinp&&pinp.value,pst);if(ok)setTimeout(()=>selectPackagedLesson(id),500)};if(pbtn)pbtn.addEventListener("click",doCode);if(pinp)pinp.addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();doCode()}})}
+          return}
+        /* Tai khoan Premium nhung dang mo o MAY KHAC -> chan chia se tai khoan. */
+        if(lesson.access==="premium"&&window.__ducptDeviceBlocked){head();els.currentDesc.textContent="Tài khoản Premium này đang được mở ở một thiết bị khác.";
+          els.playerFrame.innerHTML=`<div class="gate up"><div class="ic">🔒</div><b>Tài khoản đang mở ở máy khác</b><p>Mỗi tài khoản Premium chỉ dùng trên <b>1 thiết bị</b> để chống chia sẻ tài khoản. Bạn đang đăng nhập trên một máy khác với máy đã kích hoạt.</p><a href="https://zalo.me/0963249467">Liên hệ Zalo 0963249467 để chuyển sang máy này</a><div class="pcode-hint">Nếu đây là máy chính của bạn, nhắn admin reset thiết bị giúp.</div></div>`;
           return}
         /* Đã đăng ký nhưng chưa nâng cấp, bấm bài PREMIUM */
         if(lesson.access==="premium"&&!canPlay(lesson)){head();els.currentDesc.textContent="Bài học này dành cho học viên đã nâng cấp Premium.";
