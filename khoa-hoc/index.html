@@ -547,6 +547,8 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
   </script>
   <script>
     (function(){
+      // Rollback public course mode: keep the simple public YouTube renderer above active.
+      return;
       const $=id=>document.getElementById(id);
       const els={playerFrame:$("playerFrame"),lessonList:$("lessonList"),lessonCount:$("lessonCount"),currentTitle:$("currentTitle"),currentDesc:$("currentDesc"),metricVideos:$("metricVideos"),metricDuration:$("metricDuration"),metricStatus:$("metricStatus"),courseTitle:$("courseTitle"),courseGoal:$("courseGoal"),registerTitle:$("registerTitle"),coursePrice:$("coursePrice")};
       const sourceMetric=()=>document.querySelectorAll(".course-meta .metric strong")[1];
