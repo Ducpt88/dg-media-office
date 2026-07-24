@@ -395,71 +395,20 @@ function listSignups_() {
 }
 
 function getCourseVideos_(p) {
-  /* Founder chot (2026-07-24): KHOA TOAN BO - phai dang nhap moi xem noi dung.
-     - Khach la (khong co email hoc vien hop le): CHI tra course meta, lessons rong -> web hien "dang nhap de xem".
-     - Hoc vien Free: hien bai, bai Free co video; bai Premium bi go youtubeId (khoa).
-     - Hoc vien Premium + dung may da khoa: mo het video.
-     Nho vay ID video Premium KHONG bao gio nam o cho cong khai. */
+  /* Tra ve noi dung khoa hoc {course,lessons} tu Sheet. Cong khai (khong can key). */
   var key = normalizeCourseId_(p.courseId || p.course || "doanh-nghiep-mot-nguoi");
-  var full = null;
-  var crows = objects_(sheet_(COURSE_SHEET_NAME, COURSE_HEADERS));
-  for (var i = 0; i < crows.length; i++) {
-    if (String(crows[i].courseKey || "") === key) {
-      try { full = JSON.parse(crows[i].json || "null"); } catch (e) {}
-      break;
+  var rows = objects_(sheet_(COURSE_SHEET_NAME, COURSE_HEADERS));
+  for (var i = 0; i < rows.length; i++) {
+    if (String(rows[i].courseKey || "") === key) {
+      var parsed = null;
+      try { parsed = JSON.parse(rows[i].json || "null"); } catch (e) {}
+      if (parsed && Array.isArray(parsed.lessons)) {
+        return { ok: true, data: parsed, updatedAt: rows[i].updatedAt || "" };
+      }
+      return { ok: true, data: null };
     }
   }
-  if (!full || !Array.isArray(full.lessons)) return { ok: true, data: null };
-  var courseMeta = full.course || {};
-
-  /* Xac dinh nguoi xem tu email hoc vien. */
-  var email = normEmail_(p.email);
-  var viewer = null;
-  if (email) {
-    var ssheet = sheet_(SIGNUP_SHEET_NAME, SIGNUP_HEADERS);
-    var srows = objects_(ssheet);
-    var found = findSignup_(srows, email, key);
-    if (found) viewer = { row: found.row, index: found.index, sheet: ssheet };
-  }
-
-  /* Khach la -> khoa het, chi tra meta de trang hien loi moi dang nhap. */
-  if (!viewer) {
-    return { ok: true, data: { course: courseMeta, lessons: [] }, requireLogin: true };
-  }
-
-  /* Da dang nhap -> tinh quyen Premium + khoa thiet bi (gan may dau, chan may khac). */
-  var row = viewer.row;
-  var isPrem = String(row.role || "").toLowerCase() === "premium" ||
-    (String(row.accessPackage || "").toLowerCase() === "premium" && bool_(row.entitlement));
-  var premiumOk = false, deviceBlocked = false;
-  if (isPrem) {
-    var lockOn = String(row.deviceLock || "on").toLowerCase() !== "off";
-    var dev = String(p.deviceId || "").trim();
-    if (!lockOn) { premiumOk = true; }
-    else if (!dev) { premiumOk = false; }
-    else {
-      var stored = String(row.deviceId || "").trim();
-      if (!stored) {
-        row.deviceId = dev; row.deviceBoundAt = now_(); row.updatedAt = now_();
-        updateObject_(viewer.sheet, SIGNUP_HEADERS, viewer.index, row);
-        premiumOk = true;
-      } else if (stored === dev) { premiumOk = true; }
-      else { deviceBlocked = true; }
-    }
-  }
-
-  var lessons = full.lessons.map(function (l) {
-    var out = {}; for (var k in l) out[k] = l[k];
-    var premLesson = String(l.access || "").toLowerCase() === "premium";
-    if (premLesson && !premiumOk) {
-      /* Go MOI dau moi video ra khoi du lieu tra ve -> khong lo ID video Premium. */
-      out.youtubeId = ""; out.youtubeUrl = ""; out.videoUrl = ""; out.publicUrl = ""; out.storageUrl = ""; out.assetUrl = "";
-      out.locked = true;
-    }
-    return out;
-  });
-
-  return { ok: true, data: { course: courseMeta, lessons: lessons }, premium: premiumOk, deviceBlocked: deviceBlocked };
+  return { ok: true, data: null };
 }
 
 function saveCourseVideos_(body) {
