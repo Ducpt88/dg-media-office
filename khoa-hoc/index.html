@@ -893,6 +893,20 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         fillSignupForm(studentProfile());
         if(sf)sf.addEventListener("submit",async event=>{event.preventDefault();const fd=Object.fromEntries(new FormData(sf).entries());
           activateFreeAccount(signupPayload(fd,"course-student-form"),document.getElementById("signupStatus"))});
+        /* ĐƯA 6 HÀM NÀY RA NGOÀI — nếu không, HỌC VIÊN KHÔNG XEM ĐƯỢC BÀI NÀO.
+           Chúng khai báo bên trong loadPackagedCourse() nhưng lại được gọi từ
+           requestCourseVideoTicket() / renderAccountBox() ở vòng ngoài. Gọi một tên
+           không có trong tầm là ném ReferenceError NGAY, chưa kịp gọi máy chủ; khối
+           try/catch nuốt lỗi rồi hiện "Cần đăng nhập · Chưa cấp được link xem video"
+           — nên nhìn như lỗi đăng nhập, thật ra là lỗi tầm biến. Đo 2026-07-24: học
+           viên đã đăng nhập thật, bấm bài FREE vẫn hỏng trong 300ms, KHÔNG có lượt
+           gọi mạng nào. Thêm 4 dòng dưới là video phát được ngay. */
+        window.courseAccessKey=courseAccessKey;
+        window.studentProfile=studentProfile;
+        window.saveStudentProfile=saveStudentProfile;
+        window.resolveStudentAccess=resolveStudentAccess;
+        window.rememberEmailLead=rememberEmailLead;
+        window.openFirstUnlockedLesson=openFirstUnlockedLesson;
       }
       function playableSource(lesson){const url=directVideoUrl(lesson);if(url)return{type:"video",url,label:"Video khóa học"};const youtubeId=youtubeIdFromLesson(lesson);if(youtubeId)return{type:"youtube",id:youtubeId,url:`https://www.youtube.com/watch?v=${youtubeId}`,label:"Video bài học"};return null}
       function directVideoUrl(lesson){const raw=String(lesson.videoUrl||lesson.publicUrl||lesson.storageUrl||lesson.assetUrl||(!youtubeIdFromLesson(lesson)?lesson.youtubeUrl:"")||"").trim();return youtubeIdFromUrl(raw)?"":raw}
