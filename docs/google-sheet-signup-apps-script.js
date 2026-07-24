@@ -33,7 +33,10 @@ var SPREADSHEET_ID = "1krMiiuOqtG_zXy8nXIdbtOG0ULNPOqlD5m9xPgODFt4";
 
 var SIGNUP_SHEET_NAME = "CourseSignups";
 var CLAIM_SHEET_NAME = "PremiumCodeClaims";
-var ADMIN_KEY = "ducpt-sheet-1bfae5ee0cdd5996ffff";
+/* KHONG BAO GIO commit ADMIN_KEY that vao day — file nay bi phuc vu cong khai tren website.
+   Key that chi dat trong trinh soan Apps Script (ban dang chay tren Google) + Passport localStorage.
+   Repo/file cong khai chi giu placeholder. */
+var ADMIN_KEY = "__DAT_TRONG_APPS_SCRIPT_EDITOR__";
 var PREMIUM_CODE_SECRET = "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
 
 var SIGNUP_HEADERS = [
