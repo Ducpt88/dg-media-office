@@ -11,13 +11,14 @@
   const defaultCourseTitle = "Doanh nghiệp một người";
   const normalizeCourseId = value => String(value || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 80);
   const courseIdFrom = item => normalizeCourseId(item && (item.courseId || (Array.isArray(item.courseIds) && item.courseIds[0]) || item.product || item.course || defaultCourseId)) || defaultCourseId;
-  const seed = { orderId:"MANUAL-20260711-001", name:"Học viên chưa cập nhật tên", contact:"", product:defaultCourseTitle, courseId:defaultCourseId, courseIds:[defaultCourseId], amount:3000000, currency:"VND", paymentSource:"manual", status:"paid", accessPackage:"premium", accessStatus:"active", entitlement:true, createdAt:"2026-07-11T00:00:00+07:00" };
+  const legacySeedOrderId = "MANUAL-20260711-001";
   let records = [];
   let remoteSignups = [];
   let remoteSignupError = "";
+  let remoteSourceState = { sheet:{ loaded:false, count:0, error:"" }, api:{ loaded:false, count:0, error:"" } };
   let courseCatalog = [{ id:defaultCourseId, title:defaultCourseTitle }];
   try { records = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
-  records = records.map((item, index) => {
+  records = records.filter(item => item && item.orderId !== legacySeedOrderId).map((item, index) => {
     const courseId = courseIdFrom(item);
     return {
       ...item,
@@ -29,7 +30,6 @@
       accessStatus:item.accessStatus || "active"
     };
   });
-  if (!records.some(item => item.orderId === seed.orderId)) records.push(seed);
   localStorage.setItem(key, JSON.stringify(records));
   let editingOrderId = "";
   const form = document.getElementById("paymentForm");
@@ -43,11 +43,12 @@
     #customerRows .access-select:focus{outline:0;border-bottom-color:var(--blue)}
     #customerRows .row,#customerRowsHead{grid-template-columns:1.1fr 1.15fr 1.1fr .9fr .7fr}.customer-actions{display:flex!important;gap:6px;padding:7px!important}
     .customer-actions button{padding:6px 9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-weight:700;cursor:pointer}.customer-actions .delete{color:#b42318}
+    .student-source-panel{margin:0 0 14px}.student-source-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.student-source-box{padding:12px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}.student-source-box b{display:block;font-size:18px}.student-source-box span{display:block;color:var(--muted);font-size:11px}.student-source-box small{display:block;margin-top:5px;color:#92400e;font-size:10.5px;line-height:1.45}.supabase-member-admin{margin:14px 0}.supabase-member-login{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end}.supabase-member-login label{display:grid;gap:6px;font-size:12px;font-weight:800;color:var(--muted)}.supabase-member-login .searchbox{width:100%;min-width:0}.supabase-member-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0}.supabase-member-metrics .metric{padding:12px}.supabase-member-toolbar{display:flex;gap:8px;align-items:center;margin:10px 0}.supabase-member-toolbar .searchbox{flex:1;min-width:160px}
     .sheet-bridge-row{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end}.sheet-bridge-row label{display:grid;gap:6px;font-size:12px;font-weight:800;color:var(--muted)}.sheet-bridge-row .searchbox{width:100%}.sheet-bridge-status{font-size:12px;color:var(--muted);margin-top:10px}
     .signup-inbox-alert{position:fixed;right:18px;bottom:18px;z-index:80;display:none;align-items:center;gap:10px;max-width:min(360px,calc(100vw - 36px));padding:12px 14px;border:1px solid #dbeafe;border-radius:12px;background:#fff;box-shadow:0 18px 50px rgba(15,23,42,.18);cursor:pointer;text-align:left}
     .signup-inbox-alert.show{display:flex}.signup-inbox-alert b{display:block;font-size:13px}.signup-inbox-alert em{font-style:normal;color:#2563eb}.signup-inbox-alert span{display:block;color:var(--muted);font-size:11px}.signup-inbox-alert i{display:grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#eff6ff;color:#2563eb;font-style:normal;font-weight:900;flex:none}
     .signup-inbox-panel{margin:14px 0}.signup-inbox-panel .head{margin-bottom:10px}.signup-inbox-list{display:grid;gap:8px}.signup-inbox-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:#fbfdff}.signup-inbox-item b{display:block;font-size:13px}.signup-inbox-item span{display:block;margin-top:2px;color:var(--muted);font-size:11px}.signup-inbox-item button{padding:7px 10px;border:1px solid #dbeafe;border-radius:9px;background:#eff6ff;color:#1d4ed8;font-weight:800;cursor:pointer}.signup-inbox-note{margin-top:9px;color:#92400e;font-size:11px}
-    @media(max-width:900px){#paymentForm .grid2{grid-template-columns:1fr}#paymentForm label{grid-template-columns:135px minmax(0,1fr)}}
+    @media(max-width:900px){#paymentForm .grid2{grid-template-columns:1fr}#paymentForm label{grid-template-columns:135px minmax(0,1fr)}.student-source-grid,.supabase-member-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.supabase-member-login{grid-template-columns:1fr}}
   `;
   document.head.appendChild(style);
   const sheetApiUrl = () => {
@@ -107,6 +108,51 @@
         if (status) status.textContent = "Chưa nạp được Sheet: " + (error.message || "không rõ lỗi");
       }
     });
+  };
+  const countLocalRows = () => {
+    const seen = new Set();
+    records.concat(readLeads()).concat(readSignupInbox()).forEach(item => {
+      const k = leadKeyOf(item);
+      if (identityOf(item) && k) seen.add(k);
+    });
+    return seen.size;
+  };
+  const renderDataSourcePanel = () => {
+    const view = document.getElementById("customers");
+    if (!view) return;
+    let panel = document.getElementById("studentSourcePanel");
+    if (!panel) {
+      panel = document.createElement("article");
+      panel.id = "studentSourcePanel";
+      panel.className = "card student-source-panel";
+      const metrics = view.querySelector(".metrics");
+      if (metrics) metrics.insertAdjacentElement("beforebegin", panel);
+      else view.insertAdjacentElement("afterbegin", panel);
+    }
+    const sheet = remoteSourceState.sheet || {};
+    const api = remoteSourceState.api || {};
+    const totalShown = readAllLeads().length + records.filter(item => item.entitlement || paidStatus(item)).length;
+    const sourceNote = source => source.loaded ? "Đã nạp" : (source.error || "Chưa nạp");
+    panel.innerHTML = `<div class="head"><div><h2>Nguồn dữ liệu học viên</h2><p>Trang này đang gom học viên từ Sheet, API Passport, dữ liệu trình duyệt và tài khoản Supabase.</p></div><span class="badge">${totalShown} đang hiển thị</span></div>`
+      + `<div class="student-source-grid">`
+      + `<div class="student-source-box"><b>${Number(sheet.count || 0)}</b><span>Google Sheet</span><small>${esc(sourceNote(sheet))}</small></div>`
+      + `<div class="student-source-box"><b>${Number(api.count || 0)}</b><span>Passport API</span><small>${esc(sourceNote(api))}</small></div>`
+      + `<div class="student-source-box"><b>${countLocalRows()}</b><span>Trình duyệt hiện tại</span><small>Đơn hàng/lead lưu trên máy đang mở admin</small></div>`
+      + `<div class="student-source-box"><b id="studentSourceSupabaseCount">${window.SUPABASE_PROFILES ? window.SUPABASE_PROFILES.length : "?"}</b><span>Tài khoản Supabase</span><small>Đăng nhập panel bên dưới để tải danh sách thành viên</small></div>`
+      + `</div>`;
+  };
+  const renderSupabaseMemberPanelShell = () => {
+    const view = document.getElementById("customers");
+    if (!view || document.getElementById("supabaseMemberAdmin")) return;
+    const panel = document.createElement("article");
+    panel.id = "supabaseMemberAdmin";
+    panel.className = "card supabase-member-admin";
+    panel.innerHTML = `<div class="head"><div><h2>Thành viên tài khoản Supabase</h2><p>Danh sách tài khoản đăng ký trên website, dùng để đổi Free/Premium/Admin.</p></div><span class="badge">Member</span></div>`
+      + `<div id="supabaseGate"><div class="supabase-member-login"><label>Email Supabase Admin<input class="searchbox" id="supabaseEmail" type="email" autocomplete="email"></label><label>Mật khẩu<input class="searchbox" id="supabasePassword" type="password" autocomplete="current-password"></label><button class="btn primary" id="supabaseLoginBtn" type="button">Đăng nhập</button></div></div><div class="sheet-bridge-status" id="supabaseStatus"></div>`
+      + `<div id="supabasePanel" style="display:none"><div class="supabase-member-metrics"><article class="metric"><span>Tổng thành viên</span><strong id="supabaseCount">0</strong></article><article class="metric"><span>Free</span><strong id="supabafreeCount">0</strong></article><article class="metric"><span>Premium</span><strong id="supabasePremiumCount">0</strong></article><article class="metric"><span>Admin</span><strong id="supabaseAdminCount">0</strong></article></div><div class="supabase-member-toolbar"><input class="searchbox" id="supabaseSearch" placeholder="Tìm email, tên, số điện thoại"><button class="btn" id="supabaseRefresh" type="button">Tải lại</button><button class="btn" id="supabaseLogout" type="button">Đăng xuất</button></div><div class="table"><div class="row headrow"><span>Email</span><span>Họ tên</span><span>Liên hệ</span><span>Khóa đăng ký</span><span>Ghi chú</span><span>Quyền</span><span>Ngày tạo</span></div><div id="supabaseRows"></div></div></div>`;
+    const table = view.querySelector(".table");
+    if (table) table.insertAdjacentElement("beforebegin", panel);
+    else view.appendChild(panel);
   };
   const amountInput = document.querySelector('#paymentForm [name="amount"]');
   if (amountInput) {
@@ -320,10 +366,14 @@
         if (!response.ok || !body.ok || !Array.isArray(body.data)) throw new Error(body.error || `Sheet HTTP ${response.status}`);
         sheetLoaded = true;
         sheetCount = body.data.length;
+        remoteSourceState.sheet = { loaded:true, count:sheetCount, error:"" };
         pushRows(body.data.map(item => ({ ...item, source:item.source || "google-sheet-signup" })));
       } catch (error) {
+        remoteSourceState.sheet = { loaded:false, count:0, error:error.message || "không nạp được" };
         errors.push("Sheet: " + (error.message || "không nạp được"));
       }
+    } else {
+      remoteSourceState.sheet = { loaded:false, count:0, error:"Chưa cấu hình Sheet" };
     }
     try {
       const response = await fetch(apiUrl("/api/passport/course-signups"), { cache:"no-store" });
@@ -331,8 +381,10 @@
       if (!response.ok || !body.ok || !Array.isArray(body.data)) throw new Error(body.error || `HTTP ${response.status}`);
       apiLoaded = true;
       apiCount = body.data.length;
+      remoteSourceState.api = { loaded:true, count:apiCount, error:"" };
       pushRows(body.data);
     } catch (error) {
+      remoteSourceState.api = { loaded:false, count:0, error:error.message || "không nạp được" };
       errors.push("API: " + (error.message || "không nạp được"));
     }
     if (sheetLoaded || apiLoaded) {
@@ -347,6 +399,7 @@
       render();
       if (!options.silent && statusNode) statusNode.textContent = "Chưa nạp được Sheet/API. Bảng vẫn hiển thị dữ liệu đang có trong Passport.";
     }
+    renderDataSourcePanel();
   };
   const syncCourseEntitlement = async record => {
     if (!paidStatus(record)) return { ok:true, skipped:true, reason:"not_paid" };
@@ -552,6 +605,7 @@
     if (rows) rows.innerHTML = paidRows.concat(leadRows).join("") || '<div class="row"><span>Chưa có học viên/lead</span><span>—</span><span>—</span><span>—</span><span>—</span></div>';
     renderSignupInboxPanel(freeLeads);
     showSignupInboxAlert(freeLeads.length);
+    renderDataSourcePanel();
   };
   form?.addEventListener("submit", async event => {
     event.preventDefault();
@@ -723,7 +777,7 @@
   const reloadLocalRecords = () => {
     let next = [];
     try { next = JSON.parse(localStorage.getItem(key) || "[]"); } catch {}
-    records = (Array.isArray(next) ? next : []).map((item, index) => {
+    records = (Array.isArray(next) ? next : []).filter(item => item && item.orderId !== legacySeedOrderId).map((item, index) => {
       const courseId = courseIdFrom(item);
       return {
         ...item,
@@ -735,10 +789,7 @@
         accessStatus:item.accessStatus || "active"
       };
     });
-    if (!records.some(item => item.orderId === seed.orderId)) {
-      records.push(seed);
-      try { localStorage.setItem(key, JSON.stringify(records)); } catch {}
-    }
+    try { localStorage.setItem(key, JSON.stringify(records)); } catch {}
   };
   const refreshCustomerRows = () => {
     reloadLocalRecords();
@@ -752,10 +803,18 @@
   window.addEventListener("pageshow", refreshCustomerRows);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshCustomerRows(); });
   window.addEventListener("ducpt:settings", render);
+  window.addEventListener("ducpt:supabase-profiles", event => {
+    const count = Array.isArray(event.detail?.rows) ? event.detail.rows.length : 0;
+    const node = document.getElementById("studentSourceSupabaseCount");
+    if (node) node.textContent = String(count);
+    renderDataSourcePanel();
+  });
   document.getElementById("cockpitRefresh")?.addEventListener("click", () => { loadRemoteSignups(); render(); syncCourseEntitlements(); syncPaidRecordsToDGOffice(); });
   loadCourseCatalog();
   renderSheetBridgeSettings();
+  renderSupabaseMemberPanelShell();
   render();
+  renderDataSourcePanel();
   setTimeout(() => loadRemoteSignups({silent:true}), 250);
   setTimeout(() => syncCourseEntitlements({silent:true}), 500);
   setTimeout(() => syncPaidRecordsToDGOffice({silent:true}), 800);
