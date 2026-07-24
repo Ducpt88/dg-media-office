@@ -18,3 +18,7 @@ passport/premium-code-claims.json
 
 .chrome-verify*/
 test-results/
+
+# Local passport API logs must never be published by GitHub Pages.
+passport-api.log
+passport-api.log.err
