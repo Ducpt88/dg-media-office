@@ -14,7 +14,7 @@ const SIGNUP_FILE = path.join(DATA_DIR, "course-signups.json");
 const COURSE_VIDEO_FILE = path.join(ROOT, "passport", "course-videos.json");
 const PREMIUM_ACCESS_FILE = path.join(ROOT, "passport", "premium-access.json");
 const PREMIUM_CODE_CLAIMS_FILE = path.join(DATA_DIR, "premium-code-claims.json");
-const PREMIUM_CODE_SECRET = process.env.DUCPT_PREMIUM_CODE_SECRET || "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
+const PREMIUM_CODE_SECRET = process.env.DUCPT_PREMIUM_CODE_SECRET || "";
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
@@ -581,6 +581,7 @@ function premiumCodeLooksValid(code) {
 }
 
 function verifySignedPremiumCode(code) {
+  if (!PREMIUM_CODE_SECRET) return false;
   const match = code.match(/^DGP-([A-Z0-9]{4,12})-([0-9A-F]{6})$/);
   if (!match) return false;
   return sha256(`${match[1]}|${PREMIUM_CODE_SECRET}`).slice(0, 6).toUpperCase() === match[2];

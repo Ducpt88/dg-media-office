@@ -3,7 +3,7 @@
    Gan mot the "Ma Premium" vao trang Khach hang. Tao ma cho tung nguoi tra phi,
    xem danh sach, copy, danh dau da dung, xoa. Ma luu o localStorage may Founder
    (danh sach de Founder nho ai duoc ma nao); ban than ma van chay tren may hoc vien
-   nho chu ky (assets/ducpt-premium-codes.js) — khong can may chu, khong can dang lai file.
+   2026-07-24: khong tao ma bang secret client-side nua. Secret phai nam o Apps Script/API.
    ============================================================ */
 (function () {
   "use strict";
@@ -63,11 +63,11 @@
     var note = String(($("pcodeNote") || {}).value || "").trim();
     var st = $("pcodeStatus");
     if (!window.DGPremiumCodes || !window.DGPremiumCodes.make) {
-      if (st) { st.style.color = "#b42318"; st.textContent = "Chưa nạp bộ tạo mã. Tải lại trang."; }
+      if (st) { st.style.color = "#b42318"; st.textContent = "Bộ tạo mã cũ đã tắt để không lộ secret. Cần tạo mã qua server/Apps Script."; }
       if (btn) btn.disabled = false; return;
     }
     window.DGPremiumCodes.make().then(function (code) {
-      if (!code) throw new Error("Không tạo được mã (trình duyệt cũ?)");
+      if (!code) throw new Error("Bộ tạo mã cũ đã tắt để không lộ secret. Cần tạo mã qua server/Apps Script.");
       var ds = load();
       ds.unshift({ code: code, name: name, note: note, used: false, createdAt: new Date().toISOString() });
       save(ds); ve();
