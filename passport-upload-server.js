@@ -455,7 +455,7 @@ function setCorsHeaders(res) {
   const origin = process.env.CORS_ORIGIN || "*";
   res.setHeader("Access-Control-Allow-Origin", origin);
   res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization,X-DUCPT-Student-Email,X-DUCPT-Course-Admin-Key,Range");
   res.setHeader("Vary", "Origin");
 }
 
@@ -1376,7 +1376,13 @@ function sanitizeLessonForPublic(lesson, course = {}) {
 }
 
 function publicLessonId(lesson) {
-  const stable = [lesson && lesson.id, lesson && lesson.title, lesson && lesson.sort].filter(Boolean).join("|");
+  const stable = [
+    lesson && lesson.module,
+    lesson && lesson.moduleNo,
+    lesson && lesson.sort,
+    lesson && lesson.lessonNo,
+    lesson && lesson.title
+  ].map((value) => String(value || "").trim().toLowerCase()).join("|");
   return `lesson-${fnvHash(stable)}`;
 }
 
@@ -1428,6 +1434,7 @@ function normalizeCourseData(input) {
   const lessons = Array.isArray(input && input.lessons) ? input.lessons : seed.lessons;
   return {
     course: {
+      ...course,
       title: String(course.title || seed.course.title).slice(0, 180),
       price: String(course.price || seed.course.price).slice(0, 80),
       contact: String(course.contact || seed.course.contact).slice(0, 160),

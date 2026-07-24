@@ -2189,13 +2189,14 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     const course = full.course || {};
     const lessons = Array.isArray(full.lessons) ? full.lessons : [];
     const hash = (value) => { let h=2166136261; const text=String(value||""); for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)} return (h>>>0).toString(16).padStart(8,"0") };
+    const publicKey = (lesson) => [lesson.module, lesson.moduleNo, lesson.sort, lesson.lessonNo, lesson.title].map((value) => String(value || "").trim().toLowerCase()).join("|");
     return {
       ...full,
       accessMode: "private",
       lessons: lessons.map((lesson) => {
         const row = { ...lesson };
         ["youtubeUrl","youtubeId","url","videoUrl","publicUrl","storageUrl","assetUrl","privateVideoUrl","privateVideoId","sourceUrl","playbackId","muxPlaybackId","cloudflareStreamId","cloudflareId","bunnyVideoId","bunnyId"].forEach((key) => { delete row[key]; });
-        row.id = "lesson-" + hash([lesson.id, lesson.title, lesson.sort].filter(Boolean).join("|"));
+        row.id = "lesson-" + hash(publicKey(lesson));
         row.sourceType = "private";
         row.videoAccess = "token";
         if (/ytimg\.com|youtube\.com|youtu\.be|videodelivery\.net|bunnycdn\.com|mediadelivery\.net|mux\.com/i.test(String(row.thumbnail || ""))) row.thumbnail = course.cover || "";

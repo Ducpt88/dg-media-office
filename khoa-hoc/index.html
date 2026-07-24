@@ -554,6 +554,11 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       const sourceMetric=()=>document.querySelectorAll(".course-meta .metric strong")[1];
       const state={course:{},lessons:[]};
       const apiUrl=path=>String(window.DUCPT_API_BASE||"").replace(/\/+$/,"")+path;
+      const normLessonKey=value=>String(value||"").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d");
+      const lessonSlotKey=item=>[item&&item.module,item&&item.moduleNo,item&&item.sort,item&&item.lessonNo,item&&item.title].map(normLessonKey).join("|");
+      const lessonSourceKey=item=>normLessonKey(item&&(item.youtubeId||item.youtubeUrl||item.privateVideoUrl||item.videoUrl||item.publicUrl||item.storageUrl||item.assetUrl||""));
+      function mergeLessonView(primary,fallback){const next={...(fallback||{}),...(primary||{})};["youtubeId","youtubeUrl","privateVideoUrl","videoUrl","publicUrl","storageUrl","assetUrl","thumbnail","duration","description","objective","type"].forEach(k=>{if((!next[k]||!String(next[k]).trim())&&fallback&&fallback[k])next[k]=fallback[k]});return next}
+      function mergeAdminDraftLessons(serverLessons,draftLessons){const out=(Array.isArray(serverLessons)?serverLessons:[]).slice();const byId=new Map(),bySlot=new Map(),bySource=new Map();const indexLesson=(item,idx)=>{const id=String((item&&item.id)||(item&&item.youtubeId)||"");if(id)byId.set(id,idx);const slot=lessonSlotKey(item);if(slot.replace(/\|/g,""))bySlot.set(slot,idx);const src=lessonSourceKey(item);if(src)bySource.set(src,idx)};out.forEach(indexLesson);(Array.isArray(draftLessons)?draftLessons:[]).forEach(item=>{if(!item||item.status!=="published")return;const id=String(item.id||item.youtubeId||"");const slot=lessonSlotKey(item);const src=lessonSourceKey(item);let idx=(id&&byId.has(id))?byId.get(id):(slot.replace(/\|/g,"")&&bySlot.has(slot))?bySlot.get(slot):(src&&bySource.has(src))?bySource.get(src):-1;if(idx>=0){out[idx]=mergeLessonView(out[idx],item);indexLesson(out[idx],idx)}else{const next={...item,_chuaLenWeb:true};out.push(next);indexLesson(next,out.length-1)}});return out}
       window.__coursePackagerReady=true;
       if(els.playerFrame)els.playerFrame.addEventListener("contextmenu",e=>e.preventDefault());
       /* Tách đăng nhập và đăng ký: login chỉ email/vào lại, signup mới mở form đủ thông tin. */
@@ -575,10 +580,10 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
         const phienQT=JSON.parse(localStorage.getItem("ducpt-admin-session")||"null");
         if(phienQT&&phienQT.role==="owner"&&Date.now()<Number(phienQT.expiresAt)){
           const nhap=JSON.parse(localStorage.getItem("ducpt_course_videos_draft_v1")||"null");
-          const coSan=new Set((data.lessons||[]).map(x=>String(x.id||x.youtubeId||"")));
-          const them=((nhap&&nhap.lessons)||[]).filter(x=>x&&x.status==="published"&&!coSan.has(String(x.id||x.youtubeId||"")));
-          if(them.length){
-            data.lessons=(data.lessons||[]).concat(them.map(x=>({...x,_chuaLenWeb:true})));
+          const before=(data.lessons||[]).length;
+          data.lessons=mergeAdminDraftLessons(data.lessons||[],(nhap&&nhap.lessons)||[]);
+          const them=Math.max(0,(data.lessons||[]).length-before);
+          if(them){
             if(nhap.course&&Array.isArray(nhap.course.modules)&&nhap.course.modules.length>((data.course||{}).modules||[]).length){
               data.course={...(data.course||{}),modules:nhap.course.modules};
             }

@@ -139,7 +139,7 @@
   },
   "lessons": [
     {
-      "id": "lesson-b4907365",
+      "id": "lesson-712f5552",
       "lessonNo": 1,
       "sort": 1,
       "module": "M1",
@@ -163,7 +163,7 @@
       "videoAccess": "token"
     },
     {
-      "id": "lesson-dbc92ff9",
+      "id": "lesson-44326cd8",
       "lessonNo": 2,
       "sort": 2,
       "module": "M7",
@@ -186,7 +186,7 @@
       "videoAccess": "token"
     },
     {
-      "id": "lesson-8079b31f",
+      "id": "lesson-2db00c51",
       "lessonNo": 3,
       "sort": 3,
       "module": "M7",
@@ -209,7 +209,7 @@
       "videoAccess": "token"
     },
     {
-      "id": "lesson-09dcc3b2",
+      "id": "lesson-802b139a",
       "lessonNo": 4,
       "sort": 4,
       "module": "M7",
@@ -232,7 +232,7 @@
       "videoAccess": "token"
     },
     {
-      "id": "lesson-b6501794",
+      "id": "lesson-c59acd24",
       "lessonNo": 5,
       "sort": 5,
       "module": "M7",
@@ -255,7 +255,7 @@
       "videoAccess": "token"
     },
     {
-      "id": "lesson-d5e3f019",
+      "id": "lesson-aad0b3d5",
       "lessonNo": 6,
       "sort": 6,
       "module": "M1",
