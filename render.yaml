@@ -5,7 +5,7 @@ services:
     plan: starter
     buildCommand: ""
     startCommand: node passport-upload-server.js
-    healthCheckPath: /api/passport/course-signups
+    healthCheckPath: /api/passport/health
     disks:
       - name: passport-data
         mountPath: /var/data
@@ -40,4 +40,14 @@ services:
       - key: MAIL_FROM
         sync: false
       - key: MAIL_REPLY_TO
+        sync: false
+      - key: GITHUB_TOKEN
+        sync: false
+      - key: GITHUB_OWNER
+        sync: false
+      - key: GITHUB_REPO
+        sync: false
+      - key: GITHUB_BRANCH
+        sync: false
+      - key: GITHUB_COURSE_VIDEO_PATH
         sync: false

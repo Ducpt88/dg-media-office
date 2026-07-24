@@ -39,6 +39,14 @@ const DEFAULT_SIGNUP_SHEET_API = "https://script.google.com/macros/s/AKfycbwhlfu
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
+// Xuat ban course-videos.json len GitHub Pages: GITHUB_TOKEN CHI song trong .env may chu,
+// khong bao gio dua ra trinh duyet — thay the hoan toan cho token GitHub tung nhap tren UI.
+const GITHUB_TOKEN = String(process.env.GITHUB_TOKEN || "").trim();
+const GITHUB_OWNER = process.env.GITHUB_OWNER || "Ducpt88";
+const GITHUB_REPO = process.env.GITHUB_REPO || "dg-media-office";
+const GITHUB_BRANCH = process.env.GITHUB_BRANCH || "main";
+const GITHUB_COURSE_VIDEO_PATH = process.env.GITHUB_COURSE_VIDEO_PATH || "passport/course-videos.json";
+
 migratePremiumAccessToPrivate();
 
 const server = http.createServer((req, res) => {
@@ -119,6 +127,13 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === "POST" && url.pathname === "/api/passport/course-videos/publish") {
+    publishCourseVideos(req, res).catch((error) => {
+      sendJson(res, 500, { ok: false, error: error.message || "COURSE_VIDEO_PUBLISH_ERROR" });
+    });
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/passport/course-videos/import-youtube") {
     importYoutube(req, res).catch((error) => {
       sendJson(res, 500, { ok: false, error: error.message });
@@ -146,9 +161,42 @@ const server = http.createServer((req, res) => {
   serveStatic(req, res, url.pathname);
 });
 
-server.listen(PORT, HOST, () => {
-  console.log(`Passport upload server running at http://${HOST}:${PORT}/passport/`);
-});
+/* Kiem tra email ngay tren dong lenh, khong can khoi dong may chu:
+     node passport-upload-server.js --test-email dia-chi@cua-ban.com
+   Dien SMTP vao .env roi chay lenh nay — hop thu co thu la tang 3 da song. */
+const testEmailArg = process.argv.indexOf("--test-email");
+if (testEmailArg >= 0) {
+  const to = String(process.argv[testEmailArg + 1] || "").trim();
+  const cfg = smtpConfig();
+  if (!to) {
+    console.error("Thieu dia chi nhan. Vi du: node passport-upload-server.js --test-email ban@gmail.com");
+    process.exit(2);
+  }
+  if (!cfg) {
+    console.error("CHUA CAU HINH SMTP. Can dien du 4 dong trong .env: SMTP_HOST, SMTP_USER, SMTP_PASS, MAIL_FROM");
+    process.exit(2);
+  }
+  console.log(`Dang gui thu thu qua ${cfg.host}:${cfg.port} (${cfg.secure ? "SSL" : cfg.starttls ? "STARTTLS" : "khong ma hoa"}) ...`);
+  smtpSend(cfg, {
+    to,
+    subject: "DUCPT — thu kiem tra tang Email",
+    text: "Neu ban doc duoc thu nay thi tang 3 (Email) cua ducpt.com da hoat dong.",
+    html: "<p>Neu ban doc duoc thu nay thi <b>tang 3 (Email)</b> cua ducpt.com da hoat dong.</p>"
+  }).then((messageId) => {
+    console.log(`THANH CONG — da gui toi ${to} (message-id ${messageId})`);
+    console.log("Kiem tra ca hop thu Spam neu chua thay.");
+    process.exit(0);
+  }).catch((error) => {
+    console.error(`THAT BAI — ${error.message}`);
+    console.error("Gmail: phai bat 2 lop bao mat roi tao 'App password' 16 ky tu, khong dung mat khau thuong.");
+    process.exit(1);
+  });
+} else {
+  server.listen(PORT, HOST, () => {
+    console.log(`Passport upload server running at http://${HOST}:${PORT}/passport/`);
+    console.log(`Kham suc khoe 5 tang: http://${HOST}:${PORT}/api/passport/health`);
+  });
+}
 
 async function handleUpload(req, res, url) {
   if (!(await requestHasCourseAdmin(req))) {
@@ -859,7 +907,22 @@ function requestHasCourseAdminKey(req) {
   return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
+/* CANH BAO — "dia chi 127.0.0.1" KHONG chung minh nguoi goi dang ngoi o may nay.
+   May chu nay chay sau cloudflared (`cloudflared tunnel --url http://127.0.0.1:8891`)
+   nam CUNG MOT MAY. Moi yeu cau tu Internet di qua duong ham deu den voi
+   `req.socket.remoteAddress === "127.0.0.1"` — vi ben kia dau day la cloudflared,
+   khong phai khach. Neu tin loopback la "nguoi nha" thi:
+     - /passport/uploads/* (video khoa hoc tra phi) tai duoc tu Internet, khong can dang nhap;
+     - /api/passport/course-videos/publish commit thang len repo ducp t.com => CHIEM CA WEBSITE.
+   Vi vay: mac dinh KHONG tin loopback. Chi tin khi chu may khai ro `DUCPT_TRUST_LOCAL=1`
+   VA yeu cau khong mang dau vet di qua proxy. */
+const PROXY_HEADERS = ["x-forwarded-for", "x-forwarded-host", "x-forwarded-proto",
+                       "x-real-ip", "cf-connecting-ip", "cf-ray", "forwarded"];
+
 function isLocalRequest(req) {
+  if (!/^(1|true|yes)$/i.test(String(process.env.DUCPT_TRUST_LOCAL || "").trim())) return false;
+  const headers = (req && req.headers) || {};
+  if (PROXY_HEADERS.some((h) => headers[h])) return false;   // di qua proxy => khong phai nguoi nha
   const addr = String(req.socket && req.socket.remoteAddress || "");
   return ["127.0.0.1", "::1", "::ffff:127.0.0.1"].includes(addr);
 }
@@ -1605,6 +1668,59 @@ async function saveCourseVideos(req, res) {
   fs.writeFileSync(COURSE_VIDEO_PRIVATE_FILE, JSON.stringify(data, null, 2), "utf8");
   fs.writeFileSync(COURSE_VIDEO_FILE, JSON.stringify(sanitizeCourseDataForPublic(data), null, 2), "utf8");
   sendJson(res, 200, { ok: true, data });
+}
+
+/* Thay the cho viec trinh duyet tu commit thang len api.github.com bang token luu
+   trong localStorage. Gio may chu giu GITHUB_TOKEN trong .env, tu ghi dia phuong
+   ROI commit ban cong khai (da sanitize) len GitHub de GitHub Pages phuc vu dung noi dung. */
+async function publishCourseVideos(req, res) {
+  const allowed = isLocalRequest(req) || await requestHasCourseAdmin(req);
+  if (!allowed) {
+    sendJson(res, 401, { ok: false, error: "ADMIN_LOGIN_REQUIRED" });
+    return;
+  }
+  if (!GITHUB_TOKEN) {
+    sendJson(res, 500, { ok: false, error: "GITHUB_TOKEN_NOT_CONFIGURED", message: "May chu chua co GITHUB_TOKEN trong .env — khong the xuat ban len website" });
+    return;
+  }
+  const body = await readJsonBodyAsync(req);
+  const data = normalizeCourseData(body);
+  const publicData = sanitizeCourseDataForPublic(data);
+  fs.mkdirSync(path.dirname(COURSE_VIDEO_PRIVATE_FILE), { recursive: true });
+  fs.writeFileSync(COURSE_VIDEO_PRIVATE_FILE, JSON.stringify(data, null, 2), "utf8");
+  fs.writeFileSync(COURSE_VIDEO_FILE, JSON.stringify(publicData, null, 2), "utf8");
+  await commitCourseVideosToGithub(publicData);
+  sendJson(res, 200, { ok: true, data });
+}
+
+async function commitCourseVideosToGithub(publicData) {
+  const apiBase = `https://api.github.com/repos/${encodeURIComponent(GITHUB_OWNER)}/${encodeURIComponent(GITHUB_REPO)}/contents/${GITHUB_COURSE_VIDEO_PATH.split("/").map(encodeURIComponent).join("/")}`;
+  const headers = {
+    accept: "application/vnd.github+json",
+    authorization: `Bearer ${GITHUB_TOKEN}`,
+    "x-github-api-version": "2022-11-28"
+  };
+  const currentRes = await fetch(`${apiBase}?ref=${encodeURIComponent(GITHUB_BRANCH)}`, { headers });
+  let current = {};
+  if (currentRes.status !== 404) {
+    current = await currentRes.json().catch(() => ({}));
+    if (!currentRes.ok) throw new Error(current.message || `GITHUB_READ_FAILED_${currentRes.status}`);
+  }
+  const putBody = {
+    message: `Update course videos ${new Date().toISOString()}`,
+    content: Buffer.from(JSON.stringify(publicData, null, 2) + "\n", "utf8").toString("base64"),
+    branch: GITHUB_BRANCH,
+    committer: { name: "DUCPT Passport", email: "passport@ducpt.com" }
+  };
+  if (current.sha) putBody.sha = current.sha;
+  const putRes = await fetch(apiBase, {
+    method: "PUT",
+    headers: { ...headers, "content-type": "application/json" },
+    body: JSON.stringify(putBody)
+  });
+  const putPayload = await putRes.json().catch(() => ({}));
+  if (!putRes.ok) throw new Error(putPayload.message || `GITHUB_COMMIT_FAILED_${putRes.status}`);
+  return putPayload;
 }
 
 function sanitizeCourseDataForPublic(data) {
