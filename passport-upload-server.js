@@ -1491,7 +1491,11 @@ function normalizeAccessPackage(value) {
   const raw = String(value || "").trim().toLowerCase();
   if (["member", "membership", "premium", "paid", "full"].includes(raw)) return "premium";
   if (["free", "trial"].includes(raw)) return "free";
-  return raw || "premium";
+  /* Thieu thong tin thi phai la FREE. Truoc day mac dinh "premium": ban ghi dang ky
+     khong khai goi -> tu duoc mo quyen tra phi. Moi luot cap Premium that
+     (upsertPremiumSignupForClaim) deu ghi accessPackage="premium" ro rang, nen doi
+     mac dinh nay KHONG cat quyen cua ai da mua. */
+  return raw || "free";
 }
 
 function normalizeAccessStatus(value) {
@@ -1539,19 +1543,32 @@ function findSignupIndex(rows, record) {
   return rows.findIndex((item) => identityKeys(item).some((key) => keys.includes(key)));
 }
 
+/* Da thanh toan hay chua — MOT NOI DUY NHAT quyet dinh.
+   Loi da xay ra that (do 2026-07-24): regex tran /paid|success|.../ khop luon chuoi
+   "not_paid" vi trong no CO chua "paid" -> moi ban ghi dang ky thuong deu thanh
+   premium, ai dang ky cung mo het bai tra phi. Vi vay phai LOAI TRU dang phu dinh
+   TRUOC khi so khop dang khang dinh. Luat khoa: form-submit-must-reach-real-store-lock. */
+function laDaThanhToan(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (!raw) return false;
+  if (/(^|[^a-z])(not|un|chua|khong|no|non|cancel|refund|fail|pending)[_\-\s]*paid/.test(raw)) return false;
+  if (/^(not_paid|unpaid|no|none|false|pending|cancelled|canceled|refunded|failed|expired)$/.test(raw)) return false;
+  return /(^|[^a-z])(paid|success|received|complete|completed|settled)([^a-z]|$)/.test(raw);
+}
+
 function hasPaidEntitlement(row) {
   const status = normalizeAccessStatus(row && row.accessStatus);
   if (status !== "active") return false;
   const expiresAt = String(row && row.expiresAt || "").trim();
   if (expiresAt && /^\d{4}-\d{2}-\d{2}/.test(expiresAt) && expiresAt < new Date().toISOString().slice(0, 10)) return false;
   if (normalizeAccessPackage(row && row.accessPackage) === "free") return false;
-  return Boolean(row && (row.entitlement || row.role === "premium" || /paid|success|received|complete/i.test(String(row.purchaseStatus || row.status || ""))));
+  return Boolean(row && (row.entitlement === true || row.role === "premium" || laDaThanhToan(row.purchaseStatus || row.status)));
 }
 
 function normalizeSignupRole(body) {
   const active = normalizeAccessStatus(body.accessStatus || body.entitlementStatus || "") === "active";
   const pkg = normalizeAccessPackage(body.accessPackage || body.package || body.packageId || "");
-  const paid = Boolean(body.entitlement || body.role === "premium" || /paid|success|received|complete/i.test(String(body.purchaseStatus || body.status || "")));
+  const paid = Boolean(body.entitlement === true || body.role === "premium" || laDaThanhToan(body.purchaseStatus || body.status));
   return paid && active && pkg !== "free" ? "premium" : "free";
 }
 
