@@ -1,0 +1,6 @@
+{
+  "base": "https://vancouver-altered-less-forum.trycloudflare.com",
+  "updatedAt": "2026-07-24T22:30:00+07:00",
+  "updatedBy": "tools/dg-tunnel-watchdog.js",
+  "note": "BANG CHI DUONG TOI MAY CHU API. File nay do may tu ghi, dung sua tay. Duong ham cloudflared doi dia chi moi lan khoi dong lai; watchdog phat hien va cap nhat file nay roi day len GitHub Pages, nen trang web luon tim lai duoc may chu. Pages luon song nen bang chi duong luon doc duoc."
+}

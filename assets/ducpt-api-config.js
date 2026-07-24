@@ -78,18 +78,42 @@
     base: window.DUCPT_API_BASE,
     trangThai: "dang-do",   // dang-do | song | chet
     health: null,
-    ungVien: uuTien
+    ungVien: uuTien,
+    theoBangChiDuong: false
   };
   window.DUCPT_API = API;
+
+  /* BANG CHI DUONG — vi sao can:
+     duong ham cloudflared cap dia chi NGAU NHIEN, doi moi lan khoi dong lai. Dia chi ghi
+     cung trong file nay se chet theo. Nhung GitHub Pages thi luon song, nen may chu tu ghi
+     dia chi hien tai vao /assets/ducpt-api-endpoint.json va day len Pages; trang web doc
+     bang chi duong do truoc, nen doi dia chi bao nhieu lan cung tu tim lai duoc. */
+  function docBangChiDuong() {
+    return fetch("/assets/ducpt-api-endpoint.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        var b = chuan(j && j.base);
+        if (!b) return null;
+        API.theoBangChiDuong = true;
+        if (uuTien.indexOf(b) < 0) uuTien.unshift(b);
+        else uuTien = [b].concat(uuTien.filter(function (u) { return u !== b; }));
+        API.ungVien = uuTien;
+        return b;
+      })
+      .catch(function () { return null; });
+  }
 
   function bao(trangThai) {
     API.trangThai = trangThai;
     try { window.dispatchEvent(new CustomEvent("ducpt:api-status", { detail: API })); } catch (e) {}
   }
 
-  API.sanSang = uuTien.reduce(function (chuoi, base) {
-    return chuoi.then(function (xong) { return xong || thu(base); });
-  }, Promise.resolve(null)).then(function (ket) {
+  API.sanSang = docBangChiDuong().then(function () {
+    // doc bang chi duong xong moi do — de dia chi may chu hien tai duoc thu dau tien
+    return uuTien.reduce(function (chuoi, base) {
+      return chuoi.then(function (xong) { return xong || thu(base); });
+    }, Promise.resolve(null));
+  }).then(function (ket) {
     if (!ket) {
       bao("chet");
       cheBienBao();
