@@ -549,6 +549,82 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     return headers;
   }
 
+  const LESSON_SOURCE_FIELDS = ["youtubeUrl", "youtubeId", "videoUrl", "publicUrl", "storageUrl", "assetUrl", "privateVideoUrl", "privateVideoId", "sourceUrl", "playbackId", "muxPlaybackId", "cloudflareStreamId", "cloudflareId", "bunnyVideoId", "bunnyId"];
+  function normKey(value) {
+    return String(value || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/\s+/g, " ");
+  }
+  function lessonKey(item) {
+    return [item && item.module, item && item.moduleNo, item && item.sort, item && item.lessonNo, item && item.title].map(normKey).join("|");
+  }
+  function lessonSourceKey(item) {
+    const youtube = normKey(item && (item.youtubeId || item.youtubeUrl || ""));
+    const direct = normKey(item && (item.privateVideoUrl || item.videoUrl || item.publicUrl || item.storageUrl || item.assetUrl || item.sourceUrl || ""));
+    return youtube || direct ? `${youtube}|${direct}` : "";
+  }
+  function lessonSlotKey(item) {
+    const slot = [item && item.module, item && item.moduleNo, item && item.sort, item && item.lessonNo].map(normKey);
+    if (!slot.some(Boolean)) return "";
+    return slot.join("|");
+  }
+  function mergeLessonRecord(primary, fallback) {
+    const merged = { ...(fallback || {}), ...(primary || {}) };
+    LESSON_SOURCE_FIELDS.forEach((field) => {
+      if ((!merged[field] || !String(merged[field]).trim()) && fallback && fallback[field]) merged[field] = fallback[field];
+    });
+    if (!String(merged.title || "").trim() && fallback && fallback.title) merged.title = fallback.title;
+    if (!String(merged.description || "").trim() && fallback && fallback.description) merged.description = fallback.description;
+    if (!String(merged.objective || "").trim() && fallback && fallback.objective) merged.objective = fallback.objective;
+    if (!String(merged.resourceUrl || "").trim() && fallback && fallback.resourceUrl) merged.resourceUrl = fallback.resourceUrl;
+    if (!String(merged.thumbnail || "").trim() && fallback && fallback.thumbnail) merged.thumbnail = fallback.thumbnail;
+    if (!String(merged.duration || "").trim() && fallback && fallback.duration) merged.duration = fallback.duration;
+    merged.access = ["free", "premium", "hidden"].includes(String(merged.access || "").toLowerCase()) ? String(merged.access).toLowerCase() : String(fallback && fallback.access || "free").toLowerCase();
+    merged.status = ["draft", "published", "hidden"].includes(String(merged.status || "").toLowerCase()) ? String(merged.status).toLowerCase() : String(fallback && fallback.status || "draft").toLowerCase();
+    merged.lessonNo = Number(merged.lessonNo || fallback && fallback.lessonNo || 0) || 0;
+    merged.sort = Number(merged.sort || fallback && fallback.sort || merged.lessonNo || 0) || 0;
+    return merged;
+  }
+  function normalizeLessonList(list) {
+    const out = [];
+    const byKey = new Map();
+    const bySource = new Map();
+    const bySlot = new Map();
+    (Array.isArray(list) ? list : []).forEach((raw) => {
+      if (!raw || typeof raw !== "object") return;
+      const item = { ...raw };
+      const key = lessonKey(item);
+      const source = lessonSourceKey(item);
+      const slot = lessonSlotKey(item);
+      const existing = (key && byKey.get(key)) || (source && bySource.get(source)) || (slot && bySlot.get(slot));
+      if (existing) {
+        const merged = mergeLessonRecord(existing, item);
+        const idx = out.indexOf(existing);
+        if (idx >= 0) out[idx] = merged;
+        if (key) byKey.set(key, merged);
+        if (source) bySource.set(source, merged);
+        const mergedKey = lessonKey(merged);
+        const mergedSource = lessonSourceKey(merged);
+        const mergedSlot = lessonSlotKey(merged);
+        if (mergedKey) byKey.set(mergedKey, merged);
+        if (mergedSource) bySource.set(mergedSource, merged);
+        if (mergedSlot) bySlot.set(mergedSlot, merged);
+      } else {
+        out.push(item);
+        if (key) byKey.set(key, item);
+        if (source) bySource.set(source, item);
+        if (slot) bySlot.set(slot, item);
+      }
+    });
+    return out.sort((a, b) => {
+      const sa = Number(a.sort) || 999;
+      const sb = Number(b.sort) || 999;
+      if (sa !== sb) return sa - sb;
+      const la = Number(a.lessonNo) || 999;
+      const lb = Number(b.lessonNo) || 999;
+      if (la !== lb) return la - lb;
+      return String(a.title || "").localeCompare(String(b.title || ""), "vi");
+    });
+  }
+
   const emptyLesson = () => ({
     id: "",
     lessonNo: data.lessons.length + 1,
@@ -1139,6 +1215,78 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
   "use strict";
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const apiUrl = window.DUCPTPassportApiUrl;
+  const LESSON_SOURCE_FIELDS = ["youtubeUrl", "youtubeId", "videoUrl", "publicUrl", "storageUrl", "assetUrl", "privateVideoUrl", "privateVideoId", "sourceUrl", "playbackId", "muxPlaybackId", "cloudflareStreamId", "cloudflareId", "bunnyVideoId", "bunnyId"];
+  function normKey(value) {
+    return String(value || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g, "d").replace(/\s+/g, " ");
+  }
+  function lessonKey(item) {
+    return [item && item.module, item && item.moduleNo, item && item.sort, item && item.lessonNo, item && item.title].map(normKey).join("|");
+  }
+  function lessonSourceKey(item) {
+    const youtube = normKey(item && (item.youtubeId || item.youtubeUrl || ""));
+    const direct = normKey(item && (item.privateVideoUrl || item.videoUrl || item.publicUrl || item.storageUrl || item.assetUrl || item.sourceUrl || ""));
+    return youtube || direct ? `${youtube}|${direct}` : "";
+  }
+  function lessonSlotKey(item) {
+    const slot = [item && item.module, item && item.moduleNo, item && item.sort, item && item.lessonNo].map(normKey);
+    return slot.some(Boolean) ? slot.join("|") : "";
+  }
+  function mergeLessonRecord(primary, fallback) {
+    const merged = { ...(fallback || {}), ...(primary || {}) };
+    LESSON_SOURCE_FIELDS.forEach((field) => {
+      if ((!merged[field] || !String(merged[field]).trim()) && fallback && fallback[field]) merged[field] = fallback[field];
+    });
+    ["title", "description", "objective", "resourceUrl", "thumbnail", "duration"].forEach((field) => {
+      if ((!merged[field] || !String(merged[field]).trim()) && fallback && fallback[field]) merged[field] = fallback[field];
+    });
+    merged.access = ["free", "premium", "hidden"].includes(String(merged.access || "").toLowerCase()) ? String(merged.access).toLowerCase() : String(fallback && fallback.access || "free").toLowerCase();
+    merged.status = ["draft", "published", "hidden"].includes(String(merged.status || "").toLowerCase()) ? String(merged.status).toLowerCase() : String(fallback && fallback.status || "draft").toLowerCase();
+    merged.lessonNo = Number(merged.lessonNo || fallback && fallback.lessonNo || 0) || 0;
+    merged.sort = Number(merged.sort || fallback && fallback.sort || merged.lessonNo || 0) || 0;
+    return merged;
+  }
+  function normalizeLessonList(list) {
+    const out = [];
+    const byKey = new Map();
+    const bySource = new Map();
+    const bySlot = new Map();
+    (Array.isArray(list) ? list : []).forEach((raw) => {
+      if (!raw || typeof raw !== "object") return;
+      const item = { ...raw };
+      const key = lessonKey(item);
+      const source = lessonSourceKey(item);
+      const slot = lessonSlotKey(item);
+      const existing = (key && byKey.get(key)) || (source && bySource.get(source)) || (slot && bySlot.get(slot));
+      if (existing) {
+        const merged = mergeLessonRecord(existing, item);
+        const idx = out.indexOf(existing);
+        if (idx >= 0) out[idx] = merged;
+        if (key) byKey.set(key, merged);
+        if (source) bySource.set(source, merged);
+        if (slot) bySlot.set(slot, merged);
+        const mergedKey = lessonKey(merged);
+        const mergedSource = lessonSourceKey(merged);
+        const mergedSlot = lessonSlotKey(merged);
+        if (mergedKey) byKey.set(mergedKey, merged);
+        if (mergedSource) bySource.set(mergedSource, merged);
+        if (mergedSlot) bySlot.set(mergedSlot, merged);
+      } else {
+        out.push(item);
+        if (key) byKey.set(key, item);
+        if (source) bySource.set(source, item);
+        if (slot) bySlot.set(slot, item);
+      }
+    });
+    return out.sort((a, b) => {
+      const sa = Number(a.sort) || 999;
+      const sb = Number(b.sort) || 999;
+      if (sa !== sb) return sa - sb;
+      const la = Number(a.lessonNo) || 999;
+      const lb = Number(b.lessonNo) || 999;
+      if (la !== lb) return la - lb;
+      return String(a.title || "").localeCompare(String(b.title || ""), "vi");
+    });
+  }
   const seed = { course: { title: "Doanh nghiệp một người", price: "Liên hệ", contact: "Zalo 0963249467", goal: "Khóa học giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, tạo nội dung kéo khách, bán sản phẩm dịch vụ số và vận hành gọn bằng AI.", cover: "/assets/hvd-horizontal.svg" }, lessons: [] };
   const githubDefaults = { owner: "Ducpt88", repo: "dg-media-office", branch: "main", path: "passport/course-videos.json" };
   const I = (p) => `<svg class="ytc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1275,7 +1423,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
       const draftByKey = new Map(draftLessons.map((x) => [lessonKey(x), x]));
       const mergedServerLessons = serverLessons.map((x) => {
         const draftMatch = draftByKey.get(lessonKey(x));
-        return draftMatch ? { ...x, ...draftMatch, id: x.id || draftMatch.id } : x;
+        return draftMatch ? mergeLessonRecord(x, draftMatch) : x;
       });
       const chuaLen = draftLessons.filter((x) => !serverIds.has(String(x.id || x.youtubeId || "")) && !serverKeys.has(lessonKey(x)));
 
@@ -1297,6 +1445,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
         data = draft;
       }
     } catch {}
+    data.lessons = normalizeLessonList(data.lessons);
     await loadLegacyAssets();
     watchPlayerBlocked();
     if (!editingId) {
@@ -1342,7 +1491,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
   }
 
   function studentVisibleLessons() {
-    return data.lessons
+    return normalizeLessonList(data.lessons)
       .filter((item) => item.status === "published" && item.access !== "hidden" && (hasPlayableSource(item) || item.access === "premium"))
       .sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
   }
@@ -1996,7 +2145,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     const view = document.getElementById("courseAdmin");
     collectCourse(view);
     collectLessonForm(view);
-    data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
+    data.lessons = normalizeLessonList(data.lessons);
     try { localStorage.setItem("ducpt_course_videos_draft_v1", JSON.stringify(data)); } catch {}
     try {
       const res = await fetch(apiUrl("/api/passport/course-videos/save"), { method: "POST", headers: await courseAdminHeaders(), body: JSON.stringify(data) });
