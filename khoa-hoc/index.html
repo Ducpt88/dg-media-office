@@ -115,7 +115,7 @@
   <link rel="apple-touch-icon" href="/assets/hvd-monogram.svg">
   <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/platform-pages.css?v=20260711-logo-sync-2">
-  <script>try{window.DUCPT_API_BASE=String(window.DUCPT_API_BASE||localStorage.getItem("ducpt-api-base")||"https://vancouver-altered-less-forum.trycloudflare.com").replace(/\/+$/,"")}catch(e){window.DUCPT_API_BASE="https://vancouver-altered-less-forum.trycloudflare.com"}</script>
+  <script>try{window.DUCPT_API_BASE=String(window.DUCPT_API_BASE||localStorage.getItem("ducpt-api-base")||"").replace(/\/+$/,"")}catch(e){window.DUCPT_API_BASE=""}</script>
   <script src="/assets/ducpt-api-config.js?v=20260722-signup-rail-3"></script><script src="/assets/ducpt-auth.js?v=20260723-sheet-mirror-1"></script><script src="/assets/ducpt-auth-ui.js?v=20260722-one-chip-6"></script><script src="/assets/ducpt-sheet-config.js?v=20260724-sheet-sync-1"></script>
   <style>
     :root{--ink:#14213d;--muted:#667085;--line:#e6eaf0;--blue:#2563eb;--green:#059669;--bg:#f8fafc}
@@ -406,6 +406,9 @@
 window.__dgHeroStats = function (course, lessons) {
   try {
     var c = course || {}, L = lessons || [];
+    var best = Number(window.__dgHeroStatsBestLessons || 0);
+    if (!L.length && best > 0) return;
+    if (L.length > best) window.__dgHeroStatsBestLessons = L.length;
     var mods = Array.isArray(c.modules) ? c.modules : [];
     if (!mods.length && !L.length) return;
     var lessonModules = {};
@@ -572,7 +575,7 @@ state.course=data.course||{};state.lessons=(data.lessons||[]).filter(item=>item.
       /* Nạp sẵn API YouTube ngay từ đầu để lúc học viên bấm là trình phát sẵn sàng,
          phát được kèm tiếng (tạo player trong cú chạm mà không phải chờ tải script). */
       try{setTimeout(function(){try{loadYTApi()}catch(e){}},1200)}catch(e){}
-      async function loadPackagedCourse(){let payload=null;try{let res=await fetch(apiUrl("/api/passport/course-videos"),{cache:"no-store"});payload=await res.json()}catch{try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
+      async function loadPackagedCourse(){let payload=null;try{let res=await fetch("/passport/course-videos.json",{cache:"no-store"});payload=await res.json()}catch{try{if(window.DUCPT_API&&window.DUCPT_API.sanSang)await Promise.race([window.DUCPT_API.sanSang,new Promise(r=>setTimeout(r,2500))]);let res=await fetch(apiUrl("/api/passport/course-videos"),{cache:"no-store"});payload=await res.json()}catch{payload=null}}const data=payload&&payload.ok?payload.data:payload||{course:{},lessons:[]};      /* DONG BO TUC THI CHO NGUOI CO QUYEN: bai vua tai trong Passport nam o ban nhap
          (localStorage) truoc khi duoc day len web. Trinh duyet nay co phien quan tri
          thi gop bai nhap vao ngay — luu xong mo trang ngoai la thay va hoc duoc luon.
          Khach thuong van chi thay du lieu da len web that. */

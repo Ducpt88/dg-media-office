@@ -37,7 +37,6 @@
    no da chet. Vi vay bat buoc phai DOC DUOC JSON hop le moi tinh la song. */
 (function () {
   var DU_PHONG = [
-    "https://vancouver-altered-less-forum.trycloudflare.com", // duong ham tam — CO THE CHET BAT CU LUC NAO
     "https://ducpt-passport-api.onrender.com"                 // dia chi co dinh khi da dua len Render
   ];
   var ep = "", luuSong = "";
