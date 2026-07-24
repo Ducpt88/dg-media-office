@@ -80,6 +80,10 @@ function doPost(e) {
     var action = String(body.action || "signup");
     if (action === "signup") return json_(studentSignup_(body));
     if (action === "claimPremiumCode") return json_(claimPremiumCode_(body));
+    if (action === "makePremiumCode") {
+      requireAdminKey_(body.adminKey || body.key);
+      return json_(makePremiumCode_(body));
+    }
     if (action === "upsertAccess") {
       requireAdminKey_(body.adminKey || body.key);
       return json_(upsertAccess_(body));
@@ -333,6 +337,20 @@ function claimPremiumCode_(body) {
   } finally {
     lock.releaseLock();
   }
+}
+
+function makePremiumCode_(body) {
+  var raw = Utilities.getUuid().replace(/-/g, "").slice(0, 10).toUpperCase();
+  var sig = sha256Hex_(raw + "|" + PREMIUM_CODE_SECRET).slice(0, 6).toUpperCase();
+  return {
+    ok: true,
+    data: {
+      code: "DGP-" + raw + "-" + sig,
+      name: String(body.name || "").trim(),
+      note: String(body.note || "").trim(),
+      createdAt: now_()
+    }
+  };
 }
 
 function getEntitlement_(p) {
