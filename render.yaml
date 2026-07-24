@@ -19,6 +19,12 @@ services:
         value: https://ducpt.com
       - key: CORS_ORIGIN
         value: https://ducpt.com
+      - key: DUCPT_COURSE_ADMIN_KEY
+        sync: false
+      - key: DUCPT_COURSE_VIDEO_TOKEN_SECRET
+        sync: false
+      - key: DUCPT_ADMIN_EMAILS
+        sync: false
       - key: SMTP_HOST
         sync: false
       - key: SMTP_PORT

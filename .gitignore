@@ -1,5 +1,7 @@
 .env
 passport/course-signups.json
+passport/course-videos.private.json
+passport/course-videos.private.*
 passport/uploads/
 
 # Ho so Chrome dung khi audit — chua Login Data / Cookies / autofill, TUYET DOI khong day len

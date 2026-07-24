@@ -12,9 +12,14 @@ const DATA_DIR = process.env.PASSPORT_DATA_DIR || path.join(ROOT, "passport");
 const UPLOAD_DIR = path.join(ROOT, "passport", "uploads");
 const SIGNUP_FILE = path.join(DATA_DIR, "course-signups.json");
 const COURSE_VIDEO_FILE = path.join(ROOT, "passport", "course-videos.json");
+const COURSE_VIDEO_PRIVATE_FILE = process.env.PASSPORT_COURSE_VIDEO_PRIVATE_FILE || path.join(DATA_DIR, "course-videos.private.json");
 const PREMIUM_ACCESS_FILE = path.join(ROOT, "passport", "premium-access.json");
 const PREMIUM_CODE_CLAIMS_FILE = path.join(DATA_DIR, "premium-code-claims.json");
 const PREMIUM_CODE_SECRET = process.env.DUCPT_PREMIUM_CODE_SECRET || "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
+const COURSE_ACCESS_MODE = String(process.env.DUCPT_COURSE_ACCESS_MODE || "private").toLowerCase();
+const COURSE_VIDEO_TOKEN_SECRET = process.env.DUCPT_COURSE_VIDEO_TOKEN_SECRET || PREMIUM_CODE_SECRET;
+const SUPABASE_PUBLIC_URL = (process.env.DUCPT_SUPABASE_URL || process.env.SUPABASE_URL || "https://nfvewetbgdfmfajaqxev.supabase.co").replace(/\/+$/, "");
+const SUPABASE_PUBLIC_ANON_KEY = process.env.DUCPT_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || "sb_publishable_bXANL2mh7qL74dnGCc1UWg_CiZk0URc";
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 8890);
 
@@ -63,18 +68,34 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (req.method === "POST" && url.pathname === "/api/passport/course-video-token") {
+    issueCourseVideoToken(req, res).catch((error) => {
+      sendJson(res, 500, { ok: false, error: error.message || "TOKEN_ERROR" });
+    });
+    return;
+  }
+
+  if (req.method === "GET" && url.pathname === "/api/passport/course-video/play") {
+    playCourseVideoTicket(req, res, url);
+    return;
+  }
+
   if (req.method === "POST" && url.pathname === "/api/customer/portal/login") {
     loginCustomerPortal(req, res);
     return;
   }
 
   if (req.method === "GET" && url.pathname === "/api/passport/course-videos") {
-    sendJson(res, 200, { ok: true, data: readCourseVideos() });
+    handleCourseVideosGet(req, res, url).catch((error) => {
+      sendJson(res, 500, { ok: false, error: error.message || "COURSE_VIDEO_GET_ERROR" });
+    });
     return;
   }
 
   if (req.method === "POST" && url.pathname === "/api/passport/course-videos/save") {
-    saveCourseVideos(req, res);
+    saveCourseVideos(req, res).catch((error) => {
+      sendJson(res, 500, { ok: false, error: error.message || "COURSE_VIDEO_SAVE_ERROR" });
+    });
     return;
   }
 
@@ -314,7 +335,7 @@ function isSensitiveStaticPath(filePath) {
   if (!rel || rel.startsWith("..")) return true;
   if (base === ".env" || base.startsWith(".env.")) return true;
   if (["passport-upload-server.js", "render.yaml", "package.json", "package-lock.json"].includes(base)) return true;
-  if (rel.endsWith("/premium-code-claims.json") || rel.endsWith("/course-signups.json")) return true;
+  if (rel.endsWith("/premium-code-claims.json") || rel.endsWith("/course-signups.json") || rel.endsWith("/course-videos.private.json")) return true;
   return false;
 }
 
@@ -499,6 +520,213 @@ function readSignups() {
     return JSON.parse(fs.readFileSync(SIGNUP_FILE, "utf8"));
   } catch {
     return [];
+  }
+}
+
+async function issueCourseVideoToken(req, res) {
+  const body = await readJsonBodyAsync(req);
+  const lessonId = String(body.lessonId || body.id || "").trim();
+  const courseId = normalizeCourseId(body.courseId || body.course || "");
+  if (!lessonId) {
+    sendJson(res, 400, { ok: false, error: "LESSON_ID_REQUIRED" });
+    return;
+  }
+  const identity = await resolveCourseViewer(req, body);
+  if (!identity.email) {
+    sendJson(res, 401, { ok: false, error: "LOGIN_REQUIRED" });
+    return;
+  }
+  const data = readCourseVideos({ privateView: true });
+  const lesson = data.lessons.find((item) => String(item.id) === lessonId || publicLessonId(item) === lessonId);
+  if (!lesson || lesson.status !== "published" || lesson.access === "hidden") {
+    sendJson(res, 404, { ok: false, error: "LESSON_NOT_FOUND" });
+    return;
+  }
+  const entitlement = findCourseEntitlementFor(identity.email, courseId || normalizeCourseId(data.course && (data.course.id || data.course.title)));
+  const paid = Boolean(entitlement && entitlement.entitlement);
+  if (lesson.access === "premium" && !paid) {
+    sendJson(res, 403, { ok: false, error: "PREMIUM_REQUIRED", data: entitlement });
+    return;
+  }
+  const source = lessonPlaybackSource(lesson);
+  if (!source || !source.url) {
+    sendJson(res, 404, { ok: false, error: "VIDEO_SOURCE_NOT_READY" });
+    return;
+  }
+  const expiresAt = Date.now() + Number(process.env.DUCPT_COURSE_VIDEO_TOKEN_TTL_MS || 45 * 60 * 1000);
+  const ticket = signCourseVideoTicket({
+    lessonId,
+    email: identity.email,
+    courseId: entitlement.courseId || courseId || "",
+    provider: source.provider,
+    type: source.type,
+    url: source.url,
+    expiresAt
+  });
+  sendJson(res, 200, {
+    ok: true,
+    data: {
+      lessonId,
+      provider: source.provider,
+      playerType: source.type,
+      playbackUrl: `/api/passport/course-video/play?ticket=${encodeURIComponent(ticket)}`,
+      expiresAt: new Date(expiresAt).toISOString(),
+      ttlSeconds: Math.max(0, Math.floor((expiresAt - Date.now()) / 1000)),
+      title: lesson.title,
+      entitlement
+    }
+  });
+}
+
+function playCourseVideoTicket(req, res, url) {
+  const ticket = String(url.searchParams.get("ticket") || "");
+  const payload = verifyCourseVideoTicket(ticket);
+  if (!payload) {
+    sendJson(res, 403, { ok: false, error: "INVALID_OR_EXPIRED_VIDEO_TICKET" });
+    return;
+  }
+  res.writeHead(302, {
+    Location: payload.url,
+    "Cache-Control": "no-store"
+  });
+  res.end();
+}
+
+async function resolveCourseViewer(req, body = {}) {
+  const bearer = String(req.headers.authorization || "").match(/^Bearer\s+(.+)$/i);
+  if (bearer) {
+    const user = await verifySupabaseAccessToken(bearer[1]).catch(() => null);
+    if (user && user.email) {
+      return { email: normalizeEntitlementKey(user.email), source: "supabase", userId: String(user.id || "") };
+    }
+  }
+  if (String(process.env.DUCPT_ALLOW_EMAIL_VIDEO_LOGIN || "").toLowerCase() !== "1") {
+    return { email: "", source: "guest" };
+  }
+  const email = normalizeEntitlementKey(body.email || req.headers["x-ducpt-student-email"] || "");
+  return email ? { email, source: "passport-email" } : { email: "", source: "guest" };
+}
+
+async function verifySupabaseAccessToken(token) {
+  if (!token || !SUPABASE_PUBLIC_URL || !SUPABASE_PUBLIC_ANON_KEY) return null;
+  const response = await fetch(`${SUPABASE_PUBLIC_URL}/auth/v1/user`, {
+    headers: {
+      apikey: SUPABASE_PUBLIC_ANON_KEY,
+      authorization: `Bearer ${token}`
+    }
+  });
+  if (!response.ok) return null;
+  return response.json();
+}
+
+async function verifySupabaseAdminToken(token) {
+  const user = await verifySupabaseAccessToken(token);
+  if (!user || !user.email) return null;
+  const email = normalizeEntitlementKey(user.email);
+  const adminEmails = String(process.env.DUCPT_ADMIN_EMAILS || process.env.ADMIN_EMAILS || "")
+    .split(",").map(normalizeEntitlementKey).filter(Boolean);
+  if (adminEmails.includes(email)) return user;
+  const response = await fetch(`${SUPABASE_PUBLIC_URL}/rest/v1/rpc/my_access`, {
+    method: "POST",
+    headers: {
+      apikey: SUPABASE_PUBLIC_ANON_KEY,
+      authorization: `Bearer ${token}`,
+      "content-type": "application/json"
+    },
+    body: "{}"
+  }).catch(() => null);
+  if (!response || !response.ok) return null;
+  const data = await response.json().catch(() => null);
+  const row = Array.isArray(data) ? data[0] : data;
+  const role = String(row && row.role || "").toLowerCase();
+  return ["admin", "owner", "founder"].includes(role) ? user : null;
+}
+
+async function requestHasCourseAdmin(req) {
+  if (requestHasCourseAdminKey(req)) return true;
+  const bearer = String(req.headers.authorization || "").match(/^Bearer\s+(.+)$/i);
+  if (!bearer) return false;
+  const user = await verifySupabaseAdminToken(bearer[1]).catch(() => null);
+  return Boolean(user && user.email);
+}
+
+function requestHasCourseAdminKey(req) {
+  const expected = String(process.env.DUCPT_COURSE_ADMIN_KEY || "").trim();
+  const got = String(req.headers["x-ducpt-course-admin-key"] || "").trim();
+  if (!expected || !got) return false;
+  const a = Buffer.from(expected);
+  const b = Buffer.from(got);
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+function isLocalRequest(req) {
+  const addr = String(req.socket && req.socket.remoteAddress || "");
+  return ["127.0.0.1", "::1", "::ffff:127.0.0.1"].includes(addr);
+}
+
+function findCourseEntitlementFor(email, wantedCourse) {
+  const wanted = normalizeEntitlementKey(email);
+  const course = normalizeCourseId(wantedCourse || "");
+  if (!wanted) return { role: "guest", entitlement: false, purchaseStatus: "not_found" };
+  const rows = readSignups();
+  const identityRows = rows.filter((item) => identityKeys(item).includes(wanted));
+  const row = identityRows.find((item) => courseMatches(item, course));
+  if (!row) {
+    return {
+      role: "free",
+      entitlement: false,
+      purchaseStatus: identityRows.length ? "course_not_granted" : "not_found",
+      courseId: course,
+      courseIds: []
+    };
+  }
+  return entitlementPayload(row, course);
+}
+
+function lessonPlaybackSource(lesson) {
+  const provider = String(lesson.videoProvider || lesson.provider || lesson.sourceType || "").trim().toLowerCase();
+  const cloudflareId = String(lesson.cloudflareStreamId || lesson.cloudflareId || "").trim();
+  const bunnyId = String(lesson.bunnyVideoId || lesson.bunnyId || "").trim();
+  const muxPlaybackId = String(lesson.muxPlaybackId || lesson.playbackId || "").trim();
+  const rawDirect = String(lesson.privateVideoUrl || lesson.videoUrl || lesson.publicUrl || lesson.storageUrl || lesson.assetUrl || "").trim();
+  const youtubeId = youtubeIdFromUrl(lesson.youtubeUrl || lesson.url || "") || youtubeIdFromUrl(rawDirect) || String(lesson.youtubeId || "").trim();
+  if (provider.includes("cloudflare") && cloudflareId) {
+    return { provider: "cloudflare_stream", type: "iframe", url: `https://iframe.videodelivery.net/${encodeURIComponent(cloudflareId)}` };
+  }
+  if (provider.includes("bunny") && bunnyId && process.env.BUNNY_STREAM_LIBRARY_ID) {
+    return { provider: "bunny_stream", type: "iframe", url: `https://iframe.mediadelivery.net/embed/${encodeURIComponent(process.env.BUNNY_STREAM_LIBRARY_ID)}/${encodeURIComponent(bunnyId)}?autoplay=false` };
+  }
+  if (provider.includes("mux") && muxPlaybackId) {
+    return { provider: "mux", type: "iframe", url: `https://stream.mux.com/${encodeURIComponent(muxPlaybackId)}.m3u8` };
+  }
+  if (youtubeId) {
+    return { provider: "youtube", type: "iframe", url: `https://www.youtube.com/embed/${encodeURIComponent(youtubeId)}?controls=1&rel=0&modestbranding=1&playsinline=1` };
+  }
+  if (rawDirect && !youtubeIdFromUrl(rawDirect)) {
+    return { provider: provider || "direct", type: "video", url: rawDirect };
+  }
+  return null;
+}
+
+function signCourseVideoTicket(payload) {
+  const body = Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
+  const sig = crypto.createHmac("sha256", COURSE_VIDEO_TOKEN_SECRET).update(body).digest("base64url");
+  return `${body}.${sig}`;
+}
+
+function verifyCourseVideoTicket(ticket) {
+  const parts = String(ticket || "").split(".");
+  if (parts.length !== 2) return null;
+  const expected = crypto.createHmac("sha256", COURSE_VIDEO_TOKEN_SECRET).update(parts[0]).digest("base64url");
+  const a = Buffer.from(expected);
+  const b = Buffer.from(parts[1]);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return null;
+  try {
+    const payload = JSON.parse(Buffer.from(parts[0], "base64url").toString("utf8"));
+    if (!payload || !payload.url || Number(payload.expiresAt || 0) < Date.now()) return null;
+    return payload;
+  } catch {
+    return null;
   }
 }
 
@@ -1025,21 +1253,91 @@ function loginCustomerPortal(req, res) {
   });
 }
 
-function readCourseVideos() {
+async function handleCourseVideosGet(req, res, url) {
+  if (String(url.searchParams.get("view") || "").toLowerCase() !== "private") {
+    sendJson(res, 200, { ok: true, data: readCourseVideos({ privateView: false }) });
+    return;
+  }
+  if (requestHasCourseAdminKey(req)) {
+    sendJson(res, 200, { ok: true, data: readCourseVideos({ privateView: true }) });
+    return;
+  }
+  const bearer = String(req.headers.authorization || "").match(/^Bearer\s+(.+)$/i);
+  const user = bearer ? await verifySupabaseAdminToken(bearer[1]).catch(() => null) : null;
+  if (!user || !user.email) {
+    sendJson(res, 401, { ok: false, error: "ADMIN_LOGIN_REQUIRED" });
+    return;
+  }
+  sendJson(res, 200, { ok: true, data: readCourseVideos({ privateView: true }) });
+}
+
+function readCourseVideos(options = {}) {
   try {
-    const data = JSON.parse(fs.readFileSync(COURSE_VIDEO_FILE, "utf8"));
-    return normalizeCourseData(data);
+    const sourceFile = fs.existsSync(COURSE_VIDEO_PRIVATE_FILE) ? COURSE_VIDEO_PRIVATE_FILE : COURSE_VIDEO_FILE;
+    const data = JSON.parse(fs.readFileSync(sourceFile, "utf8"));
+    const normalized = normalizeCourseData(data);
+    return options.privateView ? normalized : sanitizeCourseDataForPublic(normalized);
   } catch {
-    return normalizeCourseData(defaultCourseVideos());
+    const normalized = normalizeCourseData(defaultCourseVideos());
+    return options.privateView ? normalized : sanitizeCourseDataForPublic(normalized);
   }
 }
 
-function saveCourseVideos(req, res) {
-  readJsonBody(req, res, (body) => {
-    const data = normalizeCourseData(body);
-    fs.writeFileSync(COURSE_VIDEO_FILE, JSON.stringify(data, null, 2), "utf8");
-    sendJson(res, 200, { ok: true, data });
-  });
+async function saveCourseVideos(req, res) {
+  const allowed = isLocalRequest(req) || await requestHasCourseAdmin(req);
+  if (!allowed) {
+    sendJson(res, 401, { ok: false, error: "ADMIN_LOGIN_REQUIRED" });
+    return;
+  }
+  const body = await readJsonBodyAsync(req);
+  const data = normalizeCourseData(body);
+  fs.mkdirSync(path.dirname(COURSE_VIDEO_PRIVATE_FILE), { recursive: true });
+  fs.writeFileSync(COURSE_VIDEO_PRIVATE_FILE, JSON.stringify(data, null, 2), "utf8");
+  fs.writeFileSync(COURSE_VIDEO_FILE, JSON.stringify(sanitizeCourseDataForPublic(data), null, 2), "utf8");
+  sendJson(res, 200, { ok: true, data });
+}
+
+function sanitizeCourseDataForPublic(data) {
+  const normalized = normalizeCourseData(data);
+  return {
+    ...normalized,
+    accessMode: COURSE_ACCESS_MODE === "public" ? "public" : "private",
+    lessons: normalized.lessons.map((lesson) => sanitizeLessonForPublic(lesson, normalized.course))
+  };
+}
+
+function sanitizeLessonForPublic(lesson, course = {}) {
+  const copy = { ...lesson };
+  [
+    "youtubeUrl", "youtubeId", "url", "videoUrl", "publicUrl", "storageUrl", "assetUrl", "privateVideoUrl",
+    "privateVideoId", "sourceUrl", "playbackId", "muxPlaybackId", "cloudflareStreamId", "cloudflareId",
+    "bunnyVideoId", "bunnyId"
+  ].forEach((key) => { delete copy[key]; });
+  copy.id = publicLessonId(lesson);
+  copy.sourceType = "private";
+  copy.videoAccess = "token";
+  if (looksLikeProviderThumbnail(copy.thumbnail)) copy.thumbnail = String(course.cover || "");
+  return copy;
+}
+
+function publicLessonId(lesson) {
+  const stable = [lesson && lesson.id, lesson && lesson.title, lesson && lesson.sort].filter(Boolean).join("|");
+  return `lesson-${fnvHash(stable)}`;
+}
+
+function fnvHash(value) {
+  let hash = 2166136261;
+  const text = String(value || "");
+  for (let i = 0; i < text.length; i += 1) {
+    hash ^= text.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return (hash >>> 0).toString(16).padStart(8, "0");
+}
+
+function looksLikeProviderThumbnail(value) {
+  const text = String(value || "").toLowerCase();
+  return Boolean(text && /(ytimg\.com|youtube\.com|youtu\.be|videodelivery\.net|bunnycdn\.com|mediadelivery\.net|mux\.com)/.test(text));
 }
 
 async function importYoutube(req, res) {
@@ -1089,7 +1387,7 @@ function normalizeCourseData(input) {
 }
 
 function normalizeLesson(lesson, index) {
-  const rawDirect = String(lesson.videoUrl || lesson.publicUrl || lesson.storageUrl || lesson.assetUrl || "").trim();
+  const rawDirect = String(lesson.privateVideoUrl || lesson.videoUrl || lesson.publicUrl || lesson.storageUrl || lesson.assetUrl || "").trim();
   const youtubeId = youtubeIdFromUrl(lesson.youtubeUrl || lesson.url || "") || youtubeIdFromUrl(rawDirect) || String(lesson.youtubeId || "");
   const directVideoUrl = youtubeIdFromUrl(rawDirect) ? "" : rawDirect;
   const youtubeUrl = youtubeId ? `https://www.youtube.com/watch?v=${youtubeId}` : String(lesson.youtubeUrl || "").trim();
@@ -1099,6 +1397,12 @@ function normalizeLesson(lesson, index) {
     sort: Number(lesson.sort || lesson.lessonNo || lesson.order || index + 1),
     module: String(lesson.module || "").slice(0, 40),
     moduleNo: String(lesson.moduleNo || "").slice(0, 40),
+    videoProvider: String(lesson.videoProvider || lesson.provider || "").slice(0, 60),
+    privateVideoId: String(lesson.privateVideoId || "").slice(0, 200),
+    privateVideoUrl: String(lesson.privateVideoUrl || "").slice(0, 1000),
+    cloudflareStreamId: String(lesson.cloudflareStreamId || lesson.cloudflareId || "").slice(0, 200),
+    bunnyVideoId: String(lesson.bunnyVideoId || lesson.bunnyId || "").slice(0, 200),
+    muxPlaybackId: String(lesson.muxPlaybackId || lesson.playbackId || "").slice(0, 200),
     youtubeUrl,
     youtubeId,
     videoUrl: directVideoUrl,

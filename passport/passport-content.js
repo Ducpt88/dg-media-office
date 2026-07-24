@@ -515,6 +515,21 @@
   let data = JSON.parse(JSON.stringify(seed));
   let editingId = "";
 
+  async function courseAdminHeaders() {
+    const headers = { "content-type": "application/json" };
+    try {
+      if (window.DUCPTAuth && typeof window.DUCPTAuth.token === "function") {
+        const token = await window.DUCPTAuth.token();
+        if (token) headers.Authorization = `Bearer ${token}`;
+      }
+    } catch {}
+    try {
+      const key = String(localStorage.getItem("ducpt-course-admin-key") || localStorage.getItem("ducpt-signup-sheet-admin-key") || "").trim();
+      if (key) headers["x-ducpt-course-admin-key"] = key;
+    } catch {}
+    return headers;
+  }
+
   const emptyLesson = () => ({
     id: "",
     lessonNo: data.lessons.length + 1,
@@ -530,7 +545,7 @@
 
   async function load() {
     try {
-      const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
+      const res = await fetch("/api/passport/course-videos?view=private", { cache: "no-store", headers: await courseAdminHeaders() });
       const payload = await res.json();
       data = payload.ok ? payload.data : seed;
     } catch {
@@ -699,7 +714,7 @@
     try {
       const res = await fetch("/api/passport/course-videos/save", {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: await courseAdminHeaders(),
         body: JSON.stringify(data)
       });
       const payload = await res.json();
@@ -1101,6 +1116,21 @@
   let editingId = "";
   let viewMode = "admin";
 
+  async function courseAdminHeaders() {
+    const headers = { "content-type": "application/json" };
+    try {
+      if (window.DUCPTAuth && typeof window.DUCPTAuth.token === "function") {
+        const token = await window.DUCPTAuth.token();
+        if (token) headers.Authorization = `Bearer ${token}`;
+      }
+    } catch {}
+    try {
+      const key = String(localStorage.getItem("ducpt-course-admin-key") || localStorage.getItem("ducpt-signup-sheet-admin-key") || "").trim();
+      if (key) headers["x-ducpt-course-admin-key"] = key;
+    } catch {}
+    return headers;
+  }
+
   function mountStyle() {
     if (document.getElementById("ytc-final-style")) return;
     const style = document.createElement("style");
@@ -1163,15 +1193,21 @@
     if (!view) return;
     mountStyle();
     try {
-      const res = await fetch("/passport/course-videos.json", { cache: "no-store" });
-      data = await res.json();
+      const res = await fetch("/api/passport/course-videos?view=private", { cache: "no-store", headers: await courseAdminHeaders() });
+      const payload = await res.json();
+      data = payload.ok ? payload.data : seed;
     } catch {
       try {
-        const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
-        const payload = await res.json();
-        data = payload.ok ? payload.data : seed;
+        const res = await fetch("/passport/course-videos.json", { cache: "no-store" });
+        data = await res.json();
       } catch {
-        data = JSON.parse(JSON.stringify(seed));
+        try {
+          const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
+          const payload = await res.json();
+          data = payload.ok ? payload.data : seed;
+        } catch {
+          data = JSON.parse(JSON.stringify(seed));
+        }
       }
     }
     try {
@@ -1900,7 +1936,7 @@
     data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
     try { localStorage.setItem("ducpt_course_videos_draft_v1", JSON.stringify(data)); } catch {}
     try {
-      const res = await fetch("/api/passport/course-videos/save", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(data) });
+      const res = await fetch("/api/passport/course-videos/save", { method: "POST", headers: await courseAdminHeaders(), body: JSON.stringify(data) });
       const payload = await res.json();
       if (!payload.ok) throw new Error(payload.error || "Không lưu được");
       data = payload.data;
@@ -1937,6 +1973,25 @@
     flash(file.sha ? "Kết nối GitHub OK" : "Đã kết nối, file chưa có SHA");
   }
 
+  function publicCourseCatalog(full) {
+    const course = full.course || {};
+    const lessons = Array.isArray(full.lessons) ? full.lessons : [];
+    const hash = (value) => { let h=2166136261; const text=String(value||""); for(let i=0;i<text.length;i++){h^=text.charCodeAt(i);h=Math.imul(h,16777619)} return (h>>>0).toString(16).padStart(8,"0") };
+    return {
+      ...full,
+      accessMode: "private",
+      lessons: lessons.map((lesson) => {
+        const row = { ...lesson };
+        ["youtubeUrl","youtubeId","url","videoUrl","publicUrl","storageUrl","assetUrl","privateVideoUrl","privateVideoId","sourceUrl","playbackId","muxPlaybackId","cloudflareStreamId","cloudflareId","bunnyVideoId","bunnyId"].forEach((key) => { delete row[key]; });
+        row.id = "lesson-" + hash([lesson.id, lesson.title, lesson.sort].filter(Boolean).join("|"));
+        row.sourceType = "private";
+        row.videoAccess = "token";
+        if (/ytimg\.com|youtube\.com|youtu\.be|videodelivery\.net|bunnycdn\.com|mediadelivery\.net|mux\.com/i.test(String(row.thumbnail || ""))) row.thumbnail = course.cover || "";
+        return row;
+      })
+    };
+  }
+
   async function saveToGitHub() {
     const view = document.getElementById("courseAdmin");
     saveGithubConfig(view);
@@ -1945,7 +2000,7 @@
     const current = await githubFetchFile(cfg);
     const body = {
       message: `Update course videos ${new Date().toISOString()}`,
-      content: base64EncodeUtf8(JSON.stringify(data, null, 2) + "\n"),
+      content: base64EncodeUtf8(JSON.stringify(publicCourseCatalog(data), null, 2) + "\n"),
       branch: cfg.branch,
       committer: { name: "DUCPT Passport", email: "passport@ducpt.com" }
     };
