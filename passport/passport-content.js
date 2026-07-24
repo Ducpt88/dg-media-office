@@ -470,7 +470,8 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
     });
 
     learningDashboardSection();
-    if (!document.getElementById("courseAdmin")?.dataset.coursePackager) courseStudioSection();
+    /* CourseAdmin đã có bộ quản lý video v2 ở cuối file. Không mount bộ cũ nữa,
+       tránh lòi dữ liệu mẫu "AI cho người mới / 3 khóa" khi trang tải chậm. */
 
     recordSection({
       viewId: "aboutAdmin", title: "Về chúng tôi", storeKey: "ducpt_about_v1",
