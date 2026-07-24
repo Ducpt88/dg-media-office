@@ -33,6 +33,6 @@
 (function () {
   var saved = "";
   try { saved = String(localStorage.getItem("ducpt-api-base") || "").trim(); } catch (e) {}
-  var base = String(window.DUCPT_API_BASE || "").trim() || saved || "https://ducpt-passport-api.onrender.com";
+  var base = String(window.DUCPT_API_BASE || "").trim() || saved || "https://vancouver-altered-less-forum.trycloudflare.com";
   window.DUCPT_API_BASE = base.replace(/\/+$/, "");
 })();

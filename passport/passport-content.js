@@ -5,7 +5,7 @@ window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
   try {
     base = String(window.DUCPT_API_BASE || localStorage.getItem("ducpt-api-base") || "").replace(/\/+$/, "");
   } catch {}
-  if (!base && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(location.hostname)) base = "https://ducpt-passport-api.onrender.com";
+  if (!base && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(location.hostname)) base = "https://vancouver-altered-less-forum.trycloudflare.com";
   return base ? `${base}/${value.replace(/^\/+/, "")}` : value;
 };
 
