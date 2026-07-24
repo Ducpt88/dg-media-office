@@ -9,10 +9,10 @@ const tls = require("tls");
 
 const ROOT = __dirname;
 const DATA_DIR = process.env.PASSPORT_DATA_DIR || path.join(ROOT, "passport");
-const UPLOAD_DIR = path.join(ROOT, "passport", "uploads");
 const SIGNUP_FILE = path.join(DATA_DIR, "course-signups.json");
 const COURSE_VIDEO_FILE = path.join(ROOT, "passport", "course-videos.json");
 const COURSE_VIDEO_PRIVATE_FILE = process.env.PASSPORT_COURSE_VIDEO_PRIVATE_FILE || path.join(DATA_DIR, "course-videos.private.json");
+const UPLOAD_DIR = path.join(DATA_DIR, "uploads");
 const PREMIUM_ACCESS_FILE = path.join(ROOT, "passport", "premium-access.json");
 const PREMIUM_CODE_CLAIMS_FILE = path.join(DATA_DIR, "premium-code-claims.json");
 const PREMIUM_CODE_SECRET = process.env.DUCPT_PREMIUM_CODE_SECRET || "dg-cong-ty-1-nguoi-2026-vip-9f37ab2c";
@@ -39,12 +39,16 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.method === "POST" && url.pathname === "/api/passport/upload") {
-    handleUpload(req, res, url);
+    handleUpload(req, res, url).catch((error) => {
+      sendJson(res, 500, { ok: false, error: error.message || "UPLOAD_ERROR" });
+    });
     return;
   }
 
   if (req.method === "GET" && url.pathname === "/api/passport/assets") {
-    sendJson(res, 200, { ok: true, data: listUploads() });
+    handleAssets(req, res).catch((error) => {
+      sendJson(res, 500, { ok: false, error: error.message || "ASSETS_ERROR" });
+    });
     return;
   }
 
@@ -125,7 +129,11 @@ server.listen(PORT, HOST, () => {
   console.log(`Passport upload server running at http://${HOST}:${PORT}/passport/`);
 });
 
-function handleUpload(req, res, url) {
+async function handleUpload(req, res, url) {
+  if (!(await requestHasCourseAdmin(req))) {
+    sendJson(res, 401, { ok: false, error: "COURSE_ADMIN_REQUIRED" });
+    return;
+  }
   const originalName = url.searchParams.get("name") || "asset";
   const stamp = new Date().toISOString().replace(/[-:.TZ]/g, "").slice(0, 14);
   const fileName = `${stamp}-${safeName(originalName)}`;
@@ -182,6 +190,14 @@ function listUploads() {
       if (lessonB) return 1;
       return b.addedAt.localeCompare(a.addedAt);
     });
+}
+
+async function handleAssets(req, res) {
+  if (!(await requestHasCourseAdmin(req))) {
+    sendJson(res, 401, { ok: false, error: "COURSE_ADMIN_REQUIRED" });
+    return;
+  }
+  sendJson(res, 200, { ok: true, data: listUploads() });
 }
 
 function databaseStatus() {
@@ -303,6 +319,16 @@ async function uploadToStorage(filePath, storagePath, mimeType) {
 
 function serveStatic(req, res, pathname) {
   const normalized = pathname === "/" ? "/index.html" : decodeURIComponent(pathname);
+  const uploadFile = uploadFilePath(normalized);
+  if (uploadFile) {
+    if (!isLocalRequest(req) && !requestHasCourseAdminKey(req)) {
+      res.writeHead(404);
+      res.end("Not found");
+      return;
+    }
+    sendFile(req, res, uploadFile);
+    return;
+  }
   const absolute = path.resolve(ROOT, normalized.replace(/^\/+/, ""));
 
   if (!absolute.startsWith(ROOT + path.sep) && absolute !== ROOT) {
@@ -327,6 +353,25 @@ function serveStatic(req, res, pathname) {
   }
 
   sendFile(req, res, filePath);
+}
+
+function uploadFilePath(pathname) {
+  if (!pathname.startsWith("/passport/uploads/")) return "";
+  const fileName = pathname.slice("/passport/uploads/".length);
+  if (!fileName || fileName.includes("/") || fileName.includes("\\")) return "";
+  const absolute = path.join(UPLOAD_DIR, fileName);
+  if (!absolute.startsWith(UPLOAD_DIR + path.sep) || !fs.existsSync(absolute) || !fs.statSync(absolute).isFile()) return "";
+  return absolute;
+}
+
+function localUploadUrlPath(value) {
+  const raw = String(value || "").trim();
+  if (raw.startsWith("/passport/uploads/")) return raw;
+  try {
+    const parsed = new URL(raw);
+    if (parsed.pathname.startsWith("/passport/uploads/")) return parsed.pathname;
+  } catch {}
+  return "";
 }
 
 function isSensitiveStaticPath(filePath) {
@@ -583,6 +628,16 @@ function playCourseVideoTicket(req, res, url) {
   const payload = verifyCourseVideoTicket(ticket);
   if (!payload) {
     sendJson(res, 403, { ok: false, error: "INVALID_OR_EXPIRED_VIDEO_TICKET" });
+    return;
+  }
+  const localUpload = localUploadUrlPath(payload.url);
+  if (localUpload) {
+    const filePath = uploadFilePath(localUpload);
+    if (!filePath) {
+      sendJson(res, 404, { ok: false, error: "VIDEO_FILE_NOT_FOUND" });
+      return;
+    }
+    sendFile(req, res, filePath);
     return;
   }
   res.writeHead(302, {

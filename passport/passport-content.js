@@ -1,3 +1,14 @@
+window.DUCPTPassportApiUrl = window.DUCPTPassportApiUrl || function(path) {
+  const value = String(path || "");
+  if (/^https?:\/\//i.test(value)) return value;
+  let base = "";
+  try {
+    base = String(window.DUCPT_API_BASE || localStorage.getItem("ducpt-api-base") || "").replace(/\/+$/, "");
+  } catch {}
+  if (!base && !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/i.test(location.hostname)) base = "https://ducpt-passport-api.onrender.com";
+  return base ? `${base}/${value.replace(/^\/+/, "")}` : value;
+};
+
 /* ============================================================
    DUCPT Passport — Quản lý nội dung SỬA ĐƯỢC (lưu thật)
    Biến các mục tĩnh (Sản phẩm, Dịch vụ, Công cụ AI, Khóa học, Về chúng tôi)
@@ -485,6 +496,7 @@
   view.dataset.coursePackager = "v2";
 
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const apiUrl = window.DUCPTPassportApiUrl;
   const seed = {
     course: {
       title: "Doanh nghiep mot nguoi",
@@ -530,6 +542,13 @@
     return headers;
   }
 
+  async function uploadHeaders(file) {
+    const headers = await courseAdminHeaders();
+    delete headers["content-type"];
+    headers["Content-Type"] = (file && file.type) || "application/octet-stream";
+    return headers;
+  }
+
   const emptyLesson = () => ({
     id: "",
     lessonNo: data.lessons.length + 1,
@@ -545,7 +564,7 @@
 
   async function load() {
     try {
-      const res = await fetch("/api/passport/course-videos?view=private", { cache: "no-store", headers: await courseAdminHeaders() });
+      const res = await fetch(apiUrl("/api/passport/course-videos?view=private"), { cache: "no-store", headers: await courseAdminHeaders() });
       const payload = await res.json();
       data = payload.ok ? payload.data : seed;
     } catch {
@@ -678,7 +697,7 @@
     if (!youtubeUrl) return flash("Hay dan link YouTube truoc");
     flash("Dang dong bo YouTube...");
     try {
-      const res = await fetch("/api/passport/course-videos/import-youtube", {
+      const res = await fetch(apiUrl("/api/passport/course-videos/import-youtube"), {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ youtubeUrl })
@@ -712,7 +731,7 @@
     collectCourse();
     data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
     try {
-      const res = await fetch("/api/passport/course-videos/save", {
+      const res = await fetch(apiUrl("/api/passport/course-videos/save"), {
         method: "POST",
         headers: await courseAdminHeaders(),
         body: JSON.stringify(data)
@@ -765,6 +784,27 @@
   if (!view) return;
 
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const apiUrl = window.DUCPTPassportApiUrl;
+  async function courseAdminHeaders() {
+    const headers = { "content-type": "application/json" };
+    try {
+      if (window.DUCPTAuth && typeof window.DUCPTAuth.token === "function") {
+        const token = await window.DUCPTAuth.token();
+        if (token) headers.Authorization = `Bearer ${token}`;
+      }
+    } catch {}
+    try {
+      const adminKey = String(localStorage.getItem("ducpt-course-admin-key") || localStorage.getItem("ducpt-signup-sheet-admin-key") || "").trim();
+      if (adminKey) headers["x-ducpt-course-admin-key"] = adminKey;
+    } catch {}
+    return headers;
+  }
+  async function uploadHeaders(file) {
+    const headers = await courseAdminHeaders();
+    delete headers["content-type"];
+    headers["Content-Type"] = (file && file.type) || "application/octet-stream";
+    return headers;
+  }
   const key = "ducpt_one_person_business_course_v2";
   const seed = {
     title: "Doanh nghiệp một người",
@@ -909,7 +949,7 @@
     const box = document.getElementById("opbAssets");
     box.innerHTML = `<div class="opb-asset"><div class="opb-preview">Đang tải</div><b>Đang upload file</b><span>Vui lòng chờ...</span></div>`;
     for (const file of files) {
-      const res = await fetch(`/api/passport/upload?name=${encodeURIComponent(file.name)}`, { method: "POST", headers: { "Content-Type": file.type || "application/octet-stream" }, body: file });
+      const res = await fetch(apiUrl(`/api/passport/upload?name=${encodeURIComponent(file.name)}`), { method: "POST", headers: await uploadHeaders(file), body: file });
       const payload = await res.json();
       if (!payload.ok) alert(payload.error || "Upload lỗi");
     }
@@ -919,7 +959,7 @@
 
   async function loadAssets() {
     try {
-      const res = await fetch("/api/passport/assets");
+      const res = await fetch(apiUrl("/api/passport/assets"), { headers: await courseAdminHeaders() });
       const payload = await res.json();
       assets = payload.ok ? payload.data : [];
     } catch {
@@ -1098,6 +1138,7 @@
 (() => {
   "use strict";
   const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const apiUrl = window.DUCPTPassportApiUrl;
   const seed = { course: { title: "Doanh nghiệp một người", price: "Liên hệ", contact: "Zalo 0963249467", goal: "Khóa học giúp học viên đóng gói năng lực cá nhân thành offer rõ ràng, tạo nội dung kéo khách, bán sản phẩm dịch vụ số và vận hành gọn bằng AI.", cover: "/assets/hvd-horizontal.svg" }, lessons: [] };
   const githubDefaults = { owner: "Ducpt88", repo: "dg-media-office", branch: "main", path: "passport/course-videos.json" };
   const I = (p) => `<svg class="ytc-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
@@ -1128,6 +1169,13 @@
       const key = String(localStorage.getItem("ducpt-course-admin-key") || localStorage.getItem("ducpt-signup-sheet-admin-key") || "").trim();
       if (key) headers["x-ducpt-course-admin-key"] = key;
     } catch {}
+    return headers;
+  }
+
+  async function uploadHeaders(file) {
+    const headers = await courseAdminHeaders();
+    delete headers["content-type"];
+    headers["Content-Type"] = (file && file.type) || "application/octet-stream";
     return headers;
   }
 
@@ -1193,7 +1241,7 @@
     if (!view) return;
     mountStyle();
     try {
-      const res = await fetch("/api/passport/course-videos?view=private", { cache: "no-store", headers: await courseAdminHeaders() });
+      const res = await fetch(apiUrl("/api/passport/course-videos?view=private"), { cache: "no-store", headers: await courseAdminHeaders() });
       const payload = await res.json();
       data = payload.ok ? payload.data : seed;
     } catch {
@@ -1202,7 +1250,7 @@
         data = await res.json();
       } catch {
         try {
-          const res = await fetch("/api/passport/course-videos", { cache: "no-store" });
+          const res = await fetch(apiUrl("/api/passport/course-videos"), { cache: "no-store" });
           const payload = await res.json();
           data = payload.ok ? payload.data : seed;
         } catch {
@@ -1219,17 +1267,32 @@
          Sửa dữ liệu trên máy chủ là bản nháp có bài của Founder bị đè, bài "biến mất".
          LUẬT MỚI: bản nháp có bài mà máy chủ CHƯA có thì KHÔNG BAO GIỜ bị bỏ —
          giữ lại và báo rõ để Founder biết còn bài chưa lên website. */
+      const lessonKey = (x) => [x && x.module, x && x.moduleNo, x && x.sort, x && x.lessonNo, x && x.title]
+        .map((v) => String(v || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""))
+        .join("|");
       const serverIds = new Set(serverLessons.map((x) => String(x.id || x.youtubeId || "")));
-      const chuaLen = draftLessons.filter((x) => !serverIds.has(String(x.id || x.youtubeId || "")));
+      const serverKeys = new Set(serverLessons.map(lessonKey));
+      const draftByKey = new Map(draftLessons.map((x) => [lessonKey(x), x]));
+      const mergedServerLessons = serverLessons.map((x) => {
+        const draftMatch = draftByKey.get(lessonKey(x));
+        return draftMatch ? { ...x, ...draftMatch, id: x.id || draftMatch.id } : x;
+      });
+      const chuaLen = draftLessons.filter((x) => !serverIds.has(String(x.id || x.youtubeId || "")) && !serverKeys.has(lessonKey(x)));
 
       if (chuaLen.length) {
         /* Giữ nội dung khóa học mới nhất từ máy chủ, nhưng gộp lại các bài chỉ có trong nháp. */
         data = {
           ...data,
           course: { ...(data.course || {}), ...(draft.course || {}), modules: (data.course && data.course.modules) || (draft.course || {}).modules || [] },
-          lessons: serverLessons.concat(chuaLen)
+          lessons: mergedServerLessons.concat(chuaLen)
         };
         window.__ducptDraftRecovered = chuaLen.length;
+      } else if (draftLessons.length) {
+        data = {
+          ...data,
+          course: { ...(data.course || {}), ...(draft.course || {}), modules: (data.course && data.course.modules) || (draft.course || {}).modules || [] },
+          lessons: mergedServerLessons
+        };
       } else if (draft && draft.course && (draft.course.updatedAt || "") > (data.course.updatedAt || "")) {
         data = draft;
       }
@@ -1305,7 +1368,7 @@
       return;
     }
     try {
-      const res = await fetch("/api/passport/assets", { cache: "no-store" });
+      const res = await fetch(apiUrl("/api/passport/assets"), { cache: "no-store", headers: await courseAdminHeaders() });
       const payload = await res.json();
       legacyAssets = payload.ok ? payload.data.filter((item) => String(item.type || "").startsWith("video/")) : [];
     } catch {
@@ -1868,7 +1931,7 @@
       if (!youtubeUrl) return flash("Hãy dán link YouTube trước");
       flash("Đang đồng bộ YouTube...");
       try {
-        const res = await fetch("/api/passport/course-videos/import-youtube", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ youtubeUrl }) });
+        const res = await fetch(apiUrl("/api/passport/course-videos/import-youtube"), { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ youtubeUrl }) });
       const payload = await res.json();
       if (!payload.ok) throw new Error(payload.error || "Không đồng bộ được");
       const item = payload.data;
@@ -1898,9 +1961,9 @@
     if (!file) return;
     flash("Đang tải video lên Passport local...");
     try {
-      const res = await fetch(`/api/passport/upload?name=${encodeURIComponent(file.name)}`, {
+      const res = await fetch(apiUrl(`/api/passport/upload?name=${encodeURIComponent(file.name)}`), {
         method: "POST",
-        headers: { "Content-Type": file.type || "application/octet-stream" },
+        headers: await uploadHeaders(file),
         body: file
       });
       const payload = await res.json();
@@ -1936,7 +1999,7 @@
     data.lessons = data.lessons.sort((a, b) => (Number(a.sort) || 999) - (Number(b.sort) || 999));
     try { localStorage.setItem("ducpt_course_videos_draft_v1", JSON.stringify(data)); } catch {}
     try {
-      const res = await fetch("/api/passport/course-videos/save", { method: "POST", headers: await courseAdminHeaders(), body: JSON.stringify(data) });
+      const res = await fetch(apiUrl("/api/passport/course-videos/save"), { method: "POST", headers: await courseAdminHeaders(), body: JSON.stringify(data) });
       const payload = await res.json();
       if (!payload.ok) throw new Error(payload.error || "Không lưu được");
       data = payload.data;
